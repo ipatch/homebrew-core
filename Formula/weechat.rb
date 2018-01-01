@@ -11,6 +11,7 @@ class Weechat < Formula
     sha256 "e8070f500a5f922b3f862ea67104ee9e8c7dd0f929caf408700c664ef07bfb7a" => :el_capitan
   end
 
+  option "with-python", "Build the python module"
   option "with-perl", "Build the perl module"
   option "with-ruby", "Build the ruby module"
   option "with-curl", "Build with brewed curl"
@@ -24,20 +25,61 @@ class Weechat < Formula
   depends_on "gettext"
   depends_on "aspell" => :optional
   depends_on "lua" => :optional
-  depends_on :python => :optional
   depends_on :ruby => ["2.1", :optional]
   depends_on :perl => ["5.3", :optional]
   depends_on "curl" => :optional
+  depends_on "php71" if build.with? "python"
+  depends_on "php71" if build.with? "python3"
+
+  if MacOS.version >= :mavericks
+    option "with-custom-python", "Build with a custom Python 2 instead of the Homebrew version."
+  end
+
+  depends_on :python => :optional
+  depends_on :python3 => :optional
 
   def install
+
+    # weechat doesn't have or require any Python package,
+    # to the best of my knowledge, so unset PYTHONPATH
+
+    # -CMAKE_INSTALL_PREFIX=#{HOMEBREW_PREFIX}
+
+    ENV.delete("PYTHONPATH")
+
     args = std_cmake_args + %W[
       -DENABLE_GUILE=OFF
       -DCA_FILE=#{etc}/openssl/cert.pem
       -DENABLE_JAVASCRIPT=OFF
+
     ]
     if build.with? "debug"
       args -= %w[-DCMAKE_BUILD_TYPE=Release]
       args << "-DCMAKE_BUILD_TYPE=Debug"
+    end
+
+    # Allow python or python3, but not both; if the optional
+    # python is chosen, default to it; otherwise, use python3
+
+    # NOTE: weechat still prefers python 2 supprot because
+    # because many scripts are not compatible with python 3.
+
+    if build.with? "python"
+      ENV.prepend "LDFLAGS", `python-config --ldflags`.chomp
+
+      framework_script = <<~EOS
+        import sysconfig
+        print sysconfig.get_config_var("PYTHONFRAMEWORKPREFIX")
+      EOS
+      framework_prefix = `python -c '#{framework_script}'`.strip
+      # Non-framework builds should have PYTHONFRAMEWORKPREFIX defined as ""
+      if framework_prefix.include?("/") && framework_prefix != "/System/Library/Frameworks"
+        ENV.prepend "LDFLAGS", "-F#{framework_prefix}"
+        ENV.prepend "CFLAGS", "-F#{framework_prefix}"
+      end
+      args << "-DENABLE_PYTHON=ON"
+    elsif build.with? "python"
+      args << "-DENABLE_PYTHON3=ON"
     end
 
     args << "-DENABLE_LUA=OFF" if build.without? "lua"
@@ -49,11 +91,17 @@ class Weechat < Formula
 
     mkdir "build" do
       system "cmake", "..", *args
-      system "make", "install", "VERBOSE=1"
+      system "make", "install"
     end
   end
 
   def caveats
+    if build.with?("python") && build.with?("python3")
+      <<~EOS
+        weechat should only built with either python 2 or python 3. Not both
+        versions of python.
+      EOS
+    end
     <<~EOS
       Weechat can depend on Aspell if you choose the --with-aspell option, but
       Aspell should be installed manually before installing Weechat so that
