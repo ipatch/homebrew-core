@@ -25,30 +25,14 @@ class Weechat < Formula
   depends_on "gettext"
   depends_on "aspell" => :optional
   depends_on "lua" => :optional
-  depends_on :ruby => ["2.1", :optional]
-  depends_on :perl => ["5.3", :optional]
+  depends_on "ruby" => ["2.1", :optional]
+  depends_on "perl" => ["5.3", :optional]
   depends_on "curl" => :optional
-  # depends_on "php71" if build.with? "python"
-  # depends_on "php71" if build.with? "python3"
-  # depends_on :python => :optional
-
-  # if MacOS.version >= :mavericks
-  #   option "with-custom-python", "Build with a custom Python 2 instead of the Homebrew version."
-  # end
 
   depends_on :python => :optional
   depends_on :python3 => :optional
 
   def install
-
-    # weechat doesn't have or require any Python package,
-    # to the best of my knowledge, so unset PYTHONPATH
-
-    # -CMAKE_INSTALL_PREFIX=#{HOMEBREW_PREFIX}
-
-    # -DCMAKE_LIBRARY_PATH=/usr/local/Cellar/php71/7.1.12_23/libexec/apache2/
-
-    # ENV.delete("PYTHONPATH")
 
     args = std_cmake_args + %W[
       -DENABLE_GUILE=OFF
@@ -59,8 +43,6 @@ class Weechat < Formula
     if build.with? "debug"
       args -= %w[-DCMAKE_BUILD_TYPE=Release]
       args << "-DCMAKE_BUILD_TYPE=Debug"
-      # args -= %w[-DCMAKE_LIBRARY_PATH=]
-      # args << "-DCMAKE_LIBRARY_PATH=/usr/local/Cellar/php71/7.1.12_23/libexec/apache2/"
     end
 
     # Allow python or python3, but not both; if the optional
