@@ -23,6 +23,20 @@ class P11Kit < Formula
   depends_on "pkg-config" => :build
 
   def install
+
+    os = `uname -s`.chomp.downcase
+
+    if os == "linux"
+      puts "your OS is Linux"
+      system "./autogen.sh",
+      "--prefix=#{prefix}",
+        "--sysconfdir=#{etc}",
+        "--with-module_config=#{etc}/pkcs11/modules"
+      system "make"
+      system "make", "install"
+    else
+          
+
     # Fix "error: unknown type name 'locale_t'"
     # Reported 25 May 2018 https://github.com/p11-glue/p11-kit/issues/158
     inreplace %w[common/debug.c common/library.c common/message.c
@@ -47,6 +61,7 @@ class P11Kit < Formula
     system "make"
     system "make", "check" if OS.mac? # Takes more than 30 min on circle.ci
     system "make", "install"
+    end
   end
 
   test do
