@@ -21,6 +21,8 @@ class Boost < Formula
     sha256 "32cd0dc0602e92efe8d75a74db20388b4885df4bb2e8123694b6e3fa2328fb82" => :mojave
   end
 
+  option "with-ccache", "Build using ccache compilers"
+
   depends_on "icu4c"
 
   uses_from_macos "bzip2"
@@ -41,6 +43,13 @@ class Boost < Formula
   end
 
   def install
+
+    if build.with?("ccache")
+      ENV["CC"] = Formula["ccache"].libexec/"cc"
+      ENV["CXX"] = Formula["ccache"].libexec/"c++"
+      ENV["CCACHE_DIR"] = "/usr/local/var/cache/.ccache/homebrew/boost"
+    end
+
     # Force boost to compile with the desired compiler
     open("user-config.jam", "a") do |file|
       file.write "using darwin : : #{ENV.cxx} ;\n"
