@@ -7,7 +7,6 @@ class Boost < Formula
   license "BSL-1.0"
   revision 1
   head "https://github.com/boostorg/boost.git"
-
   livecheck do
     url "https://www.boost.org/feed/downloads.rss"
     regex(/>Version v?(\d+(?:\.\d+)+)</i)
