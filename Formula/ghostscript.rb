@@ -4,7 +4,6 @@ class Ghostscript < Formula
   url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9550/ghostpdl-9.55.0.tar.gz"
   sha256 "b73cdfcb7b1c2a305748d23b00a765bcba48310564940b1eff1457f19f898172"
   license "AGPL-3.0-or-later"
-  revision 1
 
   # We check the tags from the `head` repository because the GitHub tags are
   # formatted ambiguously, like `gs9533` (corresponding to version 9.53.3).
