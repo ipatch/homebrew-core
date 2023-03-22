@@ -1,8 +1,8 @@
 class Neomutt < Formula
   desc "E-mail reader with support for Notmuch, NNTP and much more"
   homepage "https://neomutt.org/"
-  url "https://github.com/neomutt/neomutt/archive/20220429.tar.gz"
-  sha256 "45496542897ba8de6bc7cce3f5951d9033ed1c49e5d6f1353adaeefe795d9043"
+  url "https://github.com/neomutt/neomutt/archive/20230322.tar.gz"
+  sha256 "47f024d4ae2d976f95b626c5fe6cad6ef22ed187426efbd7cf61435ba1790a48"
   license "GPL-2.0-or-later"
   head "https://github.com/neomutt/neomutt.git", branch: "main"
 
@@ -18,6 +18,11 @@ class Neomutt < Formula
   end
 
   depends_on "docbook-xsl" => :build
+  depends_on "pkg-config" => :build
+  # The build breaks when it tries to use system `tclsh`.
+  depends_on "tcl-tk" => :build
+  # FIXME: Should be `uses_from_macos`, but `./configure` can't find system `libsasl2`.
+  depends_on "cyrus-sasl"
   depends_on "gettext"
   depends_on "gpgme"
   depends_on "libidn2"
@@ -29,13 +34,8 @@ class Neomutt < Formula
   depends_on "tokyo-cabinet"
 
   uses_from_macos "libxslt" => :build # for xsltproc
-  uses_from_macos "cyrus-sasl"
   uses_from_macos "krb5"
   uses_from_macos "zlib"
-
-  on_linux do
-    depends_on "pkg-config" => :build
-  end
 
   def install
     ENV["XML_CATALOG_FILES"] = etc/"xml/catalog"
