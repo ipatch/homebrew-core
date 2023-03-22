@@ -1,11 +1,9 @@
 class Symengine < Formula
   desc "Fast symbolic manipulation library written in C++"
   homepage "https://sympy.org"
-  # TODO: Check if we can use unversioned `llvm` at version bump.
-  url "https://github.com/symengine/symengine/releases/download/v0.9.0/symengine-0.9.0.tar.gz"
-  sha256 "dcf174ac708ed2acea46691f6e78b9eb946d8a2ba62f75e87cf3bf4f0d651724"
+  url "https://github.com/symengine/symengine/releases/download/v0.10.0/symengine-0.10.0.tar.gz"
+  sha256 "27eae7982f010e4901a5922d44e0de4b81c3b8dd52c57b147a1994f0541da50e"
   license "MIT"
-  revision 3
 
   bottle do
     sha256 cellar: :any,                 arm64_ventura:  "d03c14ff05183d5bdf901ee4e8f6bd2dac39bccdaaeedcd5f02b4186be746c37"
@@ -17,12 +15,12 @@ class Symengine < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "db71eb4cb7428180d9d994a81279d1b8ebeacfd12e0b4c35f403379ece47b013"
   end
 
+  depends_on "cereal" => :build
   depends_on "cmake" => :build
-  depends_on "cereal"
   depends_on "flint"
   depends_on "gmp"
   depends_on "libmpc"
-  depends_on "llvm@15"
+  depends_on "llvm"
   depends_on "mpfr"
 
   fails_with gcc: "5"
@@ -37,6 +35,7 @@ class Symengine < Formula
   end
 
   def install
+    llvm = deps.map(&:to_formula).find { |f| f.name.match?(/^llvm(@\d+)?$/) }
     system "cmake", "-S", ".", "-B", "build",
                     "-DBUILD_SHARED_LIBS=ON",
                     "-DWITH_GMP=ON",
@@ -45,7 +44,7 @@ class Symengine < Formula
                     "-DINTEGER_CLASS=flint",
                     "-DWITH_LLVM=ON",
                     "-DWITH_COTIRE=OFF",
-                    "-DLLVM_DIR=#{Formula["llvm@15"].opt_lib}/cmake/llvm",
+                    "-DLLVM_DIR=#{llvm.opt_lib}/cmake/llvm",
                     "-DWITH_SYMENGINE_THREAD_SAFE=ON",
                     "-DWITH_SYSTEM_CEREAL=ON",
                     *std_cmake_args
