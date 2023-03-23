@@ -15,6 +15,7 @@ class Pocl < Formula
     sha256 ventura:        "31547dd88a441097ac30b5a396d293af17331df64223e5d6bc75e8bee5219c70"
     sha256 monterey:       "ebd4512a7dffd600b8a02b61fa017fe5f90c8b693785963d241dffcb224bd703"
     sha256 big_sur:        "be751028d7efa9dd39564b3a79e39a40aaa6916683cccabde37b030884a64b10"
+    sha256 x86_64_linux:   "691ace09c0b0bd71a8a63cd44a201dd15d36de055cd6fca2e96aadc4eaa59426"
   end
 
   depends_on "cmake" => :build
