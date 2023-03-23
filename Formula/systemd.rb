@@ -10,8 +10,13 @@ class Systemd < Formula
     sha256 x86_64_linux: "7013a6313b536193abf0205457a7f063e83af6bc11290b395323760ac1fcb5e5"
   end
 
+  # NOTE: ipatch, build cmd for installing systemd on ~/homebrew on arch linux
+  # `brew install systemd -v --cc=gcc-12 ; notify-send -t 0 "homebrew task complete";`   
+
   depends_on "coreutils" => :build
+  depends_on "dbus" => :build
   depends_on "docbook-xsl" => :build
+  # depends_on "gcc@12" => :build # NO WORK!
   depends_on "gettext" => :build
   depends_on "gperf" => :build
   depends_on "intltool" => :build
@@ -40,6 +45,14 @@ class Systemd < Formula
     ENV["PYTHONPATH"] = Formula["jinja2-cli"].opt_libexec/Language::Python.site_packages("python3.11")
     ENV.append "LDFLAGS", "-Wl,-rpath,#{lib}/systemd"
 
+    # NOTE: ipatch, specifically define homebrew compilers
+    # systemd fails to build due to mismatch of gcc compilers ie. wants gcc12 but finds gcc11
+    # "CC=#{Formula["gcc"].opt_bin}gcc-12" # NO WORK
+    # "CXX=#{Formula["gcc"].opt_bin}gcc-12" # NO WORK
+    #
+    # "HOMEBREW_CC=#{Formula["gcc"].opt_bin}gcc-12" # NO WORK
+    # "HOMEBREW_CXX=#{Formula["gcc"].opt_bin}gcc-12" # NO WORK
+
     args = std_meson_args + %W[
       --sysconfdir=#{etc}
       --localstatedir=#{var}
@@ -52,6 +65,21 @@ class Systemd < Formula
       -Dhwdb=false
       -Dlz4=true
       -Dgcrypt=false
+      -Ddefault-dnssec=no
+      -Dfirstboot=false
+      -Dinstall-tests=false
+      -Dldconfig=false
+      -Dstandalone-binaries=true
+      --auto-features=disabled
+      --default-library=static
+      -Dstatic-libsystemd=true
+      -Dlink-udev-shared=false
+      -Dlink-boot-shared=false
+      -Dlink-timesyncd-shared=false
+      -Dlink-networkd-shared=false
+      -Defi=false
+      -Dglib=false
+      -Ddbus=true
     ]
 
     system "meson", "setup", *args, "build"
