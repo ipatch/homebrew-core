@@ -17,6 +17,8 @@ class Glib < Formula
     sha256 x86_64_linux:   "4e4010f0aac8befffde97900a4c6ef3766084e7c71b2c2f4d0fa6daa46bd0fdf"
   end
 
+  #NOTE: ipatch, get build failure due to missing `dbus.h`
+  depends_on "dbus" => :build
   depends_on "gettext" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
