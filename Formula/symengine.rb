@@ -8,12 +8,13 @@ class Symengine < Formula
   revision 3
 
   bottle do
-    sha256 cellar: :any, arm64_ventura:  "d03c14ff05183d5bdf901ee4e8f6bd2dac39bccdaaeedcd5f02b4186be746c37"
-    sha256 cellar: :any, arm64_monterey: "c7b4cb45ce8a7a3ad479630b0e234ce388f69e972ee915aef56b77b94c152bff"
-    sha256 cellar: :any, arm64_big_sur:  "5f280ee58a2cf7f00511ae3383de1be2753dbc1a8b0994607773c2f7c042866a"
-    sha256 cellar: :any, ventura:        "925f15a080442d78b4053a9b953270fc171846498b6524750b44f9900113d863"
-    sha256 cellar: :any, monterey:       "03da9233b6f783eec8e6399a51ed0fb97e37b191609d3b5f31cf7f90ea1e60d0"
-    sha256 cellar: :any, big_sur:        "cf30940caff9d6a2b49ca50aab93a103a8c5a71a2363b4200d0157d8f6b46d9f"
+    sha256 cellar: :any,                 arm64_ventura:  "d03c14ff05183d5bdf901ee4e8f6bd2dac39bccdaaeedcd5f02b4186be746c37"
+    sha256 cellar: :any,                 arm64_monterey: "c7b4cb45ce8a7a3ad479630b0e234ce388f69e972ee915aef56b77b94c152bff"
+    sha256 cellar: :any,                 arm64_big_sur:  "5f280ee58a2cf7f00511ae3383de1be2753dbc1a8b0994607773c2f7c042866a"
+    sha256 cellar: :any,                 ventura:        "925f15a080442d78b4053a9b953270fc171846498b6524750b44f9900113d863"
+    sha256 cellar: :any,                 monterey:       "03da9233b6f783eec8e6399a51ed0fb97e37b191609d3b5f31cf7f90ea1e60d0"
+    sha256 cellar: :any,                 big_sur:        "cf30940caff9d6a2b49ca50aab93a103a8c5a71a2363b4200d0157d8f6b46d9f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db71eb4cb7428180d9d994a81279d1b8ebeacfd12e0b4c35f403379ece47b013"
   end
 
   depends_on "cmake" => :build
