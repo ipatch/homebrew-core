@@ -12,7 +12,7 @@ class Basex < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "0c2db4b95bd47b5329a651468f8ccc06888c911283c2f81fd280fc9dbf244303"
+    sha256 cellar: :any_skip_relocation, all: "9f406f0aab1b4cce71c4caa6d4c28a0f8f690d36cca1fe696752601d4164b803"
   end
 
   depends_on "openjdk"
