@@ -118,7 +118,9 @@ jobs:
             --workflows=tests.yml \
             --committer="$BREWTESTBOT_NAME_EMAIL" \
             --root-url="https://ghcr.io/v2/homebrew/core" \
+            ${{inputs.commit_bottles_to_pr_branch && '--no-autosquash' || ''}} \
             ${{inputs.commit_bottles_to_pr_branch && '--no-cherry-pick' || ''}} \
+            ${{inputs.commit_bottles_to_pr_branch && '--clean' || ''}} \
             ${{github.event.inputs.args}} \
             ${{github.event.inputs.pull_request}}
 
@@ -161,7 +163,6 @@ jobs:
           directory: ${{steps.set-up-homebrew.outputs.repository-path}}
           remote: ${{steps.branch-and-remote-info.outputs.remote}}
           branch: ${{steps.branch-and-remote-info.outputs.branch}}
-          force: ${{inputs.commit_bottles_to_pr_branch}}
         env:
           GIT_COMMITTER_NAME: ${{ steps.git-user-config.outputs.name }}
           GIT_COMMITTER_EMAIL: ${{ steps.git-user-config.outputs.email }}
