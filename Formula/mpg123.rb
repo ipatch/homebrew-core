@@ -21,6 +21,15 @@ class Mpg123 < Formula
     sha256 x86_64_linux:   "f6f378ab7a10bf6e14832c270962adb7eb2e18fd80f35535d49201dce842d54b"
   end
 
+  # NOTE: ipatch, adding below depends creates circular dependency loop
+  # depends_on "sdl12-compat" => :build
+
+  # NOTE: ipatch, default setup depends on sdl, and sdl depends on this via `sdl.rb`
+  # NOTE: ipatch, it appears the configure script on archlinux is checking for sdl
+  # whereas on an ubuntu container 22.04 it does not check for sdl
+
+  # NOTE: ipatch, have to disable modules in order to get a working build on arch
+
   def install
     args = %W[
       --disable-debug
@@ -28,6 +37,7 @@ class Mpg123 < Formula
       --prefix=#{prefix}
       --with-module-suffix=.so
       --enable-static
+      --disable-modules
     ]
 
     args << "--with-default-audio=coreaudio" if OS.mac?
