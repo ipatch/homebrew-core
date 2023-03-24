@@ -24,6 +24,7 @@ class P11Kit < Formula
     depends_on "automake" => :build
     depends_on "gettext" => :build
     depends_on "libtool" => :build
+    # depends_on "systemd" => :build
   end
 
   depends_on "pkg-config" => :build
@@ -46,7 +47,9 @@ class P11Kit < Formula
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
                           "--with-module-config=#{etc}/pkcs11/modules",
-                          "--with-trust-paths=#{etc}/ca-certificates/cert.pem"
+                          "--with-trust-paths=#{etc}/ca-certificates/cert.pem",
+                          # NOTE: ipatch, install will fail due permission issues with existing socket
+                          "--without-systemd"
     system "make"
     # This formula is used with crypto libraries, so let's run the test suite.
     system "make", "check"
