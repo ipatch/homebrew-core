@@ -100,6 +100,9 @@ class Pulseaudio < Formula
       # Tell pulseaudio to use the brewed udev rules dir instead of the system one,
       # which it does not have permission to modify
       args << "--with-udev-rules-dir=#{lib}/udev/rules.d"
+
+      # NOTE: ipatch disable systemd support
+      args << "--disable-systemd-daemon"
     end
 
     if build.head?
