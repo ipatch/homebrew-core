@@ -17,7 +17,7 @@ class Freerdp < Formula
 
   head do
     url "https://github.com/FreeRDP/FreeRDP.git", branch: "master"
-    # depends_on xcode: :build
+    depends_on xcode: :build if OS.mac?
   end
 
   depends_on "cmake" => :build
@@ -44,6 +44,7 @@ class Freerdp < Formula
     depends_on "systemd"
     depends_on "wayland"
     depends_on "libfuse"
+    depends_on "cairo" # NOTE: ipatch, required for `/smart-sizing`
     # NOTE: ipatch, it looks like the std formula do not provide the docbook stylesheets
     # depends_on "docbook-xsl"
     # depends_on "libxslt"
@@ -59,7 +60,11 @@ class Freerdp < Formula
                     "-DBUILD_SHARED_LIBS=ON",
                     "-DWITH_JPEG=ON",
                     "-DCMAKE_INSTALL_NAME_DIR=#{lib}",
-                    "-DWITH_MANPAGES=OFF"
+                    "-DWITH_MANPAGES=OFF",
+                    "-DWITH_CAIRO=ON",
+                    "-DWITH_DEBUG_KBD=ON",
+                    "-DWITH_DEBUG_SDL_KBD_EVENTS=ON"
+                    "-DWITH_OPENH264=ON"
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
