@@ -17,7 +17,7 @@ class Freerdp < Formula
 
   head do
     url "https://github.com/FreeRDP/FreeRDP.git", branch: "master"
-    depends_on xcode: :build
+    # depends_on xcode: :build
   end
 
   depends_on "cmake" => :build
@@ -43,14 +43,23 @@ class Freerdp < Formula
     depends_on "glib"
     depends_on "systemd"
     depends_on "wayland"
+    depends_on "libfuse"
+    # NOTE: ipatch, it looks like the std formula do not provide the docbook stylesheets
+    # depends_on "docbook-xsl"
+    # depends_on "libxslt"
+    # depends_on "libxtst"
   end
+
+  # NOTE: ipatch, it appeaers the default cmake options will look for a fuse implementation
+  # and if not found configure will fail
 
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
                     "-DWITH_X11=ON",
                     "-DBUILD_SHARED_LIBS=ON",
                     "-DWITH_JPEG=ON",
-                    "-DCMAKE_INSTALL_NAME_DIR=#{lib}"
+                    "-DCMAKE_INSTALL_NAME_DIR=#{lib}",
+                    "-DWITH_MANPAGES=OFF"
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
