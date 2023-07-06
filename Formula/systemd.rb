@@ -16,7 +16,7 @@ class Systemd < Formula
   depends_on "coreutils" => :build
   depends_on "dbus" => :build
   depends_on "docbook-xsl" => :build
-  # depends_on "gcc@12" => :build # NO WORK!
+  depends_on "gcc@12" => :build # NO WORK!
   depends_on "gettext" => :build
   depends_on "gperf" => :build
   depends_on "intltool" => :build
@@ -27,6 +27,7 @@ class Systemd < Formula
   depends_on "m4" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
+  depends_on "p11-kit" => :build
   depends_on "pkg-config" => :build
   depends_on "python@3.11" => :build
   depends_on "rsync" => :build
