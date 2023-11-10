@@ -1,13 +1,6 @@
-# Homebrew Core
+this is a branch for installing homebrew formula on archlinux when homebrew is setup in a `~/homebrew` dir instead of the default `/home/linuxbrew` dir.
 
-Core formulae for the Homebrew package manager.
 
- [Homebrew/discussions (forum)](https://github.com/orgs/Homebrew/discussions)
+from my experience `openssl@3` will fail to install on arch due to homebrew not locating the `pod2man` binary
 
-## How do I install these formulae?
-
-Just `brew install <formula>`. This is the default tap for Homebrew and is installed by default.
-
-## More Documentation, Troubleshooting, Contributing, Security, Community, Donations, License and Sponsors
-
-See these sections in [Homebrew/brew's README](https://github.com/Homebrew/brew#homebrew).
+https://github.com/Homebrew/homebrew-core/issues/122061
