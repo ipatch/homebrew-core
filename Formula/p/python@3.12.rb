@@ -41,6 +41,7 @@ class PythonAT312 < Formula
   uses_from_macos "zlib"
 
   on_linux do
+    depends_on "util-linux" => :build
     depends_on "berkeley-db@5"
     depends_on "libnsl"
   end
