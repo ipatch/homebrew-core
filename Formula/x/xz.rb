@@ -26,6 +26,8 @@ class Xz < Formula
     sha256               x86_64_linux:   "50675435a60d1190dbea52c5dbd65e70c7bd430e4de7472dc57901222ca11fb7"
   end
 
+  depends_on "diffutils" => :build
+
   def install
     system "./configure", *std_configure_args, "--disable-silent-rules"
     system "make", "check"
