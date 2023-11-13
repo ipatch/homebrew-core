@@ -25,6 +25,7 @@ class Krb5 < Formula
   keg_only :provided_by_macos
 
   depends_on "openssl@3"
+  depends_on "diffutils" => :build
 
   uses_from_macos "bison" => :build
   uses_from_macos "libedit"
