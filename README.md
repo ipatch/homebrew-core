@@ -14,3 +14,9 @@ for reasons i don't quite understand yet, when i attempt to install `python@3.12
 /usr/bin/install: cannot stat 'Modules/_tkinter.cpython-312-x86_64-linux-gnu.so': No such file or directory
 make: *** [Makefile:2084: sharedinstall] Error 1
 ```
+
+## troubleshooting / archlinux / formula / xz
+
+see my comment below
+
+https://github.com/orgs/Homebrew/discussions/3630#discussioncomment-7558812
