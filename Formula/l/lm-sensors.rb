@@ -6,13 +6,20 @@ class LmSensors < Formula
   sha256 "0591f9fa0339f0d15e75326d0365871c2d4e2ed8aa1ff759b3a55d3734b7d197"
   license any_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
 
+  head do
+    url "https://github.com/lm-sensors/lm-sensors"
+  end
+
   bottle do
     sha256 x86_64_linux: "9cab2dd7da319a2eda20dffe27d52292f3e66926fabba8ac1f2204fa0885af3d"
   end
 
-  depends_on "bison" => :build
-  depends_on "flex" => :build
+  # NOTE: ipatch, super hack, installed bison and flex via pacman and was able to build 😐️
+#  depends_on "autoconf" => :build
+#  depends_on "bison" => :build
+#  depends_on "flex" => :build
   depends_on :linux
+#  depends_on "perl"
 
   def install
     args = %W[
@@ -21,6 +28,7 @@ class LmSensors < Formula
       MANDIR=#{man}
       ETCDIR=#{prefix}/etc
     ]
+#    system "autoconf"
     system "make", *args
     system "make", *args, "install"
   end
