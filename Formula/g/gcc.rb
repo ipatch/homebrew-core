@@ -11,21 +11,21 @@ class Gcc < Formula
 
     # Branch from the Darwin maintainer of GCC, with a few generic fixes and
     # Apple Silicon support, located at https://github.com/iains/gcc-13-branch
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/3c5cbc8e9cf444a1967786af48e430588e1eb481/gcc/gcc-13.2.0.diff"
-      sha256 "2df7ef067871a30b2531a2013b3db661ec9e61037341977bfc451e30bf2c1035"
-    end
+    # patch do
+    #   url "https://raw.githubusercontent.com/Homebrew/formula-patches/3c5cbc8e9cf444a1967786af48e430588e1eb481/gcc/gcc-13.2.0.diff"
+    #   sha256 "2df7ef067871a30b2531a2013b3db661ec9e61037341977bfc451e30bf2c1035"
+    # end
 
     # Fix a warning with Xcode 15's linker
     # https://github.com/iains/gcc-13-branch/issues/11
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/e923a0cd6c0e60bb388e8a5b8cd1dcf9c3bf7758/gcc/gcc-xcode15-warnings.diff"
-      sha256 "dcfec5f2209def06678fa9cf91bc7bbe38237f9f3a356a23ab66b84e88142b91"
-    end
+    # patch do
+    #   url "https://raw.githubusercontent.com/Homebrew/formula-patches/e923a0cd6c0e60bb388e8a5b8cd1dcf9c3bf7758/gcc/gcc-xcode15-warnings.diff"
+    #   sha256 "dcfec5f2209def06678fa9cf91bc7bbe38237f9f3a356a23ab66b84e88142b91"
+    # end
 
     # Upstream fix to deal with macOS 14 SDK <math.h> header
     # https://gcc.gnu.org/git/?p=gcc.git;a=commitdiff;h=93f803d53b5ccaabded9d7b4512b54da81c1c616
-    patch :DATA
+    # patch :DATA
   end
 
   livecheck do
@@ -72,6 +72,11 @@ class Gcc < Formula
   end
 
   def install
+    on_linux do
+      # Run sed command to modify 't-aarch64-linux' file
+      # system "sed", "-e", "/lp64=/s/lib64/lib/", "-i.orig", "gcc/config/aarch64/t-aarch64-linux"
+    end
+
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
 
@@ -79,9 +84,26 @@ class Gcc < Formula
     #  - Ada and D, which require a pre-existing GCC to bootstrap
     #  - Go, currently not supported on macOS
     #  - BRIG
-    languages = %w[c c++ objc obj-c++ fortran]
+    # languages = %w[c c++ objc obj-c++ fortran]
+    languages = %w[c c++ fortran]
 
     pkgversion = "Homebrew GCC #{pkg_version} #{build.used_options*" "}".strip
+
+    # --with-glibc-version=2.38 \
+    # --with-sysroot=$LFS       \
+    # --with-newlib             \
+    # --without-headers         \
+    # --enable-default-pie      \
+    # --enable-default-ssp      \
+    # --disable-shared          \
+    # --disable-threads         \
+    # --disable-libatomic       \
+    # --disable-libgomp         \
+    # --disable-libquadmath     \
+    # --disable-libssp          \
+    # --disable-libvtv          \
+    # --disable-libstdcxx       \
+    # --enable-languages=c,c++
 
     # Use `lib/gcc/current` to provide a path that doesn't change with GCC's version.
     args = %W[
