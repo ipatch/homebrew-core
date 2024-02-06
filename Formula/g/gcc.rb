@@ -9,6 +9,13 @@ class Gcc < Formula
     mirror "https://ftpmirror.gnu.org/gcc/gcc-13.2.0/gcc-13.2.0.tar.xz"
     sha256 "e275e76442a6067341a27f04c5c6b83d8613144004c0413528863dc6b5c743da"
 
+    #-----
+    # NOTE: ipatch, running into issues with gfortran compiler with current formula
+    # possibly due to libquadmath and float 128
+    #-----
+    # https://git.alpinelinux.org/aports/tree/main/gcc/APKBUILD
+    # https://git.alpinelinux.org/aports/tree/main/gcc/APKBUILD#n298
+
     # Branch from the Darwin maintainer of GCC, with a few generic fixes and
     # Apple Silicon support, located at https://github.com/iains/gcc-13-branch
     # patch do
@@ -123,6 +130,16 @@ class Gcc < Formula
       --with-bugurl=#{tap.issues_url}
       --with-system-zlib
     ]
+
+    # TODO: ruby check for os and arch, ie. linux+arm
+    # if Hardware::CPU.arm && linux_os?
+    #   puts "This processor is ARM."
+    # else
+    #   puts "This processor is not ARM."
+    # end
+    if OS.linux? && Hardware::CPU.arm?
+      puts "IPATCH!!!!"
+    end
 
     if OS.mac?
       cpu = Hardware::CPU.arm? ? "aarch64" : "x86_64"
