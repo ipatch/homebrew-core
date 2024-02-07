@@ -94,7 +94,9 @@ class Gcc < Formula
     #  - Go, currently not supported on macOS
     #  - BRIG
     # languages = %w[c c++ objc obj-c++ fortran]
-    languages = %w[c c++ fortran]
+    # languages = %w[c c++ fortran]
+    # languages = %w[c c++ fortran objc obj-c++ go m2 lto]
+    languages = %w[c c++ fortran objc obj-c++ go lto]
 
     pkgversion = "Homebrew GCC #{pkg_version} #{build.used_options*" "}".strip
 
@@ -129,7 +131,7 @@ class Gcc < Formula
       --with-isl=#{Formula["isl"].opt_prefix}
       --with-zstd=#{Formula["zstd"].opt_prefix}
       --with-pkgversion=#{pkgversion}
-      --with-bugurl=#{tap.issues_url}
+      --with-bugurl="https://github.com/ipatch/homebrew-core"
       --with-system-zlib
     ]
 
@@ -141,9 +143,25 @@ class Gcc < Formula
     # end
     if OS.linux? && Hardware::CPU.arm?
       puts "IPATCH!!!!"
-      args << "--with-abi=lp64"
-      args << "--with-arch=armv8-a"
+      # args << "--with-abi=lp64"
+      # args << "--with-arch=armv8-a"
+      args << "--enable-bootstrap"
       args << "--enable-lto"
+      args << "--enable-shared"
+      args << "--enable-threads=posix"
+      # args << "--enable-multilib"
+      args << "--disable-multilib"
+      args << "--enable-__cxa_atexit"
+      args << "--disable-libunwind-exceptions"
+      args << "--enable-gnu-unique-object"
+      args << "--enable-linker-build-id"
+      args << "--enable-libstdcxx-backtrace"
+      args << "--with-linker-hash-style=gnu"
+      args << "--enable-plugin"
+      args << "--enable-initfini-array"
+      args << "--enable-gnu-indirect-function"
+      args << "--with-build-config=bootstrap-lto"
+      args << "--enable-link-serialization=1"
     end
 
     if OS.mac?
@@ -158,7 +176,7 @@ class Gcc < Formula
       args << "--with-boot-ldflags=-static-libstdc++ -static-libgcc #{ENV.ldflags}"
 
       # Fix Linux error: gnu/stubs-32.h: No such file or directory.
-      args << "--disable-multilib"
+      # args << "--disable-multilib"
 
       # Enable to PIE by default to match what the host GCC uses
       args << "--enable-default-pie"
