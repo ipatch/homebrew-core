@@ -15,6 +15,8 @@ class Gcc < Formula
     #-----
     # https://git.alpinelinux.org/aports/tree/main/gcc/APKBUILD
     # https://git.alpinelinux.org/aports/tree/main/gcc/APKBUILD#n298
+    # https://salsa.debian.org/toolchain-team/gcc/-/blob/master/debian/rules2?ref_type=heads
+    # https://github.com/macports/macports-ports/blob/master/lang/gcc13/Portfile
 
     # Branch from the Darwin maintainer of GCC, with a few generic fixes and
     # Apple Silicon support, located at https://github.com/iains/gcc-13-branch
@@ -139,6 +141,9 @@ class Gcc < Formula
     # end
     if OS.linux? && Hardware::CPU.arm?
       puts "IPATCH!!!!"
+      args << "--with-abi=lp64"
+      args << "--with-arch=armv8-a"
+      args << "--enable-lto"
     end
 
     if OS.mac?
