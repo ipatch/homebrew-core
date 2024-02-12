@@ -82,6 +82,10 @@ class Subversion < Formula
   end
 
   def install
+    #
+    # TODO: this file creation check needs to be more robust!!!!
+    #
+
     # NOTE: the python configure steps look for a gcc-13 exe
     # Create a symbolic link from gcc to gcc-13
     gcc13_link_path = "#{HOMEBREW_PREFIX}/bin/gcc-13"
