@@ -9,9 +9,11 @@ class Subversion < Formula
     sha256 "949efd451a09435f7e8573574c71c7b71b194d844890fa49cd61d2262ea1a440"
 
     # Fix -flat_namespace being used on Big Sur and later.
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-      sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+    if OS.mac?
+      patch do
+        url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
+        sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+      end
     end
   end
 
@@ -146,6 +148,12 @@ class Subversion < Formula
     perl = DevelopmentTools.locate("perl")
     ruby = DevelopmentTools.locate("ruby")
 
+    # NOTE: ipatch, build error
+    # SWIG python disabled at configure time: no Python.h found
+
+    # Set CPPFLAGS to include the directory containing python.h
+    ENV["CPPFLAGS"] = "-I#{Formula["python"].opt_prefix}/include/python3.12"
+
     args = %W[
       --prefix=#{prefix}
       --disable-debug
@@ -165,10 +173,14 @@ class Subversion < Formula
       --without-berkeley-db
       --without-gpg-agent
       --without-jikes
-      PERL=#{perl}
-      PYTHON=#{which(python3)}
-      RUBY=#{ruby}
+      
+      --with-swig-python=#{Formula["python@3.12"].opt_bin}/python3.12
+      --with-swig-perl=#{perl}
+      --with-swig-ruby=#{ruby}
     ]
+    # RUBY=#{ruby}
+    # PERL=#{perl}
+    # PYTHON=#{which(python3)}
 
     # preserve compatibility with macOS 12.0–12.2
     args.unshift "--enable-sqlite-compatibility-version=3.36.0" if OS.mac? && MacOS.version == :monterey
