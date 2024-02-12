@@ -82,6 +82,16 @@ class Subversion < Formula
   end
 
   def install
+    # NOTE: the python configure steps look for a gcc-13 exe
+    # Create a symbolic link from gcc to gcc-13
+    gcc13_link_path = "#{HOMEBREW_PREFIX}/bin/gcc-13"
+    if File.exist?(gcc13_link_path) || File.symlink?(gcc13_link_path)
+      File.delete(gcc13_link_path)
+    end
+
+    gcc_binary = "/usr/bin/gcc" # Path to your system's gcc binary
+    File.symlink(gcc_binary, gcc13_link_path)
+
     py3c_prefix = buildpath/"py3c"
     serf_prefix = libexec/"serf"
 
@@ -152,7 +162,7 @@ class Subversion < Formula
     # SWIG python disabled at configure time: no Python.h found
 
     # Set CPPFLAGS to include the directory containing python.h
-    ENV["CPPFLAGS"] = "-I#{Formula["python"].opt_prefix}/include/python3.12"
+    # ENV["CPPFLAGS"] = "-I#{Formula["python"].opt_prefix}/include/python3.12"
 
     args = %W[
       --prefix=#{prefix}
@@ -167,19 +177,24 @@ class Subversion < Formula
       --with-py3c=#{py3c_prefix}
       --with-serf=#{serf_prefix}
       --with-sqlite=#{sqlite}
-      --with-swig=#{Formula["swig"].opt_prefix}
       --with-zlib=#{zlib}
       --without-apache-libexecdir
       --without-berkeley-db
       --without-gpg-agent
       --without-jikes
-      
-      --with-swig-python=#{Formula["python@3.12"].opt_bin}/python3.12
       --with-swig-perl=#{perl}
       --with-swig-ruby=#{ruby}
+      --with-swig-python=#{Formula["python@3.12"].opt_bin}/python3.12
     ]
+
+    # configure: WARNING: unrecognized options: --with-swig
+    # --with-swig=#{Formula["swig"].opt_prefix}
+
     # RUBY=#{ruby}
     # PERL=#{perl}
+
+    # NOTE: ipatch, will not find the python.h header file
+    # --with-swig-python=#{python3}
     # PYTHON=#{which(python3)}
 
     # preserve compatibility with macOS 12.0–12.2
@@ -235,6 +250,14 @@ class Subversion < Formula
     # "Library" directories. It is however pointless to keep around as it
     # only contains the perllocal.pod installation file.
     rm_rf prefix/"Library/Perl"
+
+    # Remove the symbolic link after installation finishes
+    # remove_symlink("#{HOMEBREW_PREFIX}/bin/gcc-13")
+  end
+
+  # Helper method to remove the symbolic link
+  def remove_symlink(link_path)
+    File.delete(link_path) if File.symlink?(link_path)
   end
 
   def caveats
