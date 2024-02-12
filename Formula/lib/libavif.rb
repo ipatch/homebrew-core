@@ -18,13 +18,14 @@ class Libavif < Formula
   depends_on "cmake" => :build
   depends_on "nasm" => :build
   depends_on "aom"
-  depends_on "jpeg-turbo"
+  depends_on "jpeg"
   depends_on "libpng"
 
   uses_from_macos "zlib"
 
   def install
     system "cmake", "-S", ".", "-B", "build",
+      "-DCMAKE_PREFIX_PATH=#{Formula["jpeg"].opt_prefix}",
                     "-DCMAKE_INSTALL_RPATH=#{rpath}",
                     "-DAVIF_CODEC_AOM=ON",
                     "-DAVIF_BUILD_APPS=ON",
