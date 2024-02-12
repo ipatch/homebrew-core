@@ -23,10 +23,14 @@ class Libtiff < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9a6e0bb56c39b72a33b0a5629dc3fd49e4f1391513bcf7d04a764523cc0321c8"
   end
 
-  depends_on "jpeg-turbo"
+  depends_on "jpeg"
   depends_on "xz"
   depends_on "zstd"
   uses_from_macos "zlib"
+
+  # NOTE: ipatch, getting configure errors searching for jpeg-turbo
+  # configure: error: IJG JPEG library not found
+  # https://libtiff.gitlab.io/libtiff/build.html
 
   def install
     args = %W[
@@ -35,8 +39,8 @@ class Libtiff < Formula
       --disable-webp
       --enable-zstd
       --enable-lzma
-      --with-jpeg-include-dir=#{Formula["jpeg-turbo"].opt_include}
-      --with-jpeg-lib-dir=#{Formula["jpeg-turbo"].opt_lib}
+      --with-jpeg-include-dir=#{Formula["jpeg"].opt_include}
+      --with-jpeg-lib-dir=#{Formula["jpeg"].opt_lib}
       --without-x
     ]
     system "./configure", *args
