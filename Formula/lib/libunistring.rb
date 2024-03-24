@@ -20,6 +20,7 @@ class Libunistring < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
+                          "--disable-tests",
                           "--prefix=#{prefix}"
     system "make"
     # TODO: ipatch, investigate failing test further
