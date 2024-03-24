@@ -1,21 +1,29 @@
 class Coder < Formula
   desc "Tool for provisioning self-hosted development environments with Terraform"
   homepage "https://coder.com"
-  url "https://github.com/coder/coder/archive/refs/tags/v2.7.2.tar.gz"
-  sha256 "63eabf4cb425db06d9be2367782c1ef9ecb059585a76ccb73ab5f09370a4315e"
+  url "https://github.com/coder/coder/archive/refs/tags/v2.9.1.tar.gz"
+  sha256 "1a6574bc19f0ccb859e1ea7564e81c7b607c806e284604eacb24fa08d73918d5"
   license "AGPL-3.0-only"
 
-  bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4d2494ccf68fabafb8a6eb82642f566e0f079194a4a40e7fe93a56f81da974c3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0fb0d1daaf6327b8f4db0ad513d29fdce9a709afd31067f89f8b0a8d5b1800b8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e0af3bed700a6e0d260a1dbe603a3f3d311c5bd66642e210dea42e4a6be0b06a"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b8da02dc0eeb0f6c933756f50ff0f3d57e56f800f659cd8e259038c0711a1668"
-    sha256 cellar: :any_skip_relocation, ventura:        "993598bcc6a741bd6844218c0a2257c44d4a19950e565d041c15a9b242ddaa80"
-    sha256 cellar: :any_skip_relocation, monterey:       "3696788d68dccd123c6b9235232032136fb87c57acd4f498b536b60b4601150a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8cf192a6ffce8f7f09f0b8e2d435b1077b2b0e6d595ba02d0c65353055f51844"
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
   end
 
-  depends_on "go" => :build
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "99aa19e9400fe7f4e6480af5f54a4fc9ae1231c07315f851c3cb3b6401f6784c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ab584c0a205cfb901795a7e676e7c3357c1496114a019a24871d9d4f2708be52"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "18326e18fc461e9553dec036d6fc7eed2a08a1676fd6a26c8555203a520044de"
+    sha256 cellar: :any_skip_relocation, sonoma:         "58edb8d1f66fdbcc94eeef43d61c9325ae732edfd39364a62788e010d3888e2b"
+    sha256 cellar: :any_skip_relocation, ventura:        "100ab9511379f023522e0cf0d05a69a996f392499c143e51118726e80cd3d220"
+    sha256 cellar: :any_skip_relocation, monterey:       "77ca27c6e4dfb8d8beb6236b4285ed76a2c19a783c953b632e0e5866323f6df2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "70fcdbf6a86d7b077724ad2252ac05d49e35082d15fbf48847eb5b25c6c13211"
+  end
+
+  depends_on "go@1.21" => :build # see https://github.com/coder/coder/issues/11342
 
   def install
     ldflags = %W[
@@ -23,7 +31,7 @@ class Coder < Formula
       -X github.com/coder/coder/v2/buildinfo.tag=#{version}
       -X github.com/coder/coder/v2/buildinfo.agpl=true
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "-tags", "slim", "./cmd/coder"
+    system "go", "build", *std_go_args(ldflags:), "-tags", "slim", "./cmd/coder"
   end
 
   test do

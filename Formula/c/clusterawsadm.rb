@@ -2,8 +2,8 @@ class Clusterawsadm < Formula
   desc "Home for bootstrapping, AMI, EKS, and other helpers in Cluster API Provider AWS"
   homepage "https://cluster-api-aws.sigs.k8s.io/clusterawsadm/clusterawsadm.html"
   url "https://github.com/kubernetes-sigs/cluster-api-provider-aws.git",
-      tag:      "v2.3.1",
-      revision: "ca3cc2d63a5646c06d5dec5368ab7c50fe806ef9"
+      tag:      "v2.4.1",
+      revision: "cbf531711d117b823c587622ba0e64b94d0fd314"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/cluster-api-provider-aws.git", branch: "main"
 
@@ -13,13 +13,13 @@ class Clusterawsadm < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fc4495722691f1cea61da390ac0fbf5cbff0316f5952b5be60752076b5ece110"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "928680dc298f7b7f5960f5a96d06e74374a4fa8c64e40bc5c9309ad32f6da066"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9396452bda0b052a59213371e3c3b9dc251842e9fff99cc2518b24b71e918ecf"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a9cb33312181d17fd4d0930b11acf64519bfc29361634ff5c59514aaa3ac0c95"
-    sha256 cellar: :any_skip_relocation, ventura:        "465867caffcdc7e06cc0330ab0f194c5d5088d7519ec53a009da3186add6e852"
-    sha256 cellar: :any_skip_relocation, monterey:       "7c75b7bf3f4f812b34b1a44fb2808d1bc26a43eb382c3980e2163c17d2489972"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bf5c4990ddffc63b056589ee6c6f2b32db4d29efd80260edf981c94debb1a440"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f866c464a184c50ef3b7afcd85a5902eed8fd6b1c158e7d98d8b9ec7aafbbe7c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a4cec679ea112579ef3ea52fbd57a8c1d9d93b4da2c5bd374a3aab318cf8f938"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "fb96e9c03efabd8b7df7321430fb377320cab56bf3a6fb0114f7abbfc7653bf0"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ec043edb56d0e0440d40fc8796e213e8c9ec79e73e9b1eea41e15f520bba4a61"
+    sha256 cellar: :any_skip_relocation, ventura:        "09bb1ff843dfb7cd3613b4fd9261d9475c9f88466547be91b5abbe2fefc3f4a9"
+    sha256 cellar: :any_skip_relocation, monterey:       "cdee90e141035a93fb85ca107429403853783864a63514d7d7580093bc3814a8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c6a5cf6546ebb853fedf10f1d38e949925592f2eb0e2b94976b3359cdd92a42"
   end
 
   depends_on "go" => :build

@@ -10,18 +10,22 @@ class NameThatHash < Formula
   head "https://github.com/HashPals/Name-That-Hash.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "766c5c79c52c0f7245b5f44cffc17775e5bb6d18bcfbddeeb0ba1722f63c2e12"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "eb37bf57449d7fece239db2426f9ab32c47ffe9fb569ae3c997dec35bb5745ef"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "af6746b01f9ff889c5a18c6ae4f0171520fbbc831c970fbbe977fc98c085fa4f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a47200d84de240fb4ab86fb31aa3eba4e3dffef0acf85c8e097590a1f3c6eeb5"
-    sha256 cellar: :any_skip_relocation, ventura:        "a96f06925076b05c8b4050be22e8df0617f78b2e039122abd5482322293da5c4"
-    sha256 cellar: :any_skip_relocation, monterey:       "1aea54b9face4783b7a1b031e734c352de7add4310d42c3a5b594d51b182d6b3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1109a0e0fdb05230d9e6084dd2761590b5382f1786722c1c4afd75d32a23db1d"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "cec5b9102cf914f69608410f9a0d008bd0dbe2de41118f6c25583ad817bf0843"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ba3919fafff1b9e66edf899e72961ebc017d62e11aa6fd47fd1e783737e684cd"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "60da52181882609929ef7a0b87a24fabfd50c7ff824bc670c1795eab69a0a7b5"
+    sha256 cellar: :any_skip_relocation, sonoma:         "23b5a2cd17378d9916e9af5f20877c08abae157224233b557159ca53dd0cb1df"
+    sha256 cellar: :any_skip_relocation, ventura:        "2ec1c9f43f7013fd62492b69dbf2e9dd0ecad1b8dc6ad404c7d400f8a1ab6aec"
+    sha256 cellar: :any_skip_relocation, monterey:       "09621962e8d7c29333ec349e6ffcc06b9cb8b73a6a90a1addbb9009b3517bdd4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5241f1aa403fcdda222e52093a27fad168554400a47f2e1449e7466c77543bee"
   end
 
-  depends_on "pygments"
-  depends_on "python-click"
   depends_on "python@3.12"
+
+  resource "click" do
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
+  end
 
   resource "markdown-it-py" do
     url "https://files.pythonhosted.org/packages/38/71/3b932df36c1a044d397a1f92d1cf91ee0a503d91e470cbd670aa66b07ed0/markdown-it-py-3.0.0.tar.gz"
@@ -33,21 +37,18 @@ class NameThatHash < Formula
     sha256 "bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"
   end
 
-  resource "rich" do
-    url "https://files.pythonhosted.org/packages/b1/0e/e5aa3ab6857a16dadac7a970b2e1af21ddf23f03c99248db2c01082090a3/rich-13.6.0.tar.gz"
-    sha256 "5c14d22737e6d5084ef4771b62d5d4363165b403455a30a1c8ca39dc7b644bef"
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
+    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
   end
 
-  def python3
-    "python3.12"
+  resource "rich" do
+    url "https://files.pythonhosted.org/packages/a7/ec/4a7d80728bd429f7c0d4d51245287158a1516315cadbb146012439403a9d/rich-13.7.0.tar.gz"
+    sha256 "5cb5123b5cf9ee70584244246816e9114227e0b98ad9176eede6ad54bf5403fa"
   end
 
   def install
     virtualenv_install_with_resources
-
-    site_packages = Language::Python.site_packages(python3)
-    pth_contents = "import site; site.addsitedir('#{libexec/site_packages}')\n"
-    (prefix/site_packages/"homebrew-name_that_hash.pth").write pth_contents
   end
 
   test do
@@ -55,7 +56,5 @@ class NameThatHash < Formula
     output = shell_output("#{bin}/nth --text #{hash}")
     assert_match "#{hash}\n", output
     assert_match "MD5, HC: 0 JtR: raw-md5 Summary: Used for Linux Shadow files.\n", output
-
-    system python3, "-c", "from name_that_hash import runner"
   end
 end

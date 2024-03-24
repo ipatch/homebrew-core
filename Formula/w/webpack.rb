@@ -4,19 +4,19 @@ require "json"
 class Webpack < Formula
   desc "Bundler for JavaScript and friends"
   homepage "https://webpack.js.org/"
-  url "https://registry.npmjs.org/webpack/-/webpack-5.90.1.tgz"
-  sha256 "49213425e073f1807dec3953ac8bf8fbf58469101f636fedc0e622430fc240dd"
+  url "https://registry.npmjs.org/webpack/-/webpack-5.91.0.tgz"
+  sha256 "473b007db06efe48024180a50c600384596abfc5f4e2b749a77f33d753bd2327"
   license "MIT"
   head "https://github.com/webpack/webpack.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "98c5723756b94ad4e76327d1324aed65655018573772d54dc3dd4113d440c71e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "98c5723756b94ad4e76327d1324aed65655018573772d54dc3dd4113d440c71e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "98c5723756b94ad4e76327d1324aed65655018573772d54dc3dd4113d440c71e"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e7d650bf1a448bfe943cfd2d4bd46099d14d6c562621f41ec5dc45b8c3c687d4"
-    sha256 cellar: :any_skip_relocation, ventura:        "e7d650bf1a448bfe943cfd2d4bd46099d14d6c562621f41ec5dc45b8c3c687d4"
-    sha256 cellar: :any_skip_relocation, monterey:       "e7d650bf1a448bfe943cfd2d4bd46099d14d6c562621f41ec5dc45b8c3c687d4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "98c5723756b94ad4e76327d1324aed65655018573772d54dc3dd4113d440c71e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d589ec20e299e6e6dbf6729d59970e28b659bce54e93693489261dedc63cc14f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d589ec20e299e6e6dbf6729d59970e28b659bce54e93693489261dedc63cc14f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d589ec20e299e6e6dbf6729d59970e28b659bce54e93693489261dedc63cc14f"
+    sha256 cellar: :any_skip_relocation, sonoma:         "462ddf5750b1203d12521d61e88c4b657c5af56da382d3de012fb7aedc632f00"
+    sha256 cellar: :any_skip_relocation, ventura:        "462ddf5750b1203d12521d61e88c4b657c5af56da382d3de012fb7aedc632f00"
+    sha256 cellar: :any_skip_relocation, monterey:       "462ddf5750b1203d12521d61e88c4b657c5af56da382d3de012fb7aedc632f00"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d589ec20e299e6e6dbf6729d59970e28b659bce54e93693489261dedc63cc14f"
   end
 
   depends_on "node"

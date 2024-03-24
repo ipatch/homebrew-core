@@ -3,37 +3,54 @@ class CheckJsonschema < Formula
 
   desc "JSON Schema CLI"
   homepage "https://github.com/python-jsonschema/check-jsonschema"
-  url "https://files.pythonhosted.org/packages/f9/a8/469129f40d8c8010183dab1e187d516eeaa428d58ca93128d7c250f33b90/check-jsonschema-0.27.4.tar.gz"
-  sha256 "253043be1ea51cd4918723caf5358d76eec5140967fb2d1834396fe6ddb5f067"
+  url "https://files.pythonhosted.org/packages/ce/82/b0f048a5f96d67362ea313759daf4baf92e4e9ee1c416947efa6d3feaf0e/check-jsonschema-0.28.0.tar.gz"
+  sha256 "defd6c5e944f07416170df33f218ab048c87129163601eec7b191fa076e91ca5"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/python-jsonschema/check-jsonschema.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "83415e70395f090bd2776ddc4d89c756b5b3d3ed84a8f3ffcc3ae1176339563f"
-    sha256 cellar: :any,                 arm64_ventura:  "15dac6913202e03fd3729c749ac22f30a69a2248db2d74095b69f18b031b71ac"
-    sha256 cellar: :any,                 arm64_monterey: "5823caad9b5488434ba802727ea12f41903e01ac008fef53d766e392c6d679d2"
-    sha256 cellar: :any,                 sonoma:         "573ce0e022e86205b5f85226fc89e9152b5e222c460da25759f2def8114f662a"
-    sha256 cellar: :any,                 ventura:        "90a1b2e556ad2a620863584a13afb4db8ddea3f783fabd936f240a5e7f0544d3"
-    sha256 cellar: :any,                 monterey:       "47e56aedb2ffa3b85a067fe1a546e7a4c0a50add9ddf83369e9c165c3685c580"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "54b2b73ec42c15017a3d85d21843178d4d11f52ce2e6a4021005ec5513c8b8ab"
+    sha256 cellar: :any,                 arm64_sonoma:   "aa03ad2f4d927da3bd58068b2fe0e311517b37e31e3657349f64cc50f5c4e4b5"
+    sha256 cellar: :any,                 arm64_ventura:  "2c5bed345a85bd5a42e25aea718af8f6f6698ff93a3aa55e1f0287b72beb4c9c"
+    sha256 cellar: :any,                 arm64_monterey: "b50cb68e46475e03d6dc37c0879e6d471b8b5a714ec2cd9c199082cfad9e5558"
+    sha256 cellar: :any,                 sonoma:         "9fe9056086836f643680ba9cd6bc3e0031eee74dbf7c2af740dba8dd894ed494"
+    sha256 cellar: :any,                 ventura:        "2c0d47b5ff0059f7ca8ca82ccbdbbcd1f75af1249c0afa4ffd3ee1a8768af989"
+    sha256 cellar: :any,                 monterey:       "6e24746fcc8d0d39bd3488416f08c1cdde6dd0de6697dc2733dc61b0ba7e6644"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c84210f110ca290cd1a6200cbdbcbbdd5fbb73aea13d9d0fa86a3ef6a6766ef9"
   end
 
   depends_on "rust" => :build
-  depends_on "python-attrs"
-  depends_on "python-click"
-  depends_on "python-dateutil"
-  depends_on "python-requests"
+  depends_on "certifi"
   depends_on "python@3.12"
-  depends_on "six"
 
   resource "arrow" do
     url "https://files.pythonhosted.org/packages/2e/00/0f6e8fcdb23ea632c866620cc872729ff43ed91d284c866b515c6342b173/arrow-1.3.0.tar.gz"
     sha256 "d4540617648cb5f895730f1ad8c82a65f2dad0166f57b75f3ca54759c4d67a85"
   end
 
+  resource "attrs" do
+    url "https://files.pythonhosted.org/packages/e3/fc/f800d51204003fa8ae392c4e8278f256206e7a919b708eef054f5f4b650d/attrs-23.2.0.tar.gz"
+    sha256 "935dc3b529c262f6cf76e50877d35a4bd3c1de194fd41f47a2b7ae8f19971f30"
+  end
+
+  resource "charset-normalizer" do
+    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
+    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
+  end
+
+  resource "click" do
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
+  end
+
   resource "fqdn" do
     url "https://files.pythonhosted.org/packages/30/3e/a80a8c077fd798951169626cde3e239adeba7dab75deb3555716415bd9b0/fqdn-1.5.1.tar.gz"
     sha256 "105ed3677e767fb5ca086a0c1f4bb66ebc3c100be518f0e0d755d9eae164d89f"
+  end
+
+  resource "idna" do
+    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
+    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
   end
 
   resource "isoduration" do
@@ -56,6 +73,11 @@ class CheckJsonschema < Formula
     sha256 "48a76787b3e70f5ed53f1160d2b81f586e4ca6d1548c5de7085d1682674764cc"
   end
 
+  resource "python-dateutil" do
+    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
+    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+  end
+
   resource "referencing" do
     url "https://files.pythonhosted.org/packages/21/c5/b99dd501aa72b30a5a87d488d7aa76ec05bdf0e2c7439bc82deb9448dd9a/referencing-0.33.0.tar.gz"
     sha256 "c775fedf74bc0f9189c2a3be1c12fd03e8c23f4d371dce795df44e06c5b412f7"
@@ -64,6 +86,11 @@ class CheckJsonschema < Formula
   resource "regress" do
     url "https://files.pythonhosted.org/packages/11/3a/e9f6af3146dec2ded5149e57797a868e6d4aea1b04d4c9e46e1e0f098514/regress-0.4.5.tar.gz"
     sha256 "b42ac506390aea86f3698918889dd6439ca2dca902f3afdc6d70929d144666ef"
+  end
+
+  resource "requests" do
+    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
+    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
   end
 
   resource "rfc3339-validator" do
@@ -77,8 +104,8 @@ class CheckJsonschema < Formula
   end
 
   resource "rpds-py" do
-    url "https://files.pythonhosted.org/packages/b7/0a/e3bdcc977e6db3bf32a3f42172f583adfa7c3604091a03d512333e0161fe/rpds_py-0.17.1.tar.gz"
-    sha256 "0210b2668f24c078307260bf88bdac9d6f1093635df5123789bfee4d8d7fc8e7"
+    url "https://files.pythonhosted.org/packages/55/ba/ce7b9f0fc5323f20ffdf85f682e51bee8dc03e9b54503939ebb63d1d0d5e/rpds_py-0.18.0.tar.gz"
+    sha256 "42821446ee7a76f5d9f71f9e33a4fb2ffd724bb3e7f93386150b61a43115788d"
   end
 
   resource "ruamel-yaml" do
@@ -91,6 +118,11 @@ class CheckJsonschema < Formula
     sha256 "beb2e0404003de9a4cab9753a8805a8fe9320ee6673136ed7f04255fe60bb512"
   end
 
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+  end
+
   resource "types-python-dateutil" do
     url "https://files.pythonhosted.org/packages/9b/47/2a9e51ae8cf48cea0089ff6d9d13fff60701f8c9bf72adaee0c4e5dc88f9/types-python-dateutil-2.8.19.20240106.tar.gz"
     sha256 "1f8db221c3b98e6ca02ea83a58371b22c374f42ae5bbdf186db9c9a76581459f"
@@ -101,12 +133,21 @@ class CheckJsonschema < Formula
     sha256 "0e00f8eb65e18c7de20d595a14336e9f337ead580c70934141624b6d1ffdacc7"
   end
 
+  resource "urllib3" do
+    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
+    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+  end
+
   resource "webcolors" do
     url "https://files.pythonhosted.org/packages/a1/fb/f95560c6a5d4469d9c49e24cf1b5d4d21ffab5608251c6020a965fb7791c/webcolors-1.13.tar.gz"
     sha256 "c225b674c83fa923be93d235330ce0300373d02885cef23238813b0d5668304a"
   end
 
   def install
+    # Work around ruamel.yaml.clib not building on Xcode 15.3, remove after a new release
+    # has resolved: https://sourceforge.net/p/ruamel-yaml-clib/tickets/32/
+    ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
+
     virtualenv_install_with_resources
 
     generate_completions_from_executable(

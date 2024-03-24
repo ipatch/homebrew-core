@@ -1,23 +1,24 @@
 class NicotinePlus < Formula
+  include Language::Python::Virtualenv
+
   desc "Graphical client for the Soulseek peer-to-peer network"
   homepage "https://nicotine-plus.org"
-  url "https://files.pythonhosted.org/packages/70/d5/15d8c60e3d27d3482fb8cba3ae0c49e57efe00f28e51b8aaea09f979bc48/nicotine-plus-3.2.9.tar.gz"
-  sha256 "41a86dc68b175d1dcac2ec2d79553cff4e5fbcca7f9f384c51cbaa393081b0c0"
+  url "https://files.pythonhosted.org/packages/65/c7/890d2e484b3149e268fa3ebc3024fe4947b9bc91123431c70064c1ed54fd/nicotine-plus-3.3.2.tar.gz"
+  sha256 "aa76ac841c3959c9c58286a0114f67532df0abe708e7a344ed8a9b3fc7ea351d"
   license "GPL-3.0-or-later"
   head "https://github.com/nicotine-plus/nicotine-plus.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0278cdcb03b270a7554386af39013a5261c4074c4e707027a0fcd4451fa1fccd"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2bc43fb01c74f583bcbf8c3f2a95a8f288822d18280c3044fafd8c11e32ed489"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d65e6d892d41983202678c4a3b4727c953bff0404a0fe39ced8cc4a67630632a"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2b3afc6cc64ba47d861e1a6ca816d7772b7ad58488701a9c23a82b80a6829f6c"
-    sha256 cellar: :any_skip_relocation, ventura:        "4c5dcf9e3a43915859a934a6b595ded6635b29d96ead15d62f913f8b0f96b6f0"
-    sha256 cellar: :any_skip_relocation, monterey:       "9bab9615e731475b5d0354206947096cd509895d6ff2a87a3dbd6eb367acb250"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a35625dd14980819b3e368b908fbbd1fef28bddc60d7b844666e01e8e7ed98b1"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "342a99092449af8d0a7fd7463372da38a63dc0f946686225d7dc65306bdf8353"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "157cd89f2e36da8a677a4084a94a1a873917645e45da2735f38489b32fc3b02f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7ac2c9bc873c0fe3499909f1f9cca8a8e29f74bcba23f0fa0dd5ae02255b9943"
+    sha256 cellar: :any_skip_relocation, sonoma:         "4f2f30fc855beded07489d8f5468a1ccddf4b3deeab96ec50ff48ceb114edc56"
+    sha256 cellar: :any_skip_relocation, ventura:        "c0944973adf40bc817dabf0023720c14867ea8ed706fabb49bb0e9afd70a981c"
+    sha256 cellar: :any_skip_relocation, monterey:       "7f403a8f5fa4bdaa2865af1f56db80f8d5c6e527d8e0f245190a398cb44dcec2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "58cf3a47be14f16b677f34e8c38dae5bf3c82fc07c433e63147ae194e666dd42"
   end
 
-  depends_on "python-setuptools" => :build
   depends_on "adwaita-icon-theme"
   depends_on "gtk+3"
   depends_on "py3cairo"
@@ -29,20 +30,12 @@ class NicotinePlus < Formula
     depends_on "gettext" => :build # for `msgfmt`
   end
 
-  def python3
-    "python3.12"
-  end
-
   def install
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/nicotine -v")
-    pid = fork do
-      exec bin/"nicotine", "-s"
-    end
-    sleep 3
-    Process.kill("TERM", pid)
+    # nicotine is a GUI app
+    assert_match version.to_s, shell_output("#{bin}/nicotine --version")
   end
 end

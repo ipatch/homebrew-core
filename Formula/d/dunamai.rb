@@ -1,33 +1,27 @@
 class Dunamai < Formula
+  include Language::Python::Virtualenv
+
   desc "Dynamic version generation"
   homepage "https://github.com/mtkennerly/dunamai"
-  url "https://files.pythonhosted.org/packages/1d/03/338fba56a6c76ea6d99ca0b7af3098292c2dd6597ed656daa6ae26a07a77/dunamai-1.19.0.tar.gz"
-  sha256 "6ad99ae34f7cd290550a2ef1305d2e0292e6e6b5b1b830dfc07ceb7fd35fec09"
+  url "https://files.pythonhosted.org/packages/87/10/a31f42c4c97f6c2af69d5084346f63cee694130bd18be2c664d23cb2ebd8/dunamai-1.19.2.tar.gz"
+  sha256 "3be4049890763e19b8df1d52960dbea60b3e263eb0c96144a677ae0633734d2e"
   license "MIT"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3bdf36da31343b2b1fbd16a11d8ee822a9769207163927b066478ad535ec6bf8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "623ef3c20fbd5c99fd3d40f235cb79972b366952bd1e42d72bb86b7b2c75b4e1"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "eeaf6e4233ade353870c8a8b9cba0c41f4182d5672cbf558914b822236f82aa8"
-    sha256 cellar: :any_skip_relocation, sonoma:         "05ca3b47594995493ae9060913d67682f47892fcf23b2518bc36b9acfea19987"
-    sha256 cellar: :any_skip_relocation, ventura:        "cad35d5fff9c893b62877166b98a67d65aea0e2924498458dcf10c8986c8758b"
-    sha256 cellar: :any_skip_relocation, monterey:       "8a78ef790cac6b99445b13689b64e52370232973ec496cd7cf757c692398dbc1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "85052e3983d05901270259344adc47719cc299c97ee844c486378eede8c0ae93"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ecc6201362733b38c8b205d233c44e32d476e784ed65598f1ee8167f152462d5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ecc6201362733b38c8b205d233c44e32d476e784ed65598f1ee8167f152462d5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ecc6201362733b38c8b205d233c44e32d476e784ed65598f1ee8167f152462d5"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ecc6201362733b38c8b205d233c44e32d476e784ed65598f1ee8167f152462d5"
+    sha256 cellar: :any_skip_relocation, ventura:        "ecc6201362733b38c8b205d233c44e32d476e784ed65598f1ee8167f152462d5"
+    sha256 cellar: :any_skip_relocation, monterey:       "ecc6201362733b38c8b205d233c44e32d476e784ed65598f1ee8167f152462d5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "da09863b7936aeeb1179f2cac85c3496349a1729b65779cbc952a07f529c146a"
   end
 
-  depends_on "poetry" => :build
   depends_on "python@3.12"
 
-  def python3
-    "python3.12"
-  end
-
   def install
-    site_packages = Language::Python.site_packages(python3)
-    ENV.prepend_path "PYTHONPATH", Formula["poetry"].opt_libexec/site_packages
-
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
   end
 
   test do

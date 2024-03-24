@@ -1,18 +1,18 @@
 class Libspelling < Formula
   desc "Spellcheck library for GTK 4"
   homepage "https://gitlab.gnome.org/chergert/libspelling"
-  url "https://gitlab.gnome.org/chergert/libspelling/-/archive/0.2.0/libspelling-0.2.0.tar.bz2"
-  sha256 "5ec7852d8e27f0dad3b1b6fcb49b1fe5d33aa74cc12d6366e2f84efec05e925c"
+  url "https://gitlab.gnome.org/chergert/libspelling/-/archive/0.2.1/libspelling-0.2.1.tar.bz2"
+  sha256 "5393a9b93fda445598348a47c42d1ad13586c0bcf35dfd257afd613fd31812c1"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "7b1e4294e1d6226a6b57be78e11817c6dfec208034853b30c70f1f29c9655ab3"
-    sha256 cellar: :any, arm64_ventura:  "4caa410f3394eb0f4b9da158b2a7e6b9c782b011080a9267f93b208b49330857"
-    sha256 cellar: :any, arm64_monterey: "36effae113060fbe6fc751774e8ce8be43b8224ae05f3aa661c07f5249c39313"
-    sha256 cellar: :any, sonoma:         "137fed7418a3656ae2c0bfef6a81e94979a3dcc70cfb46ce0613d3185c2f1f0c"
-    sha256 cellar: :any, ventura:        "38c34951b53522429b298bd2c158336949962b4bae8e58c425d648a2f5931db3"
-    sha256 cellar: :any, monterey:       "4e895b5904eb9a84b1577ed393046f176af3dce085875c6a5de62c61e24ce9db"
-    sha256               x86_64_linux:   "a5d27108f86227be1fbe29b9a6fcc4cdfde4c0b2c4ee4dc3dfcc21b3bf5832f4"
+    sha256 cellar: :any, arm64_sonoma:   "0b67d9b2b9d9b93e5a71cd91c413444c656e8a30f6477f18f4386bdf30fb9187"
+    sha256 cellar: :any, arm64_ventura:  "b66212b63da3b6f4b08f43c0aa91867c6519264bfef080a64213397910f457b4"
+    sha256 cellar: :any, arm64_monterey: "fa750d80d38e7dcf30ec59ffaf63e0fbe2d13f0586c28732072e5b1a6836a663"
+    sha256 cellar: :any, sonoma:         "53c748d558f513ad1e98da4c6f956fb39421e51c6d35503b4ab2b6b5bccace15"
+    sha256 cellar: :any, ventura:        "82747b3e4fd94dd53bc8a7bde8487bee99bd86252e58a014b10878389fcfa65e"
+    sha256 cellar: :any, monterey:       "c5cff6a0fc0b2ddc1a75e04f4ed0cc3197f571b80170522383b6fdf3d60577a6"
+    sha256               x86_64_linux:   "59f65192b18ebed20951c1aae5af463dec1206eef1bc4779114f5bf06c01d785"
   end
 
   depends_on "gobject-introspection" => :build

@@ -1,23 +1,23 @@
 class Gdb < Formula
   desc "GNU debugger"
   homepage "https://www.gnu.org/software/gdb/"
-  url "https://ftp.gnu.org/gnu/gdb/gdb-14.1.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gdb/gdb-14.1.tar.xz"
-  sha256 "d66df51276143451fcbff464cc8723d68f1e9df45a6a2d5635a54e71643edb80"
+  url "https://ftp.gnu.org/gnu/gdb/gdb-14.2.tar.xz"
+  mirror "https://ftpmirror.gnu.org/gdb/gdb-14.2.tar.xz"
+  sha256 "2d4dd8061d8ded12b6c63f55e45344881e8226105f4d2a9b234040efa5ce7772"
   license "GPL-3.0-or-later"
   head "https://sourceware.org/git/binutils-gdb.git", branch: "master"
 
   bottle do
-    sha256 sonoma:       "57922b323fbb136059a16827719005440be39647b9e9f548e8ec6ccfc25620b1"
-    sha256 ventura:      "a8dbbcc02d37be4a6b95d1676a14e1ba51190e4a0d0467d2b0c7ff58dd58d4f4"
-    sha256 monterey:     "6c954b0c7825b7613432476eb3877a8dad41825a3aa85851da253f70843a03f5"
-    sha256 x86_64_linux: "df38b5c447d9f463f6faf88a0905f86a8ec0e9efea8068100497f372d4326f1e"
+    sha256 sonoma:       "ee07ec8292ea65493971dc8ab7d65380efdade32c86cd487f55275ba6b182b2c"
+    sha256 ventura:      "c2a54fa9c09eddf858d2f7f1c5e7e1ad09473d8fb9daf0f695d828395cb69147"
+    sha256 monterey:     "cafd2299a0070a912dd89a9cbccad0696a0be70b8d8784200d29d74da2d356b8"
+    sha256 x86_64_linux: "e9bd1f639ec4732d1ced581f9eee17194da161f200b0b2c055f64476db60de64"
   end
 
   depends_on arch: :x86_64 # gdb is not supported on macOS ARM
   depends_on "gmp"
   depends_on "mpfr"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
   depends_on "xz" # required for lzma support
 
   uses_from_macos "expat"
@@ -46,16 +46,13 @@ class Gdb < Formula
   def install
     args = %W[
       --enable-targets=all
-      --prefix=#{prefix}
-      --disable-debug
-      --disable-dependency-tracking
       --with-lzma
-      --with-python=#{Formula["python@3.11"].opt_bin}/python3.11
+      --with-python=#{Formula["python@3.12"].opt_bin}/python3.12
       --disable-binutils
     ]
 
     mkdir "build" do
-      system "../configure", *args
+      system "../configure", *args, *std_configure_args
       system "make"
 
       # Don't install bfd or opcodes, as they are provided by binutils

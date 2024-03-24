@@ -1,33 +1,31 @@
-# Upstream project has requested we use a mirror as the main URL
-# https://github.com/Homebrew/legacy-homebrew/pull/21419
 class Xz < Formula
   desc "General-purpose data compression with high compression ratio"
-  homepage "https://tukaani.org/xz/"
+  homepage "https://xz.tukaani.org/xz-utils/"
   # The archive.org mirror below needs to be manually created at `archive.org`.
-  url "https://downloads.sourceforge.net/project/lzmautils/xz-5.4.5.tar.gz"
-  mirror "https://tukaani.org/xz/xz-5.4.5.tar.gz"
-  mirror "https://archive.org/download/xz-5.4.5/xz-5.4.5.tar.gz"
-  mirror "http://archive.org/download/xz-5.4.5/xz-5.4.5.tar.gz"
-  sha256 "135c90b934aee8fbc0d467de87a05cb70d627da36abe518c357a873709e5b7d6"
+  url "https://github.com/tukaani-project/xz/releases/download/v5.6.1/xz-5.6.1.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/lzmautils/xz-5.6.1.tar.gz"
+  mirror "https://archive.org/download/xz-5.6.1.tar.gz/xz-5.6.1.tar.gz"
+  mirror "http://archive.org/download/xz-5.6.1.tar.gz/xz-5.6.1.tar.gz"
+  sha256 "2398f4a8e53345325f44bdd9f0cc7401bd9025d736c6d43b372f4dea77bf75b8"
   license all_of: [
-    :public_domain,
+    "0BSD",
     "LGPL-2.1-or-later",
     "GPL-2.0-or-later",
     "GPL-3.0-or-later",
   ]
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "ea718d075502d4457709da89e8e424aa22cfa19d2e16088c43feb87f7c2c477a"
-    sha256 cellar: :any, arm64_ventura:  "05d853bc61d9bf9ed3ca2e5e54bc240f1924fb9085618387f7f6ce90b25b1d95"
-    sha256 cellar: :any, arm64_monterey: "9fc86674518bc901632194b94e0b23aa82f4dc73129da950deb1f385ac567da5"
-    sha256 cellar: :any, sonoma:         "bdd5146737d8a84b8a855d7b1bdc81cd2d20692c5d77810fa7472cd9bb41fb47"
-    sha256 cellar: :any, ventura:        "cb65d2fa8ede8c24d7556003079fb13c0324d68efc7421dda74d57cb5d34c483"
-    sha256 cellar: :any, monterey:       "5deb5724177bbe7c4824e0281fd1713ae0eb32abaede2ee29b35be4afc1a6c47"
-    sha256               x86_64_linux:   "50675435a60d1190dbea52c5dbd65e70c7bd430e4de7472dc57901222ca11fb7"
+    sha256 cellar: :any,                 arm64_sonoma:   "b5583c24107269a6223a3fae17d83b596d6ce1d84b3497be59670f143d73eaf7"
+    sha256 cellar: :any,                 arm64_ventura:  "ba1734295f99d0090426b520e67f967e40b8b26ee5b258220d56014906c69606"
+    sha256 cellar: :any,                 arm64_monterey: "0ae9c26448ce55dbc7604640826990ea630e74dfd084b430fa0c13805a58ae20"
+    sha256 cellar: :any,                 sonoma:         "81c5be0ee64277bcee76ae2be974d82de050e815a266885f363b998a9c18117b"
+    sha256 cellar: :any,                 ventura:        "2d778ef01a68e1ace220086a54df3a25f54673a7100603e710d64ed02b7f8353"
+    sha256 cellar: :any,                 monterey:       "4e677b6b71dae40a67ad99fe3d174cff6aec27df234a22265411eb94df0f8fe9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ca86f58b1cecdf378a756bb1e1bad590760b2442f848c1d10a1416d5c506e89f"
   end
 
   def install
-    system "./configure", *std_configure_args, "--disable-silent-rules"
+    system "./configure", *std_configure_args, "--disable-silent-rules", "--disable-nls"
     system "make", "check"
     system "make", "install"
   end

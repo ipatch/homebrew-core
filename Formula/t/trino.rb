@@ -3,8 +3,8 @@ class Trino < Formula
 
   desc "Distributed SQL query engine for big data"
   homepage "https://trino.io"
-  url "https://search.maven.org/remotecontent?filepath=io/trino/trino-server/438/trino-server-438.tar.gz", using: :nounzip
-  sha256 "7dcc093c65c2f4bcbc67ca7caee5fc6e69927dcee6426dab9533ac6d6f3883f1"
+  url "https://search.maven.org/remotecontent?filepath=io/trino/trino-server/443/trino-server-443.tar.gz", using: :nounzip
+  sha256 "e3638be78e00240ed9f4895525678f60c526dd04c18cf02490515aa829612d6a"
   license "Apache-2.0"
 
   livecheck do
@@ -13,7 +13,7 @@ class Trino < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "be9b39ca5c451f9cb3801c91b624e75254fd196240078d689a5d48603b4284a8"
+    sha256 cellar: :any_skip_relocation, all: "56caeb101cc13f195931b53ca2b9343f87fa453a9bb4a12b7dc313c9fd32063b"
   end
 
   depends_on "gnu-tar" => :build
@@ -21,16 +21,19 @@ class Trino < Formula
   depends_on "python@3.12"
 
   resource "trino-src" do
-    url "https://github.com/trinodb/trino/archive/refs/tags/438.tar.gz", using: :nounzip
-    sha256 "eb8d3b640a4b074cc4b682881ae5edf3caa89c8ba6d6e7da0e752e694a1a5cb7"
+    url "https://github.com/trinodb/trino/archive/refs/tags/443.tar.gz", using: :nounzip
+    sha256 "ad62af5db481e4f8c66d7fbb24edc86496cb367170fd4c3903020426c7b3008b"
   end
 
   resource "trino-cli" do
-    url "https://search.maven.org/remotecontent?filepath=io/trino/trino-cli/438/trino-cli-438-executable.jar"
-    sha256 "8a5479aa86c04990411bb5f9a36e80695805d2e290d58ef2b6a14db63355614e"
+    url "https://search.maven.org/remotecontent?filepath=io/trino/trino-cli/443/trino-cli-443-executable.jar"
+    sha256 "41272c5bfb88d077aff1a6951baedd0239ad389d46b07a0a51637c0ce2f1f9f6"
   end
 
   def install
+    odie "trino-src resource needs to be updated" if version != resource("trino-src").version
+    odie "trino-cli resource needs to be updated" if version != resource("trino-cli").version
+
     # Manually extract tarball to avoid losing hardlinks which increases bottle
     # size from MBs to GBs. Remove once Homebrew is able to preserve hardlinks.
     # Ref: https://github.com/Homebrew/brew/pull/13154

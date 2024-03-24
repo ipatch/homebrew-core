@@ -1,30 +1,24 @@
 class Znc < Formula
   desc "Advanced IRC bouncer"
   homepage "https://wiki.znc.in/ZNC"
-  url "https://znc.in/releases/archive/znc-1.8.2.tar.gz"
-  sha256 "ff238aae3f2ae0e44e683c4aee17dc8e4fdd261ca9379d83b48a7d422488de0d"
+  url "https://znc.in/releases/archive/znc-1.9.0.tar.gz"
+  sha256 "8b99c9dbb21c1309705073460be9bfacb6f7b0e83a15fe5d4b7140201b39d2a1"
   license "Apache-2.0"
-  revision 9
+  revision 2
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:   "11a519194072ba21ad36541e8e559f514e9a185cdc0c270b327effa16512e45f"
-    sha256 arm64_ventura:  "715cf941fcfc7e6996e0cb9fe82ff0a95afb4a6e29e73cb863a15b1cbc9a081a"
-    sha256 arm64_monterey: "55953112dd96fdf3be0928d482f0f54192a20b47e6277cec4aa8d4b29bdca792"
-    sha256 sonoma:         "c6828c6787e7acce32fc13363d2102d2fc3813cd4228456db4563720d7916311"
-    sha256 ventura:        "6b48dd78c1b5e606ce0e40380806dc57eb361052d8a8b4b3767033b547df9f07"
-    sha256 monterey:       "b4c9210d6ad3fbecb1671ac6f449970b926bf8b23ce47c7dbd8acbc9ffac0256"
-    sha256 x86_64_linux:   "a98c0ee38419f421ac3380517735a45263a21dee7ebb2bffa87d0f182ce2b632"
+    sha256 arm64_sonoma:   "ece54a18459b4d498a699278daef03cae8f37d008645313afe0116e9e5a5f263"
+    sha256 arm64_ventura:  "6caf5ebc8490cb565f951e1eb14f24da2dc3eddd0e510133db6325b788e8656c"
+    sha256 arm64_monterey: "6120a847b16ac4bca100f332c3a4ad9c64b000de89d757979533ed04a97b955f"
+    sha256 sonoma:         "3af5963b24f8444d3ab144bb9c57c31950c6e1d8c22dc4a4a25599f59a937f51"
+    sha256 ventura:        "e98891934fcbeb85ac8d80d9b44df2fe0a6de07a4a9aa1d9d8a0f537d76fd7c5"
+    sha256 monterey:       "0b4ebe72752d4c810c3a2a6e335cab10ac3aca8676785344100baf6d8570bd61"
+    sha256 x86_64_linux:   "3541c695090d2e083f89ca537df3925d7dd8884e656425f3b533bb65f724bc77"
   end
 
-  head do
-    url "https://github.com/znc/znc.git", branch: "master"
-
-    depends_on "cmake" => :build
-    depends_on "swig" => :build
-  end
-
+  depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "boost"
   depends_on "icu4c"
   depends_on "openssl@3"
   depends_on "python@3.12"
@@ -35,35 +29,18 @@ class Znc < Formula
     python3 = "python3.12"
     xy = Language::Python.major_minor_version python3
 
-    ENV.cxx11
-    # These need to be set in CXXFLAGS, because ZNC will embed them in its
-    # znc-buildmod script; ZNC's configure script won't add the appropriate
-    # flags itself if they're set in superenv and not in the environment.
-    ENV.append "CXXFLAGS", "-std=c++11"
-    ENV.append "CXXFLAGS", "-stdlib=libc++" if ENV.compiler == :clang
+    # Fixes: CMake Error: Problem with archive_write_header(): Can't create 'swigpyrun.h'
+    ENV.deparallelize
 
-    if OS.linux?
-      ENV.append "CXXFLAGS", "-I#{Formula["zlib"].opt_include}"
-      ENV.append "LIBS", "-L#{Formula["zlib"].opt_lib}"
-    end
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DWANT_PYTHON=ON",
+                    "-DWANT_PYTHON_VERSION=python-#{xy}",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
-    if build.head?
-      system "cmake", "-S", ".", "-B", "build",
-                      "-DWANT_PYTHON=ON",
-                      "-DWANT_PYTHON_VERSION=python-#{xy}",
-                      *std_cmake_args
-      system "cmake", "--build", "build"
-      system "cmake", "--install", "build"
-    else
-      system "./configure", "--prefix=#{prefix}", "--enable-python=python-#{xy}"
-      system "make", "install"
-
-      # Replace dependencies' Cellar paths with opt paths
-      inreplace [bin/"znc-buildmod", lib/"pkgconfig/znc.pc"] do |s|
-        s.gsub! Formula["icu4c"].prefix.realpath, Formula["icu4c"].opt_prefix
-        s.gsub! Formula["openssl@3"].prefix.realpath, Formula["openssl@3"].opt_prefix
-      end
-    end
+    # Avoid references to Homebrew shims directory
+    inreplace lib/"pkgconfig/znc.pc", Superenv.shims_path/ENV.cxx, ENV.cxx
   end
 
   service do

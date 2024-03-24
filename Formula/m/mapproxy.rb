@@ -8,26 +8,33 @@ class Mapproxy < Formula
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "e9c4d7a85b9af38a4dc88a45dd540fd56412c050207425d0fa110a1e5050ebe3"
-    sha256 cellar: :any,                 arm64_ventura:  "f344f9662a784b3715de987f3125a17ae327b4bc4da486bb697c2c48de32f6f9"
-    sha256 cellar: :any,                 arm64_monterey: "59ed1560ce6d242cef0b754403ba61b9623fce3594f3027f4bb41113a0778a7c"
-    sha256 cellar: :any,                 sonoma:         "5e724a7d20cc8ff487c8903e2b1c91ed6eb26499f4ee8afb5b5a044abdec8fb8"
-    sha256 cellar: :any,                 ventura:        "32e533f8114e6f49006b56800b2226f88928d62d9d1afb0808c02e372e2d5641"
-    sha256 cellar: :any,                 monterey:       "e3f98bbf2dd12cbebe6372fc5b260b529e16f811b497ffec4f3355b1dcef6fb2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "26c4cd35b0765e40821998c324b0c31c438e90bf9e4defc915f771c1ad44d29f"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_sonoma:   "82398c857174ec6a22855e591db44faba1ae0270e2ee84457960f0608d8678c2"
+    sha256 cellar: :any,                 arm64_ventura:  "06425b98adf84902c1d050ee66c988adff0bb2288868448ef47e69023c441037"
+    sha256 cellar: :any,                 arm64_monterey: "57d9aeb9919b4369c31dad5c4e8729587f8cec6881df41538cc8480ba25a0e00"
+    sha256 cellar: :any,                 sonoma:         "0b2a3b5cb6b62a0d196a8e14c937d273bfdcd06c972d2a1a439c6a7929b8bd1b"
+    sha256 cellar: :any,                 ventura:        "18580838c29f9809de9b1b326d87d62ddeaac7722f2ecc8ad30e21c1d7735fc6"
+    sha256 cellar: :any,                 monterey:       "b3b844f92f66b88c2e80ea2678daa725543f7b433066c76ac92ebdfc370d540f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "91815dfe504f725458091b08e042a1b3ebf19cb27d42d222c951485a0de43280"
   end
 
+  depends_on "certifi"
+  depends_on "libyaml"
   depends_on "pillow"
   depends_on "proj"
-  depends_on "python-certifi"
+  # Should be able to remove python-setuptools dependency in next release,
+  # see: https://github.com/mapproxy/mapproxy/pull/863
   depends_on "python-setuptools"
   depends_on "python@3.12"
-  depends_on "pyyaml"
-  depends_on "six"
 
   resource "pyproj" do
     url "https://files.pythonhosted.org/packages/7d/84/2b39bbf888c753ea48b40d47511548c77aa03445465c35cc4c4e9649b643/pyproj-3.6.1.tar.gz"
     sha256 "44aa7c704c2b7d8fb3d483bbf75af6cb2350d30a63b144279a09b75fead501bf"
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
+    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
   end
 
   def install

@@ -15,34 +15,33 @@ class Binwalk < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "46b1b92e433f1eccc60ffd7827709216295d89fe432f4306d3504f76bee9d7cb"
-    sha256 cellar: :any,                 arm64_ventura:  "fb3ae65b71ec3712d069066db3e295d266767da3ccc55a100fa7a115b42252fd"
-    sha256 cellar: :any,                 arm64_monterey: "77ce813cbdcb4be28efc6e88c1f6110313c14ad5cb86ecb79f8d5e70a9b6b7ca"
-    sha256 cellar: :any,                 sonoma:         "897918a5bc55d11807274a23d0347a6744ba07c4062a4a4b80df5cac8b2f05fb"
-    sha256 cellar: :any,                 ventura:        "02d98de992b3b565be46950793f4b92bf97eca061a9c9e9d8d370fc07106b104"
-    sha256 cellar: :any,                 monterey:       "baadf957ef0ef1c5e11acb9844d98ca912bf52d363dd1bfc1d3f3897fcd374ca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0984e5e3f5c0b31708758457d94811e20801a042dc8e3b36c20279d75b1cbc54"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_sonoma:   "a9c16c0ea6712b324582b678a6bb0f89186229375b2167d35697c434a3fe831e"
+    sha256 cellar: :any,                 arm64_ventura:  "cbc1609002b6673a9609f3af058428e3e71f3d517c66878e2fd02d4bae4732e2"
+    sha256 cellar: :any,                 arm64_monterey: "f76c9432dbfbe81f8f9031c10bde58f2deb41fad4397e45c788a541a936cf7a1"
+    sha256 cellar: :any,                 sonoma:         "541c4dd02cc7f0455e49b54b83df80ff7aea921263d76a2b51afa3c13e3f6f98"
+    sha256 cellar: :any,                 ventura:        "de5c3ab5d6f3fc81a341aadd5e5ad1f9d9e139598f7e3ecda1aa316f26f889d3"
+    sha256 cellar: :any,                 monterey:       "c40d4df1e272b1d50970f969da0e1b889a8b7c70bf60406e12641217a068b481"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1e23a0c1cfd5ccb70085fb00191d971b545c79d5dfc3aa2693b9a552665db0d5"
   end
 
-  depends_on "meson" => :build # for contourpy
-  depends_on "meson-python" => :build # for contourpy
-  depends_on "ninja" => :build # for contourpy
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "pybind11" => :build # for contourpy and matplotlib
   depends_on "swig" => :build
   depends_on "freetype"
   depends_on "libpng"
   depends_on "numpy"
   depends_on "p7zip"
   depends_on "pillow"
-  depends_on "python-packaging"
-  depends_on "python-psutil"
-  depends_on "python-pyparsing"
   depends_on "python@3.11" # Python 3.12 issue: https://github.com/ReFirmLabs/binwalk/issues/507
   depends_on "qhull"
-  depends_on "six"
   depends_on "ssdeep"
   depends_on "xz"
+
+  on_linux do
+    depends_on "patchelf" => :build
+  end
 
   resource "capstone" do
     url "https://files.pythonhosted.org/packages/7a/fe/e6cdc4ad6e0d9603fa662d1ccba6301c0cb762a1c90a42c7146a538c24e9/capstone-5.0.1.tar.gz"
@@ -57,6 +56,11 @@ class Binwalk < Formula
   resource "cycler" do
     url "https://files.pythonhosted.org/packages/a9/95/a3dbbb5028f35eafb79008e7522a75244477d2838f38cbb722248dabc2a8/cycler-0.12.1.tar.gz"
     sha256 "88bb128f02ba341da8ef447245a9e138fae777f6a23943da4540077d3601eb1c"
+  end
+
+  resource "flit-core" do
+    url "https://files.pythonhosted.org/packages/c4/e6/c1ac50fe3eebb38a155155711e6e864e254ce4b6e17fe2429b4c4d5b9e80/flit_core-3.9.0.tar.gz"
+    sha256 "72ad266176c4a3fcfab5f2930d76896059851240570ce9a98733b658cb786eba"
   end
 
   resource "fonttools" do
@@ -79,14 +83,34 @@ class Binwalk < Formula
     sha256 "01a978b871b881ee76017152f1f1a0cbf6bd5f7b8ff8c96df0df1bd57d8755a1"
   end
 
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
+    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+  end
+
+  resource "psutil" do
+    url "https://files.pythonhosted.org/packages/90/c7/6dc0a455d111f68ee43f27793971cf03fe29b6ef972042549db29eec39a2/psutil-5.9.8.tar.gz"
+    sha256 "6be126e3225486dff286a8fb9a06246a5253f4c7c53b475ea5f5ac934e64194c"
+  end
+
   resource "pycryptodome" do
     url "https://files.pythonhosted.org/packages/b1/38/42a8855ff1bf568c61ca6557e2203f318fb7afeadaf2eb8ecfdbde107151/pycryptodome-3.19.1.tar.gz"
     sha256 "8ae0dd1bcfada451c35f9e29a3e5db385caabc190f98e4a80ad02a61098fb776"
   end
 
+  resource "pyparsing" do
+    url "https://files.pythonhosted.org/packages/37/fe/65c989f70bd630b589adfbbcd6ed238af22319e90f059946c26b4835e44b/pyparsing-3.1.1.tar.gz"
+    sha256 "ede28a1a32462f5a9705e07aea48001a08f7cf81a021585011deba701581a0db"
+  end
+
   resource "python-dateutil" do
     url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
     sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
   end
 
   def install
@@ -100,12 +124,7 @@ class Binwalk < Formula
       system_qhull = true
     EOS
 
-    venv = virtualenv_create(libexec, "python3.11")
-    venv.pip_install resource("kiwisolver") # needs `cppy` to build so keep build isolation
-    # We disable build isolation to make use of existing Homebrew formulae rather
-    # than rebuilding Python packages like `numpy` that are used by build-backend.
-    venv.pip_install(resources.reject { |r| r.name == "kiwisolver" }, build_isolation: false)
-    venv.pip_install_and_link(buildpath, build_isolation: false)
+    virtualenv_install_with_resources
   end
 
   test do

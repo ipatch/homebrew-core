@@ -1,10 +1,9 @@
 class Freeciv < Formula
   desc "Free and Open Source empire-building strategy game"
   homepage "http://freeciv.org"
-  url "https://downloads.sourceforge.net/project/freeciv/Freeciv%203.0/3.0.9/freeciv-3.0.9.tar.xz"
-  sha256 "16c46a9c378b4a511c1e3d3a7c435a78230a432d8b852202aaf5d5d584962742"
+  url "https://downloads.sourceforge.net/project/freeciv/Freeciv%203.1/3.1.0/freeciv-3.1.0.tar.xz"
+  sha256 "d746a883937b955b0ee1d1eba8b4e82354f7f72051ac4f514de7ab308334506e"
   license "GPL-2.0-or-later"
-  revision 1
 
   livecheck do
     url :stable
@@ -12,17 +11,17 @@ class Freeciv < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "6fd841695c7ef4e7bc165f703398c2deda2fd84a3cbd64623105c7b4a0c5f70f"
-    sha256 arm64_ventura:  "f92f4c645818708fd11dff733c18dba884ad8538264f7a79cb372e02f68e942b"
-    sha256 arm64_monterey: "3fcc8da63144aeca1c76b067362f27731a645b8d58c8915f8fad5314287f7583"
-    sha256 sonoma:         "5ebb747350afb01f87bafdbcc56b6692a1b845321667cb9cdab7a4757c241460"
-    sha256 ventura:        "7d46ccfd66b8c1ae7df3e3fae33e7cbf21d10b54056568e1801decef03fa2061"
-    sha256 monterey:       "57d906f0bb2a748be9d36c2f122ba103fd20a9966971ba03856a972134879f39"
-    sha256 x86_64_linux:   "c19e9cde02717722e74058247adae7ef8df5f893b5f828c18cead0d2ced6f595"
+    sha256 arm64_sonoma:   "320250dbd312579ce73c00800c38f947c60577cfd12b52f742f4d118efcde8db"
+    sha256 arm64_ventura:  "a5c285e5eab1609fe8f532ca3dddab508a598ef672bfa1727d13e968b1e34d00"
+    sha256 arm64_monterey: "4c69f7e8153dc940b2512f38a0027fcae203480fc8a30c821afce02489653fa6"
+    sha256 sonoma:         "f3b20676cc777c7640fe0df0fb9ea86edaae56d348e7c5ab6c5d55df18488524"
+    sha256 ventura:        "20ff937a9252c7f67aba5f1e556f430f4a50bc9aefaf5632945cf919919cee73"
+    sha256 monterey:       "a57309a396244c18948c8f3651351231d47b84e599b6a270bf855f783487f7c3"
+    sha256 x86_64_linux:   "5fea1e4ce55564cc0ff577fc92c1f518561db4ef3a897b5afaf393280fb47815"
   end
 
   head do
-    url "https://github.com/freeciv/freeciv.git", branch: "master"
+    url "https://github.com/freeciv/freeciv.git", branch: "main"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -55,16 +54,13 @@ class Freeciv < Formula
     ENV["ac_cv_lib_lzma_lzma_code"] = "no"
 
     args = %W[
-      --disable-debug
-      --disable-dependency-tracking
       --disable-gtktest
-      --disable-silent-rules
-      --disable-sdltest
-      --disable-sdl2test
       --disable-sdl2framework
+      --disable-sdl2test
+      --disable-sdltest
+      --disable-silent-rules
       --enable-client=gtk3.22
       --enable-fcdb=sqlite3
-      --prefix=#{prefix}
       --with-readline=#{Formula["readline"].opt_prefix}
       CFLAGS=-I#{Formula["gettext"].include}
       LDFLAGS=-L#{Formula["gettext"].lib}
@@ -72,9 +68,9 @@ class Freeciv < Formula
 
     if build.head?
       inreplace "./autogen.sh", "libtoolize", "glibtoolize"
-      system "./autogen.sh", *args
+      system "./autogen.sh", *args, *std_configure_args
     else
-      system "./configure", *args
+      system "./configure", *args, *std_configure_args
     end
 
     system "make", "install"
@@ -82,7 +78,18 @@ class Freeciv < Formula
 
   test do
     system bin/"freeciv-manual"
-    assert_predicate testpath/"civ2civ36.mediawiki", :exist?
+    %w[
+      civ2civ31.html
+      civ2civ32.html
+      civ2civ33.html
+      civ2civ34.html
+      civ2civ35.html
+      civ2civ36.html
+      civ2civ37.html
+      civ2civ38.html
+    ].each do |file|
+      assert_predicate testpath/file, :exist?
+    end
 
     fork do
       system bin/"freeciv-server", "-l", testpath/"test.log"

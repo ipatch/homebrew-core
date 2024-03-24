@@ -27,16 +27,17 @@ class AnsibleAT7 < Formula
 
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
+  depends_on "certifi"
   depends_on "cffi"
   depends_on "openssl@3"
   depends_on "pycparser"
-  depends_on "python-certifi"
   depends_on "python@3.11"
   depends_on "pyyaml"
   depends_on "six"
 
   uses_from_macos "krb5"
   uses_from_macos "libffi"
+  uses_from_macos "libxml2"
   uses_from_macos "libxslt"
 
   # This will collect requirements from:

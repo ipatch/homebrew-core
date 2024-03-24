@@ -4,26 +4,26 @@ class Ortp < Formula
   license "GPL-3.0-or-later"
 
   stable do
-    url "https://gitlab.linphone.org/BC/public/ortp/-/archive/5.3.19/ortp-5.3.19.tar.bz2"
-    sha256 "5a25c3363c4ada72546fe51e6df4cf3c22dffe0441b8a345e352730c85bfaa51"
+    url "https://gitlab.linphone.org/BC/public/ortp/-/archive/5.3.36/ortp-5.3.36.tar.bz2"
+    sha256 "5655acf933d9b5d3bf6544e33cb2ebc6020b53624a205175677c1c7029aa079a"
 
     # bctoolbox appears to follow ortp's version. This can be verified at the GitHub mirror:
     # https://github.com/BelledonneCommunications/bctoolbox
     resource "bctoolbox" do
       # Don't forget to change both instances of the version in the URL.
-      url "https://gitlab.linphone.org/BC/public/bctoolbox/-/archive/5.3.19/bctoolbox-5.3.19.tar.bz2"
-      sha256 "3886e6a077013178e4d18a19c830bb7933a8d02b591e85b7abc26571e1c4aa0a"
+      url "https://gitlab.linphone.org/BC/public/bctoolbox/-/archive/5.3.36/bctoolbox-5.3.36.tar.bz2"
+      sha256 "228c44db2a5231721b245b50e284b813171a1e758cbf7cbb27758be303c89cc6"
     end
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "22fc1841d46e3f698f8af7b9123f352e684c7c38e0f634180881f8aa7405e4e6"
-    sha256 cellar: :any,                 arm64_ventura:  "96474476df4e7a5c53ff496afc29d0fbf780245c3129a3a51c47333747960c5f"
-    sha256 cellar: :any,                 arm64_monterey: "3534d316eb639d0c2938523619a00ad157da245112c510e8af1b6f1aefebdd8f"
-    sha256 cellar: :any,                 sonoma:         "db537113ef1e461bab95ae4af54a6ec7ee0929133e8a9d1c8ffb3419f0eb3c80"
-    sha256 cellar: :any,                 ventura:        "3c7e748bb817420ac5473494cfa7d4054ff81bb5e07b03f032d5c2f77a0f36a5"
-    sha256 cellar: :any,                 monterey:       "277c3a811a94cb512ee20b07da711440744c842bb3024dbfed1529abff97f438"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "11af6049e8c005d0380ab21d2666120a76fd390e97ff8cd1dc826a781c44728a"
+    sha256 cellar: :any,                 arm64_sonoma:   "c5138dd44532d6c2c49f1b455cc5090d26a8c7c70f2142e2270c33c92041eddf"
+    sha256 cellar: :any,                 arm64_ventura:  "fe0486e05f6f57ed51a9bbe7a41c0aed18a2b4b8baea9b3440ffba24bfa61f4e"
+    sha256 cellar: :any,                 arm64_monterey: "6eeecfd62e57e8da6f4b4b81149bf1568b68e74f46bfb8895c8b40dedec292cc"
+    sha256 cellar: :any,                 sonoma:         "28576975c35e5b29586f37c49765d6258364031553fef897a765af465db3304e"
+    sha256 cellar: :any,                 ventura:        "edb9270be64821a7bb3e81c27ad692828b6152818906c88232f49501cbbabff2"
+    sha256 cellar: :any,                 monterey:       "d40799240c7cccd6ff445a02227aab089180b181c3a91d957bd4dde17943076c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a9d032cfd1f1de37f99e5a172e5cdee2686790dd4982e88892b9a69ef8814985"
   end
 
   head do
@@ -39,6 +39,8 @@ class Ortp < Formula
   depends_on "mbedtls"
 
   def install
+    odie "bctoolbox resource needs to be updated" if build.stable? && version != resource("bctoolbox").version
+
     resource("bctoolbox").stage do
       args = ["-DENABLE_TESTS_COMPONENT=OFF", "-DBUILD_SHARED_LIBS=ON"]
       args << "-DCMAKE_C_FLAGS=-Wno-error=unused-parameter" if OS.linux?
@@ -83,8 +85,5 @@ class Ortp < Formula
     linker_flags = OS.mac? ? %W[-F#{frameworks} -framework ortp] : %W[-L#{lib} -lortp]
     system ENV.cc, "test.c", "-o", "test", "-I#{include}", "-I#{libexec}/include", *linker_flags
     system "./test"
-
-    # Ensure that bctoolbox's version is identical to ortp's.
-    assert_equal version, resource("bctoolbox").version
   end
 end

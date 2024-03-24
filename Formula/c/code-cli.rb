@@ -1,8 +1,8 @@
 class CodeCli < Formula
   desc "Command-line interface built-in Visual Studio Code"
   homepage "https://github.com/microsoft/vscode"
-  url "https://github.com/microsoft/vscode/archive/refs/tags/1.86.0.tar.gz"
-  sha256 "7dca663af6963cf67cae936cc194a2c0510bf13cabcc705b3b6de006cbfb348c"
+  url "https://github.com/microsoft/vscode/archive/refs/tags/1.87.2.tar.gz"
+  sha256 "31dd6b75c60178d855c61bb1f4c5ea60949323ca28ee5980dfe4905c22bb2e02"
   license "MIT"
   head "https://github.com/microsoft/vscode.git", branch: "main"
 
@@ -12,13 +12,13 @@ class CodeCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f8ebeaa9f1c9383dd8ab68d86ceaf77c54831fa2cd9a88127ea1d45929f55cf3"
-    sha256 cellar: :any,                 arm64_ventura:  "1948819f176d7ff12be2a1a63273177cdeb683e1dea68ab646a59000ab56186e"
-    sha256 cellar: :any,                 arm64_monterey: "c924e19d2d74dce498df3273a63824c4c31048a1b951730f566df4e7139794ff"
-    sha256 cellar: :any,                 sonoma:         "60d0e9d92af00a45624009b8b31be3b2234926386646e08590b1ad6e1cebede8"
-    sha256 cellar: :any,                 ventura:        "6ad1669b699e358fcad0862ced57c7a10e137be3af8e6b1c583d006815c47b62"
-    sha256 cellar: :any,                 monterey:       "fbb5db1463edffa24ab8573ada8fac44a1d537d14e3f4441c91fd04ad4b049c2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7da27bb6b7f96a4c0368591150ac0b1bb4368f38fbd78bf830b280dc5e75d1b7"
+    sha256 cellar: :any,                 arm64_sonoma:   "ab30f53179ae66ff792c3ef94ca2b9477d442f2b73d0846e19bf7b5773fbc05b"
+    sha256 cellar: :any,                 arm64_ventura:  "1756df9f6cf07ef4d15a6703845c0aa370114b3357ab88ed00f88246a9f578f9"
+    sha256 cellar: :any,                 arm64_monterey: "5c7fd0b4be6f4d22a1b6a60cefbd8c4e37cc81b54f37239a7c7b87ee500aad16"
+    sha256 cellar: :any,                 sonoma:         "f0bd14520c8d0931b58689a39de9e0e0758f47d854f6f4b9d02218d87a679f4e"
+    sha256 cellar: :any,                 ventura:        "a246f9032ad5d66962daed7115810806cabcba7e21fe3eb6425a1538e926358b"
+    sha256 cellar: :any,                 monterey:       "a8f7d5e26c7341ff8b094a150371374608bcff75d1e7a57dc8cbfde92b28a990"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f350bbf9e17d469b706c659ac341827dfb958c89280be253a1842d7d40eea9db"
   end
 
   depends_on "rust" => :build
@@ -63,7 +63,6 @@ class CodeCli < Formula
       Formula["openssl@3"].opt_lib/shared_library("libssl"),
       Formula["openssl@3"].opt_lib/shared_library("libcrypto"),
     ]
-    linked_libraries << (Formula["openssl@3"].opt_lib/shared_library("libcrypto")) if OS.mac?
 
     linked_libraries.each do |library|
       assert check_binary_linkage(bin/"code", library),

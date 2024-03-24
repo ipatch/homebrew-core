@@ -1,8 +1,8 @@
 class Kubefirst < Formula
   desc "GitOps Infrastructure & Application Delivery Platform for kubernetes"
   homepage "https://kubefirst.io/"
-  url "https://github.com/kubefirst/kubefirst/archive/refs/tags/v2.3.7.tar.gz"
-  sha256 "7e6809854da3f71aea99dabed6e85cede4e4d24ce783142a027e3879deae2bdd"
+  url "https://github.com/kubefirst/kubefirst/archive/refs/tags/v2.4.3.tar.gz"
+  sha256 "9bdae5a0bd1616ea72346bedb69d33a63bfedcc12eee406ea977c2a0ce7d29e1"
   license "MIT"
   head "https://github.com/kubefirst/kubefirst.git", branch: "main"
 
@@ -14,20 +14,20 @@ class Kubefirst < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9640f9bfb88f4e1ceaffd344ef72b7ceb29c03d523066012eebf4fe431f13b1c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e4c26e13590e474426a3fbfc6636962137eb0ee4b45e1fd7dc11cbbef65c5475"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "838cb4c57154a497c18abd335453796c71d021e350cfe1f639e616a4720c6366"
-    sha256 cellar: :any_skip_relocation, sonoma:         "0a8f225606edbec192e270322a94fb0f3d0dc22336d1263690ec42e3f8c657f0"
-    sha256 cellar: :any_skip_relocation, ventura:        "60d80b806ce3bc96c08ae7c7ee1ab155ef1b7428ba5c24b08be0bcd3d3e03475"
-    sha256 cellar: :any_skip_relocation, monterey:       "5fe6db88958a7ccf725e76fa616fcc73329138f727f8bfb7019e1120527b3dd9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d85a873d86e2e09dc72d0fa77947c95bf84b80eb6cb2f4ec6260b4ae75451996"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ddf6b63059e549d661a432b6e36751bba3f38d7455eee20506f2f15d9c254970"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bde5774fc2e0bf1cb7caf87b42bc94e9b28d1fbded1324b46056cb9fbd7a1362"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d9bc5c3cbfb645ebfc344d0c183b21859ac8e79a5a613221714205be3a783634"
+    sha256 cellar: :any_skip_relocation, sonoma:         "3f10b43c7a49696606a16485ed4fd529f87ed108edf431ffafbac8b27341e47a"
+    sha256 cellar: :any_skip_relocation, ventura:        "6d822a9b8d08f46df588609d3052f4c1ee7aab74af7f8a2bea493d06b949d1af"
+    sha256 cellar: :any_skip_relocation, monterey:       "de2020a8ec337571c78a2af56c85b3e904e0a4dfb0f246f5b6e3855ef0351b2f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "60c98089867d5806f6bda7e16c5e0f0852588adb33a4c640d798233d678b958d"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X github.com/kubefirst/runtime/configs.K1Version=v#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

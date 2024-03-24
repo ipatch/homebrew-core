@@ -1,19 +1,19 @@
 class Doppler < Formula
   desc "CLI for interacting with Doppler secrets and configuration"
   homepage "https://docs.doppler.com/docs"
-  url "https://github.com/DopplerHQ/cli/archive/refs/tags/3.66.5.tar.gz"
-  sha256 "cd4f8cea2685d286859851f95043506121c05098a7be506e2b6664a42e217e37"
+  url "https://github.com/DopplerHQ/cli/archive/refs/tags/3.67.1.tar.gz"
+  sha256 "072fa1bd9b483b034eed8d150f1ac71734dd088e115a17f67d756bd66ce7469b"
   license "Apache-2.0"
   head "https://github.com/DopplerHQ/cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "689515a3f387e88824f1a128526c6762f79eaae34271ac52e6ff6f1b6200d856"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6740df7572ee17897db18144d2052b6610a706d0dc75b7d62787faeea89a0242"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f7988f93753baa2b5c2eb82077530d7c40b98b2fa63a5ec4e43247f6035848bc"
-    sha256 cellar: :any_skip_relocation, sonoma:         "4ac1e0d5ecf2b755924d8f716cf4688285167d73ef5da637b043295211a8caaf"
-    sha256 cellar: :any_skip_relocation, ventura:        "fbc113a0588295afb1d8a36cdff8bafff8275707a61498722584716bb5072c8d"
-    sha256 cellar: :any_skip_relocation, monterey:       "a2e42fc6a00a5ff39ff4a51da6fd8710478de62cf8d76e9abe3a81fbd7fd3d2e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f00b10cfd268e5bc838d30c5e82f12367ebb36606b2922d67142088b74e97c2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2e0436e2c53be6f39c3111037c6e0bbb726d92c8d617efef7eba3eff34514807"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a9561f3453c54ea3c9849f29d30837aaa54b28962b38138a0fa37eac8b89f787"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7b62da6cfbbbe6a10603f8bf14af2a9f9e4a185d66b9c078d6bcb84f3ff9ccc2"
+    sha256 cellar: :any_skip_relocation, sonoma:         "2f85bab01b252d3e2dbb7f8acb321baf084cb1d27be75fd40333e6d700549b18"
+    sha256 cellar: :any_skip_relocation, ventura:        "f99245fb82792d75ce61d485d39871bc488b184afb76ad822b80d981d7fe4b5b"
+    sha256 cellar: :any_skip_relocation, monterey:       "669cb417c2926086484e681c84c8a1525e425344f7bf21a3812d3bfc1c5501c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "396ed7c03a6f2bfcd831af657d11d507b91e992855122ef99ab2b25a9e729677"
   end
 
   depends_on "go" => :build
@@ -23,7 +23,7 @@ class Doppler < Formula
       -s -w
       -X github.com/DopplerHQ/cli/pkg/version.ProgramVersion=dev-#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"doppler", "completion")
   end

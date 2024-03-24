@@ -3,8 +3,8 @@ class C7n < Formula
 
   desc "Rules engine for cloud security, cost optimization, and governance"
   homepage "https://github.com/cloud-custodian/cloud-custodian"
-  url "https://github.com/cloud-custodian/cloud-custodian/archive/refs/tags/0.9.34.0.tar.gz"
-  sha256 "5896f438c329a1f3f6cedc1e842376445760cca4a4735024abbbf668cf006bac"
+  url "https://github.com/cloud-custodian/cloud-custodian/archive/refs/tags/0.9.35.0.tar.gz"
+  sha256 "ef2cc8a14e84d0eb11a384bd2a8569c07e6aec04b80505e7b9ae3ff197aa8cf5"
   license "Apache-2.0"
 
   livecheck do
@@ -13,21 +13,23 @@ class C7n < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "a05c57fb2d3b9bfdf38478a78ee12868f7a5a3cc0f18f27640b848971620830f"
-    sha256 cellar: :any,                 arm64_ventura:  "5db31ae1560634064aa09db68fd8a6bd7a4f2bf81624b35e480ebf1ae1a7e748"
-    sha256 cellar: :any,                 arm64_monterey: "222ad3ed077759d31fd808b44f1f94615420cf8ccacd37899a7f7175d2fdc789"
-    sha256 cellar: :any,                 sonoma:         "a0f73eeb9915599750fa92258d0df34cbc83041f5f9d8e6bbc415c22e0fbc29d"
-    sha256 cellar: :any,                 ventura:        "ed64fb8f92c7d2e768ee8eeff3d4f71565cb6385860606413e3f9dab00f9d72b"
-    sha256 cellar: :any,                 monterey:       "80e9722a1b7468908a39e6a35bc1e533960c45ba13a5956d5d84f90cf507c0d9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db6eb4efae0483591e5ed3b4068deead2c408c985f4707429883202791c7b7a2"
+    sha256 cellar: :any,                 arm64_sonoma:   "7925afe76361159300d287a02fa8eb6d54897695ae6fc3f4626312cc0519db2d"
+    sha256 cellar: :any,                 arm64_ventura:  "d7ae53185bf4969f6af216d52525eb5064f0b42750b17c894ee3a1a6e9c8326c"
+    sha256 cellar: :any,                 arm64_monterey: "643a96ee7442ca1ff478fd0e950d7e98476c3a02451c0988d3aac75e441e8745"
+    sha256 cellar: :any,                 sonoma:         "77aa442a3138e27821fc6ac3e4ab10abadee53feec2a4e1cf312931e860cdb66"
+    sha256 cellar: :any,                 ventura:        "d8293c4109b428473fc98054bf7282d80cde6b8777ad720a97ce747ce4bcd285"
+    sha256 cellar: :any,                 monterey:       "e19d153d569311b9985cef6b7400b2085a5fe842442e59733a97f481cc24c587"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "43aa3c66d698dadf1f9f181f905bf7dab89e1cb27ec7566c3efcd3b7aca76625"
   end
 
   depends_on "rust" => :build # for rpds-py
-  depends_on "python-argcomplete"
-  depends_on "python-tabulate"
+  depends_on "libyaml"
   depends_on "python@3.12"
-  depends_on "pyyaml"
-  depends_on "six"
+
+  resource "argcomplete" do
+    url "https://files.pythonhosted.org/packages/f0/a2/ce706abe166457d5ef68fac3ffa6cf0f93580755b7d5f883c456e94fab7b/argcomplete-3.2.2.tar.gz"
+    sha256 "f3e49e8ea59b4026ee29548e24488af46e30c9de57d48638e24f54a1ea1000a2"
+  end
 
   resource "attrs" do
     url "https://files.pythonhosted.org/packages/e3/fc/f800d51204003fa8ae392c4e8278f256206e7a919b708eef054f5f4b650d/attrs-23.2.0.tar.gz"
@@ -35,13 +37,13 @@ class C7n < Formula
   end
 
   resource "boto3" do
-    url "https://files.pythonhosted.org/packages/50/a0/f332de5bc770ddbcbddc244a9ced5476ac2d105a14fbd867c62f702a73ee/boto3-1.34.34.tar.gz"
-    sha256 "b2f321e20966f021ec800b7f2c01287a3dd04fc5965acdfbaa9c505a24ca45d1"
+    url "https://files.pythonhosted.org/packages/3e/b8/224ef51256b26ea79909ac1c432be8711ed7b1f6f6b73508d905facd2fae/boto3-1.34.56.tar.gz"
+    sha256 "b26928f9a21cf3649cea20a59061340f3294c6e7785ceb6e1a953eb8010dc3ba"
   end
 
   resource "botocore" do
-    url "https://files.pythonhosted.org/packages/18/58/b38387dda6dae1db663c716f7184a728941367d039830a073a30c3a28d3c/botocore-1.34.34.tar.gz"
-    sha256 "54093dc97372bb7683f5c61a279aa8240408abf3b2cc494ae82a9a90c1b784b5"
+    url "https://files.pythonhosted.org/packages/6a/c6/9c48501759b6ceb726ad94c0a13372c9d8442c8df7e0de424024bc285d78/botocore-1.34.56.tar.gz"
+    sha256 "bffeb71ab21d47d4ecf947d9bdb2fbd1b0bbd0c27742cea7cf0b77b701c41d9f"
   end
 
   resource "docutils" do
@@ -70,8 +72,13 @@ class C7n < Formula
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
-    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+    url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
+    sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
+    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
   end
 
   resource "referencing" do
@@ -80,13 +87,23 @@ class C7n < Formula
   end
 
   resource "rpds-py" do
-    url "https://files.pythonhosted.org/packages/b7/0a/e3bdcc977e6db3bf32a3f42172f583adfa7c3604091a03d512333e0161fe/rpds_py-0.17.1.tar.gz"
-    sha256 "0210b2668f24c078307260bf88bdac9d6f1093635df5123789bfee4d8d7fc8e7"
+    url "https://files.pythonhosted.org/packages/55/ba/ce7b9f0fc5323f20ffdf85f682e51bee8dc03e9b54503939ebb63d1d0d5e/rpds_py-0.18.0.tar.gz"
+    sha256 "42821446ee7a76f5d9f71f9e33a4fb2ffd724bb3e7f93386150b61a43115788d"
   end
 
   resource "s3transfer" do
     url "https://files.pythonhosted.org/packages/a0/b5/4c570b08cb85fdcc65037b5229e00412583bb38d974efecb7ec3495f40ba/s3transfer-0.10.0.tar.gz"
     sha256 "d0c8bbf672d5eebbe4e57945e23b972d963f07d82f661cabf678a5c88831595b"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+  end
+
+  resource "tabulate" do
+    url "https://files.pythonhosted.org/packages/ec/fe/802052aecb21e3797b8f7902564ab6ea0d60ff8ca23952079064155d1ae1/tabulate-0.9.0.tar.gz"
+    sha256 "0095b12bf5966de529c0feb1fa08671671b3368eec77d7ef7ab114be2c068b3c"
   end
 
   resource "urllib3" do

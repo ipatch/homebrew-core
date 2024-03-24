@@ -2,25 +2,26 @@ class Sile < Formula
   desc "Modern typesetting system inspired by TeX"
   homepage "https://sile-typesetter.org"
   license "MIT"
+  revision 1
 
   # TODO: With 0.15 release:
   # - Remove `cosmo` resource and corresponding references in install
   # - Switch `lua` dependency to `luajit` and clean up `lua` references
   stable do
-    url "https://github.com/sile-typesetter/sile/releases/download/v0.14.16/sile-0.14.16.tar.xz"
-    sha256 "cf97585b7dcf77d99e328f6cdce71a4070324fe001f7876f730fa04c6c923857"
+    url "https://github.com/sile-typesetter/sile/releases/download/v0.14.17/sile-0.14.17.tar.xz"
+    sha256 "7f89bedecedabb5168250ad9dd80c09ed289c8e88c3d0d756d2d1d92ee065e04"
 
     depends_on "lua"
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "c84ef4e670dee32acdc744fee20e3cc738761b7f25113ea18cff0060ee2f76c7"
-    sha256 cellar: :any,                 arm64_ventura:  "00926c1f03f78001bc788d8d5b5bffc43e5d94cb0dffb98fcb873e3bca7f099e"
-    sha256 cellar: :any,                 arm64_monterey: "7845e227f712457552a0c43524bea5e4447c442b3bd16baf92be83deb37f679e"
-    sha256 cellar: :any,                 sonoma:         "6abc465819c0910701312bd43910e7610312a9783884f5518918bc8b5e326e66"
-    sha256 cellar: :any,                 ventura:        "9190f36b3ed3493df3767e4554a03ff95c9ee16a8cb057296b952d1d2e101996"
-    sha256 cellar: :any,                 monterey:       "9498cdbf051f3f6ad7b7cb0b178f51a160648d9e8efd49dbc00eae4c6a4fcb90"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "82e6e9b998cd7a40b613ba58ef59757f1869c93d379eaf5163c82fd201bb9a75"
+    sha256 cellar: :any,                 arm64_sonoma:   "74bee659db3d23a9b2ab54e30d0fad09f19d02fc035987db06219c9c363a4d1f"
+    sha256 cellar: :any,                 arm64_ventura:  "68e0846baebd4fa1d78da92c25f9924a805fde515c844cd1f77db75710568151"
+    sha256 cellar: :any,                 arm64_monterey: "156067d6a65fed6a0543026b924998f3d73ec95cb72388b83e925286206c6785"
+    sha256 cellar: :any,                 sonoma:         "909940767d0810a28b3ea1d705a6bb120d04dd544a10e0e86f97809009ccfa0b"
+    sha256 cellar: :any,                 ventura:        "8ef384866a339dcf0c9c362bca28808e7852b45fca87a3d85e86ad26769526e9"
+    sha256 cellar: :any,                 monterey:       "877ee8ebca792e0b199d05c85bc901515bec45aff0d02a05aa8f4fd37e9d7ad4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "46bcd748249ed2c5a45159c55d2f5133ce630a57f7fc080c9f729f4ead3d13e2"
   end
 
   head do

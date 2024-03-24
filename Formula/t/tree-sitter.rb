@@ -1,29 +1,31 @@
-require "language/node"
-
 class TreeSitter < Formula
   desc "Parser generator tool and incremental parsing library"
   homepage "https://tree-sitter.github.io/"
-  url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.20.9.tar.gz"
-  sha256 "9b2fd489a7281e3a7e5e7cbbf3a974e5a6a115889ae65676d61b79bdae96464e"
+  url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.22.2.tar.gz"
+  sha256 "0c829523b876d4a37e1bd46a655c133a93669c0fe98fcd84972b168849c27afc"
   license "MIT"
   head "https://github.com/tree-sitter/tree-sitter.git", branch: "master"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "062befbe55cf56c8fad131a5c5c716e56c4dd6909b4f148cd6198840b1c00bbf"
-    sha256 cellar: :any,                 arm64_ventura:  "6151a7f25d123ccce15e09cc5e72836f8ee07177ce63ad51fa98def7dd145e22"
-    sha256 cellar: :any,                 arm64_monterey: "0237ac036dea1d1d64d0989777edf18f26a4a0fb3b259ec3ed7e0a6bf166fa60"
-    sha256 cellar: :any,                 sonoma:         "1f41896166871dfe5197461081a057db4a51c667550fc676c956dd102761bfb3"
-    sha256 cellar: :any,                 ventura:        "e98c3c0145cc48cea7b13f10c155e792e4bd135c814c8c093c6a5bf9c34288da"
-    sha256 cellar: :any,                 monterey:       "94cd6bf2a1e61e3c5f17c45489b3a3b4a3646e373cf6f41f31e1706f7d0f25e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5c98f13c1a6a350433fbf0536f099da86c4db828d2de6296a2445c754339c7ce"
+    sha256 cellar: :any,                 arm64_sonoma:   "864d65c35270a1150028cb1767d71f4549a4b64b9f4abd029f97641484c12971"
+    sha256 cellar: :any,                 arm64_ventura:  "632264bbf86e5838f1175aa75c3fe4540a617ff66aad617af46e78ad3c6d1303"
+    sha256 cellar: :any,                 arm64_monterey: "2f496671caec440c0a11858dc79caa81e32a4743acee7871def02fd32305ecf9"
+    sha256 cellar: :any,                 sonoma:         "a5005dda76bca989d76c0c14dee5faa4e0ccfbff6685f0a24c1b3a477a973348"
+    sha256 cellar: :any,                 ventura:        "f34ec18b64a8d010078b4cf52289481709e365333df027a30de2caedcd6e4512"
+    sha256 cellar: :any,                 monterey:       "68c5c14bc68ca86f1e2768d0f07171eb5238282e87a130f0021b32cf904b6c4c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1ca7b72329bbbf4fd0f1a1539a4ed1adbbd243a22599b998c1a26e7fcb189f3c"
   end
 
   depends_on "rust" => :build
   depends_on "node" => :test
 
   def install
-    system "make", "AMALGAMATED=1"
-    system "make", "install", "PREFIX=#{prefix}"
+    system "make", "install", "AMALGAMATED=1", "PREFIX=#{prefix}"
     system "cargo", "install", *std_cargo_args(path: "cli")
   end
 

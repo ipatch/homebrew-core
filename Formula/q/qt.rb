@@ -10,20 +10,20 @@ class Qt < Formula
     { "GPL-3.0-only" => { with: "Qt-GPL-exception-1.0" } },
     "LGPL-3.0-only",
   ]
+  revision 1
   head "https://code.qt.io/qt/qt5.git", branch: "dev"
 
   stable do
-    url "https://download.qt.io/official_releases/qt/6.6/6.6.1/single/qt-everywhere-src-6.6.1.tar.xz"
-    mirror "https://qt.mirror.constant.com/archive/qt/6.6/6.6.1/single/qt-everywhere-src-6.6.1.tar.xz"
-    mirror "https://mirrors.ukfast.co.uk/sites/qt.io/archive/qt/6.6/6.6.1/single/qt-everywhere-src-6.6.1.tar.xz"
-    sha256 "dd3668f65645fe270bc615d748bd4dc048bd17b9dc297025106e6ecc419ab95d"
+    url "https://download.qt.io/official_releases/qt/6.6/6.6.2/single/qt-everywhere-src-6.6.2.tar.xz"
+    mirror "https://qt.mirror.constant.com/archive/qt/6.6/6.6.2/single/qt-everywhere-src-6.6.2.tar.xz"
+    mirror "https://mirrors.ukfast.co.uk/sites/qt.io/archive/qt/6.6/6.6.2/single/qt-everywhere-src-6.6.2.tar.xz"
+    sha256 "3c1e42b3073ade1f7adbf06863c01e2c59521b7cc2349df2f74ecd7ebfcb922d"
 
-    # Backport fix for QTBUG-117765 which can cause build failure in `qca`
-    # .../MacOSX.sdk/usr/include/c++/v1/concept:318:1: error: Parse error at "::"
+    # Fix build with newer libc++.
     patch do
-      url "https://github.com/qt/qtbase/commit/a8c1c38f94ba9011b7646fe4f756ca213479cd30.patch?full_index=1"
-      directory "qtbase"
-      sha256 "dc33174b2b829f2cabb096bad654a984294986aea5d4a226ff225b951e77acfc"
+      url "https://github.com/google/angle/commit/c23029d2fe0a55a5b26cd8005f0bf74943ed3865.patch?full_index=1"
+      sha256 "c6aa0f3237001e9ad9ed17dab671a2f402aa0060012a90349113f6cf9c0c95c1"
+      directory "qtwebengine/src/3rdparty/chromium/third_party/angle"
     end
   end
 
@@ -35,13 +35,14 @@ class Qt < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "e040f997f95282baf2c4a8b23ba850ba8f24e6b02e4535d0b72ef7a8e85d6683"
-    sha256 cellar: :any,                 arm64_ventura:  "fac465712296b83234abdf073491c71f9ffe6fd2e9991586f232c6fa4dcfe296"
-    sha256 cellar: :any,                 arm64_monterey: "fe7cc99dad709cf37c02804131612960aa366b00324b6d2750e651fe47419914"
-    sha256 cellar: :any,                 sonoma:         "4a9ddf2302d2c31340344831ce18bbce08277e0b042874510654444d31ef2534"
-    sha256 cellar: :any,                 ventura:        "c1a6cc75a3961fc1233d7d7db668d1cbf5150efae0c4fcf83bef83c81a4668a9"
-    sha256 cellar: :any,                 monterey:       "dc9ddc418d8bd4594650613e02a421bbd45d13643f6ac023347f0283e55073ab"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a2466031ed6771eb76fdd53fa6b6a88dcf4899d211e03236aeb40beb38ecb123"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sonoma:   "0e4726473ec91f76ec3c1bdea001f2fbde1b0d86cb354981154d483649efbfe5"
+    sha256 cellar: :any,                 arm64_ventura:  "a2c8d1255b3ec9821a0a6816f9ac118fe7716325f626ec4327c38fcd512da740"
+    sha256 cellar: :any,                 arm64_monterey: "283299b96e2d7a92e79f8ae405565662329e8d891619cdea1859733daaaeb776"
+    sha256 cellar: :any,                 sonoma:         "01ac20eac9280daaee92262ea6f9a5590ac417eefc91be5f250ce3e5f01d2488"
+    sha256 cellar: :any,                 ventura:        "df12697a44299790b3f384b02eb9e720dcc77cc8cdd9575d8f73ffd2c043605e"
+    sha256 cellar: :any,                 monterey:       "ce178a1a9544c275bdc7d4c3746e04ce5763ffc3d38b4192339cf1ac9cc2be10"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "836c2b167b2157ab3e2e37153238942c7aa1c06001fb97d10b023e5181b38133"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -49,7 +50,6 @@ class Qt < Formula
   depends_on "node" => :build
   depends_on "pkg-config" => :build
   depends_on "python@3.11" => :build # Python 3.12 needs newer Chromium without imp usage (maybe 118 or 120)
-  depends_on "six" => :build
   depends_on "vulkan-headers" => [:build, :test]
   depends_on "vulkan-loader" => [:build, :test]
   depends_on xcode: :build
@@ -123,19 +123,6 @@ class Qt < Formula
     depends_on "xcb-util-keysyms"
     depends_on "xcb-util-renderutil"
     depends_on "xcb-util-wm"
-
-    # Backport Chromium changes for libxml 2.12 compatibility
-    # https://chromium.googlesource.com/chromium/src/+/871f8ae9b65ce2679b0bc0be36902d65edf0c1e4
-    patch do
-      url "https://chromium-review.googlesource.com/changes/chromium%2Fsrc~4985186/revisions/4/patch?zip&path=third_party%2Fblink%2Frenderer%2Fcore%2Fxml%2Fxslt_processor.h"
-      directory "qtwebengine/src/3rdparty/chromium"
-      sha256 "61d0352bb43ab796e1702f003f119a0838e5357517ee90f71bcc5cd0ba184e36"
-    end
-    patch do
-      url "https://chromium-review.googlesource.com/changes/chromium%2Fsrc~4985186/revisions/4/patch?zip&path=third_party%2Fblink%2Frenderer%2Fcore%2Fxml%2Fxslt_processor_libxslt.cc"
-      directory "qtwebengine/src/3rdparty/chromium"
-      sha256 "dc8cf92c07cad7da51510d2233968af4b0f408ff6857153ffa1d7387bb77f1b7"
-    end
   end
 
   fails_with gcc: "5"
@@ -145,16 +132,14 @@ class Qt < Formula
     sha256 "b2e5b40261e20f354d198eae92afc10d750afb487ed5e50f9c4eaf07c184146f"
   end
 
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+  end
+
   resource "webencodings" do
     url "https://files.pythonhosted.org/packages/0b/02/ae6ceac1baeda530866a85075641cec12989bd8d31af6d5ab4a3e8c92f47/webencodings-0.5.1.tar.gz"
     sha256 "b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"
-  end
-
-  # Use Gentoo's patch for ICU 74 support until Chromium updates their bundled copy
-  patch do
-    url "https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-qt/qtwebengine/files/qtwebengine-6.5.3-icu74.patch?id=ba397fa71f9bc9a074d9c65b63759e0145bb9fa0"
-    directory "qtwebengine"
-    sha256 "ceee91eb3161b385f54c0070f0e4800202b0674c63c40c8556cb69ac522e6999"
   end
 
   def install
@@ -189,6 +174,10 @@ class Qt < Formula
       qttools/src/linguist/linguist/mainwindow.cpp
     ]
     inreplace assistant_files, '"Assistant.app/Contents/MacOS/Assistant"', '"Assistant"'
+
+    # Allow generating unofficial pkg-config files for macOS to be used by other formulae.
+    # Upstream currently does not provide them: https://bugreports.qt.io/browse/QTBUG-86080
+    inreplace "qtbase/cmake/QtPkgConfigHelpers.cmake", "(NOT UNIX OR QT_FEATURE_framework)", "(NOT UNIX)"
 
     config_args = %W[
       -release
@@ -312,6 +301,18 @@ class Qt < Formula
     bin.glob("*.app") do |app|
       libexec.install app
       bin.write_exec_script libexec/app.basename/"Contents/MacOS"/app.stem
+    end
+
+    # Modify unofficial pkg-config files to fix up paths and use frameworks.
+    # Also move them to `libexec` as they are not guaranteed to work for users,
+    # i.e. there is no upstream or Homebrew support.
+    lib.glob("pkgconfig/*.pc") do |pc|
+      inreplace pc do |s|
+        s.gsub! " -L${libdir}", " -F${libdir}", false
+        s.gsub! " -lQt6", " -framework Qt", false
+        s.gsub! " -Ilib/", " -I${libdir}/", false
+      end
+      (libexec/"lib/pkgconfig").install pc
     end
   end
 

@@ -1,13 +1,10 @@
 class Threadweaver < Formula
   desc "Helper for multithreaded programming"
   homepage "https://api.kde.org/frameworks/threadweaver/html/index.html"
+  url "https://download.kde.org/stable/frameworks/6.0/threadweaver-6.0.0.tar.xz"
+  sha256 "ba9daec6e0697fdc2accf74a46a6d59403e5e340d280bce916fd6356a668ddb3"
   license "LGPL-2.0-or-later"
-
-  stable do
-    url "https://download.kde.org/stable/frameworks/5.114/threadweaver-5.114.0.tar.xz"
-    sha256 "f0f5042c7c1cbf601ba1c1e0c8d487e942abba52e3c9367c08717cc3517907f8"
-    depends_on "qt@5"
-  end
+  head "https://invent.kde.org/frameworks/threadweaver.git", branch: "master"
 
   livecheck do
     url "https://download.kde.org/stable/frameworks/"
@@ -15,23 +12,19 @@ class Threadweaver < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "55b2588a9fad79e10fe358ded618b04b8db7cc19968eadcf29942615cd0e42d2"
-    sha256 cellar: :any,                 arm64_ventura:  "4adf7089c2ce9501d501b60bfec16fb39b4f816eeaf35a91d54e2c9ebc95bed7"
-    sha256 cellar: :any,                 arm64_monterey: "f1749c19a4873334d9dca41277992546f32a3009ea8789b878a93cd45c7f25f6"
-    sha256 cellar: :any,                 sonoma:         "4716960d66d31755b11416536ab1a3d979d87c91f1adac97cfba3e92de336682"
-    sha256 cellar: :any,                 ventura:        "5e00843078ca1259f33e8f356c60f9a497653f8a72ecefe409fedfb4888fd748"
-    sha256 cellar: :any,                 monterey:       "d9ee0029ed89d2c873cd87e4135a6a5a0d9f63e50fe969463ce1efc6f820601b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aceccf8ce12a6ae8c64e13f49d0e14d9e90588c2e2150ff50106658624ca5ce8"
-  end
-
-  head do
-    url "https://invent.kde.org/frameworks/threadweaver.git", branch: "master"
-    depends_on "qt"
+    sha256 cellar: :any,                 arm64_sonoma:   "3fa10fb88c23fea1408ec6c97032052d5a6c39c0afa1ac35d9b142a9a4faba61"
+    sha256 cellar: :any,                 arm64_ventura:  "24015af19a5e47df7034743391b80c940e660b89f3114849c080d313351ce4ba"
+    sha256 cellar: :any,                 arm64_monterey: "8d27f75f28ce131324f083297a1be661ff6a9ee0c191dcb25f93f393c70b8653"
+    sha256 cellar: :any,                 sonoma:         "a6bf1c61359675b78844da28e641fd69c87a00c2f3c1e38d3e222fb2066c38c3"
+    sha256 cellar: :any,                 ventura:        "f0f54520ce2d8860ead09463cf464f44cf10c9c5b36a88abb427df36ad37faa0"
+    sha256 cellar: :any,                 monterey:       "406b3cdc2b90a7829f1a7cb6d6fe344921cf38f19f0cb0afe0b0fcdbe38cd827"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2fd79fbb29753ee01f620e2e887821dbd3ce7ca0307e5a9069647310fdc04367"
   end
 
   depends_on "cmake" => [:build, :test]
   depends_on "doxygen" => :build
   depends_on "extra-cmake-modules" => [:build, :test]
+  depends_on "qt"
 
   fails_with gcc: "5"
 
@@ -44,12 +37,23 @@ class Threadweaver < Formula
   end
 
   test do
-    ENV.delete "CPATH"
-    qt5_args = ["-DQt5Core_DIR=#{Formula["qt@5"].opt_lib}/cmake/Qt5Core"]
-    qt5_args << "-DCMAKE_BUILD_RPATH=#{Formula["qt@5"].opt_lib};#{lib}" if OS.linux?
-    system "cmake", (pkgshare/"examples/HelloWorld"), *std_cmake_args, *qt5_args
+    cp_r (pkgshare/"examples/HelloWorld").children, testpath
+
+    kf = "KF#{version.major}"
+    (testpath/"CMakeLists.txt").unlink
+    (testpath/"CMakeLists.txt").write <<~EOS
+      cmake_minimum_required(VERSION 3.5)
+      project(HelloWorld LANGUAGES CXX)
+      find_package(ECM REQUIRED NO_MODULE)
+      find_package(#{kf}ThreadWeaver REQUIRED NO_MODULE)
+      add_executable(ThreadWeaver_HelloWorld HelloWorld.cpp)
+      target_link_libraries(ThreadWeaver_HelloWorld #{kf}::ThreadWeaver)
+    EOS
+
+    system "cmake", "-S", ".", "-B", ".", *std_cmake_args
     system "cmake", "--build", "."
 
+    ENV["LC_ALL"] = "en_US.UTF-8"
     assert_equal "Hello World!", shell_output("./ThreadWeaver_HelloWorld 2>&1").strip
   end
 end

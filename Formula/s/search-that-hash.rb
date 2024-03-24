@@ -10,22 +10,17 @@ class SearchThatHash < Formula
   head "https://github.com/HashPals/Search-That-Hash.git", branch: "main"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "354a02bb045db86f60161b4d8bb395f850483fca2433fa9b064d3c4845e9228a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "787e063861cfba51dba2b1232db09032f20f134d0c4a03943fca5546fd971e0b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3e2b59220c9287608e76892f891ea691c8faf778830b68188a3cadfc88e339d3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "88833c4b4cdab2860aab715f538b8caa26357052b3cbd5962ecc0c90659a998e"
-    sha256 cellar: :any_skip_relocation, ventura:        "e378ac015b287b04647feba9102f465d78ee98062fc1fa3233ab8056e986e02d"
-    sha256 cellar: :any_skip_relocation, monterey:       "c81254051fd25f243d5170530c67ab10bba7409dc67e3a00d0af2d17085de823"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0a64017fd9b628e65ce3bb6f7eb5a5b18e763a8f1513297c4d25f30729d401b2"
+    rebuild 3
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "17654735e1baf8b042d8c7a92a00e17cd3a433efcdfe0ce56c30a42c2da3959f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f7d51e7d193f54d08a081687027a664177d71932fc881139fcadd36c1edf5fa5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a01765e1dc9dfac4f70c21f47731e1105e989a9a27d3e1f89412f302ba5eb587"
+    sha256 cellar: :any_skip_relocation, sonoma:         "684477d36b05479cff5582e39842cb6d48783e8fc952c6cd798466549d17cbe8"
+    sha256 cellar: :any_skip_relocation, ventura:        "eeabb7c5facfdca4d0c043423cf0764a4466970e553b52b2112cf6df0f4c88db"
+    sha256 cellar: :any_skip_relocation, monterey:       "42cafebad9031752587e30fb669bcd69b8a119ec2ebd6cafe0917731fcab0e22"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec8c7ccca37beba0d9bd61823a97a32d65348ec99823e1d6243f2d736e9a1c63"
   end
 
-  depends_on "name-that-hash"
-  depends_on "pygments"
-  depends_on "python-certifi"
-  depends_on "python-pyparsing"
-  depends_on "python-toml"
-  depends_on "python-typing-extensions"
+  depends_on "certifi"
   depends_on "python@3.12"
 
   resource "appdirs" do
@@ -34,8 +29,13 @@ class SearchThatHash < Formula
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/cf/ac/e89b2f2f75f51e9859979b56d2ec162f7f893221975d244d8d5277aa9489/charset-normalizer-3.3.0.tar.gz"
-    sha256 "63563193aec44bce707e0c5ca64ff69fa72ed7cf34ce6e11d5127555756fd2f6"
+    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
+    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
+  end
+
+  resource "click" do
+    url "https://files.pythonhosted.org/packages/27/6f/be940c8b1f1d69daceeb0032fee6c34d7bd70e3e649ccac0951500b4720e/click-7.1.2.tar.gz"
+    sha256 "d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a"
   end
 
   resource "cloudscraper" do
@@ -53,19 +53,39 @@ class SearchThatHash < Formula
     sha256 "7c991aa71a4577af2f82600d8f8f3a89f936baeaf9b50a9c197da014e5bf16b0"
   end
 
+  resource "commonmark" do
+    url "https://files.pythonhosted.org/packages/60/48/a60f593447e8f0894ebb7f6e6c1f25dafc5e89c5879fdc9360ae93ff83f0/commonmark-0.9.1.tar.gz"
+    sha256 "452f9dc859be7f06631ddcb328b6919c67984aca654e5fefb3914d54691aed60"
+  end
+
   resource "humanfriendly" do
     url "https://files.pythonhosted.org/packages/cc/3f/2c29224acb2e2df4d2046e4c73ee2662023c58ff5b113c4c1adac0886c43/humanfriendly-10.0.tar.gz"
     sha256 "6b0b831ce8f15f7300721aa49829fc4e83921a9a301cc7f606be6686a2288ddc"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
-    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
+    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
+    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
   end
 
   resource "loguru" do
     url "https://files.pythonhosted.org/packages/6d/25/0d65383fc7b4f4ce9505d16773b2b2a9f0f465ef00ab337d66afff47594a/loguru-0.5.3.tar.gz"
     sha256 "b28e72ac7a98be3d28ad28570299a393dfcd32e5e3f6a353dec94675767b6319"
+  end
+
+  resource "name-that-hash" do
+    url "https://files.pythonhosted.org/packages/32/58/1f4052bd4999c5aceb51c813cc8ef32838561c8fb18f90cf4b86df6bd818/name-that-hash-1.10.0.tar.gz"
+    sha256 "aabe1a3e23f5f8ca1ef6522eb1adcd5c69b5fed3961371ed84a22fc86ee648a2"
+  end
+
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
+    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
+  end
+
+  resource "pyparsing" do
+    url "https://files.pythonhosted.org/packages/37/fe/65c989f70bd630b589adfbbcd6ed238af22319e90f059946c26b4835e44b/pyparsing-3.1.1.tar.gz"
+    sha256 "ede28a1a32462f5a9705e07aea48001a08f7cf81a021585011deba701581a0db"
   end
 
   resource "requests" do
@@ -78,13 +98,24 @@ class SearchThatHash < Formula
     sha256 "7681a0a3d047012b5bdc0ee37d7f8f07ebe76ab08caeccfc3921ce23c88d5bc6"
   end
 
-  resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/af/47/b215df9f71b4fdba1025fc05a77db2ad243fa0926755a52c5e71659f4e3c/urllib3-2.0.7.tar.gz"
-    sha256 "c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84"
+  resource "rich" do
+    url "https://files.pythonhosted.org/packages/ae/f6/6ffb46f6cf0bb584e44279accd3321cb838b78b324031feb8fd9adf63ed2/rich-9.13.0.tar.gz"
+    sha256 "d59e94a0e3e686f0d268fe5c7060baa1bd6744abca71b45351f5850a3aaa6764"
   end
 
-  def python3
-    "python3.12"
+  resource "toml" do
+    url "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz"
+    sha256 "b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
+  end
+
+  resource "typing-extensions" do
+    url "https://files.pythonhosted.org/packages/ed/12/c5079a15cf5c01d7f4252b473b00f7e68ee711be605b9f001528f0298b98/typing_extensions-3.10.0.2.tar.gz"
+    sha256 "49f75d16ff11f1cd258e1b988ccff82a3ca5570217d7ad8c5f48205dd99a677e"
+  end
+
+  resource "urllib3" do
+    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
+    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
   end
 
   def install
@@ -94,18 +125,6 @@ class SearchThatHash < Formula
     inreplace "pyproject.toml", 'build-backend = "poetry.masonry.api"', 'build-backend = "poetry.core.masonry.api"'
 
     virtualenv_install_with_resources
-
-    # link dependent virtualenvs to this one
-    site_packages = Language::Python.site_packages(python3)
-    paths = %w[name-that-hash].map do |package_name|
-      package = Formula[package_name].opt_libexec
-      package/site_packages
-    end
-    (libexec/site_packages/"homebrew-deps.pth").write paths.join("\n")
-
-    site_packages = Language::Python.site_packages(python3)
-    pth_contents = "import site; site.addsitedir('#{libexec/site_packages}')\n"
-    (prefix/site_packages/"homebrew-search_that_hash.pth").write pth_contents
   end
 
   test do
@@ -113,7 +132,5 @@ class SearchThatHash < Formula
     output = shell_output("#{bin}/sth --text #{hash}")
     assert_match "#{hash}\n", output
     assert_match "Text : password\nType : MD5\n", output
-
-    system python3, "-c", "from search_that_hash import api"
   end
 end

@@ -1,8 +1,8 @@
 class PostgresqlAT13 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v13.13/postgresql-13.13.tar.bz2"
-  sha256 "8af69c2599047a2ad246567d68ec4131aef116954d8c3e469e9789080b37a474"
+  url "https://ftp.postgresql.org/pub/source/v13.14/postgresql-13.14.tar.bz2"
+  sha256 "b8df078551898960bd500dc5d38a177e9905376df81fe7f2b660a1407fa6a5ed"
   license "PostgreSQL"
   revision 1
 
@@ -12,13 +12,13 @@ class PostgresqlAT13 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "3f5726702af2f5445bb2a5aa275fff8a3af9ce95ce5a0d522987cd5f7c3a0fe8"
-    sha256 arm64_ventura:  "9d12d6a9a2badd16851b66b2518d0ac6f0b6645cc2a823da180fcef99cdb8215"
-    sha256 arm64_monterey: "b699aa5abdc5bbf6927bafc45299be5c247517d65236ae8e3400fd8a69f1d8ec"
-    sha256 sonoma:         "24b6e70b0fdf274c4ab0d1d050786d18ef86458fcbb869690fe3a101d14ea413"
-    sha256 ventura:        "2ba0f422a2f9ad6f97518614893fe62770cd29b9a45d09b32548f46c3b1f678d"
-    sha256 monterey:       "76d344edc661da3fb57d08b089a648803d8d5b58bf37d7e34e48869c27515481"
-    sha256 x86_64_linux:   "a431b819d9d09707e5ca0b507000b77462af7091a5fbdd0bb40b1e7e5a20b2a6"
+    sha256 arm64_sonoma:   "2ea0f1343cd5caad731f8450796e3d350f0715ff44cef3f1ecbde9acb5855f35"
+    sha256 arm64_ventura:  "f151fdf1c18c4d51579b25acc1cb0aa4dc519cb3ff9d4ca36556f2b5ff4411d0"
+    sha256 arm64_monterey: "2a3cd3093609ba243f10f61625507147b29e520d95ed7010b83f7b362d1a6dcc"
+    sha256 sonoma:         "e82688d137e862483db8be56c865d6196db8f35246256e941414b6d8b9fa4113"
+    sha256 ventura:        "f6e94da98e34b991cab6326130987f97bd975ca1ee8477322d1aec4c3c6feff2"
+    sha256 monterey:       "388f367ef88d0a8f8aef30cff912c8ceb8cbf7974dc4e7eb1286f95184983ac4"
+    sha256 x86_64_linux:   "00b6a10c994e4297301d99d2713d1290c6dab7ba13f4e349d0e911f7a944d991"
   end
 
   keg_only :versioned_formula
@@ -45,11 +45,6 @@ class PostgresqlAT13 < Formula
     depends_on "linux-pam"
     depends_on "util-linux"
   end
-
-  # Fix compatibility with OpenSSL 3.2
-  # Remove once merged
-  # Ref https://www.postgresql.org/message-id/CX9SU44GH3P4.17X6ZZUJ5D40N%40neon.tech
-  patch :DATA
 
   def install
     ENV.delete "PKG_CONFIG_LIBDIR" if OS.mac? && version == :catalina
@@ -189,89 +184,3 @@ class PostgresqlAT13 < Formula
     assert_equal (opt_include/"postgresql/server").to_s, shell_output("#{bin}/pg_config --includedir-server").chomp
   end
 end
-
-__END__
-diff --git a/src/backend/libpq/be-secure-openssl.c b/src/backend/libpq/be-secure-openssl.c
-index 55fe59276a..76ef7afd77 100644
---- a/src/backend/libpq/be-secure-openssl.c
-+++ b/src/backend/libpq/be-secure-openssl.c
-@@ -748,10 +748,6 @@ be_tls_write(Port *port, void *ptr, size_t len, int *waitfor)
-  * to retry; do we need to adopt their logic for that?
-  */
-
--#ifndef HAVE_BIO_GET_DATA
--#define BIO_get_data(bio) (bio->ptr)
--#define BIO_set_data(bio, data) (bio->ptr = data)
--#endif
-
- static BIO_METHOD *my_bio_methods = NULL;
-
-@@ -762,7 +758,7 @@ my_sock_read(BIO *h, char *buf, int size)
-
- 	if (buf != NULL)
- 	{
--		res = secure_raw_read(((Port *) BIO_get_data(h)), buf, size);
-+		res = secure_raw_read(((Port *) BIO_get_app_data(h)), buf, size);
- 		BIO_clear_retry_flags(h);
- 		if (res <= 0)
- 		{
-@@ -782,7 +778,7 @@ my_sock_write(BIO *h, const char *buf, int size)
- {
- 	int			res = 0;
-
--	res = secure_raw_write(((Port *) BIO_get_data(h)), buf, size);
-+	res = secure_raw_write(((Port *) BIO_get_app_data(h)), buf, size);
- 	BIO_clear_retry_flags(h);
- 	if (res <= 0)
- 	{
-@@ -858,7 +854,7 @@ my_SSL_set_fd(Port *port, int fd)
- 		SSLerr(SSL_F_SSL_SET_FD, ERR_R_BUF_LIB);
- 		goto err;
- 	}
--	BIO_set_data(bio, port);
-+	BIO_set_app_data(bio, port);
-
- 	BIO_set_fd(bio, fd, BIO_NOCLOSE);
- 	SSL_set_bio(port->ssl, bio, bio);
-diff --git a/src/interfaces/libpq/fe-secure-openssl.c b/src/interfaces/libpq/fe-secure-openssl.c
-index 07d5daf4d9..1eb17dd280 100644
---- a/src/interfaces/libpq/fe-secure-openssl.c
-+++ b/src/interfaces/libpq/fe-secure-openssl.c
-@@ -1602,10 +1602,6 @@ PQsslAttribute(PGconn *conn, const char *attribute_name)
-  * to retry; do we need to adopt their logic for that?
-  */
-
--#ifndef HAVE_BIO_GET_DATA
--#define BIO_get_data(bio) (bio->ptr)
--#define BIO_set_data(bio, data) (bio->ptr = data)
--#endif
-
- static BIO_METHOD *my_bio_methods;
-
-@@ -1614,7 +1610,7 @@ my_sock_read(BIO *h, char *buf, int size)
- {
- 	int			res;
-
--	res = pqsecure_raw_read((PGconn *) BIO_get_data(h), buf, size);
-+	res = pqsecure_raw_read((PGconn *) BIO_get_app_data(h), buf, size);
- 	BIO_clear_retry_flags(h);
- 	if (res < 0)
- 	{
-@@ -1644,7 +1640,7 @@ my_sock_write(BIO *h, const char *buf, int size)
- {
- 	int			res;
-
--	res = pqsecure_raw_write((PGconn *) BIO_get_data(h), buf, size);
-+	res = pqsecure_raw_write((PGconn *) BIO_get_app_data(h), buf, size);
- 	BIO_clear_retry_flags(h);
- 	if (res < 0)
- 	{
-@@ -1735,7 +1731,7 @@ my_SSL_set_fd(PGconn *conn, int fd)
- 		SSLerr(SSL_F_SSL_SET_FD, ERR_R_BUF_LIB);
- 		goto err;
- 	}
--	BIO_set_data(bio, conn);
-+	BIO_set_app_data(bio, conn);
-
- 	SSL_set_bio(conn->ssl, bio, bio);
- 	BIO_set_fd(bio, fd, BIO_NOCLOSE);

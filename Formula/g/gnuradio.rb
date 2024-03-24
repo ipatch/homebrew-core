@@ -6,7 +6,7 @@ class Gnuradio < Formula
   url "https://github.com/gnuradio/gnuradio/archive/refs/tags/v3.10.9.2.tar.gz"
   sha256 "7fa154c423d01494cfa4c739faabad70b97f605238cd3fea8907b345b421fea1"
   license "GPL-3.0-or-later"
-  revision 1
+  revision 2
   head "https://github.com/gnuradio/gnuradio.git", branch: "main"
 
   livecheck do
@@ -15,19 +15,20 @@ class Gnuradio < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "fcdea3ab120e9241e2bfa15b28c448aae3523f4a2caa8701a93301c34c367645"
-    sha256 cellar: :any,                 arm64_ventura:  "2ea02628fa10071bf27b8a5afb78fd85b5bc2623aaa189794aa539424e0f7356"
-    sha256 cellar: :any,                 arm64_monterey: "38f103f42f7a9cedbd4170172994fbdc671c7f5fc21080d997b57a52b93b9da0"
-    sha256 cellar: :any,                 sonoma:         "30df98c6841de34b04fa099cabc84ebb298f8d955499bba5797cb357d446e0fc"
-    sha256 cellar: :any,                 ventura:        "cd6a00a779ff9afb780feeb5414dc28169d2348070d5c9b14c66cf77c96ac272"
-    sha256 cellar: :any,                 monterey:       "2d9859c931478559daa1ed5d48093dcd74ebda0cf9ce1de7865eb0b10088c7c5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6db74554fa498cad29db227f04ae416b160697714cb0a53206c5f8f6c34d2422"
+    sha256 cellar: :any,                 arm64_sonoma:   "ef18f4ea712a263f44f668cfbc233c6ae8cf31d6f39dc4175e96d531683d386d"
+    sha256 cellar: :any,                 arm64_ventura:  "435eb848c6385a96655caa0eadf22e4c920ea6107c997d41f2192d288e4bc2bf"
+    sha256 cellar: :any,                 arm64_monterey: "8b5adcc5454f774b00754b6b49d0c354a954c6f6d90ae509b553eb6472ade969"
+    sha256 cellar: :any,                 sonoma:         "ee68462c60e03819e747c0a8fda0ab85eb0df90ed86076c6ad1f833aa9767c48"
+    sha256 cellar: :any,                 ventura:        "d2b66131db37c930bec3f8c37e7976d11710f021583a5a9adaf9950f78924c3f"
+    sha256 cellar: :any,                 monterey:       "54ea22ac2308911ee30e286f1f1a647f901cf0ff4be1af66db902e3f4e5187db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "97efd2bec66138e7544b72649609df1cfa4352f06ec7834b0c942663d2b93020"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "pkg-config" => :build
   depends_on "pybind11" => :build
+  depends_on "rust" => :build # for rpds-py
   depends_on "adwaita-icon-theme"
   depends_on "boost"
   depends_on "cppzmq"
@@ -41,28 +42,44 @@ class Gnuradio < Formula
   depends_on "log4cpp"
   depends_on "numpy"
   depends_on "portaudio"
-  depends_on "pygments"
   depends_on "pygobject3"
   depends_on "pyqt@5"
-  depends_on "python-click"
-  depends_on "python-mako"
-  depends_on "python-packaging"
-  depends_on "python@3.11"
-  depends_on "pyyaml"
+  depends_on "python@3.12"
   depends_on "qt@5"
   depends_on "qwt-qt5"
-  depends_on "six"
   depends_on "soapyrtlsdr"
   depends_on "spdlog"
   depends_on "uhd"
   depends_on "volk"
   depends_on "zeromq"
 
+  uses_from_macos "libxml2", since: :ventura
+  uses_from_macos "libxslt"
+
   fails_with gcc: "5"
 
-  resource "cheetah3" do
-    url "https://files.pythonhosted.org/packages/23/33/ace0250068afca106c1df34348ab0728e575dc9c61928d216de3e381c460/Cheetah3-3.2.6.post1.tar.gz"
-    sha256 "58b5d84e5fbff6cf8e117414b3ea49ef51654c02ee887d155113c5b91d761967"
+  # Resources for Python packages based on .conda/recipe/meta.yaml
+  # Currently skipping `matplotlib` and `scipy` extra dependencies.
+  #
+  # The following are paths where packages are used:
+  # * click - gr-utils/modtool/cli/
+  # * click-plugins - gr-utils/modtool/cli/base.py
+  # * jsonschema - grc/blocks/json_config.block.yml
+  # * lxml - grc/converter/xml.py
+  # * mako - grc/
+  # * packaging - CMakeLists.txt
+  # * pygccxml - gr-utils/blocktool/core/parseheader.py
+  # * pyyaml - grc/
+  # * setuptools - gr-utils/modtool/cli/base.py
+
+  resource "attrs" do
+    url "https://files.pythonhosted.org/packages/e3/fc/f800d51204003fa8ae392c4e8278f256206e7a919b708eef054f5f4b650d/attrs-23.2.0.tar.gz"
+    sha256 "935dc3b529c262f6cf76e50877d35a4bd3c1de194fd41f47a2b7ae8f19971f30"
+  end
+
+  resource "click" do
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
   end
 
   resource "click-plugins" do
@@ -70,22 +87,73 @@ class Gnuradio < Formula
     sha256 "46ab999744a9d831159c3411bb0c79346d94a444df9a3a3742e9ed63645f264b"
   end
 
-  # pygccxml only published a .whl file on PyPi
+  resource "jsonschema" do
+    url "https://files.pythonhosted.org/packages/4d/c5/3f6165d3df419ea7b0990b3abed4ff348946a826caf0e7c990b65ff7b9be/jsonschema-4.21.1.tar.gz"
+    sha256 "85727c00279f5fa6bedbe6238d2aa6403bedd8b4864ab11207d07df3cc1b2ee5"
+  end
+
+  resource "jsonschema-specifications" do
+    url "https://files.pythonhosted.org/packages/f8/b9/cc0cc592e7c195fb8a650c1d5990b10175cf13b4c97465c72ec841de9e4b/jsonschema_specifications-2023.12.1.tar.gz"
+    sha256 "48a76787b3e70f5ed53f1160d2b81f586e4ca6d1548c5de7085d1682674764cc"
+  end
+
+  resource "lxml" do
+    url "https://files.pythonhosted.org/packages/2b/b4/bbccb250adbee490553b6a52712c46c20ea1ba533a643f1424b27ffc6845/lxml-5.1.0.tar.gz"
+    sha256 "3eea6ed6e6c918e468e693c41ef07f3c3acc310b70ddd9cc72d9ef84bc9564ca"
+  end
+
+  resource "mako" do
+    url "https://files.pythonhosted.org/packages/d4/1b/71434d9fa9be1ac1bc6fb5f54b9d41233be2969f16be759766208f49f072/Mako-1.3.2.tar.gz"
+    sha256 "2a0c8ad7f6274271b3bb7467dd37cf9cc6dab4bc19cb69a4ef10669402de698e"
+  end
+
+  resource "markupsafe" do
+    url "https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz"
+    sha256 "d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b"
+  end
+
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
+    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+  end
+
   resource "pygccxml" do
-    url "https://github.com/CastXML/pygccxml/archive/refs/tags/v2.4.0.tar.gz"
-    sha256 "d59867809f8008ec48a5567a7203bb4c130ff203a8ddd708c945690749723c70"
+    url "https://files.pythonhosted.org/packages/a7/66/26fd5b200172161de3d903b87a3ec9c6764bc6c6895744a57070790ea2aa/pygccxml-2.4.0.tar.gz"
+    sha256 "831d670c9829635a4f2fe1ff1e92d1e2bfbdebc16179f1ce7f4c3ce1762f1cb3"
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
+    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+  end
+
+  resource "referencing" do
+    url "https://files.pythonhosted.org/packages/21/c5/b99dd501aa72b30a5a87d488d7aa76ec05bdf0e2c7439bc82deb9448dd9a/referencing-0.33.0.tar.gz"
+    sha256 "c775fedf74bc0f9189c2a3be1c12fd03e8c23f4d371dce795df44e06c5b412f7"
+  end
+
+  resource "rpds-py" do
+    url "https://files.pythonhosted.org/packages/55/ba/ce7b9f0fc5323f20ffdf85f682e51bee8dc03e9b54503939ebb63d1d0d5e/rpds_py-0.18.0.tar.gz"
+    sha256 "42821446ee7a76f5d9f71f9e33a4fb2ffd724bb3e7f93386150b61a43115788d"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/c8/1f/e026746e5885a83e1af99002ae63650b7c577af5c424d4c27edcf729ab44/setuptools-69.1.1.tar.gz"
+    sha256 "5c0806c7d9af348e6dd3777b4f4dbb42c7ad85b190104837488eab9a7c945cf8"
+  end
+
+  def python3
+    "python3.12"
   end
 
   def install
-    python = "python3.11"
     ENV.cxx11
-
     ENV["XML_CATALOG_FILES"] = etc/"xml/catalog"
 
     venv_root = libexec/"venv"
-    site_packages = Language::Python.site_packages(python)
+    site_packages = Language::Python.site_packages(python3)
     ENV.prepend_create_path "PYTHONPATH", venv_root/site_packages
-    venv = virtualenv_create(venv_root, python)
+    venv = virtualenv_create(venv_root, python3)
     venv.pip_install resources
 
     # Avoid references to the Homebrew shims directory
@@ -130,7 +198,7 @@ class Gnuradio < Formula
     # plugins installed by other packages. An automatically-loaded module adds
     # this directory to the package search path.
     plugin_pth_dir = etc/"gnuradio/plugins.d"
-    mkdir plugin_pth_dir
+    plugin_pth_dir.mkpath
 
     venv_site_packages = venv_root/site_packages
 
@@ -143,11 +211,9 @@ class Gnuradio < Formula
     (venv_site_packages/"homebrew-gnuradio.pth").write pth_contents
 
     # Patch the grc config to change the search directory for blocks
-    inreplace etc/"gnuradio/conf.d/grc.conf" do |s|
-      s.gsub! share.to_s, "#{HOMEBREW_PREFIX}/share"
-    end
+    inreplace etc/"gnuradio/conf.d/grc.conf", share.to_s, "#{HOMEBREW_PREFIX}/share"
 
-    rm bin.children.reject(&:executable?)
+    bin.children.reject(&:executable?).map(&:unlink)
   end
 
   test do
@@ -215,6 +281,6 @@ class Gnuradio < Formula
 
       main()
     EOS
-    system Formula["python@3.11"].opt_bin/"python3.11", testpath/"test.py"
+    system python3, testpath/"test.py"
   end
 end

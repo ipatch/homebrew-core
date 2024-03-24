@@ -1,8 +1,8 @@
 class Expat < Formula
   desc "XML 1.0 parser"
   homepage "https://libexpat.github.io/"
-  url "https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.xz"
-  sha256 "ef2420f0232c087801abf705e89ae65f6257df6b7931d37846a193ef2e8cdcbe"
+  url "https://github.com/libexpat/libexpat/releases/download/R_2_6_2/expat-2.6.2.tar.lz"
+  sha256 "d276ffa9602e0c5f289f33fab7b3a9c86da446092642a09cd3c0c8e51f50d862"
   license "MIT"
 
   livecheck do
@@ -14,16 +14,13 @@ class Expat < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "450d6a6ffbdf07006b39a7974de0dd96a9f14d79a7a098d8320b548e241eab71"
-    sha256 cellar: :any,                 arm64_ventura:  "3c7cd6f81b3171b8858df622e03582d983053c9fab61c6786690dc21915b37bc"
-    sha256 cellar: :any,                 arm64_monterey: "b2da23ec6cc32aa2cfabf746594e905cddb76b8351b40d317b9d4231cb782f13"
-    sha256 cellar: :any,                 arm64_big_sur:  "be121e65ca172e88af2d28b7e8a13fab9794ce1df74c597d34011c3dd7cc9a72"
-    sha256 cellar: :any,                 sonoma:         "5fe8f9a832e949d8fc5495d767594145b56748b9cb230ce6fd6962aa862a2435"
-    sha256 cellar: :any,                 ventura:        "1c45270bdb0c45c810cd90457cca0aa2e48e25762624443b59d3f0c1ed9f9ebf"
-    sha256 cellar: :any,                 monterey:       "ece2dd08612bb84c394074eea1ee11249678b716d35ae8a29a3369f54a10e9b8"
-    sha256 cellar: :any,                 big_sur:        "fbad8bd585ca3b1fe7a9f65ca014893ae06d65727c7edf29e9c16ddd06b49242"
-    sha256 cellar: :any,                 catalina:       "0cb52adc9b8b11faedd3e6a4bc579d3aa4c90ee451282130fc885afb884c1d4d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ed2b581249b57581db4178a3f219f94f75d8b540867cc27fe1b809b3d32f1772"
+    sha256 cellar: :any,                 arm64_sonoma:   "cfcec3a57f17f190581a1f3dc959de165152bd2d8b83db6c176f00e4dd65eb9f"
+    sha256 cellar: :any,                 arm64_ventura:  "9a675f266716d80014a378ea62c50cdf06c6cdfd19e1d1f40a04a39a22a06472"
+    sha256 cellar: :any,                 arm64_monterey: "71dc09c80c310ba0c4a99519010dfe67ca5a45972e12f80ed82feb435b87d640"
+    sha256 cellar: :any,                 sonoma:         "e26a9152e3517191d95ecdbe59365a336c4189750493f6f2f293a3c68c7d155f"
+    sha256 cellar: :any,                 ventura:        "7efe128f6496ec8daacd44b992449112427a6b5db3a5d4d70cfd0b7ed9e57af7"
+    sha256 cellar: :any,                 monterey:       "7a943ce114b36d8581a7bea80b7d56b33aa9b9a33a8ed8400b600ac34d7043a3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "00d8e476d4e3ec9c02be088eb7c9d5cee7376c2206f00a90229f279674ebe0de"
   end
 
   head do

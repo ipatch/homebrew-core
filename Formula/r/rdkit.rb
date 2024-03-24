@@ -1,28 +1,27 @@
 class Rdkit < Formula
   desc "Open-source chemoinformatics library"
   homepage "https://rdkit.org/"
-  url "https://github.com/rdkit/rdkit/archive/refs/tags/Release_2023_09_4.tar.gz"
-  sha256 "abacae431bbc5882b87cc8629b7ddc02757204e854aa45b6157ec2bf45d623ef"
+  url "https://github.com/rdkit/rdkit/archive/refs/tags/Release_2023_09_6.tar.gz"
+  sha256 "e8f580db8fe14070d009adafb1f0e5b15c12ebe6c1cf4e99085c0615be3996fc"
   license "BSD-3-Clause"
-  revision 1
   head "https://github.com/rdkit/rdkit.git", branch: "master"
 
   livecheck do
     url :stable
     regex(/^Release[._-](\d+(?:[._]\d+)+)$/i)
     strategy :git do |tags|
-      tags.map { |tag| tag[regex, 1]&.tr("_", ".") }.compact
+      tags.filter_map { |tag| tag[regex, 1]&.tr("_", ".") }
     end
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "a236b4e91a68c7a539e44e83fed41dd3123634f0272573af1bdb96f3900a732e"
-    sha256 cellar: :any,                 arm64_ventura:  "4e8920fc8abf1de88a94a93db5eeadec066a01004ea21e6cb7cc94723685313d"
-    sha256 cellar: :any,                 arm64_monterey: "a2db343185ce586c9ee70b311cebc862f44965d6c0f5f915e02d3fb63dcdda66"
-    sha256 cellar: :any,                 sonoma:         "f42bf38ce775f2628ecb793937a6e1a5f977c79513e53a2b953029558f364fec"
-    sha256 cellar: :any,                 ventura:        "8397aeee00513fbb3bed7bb23cfe02a1b8a8b8279f1cc461ff1cfc9312dcb04b"
-    sha256 cellar: :any,                 monterey:       "da50b8cdc17cac150d3030b5d20b2c8811bfc40199714fe9e29ef099efd1ca01"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2709c4ad1e560d150bab442c3f5cce91dcef1304f900ee6e97d8d7717c4fcbe5"
+    sha256 cellar: :any,                 arm64_sonoma:   "2d137bbb2f33d17f43eda6dd1c104279b70f870210c92c681f0aa4718fbd7f70"
+    sha256 cellar: :any,                 arm64_ventura:  "ba4865c539cb6af26bfe0dc89860f55619d901f2f912980411290f63c6dcbcab"
+    sha256 cellar: :any,                 arm64_monterey: "d4c6b8253ec120e7bc497a4a19f9b3ab6f55e81e957ea11e7b726d8fbb9041b9"
+    sha256 cellar: :any,                 sonoma:         "3b28ac2b72ddc2858b4dda70648285ab0bcb1ae2b8db00435239a732e3136e6f"
+    sha256 cellar: :any,                 ventura:        "381ea092c4e77f0ed6f40bfad322747818b3d55c9c41a84ff80a83549e379a06"
+    sha256 cellar: :any,                 monterey:       "a0366f058cb294c55f5d09177f5db5e25f38a93990c3089bf4e71acd189ec460"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dc9be00ba50be9fdf691a8488a101651efb1bbc4cdb6cde1372e1e040e388009"
   end
 
   depends_on "cmake" => :build
@@ -33,7 +32,7 @@ class Rdkit < Formula
   depends_on "eigen"
   depends_on "freetype"
   depends_on "numpy"
-  depends_on "postgresql@16"
+  depends_on "postgresql@14"
   depends_on "py3cairo"
   depends_on "python@3.12"
 
@@ -48,7 +47,8 @@ class Rdkit < Formula
   end
 
   def postgresql
-    Formula["postgresql@16"]
+    deps.map(&:to_formula)
+        .find { |f| f.name.start_with?("postgresql@") }
   end
 
   def install
@@ -99,8 +99,6 @@ class Rdkit < Formula
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-
-    (prefix/site_packages/"homebrew-rdkit.pth").write libexec/site_packages
   end
 
   def caveats
@@ -112,10 +110,29 @@ class Rdkit < Formula
   end
 
   test do
+    # Test Python module
     system python_executable, "-c", "import rdkit"
     (testpath/"test.py").write <<~EOS
       from rdkit import Chem ; print(Chem.MolToSmiles(Chem.MolFromSmiles('C1=CC=CN=C1')))
     EOS
     assert_match "c1ccncc1", shell_output("#{python_executable} test.py 2>&1")
+
+    # Test PostgreSQL extension
+    ENV["LC_ALL"] = "C"
+    pg_ctl = postgresql.opt_bin/"pg_ctl"
+    psql = postgresql.opt_bin/"psql"
+    port = free_port
+
+    system pg_ctl, "initdb", "-D", testpath/"test"
+    (testpath/"test/postgresql.conf").write <<~EOS, mode: "a+"
+
+      port = #{port}
+    EOS
+    system pg_ctl, "start", "-D", testpath/"test", "-l", testpath/"log"
+    begin
+      system psql, "-p", port.to_s, "-c", "CREATE EXTENSION \"rdkit\";", "postgres"
+    ensure
+      system pg_ctl, "stop", "-D", testpath/"test"
+    end
   end
 end

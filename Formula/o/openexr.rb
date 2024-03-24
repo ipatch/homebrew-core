@@ -1,18 +1,18 @@
 class Openexr < Formula
   desc "High dynamic-range image file format"
   homepage "https://www.openexr.com/"
-  url "https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v3.2.1.tar.gz"
-  sha256 "61e175aa2203399fb3c8c2288752fbea3c2637680d50b6e306ea5f8ffdd46a9b"
+  url "https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v3.2.3.tar.gz"
+  sha256 "f3f6c4165694d5c09e478a791eae69847cadb1333a2948ca222aa09f145eba63"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "48cedb17ec3aad949e172fbf30cdcf669bce6b7a6b65a62a0ffbb27d5183c813"
-    sha256 cellar: :any,                 arm64_ventura:  "29e6b7abc63489d0ebf8540b3e9f9f6f3ae9e1433f3208480c9a7a419f9cd008"
-    sha256 cellar: :any,                 arm64_monterey: "fab546a78c5da96eb44d8cedbdcc46d701cc2a34fc9452294201a95925761155"
-    sha256 cellar: :any,                 sonoma:         "89082b132cee8b5a74d69f97d60db99d3108f1f2f4b0d59ce994c3dcc6df7266"
-    sha256 cellar: :any,                 ventura:        "7360050f81625cb8771c53844303fb0cb04d402acc012ee012d57878a5474bd9"
-    sha256 cellar: :any,                 monterey:       "c6db118270c7cc6e2006ce55c26bed831ef58902b96f757f9bfa25e62223976d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac542ea50628d230966c9659e0c392c27ee49d24ffd215e45b46a8f1afb28c2e"
+    sha256 cellar: :any,                 arm64_sonoma:   "a357d90dc61aa4a52341360d4f0c00380d92efe60b1bbf8d3414cd9cc4fd9313"
+    sha256 cellar: :any,                 arm64_ventura:  "791d76391dccefe54ff1a26920a256ebdee3e83d3bcfb7d94bd5b60f57237a05"
+    sha256 cellar: :any,                 arm64_monterey: "58a60da9dcce71915ce5dc11b4330d09c712f6040740f9bffc26efecbbb5d7c7"
+    sha256 cellar: :any,                 sonoma:         "03d8be45f4df92a8a4686fc40b53ad53b9b56827606d21d9df56a320e65f86fb"
+    sha256 cellar: :any,                 ventura:        "a44dc65bf9d528bf238da62658821d4b8a38fe78102e1138feabc4cb5c024f1f"
+    sha256 cellar: :any,                 monterey:       "551c9b7829489ffe3e6334b1c7a7a38ba4cf75d8ca2a1560b3936f81491e4e0d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d0618d89a16c7644fb231d68b3fe5b131bac75278d5050921abadaed771f610c"
   end
 
   depends_on "cmake" => :build

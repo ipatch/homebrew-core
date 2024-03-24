@@ -1,37 +1,30 @@
 class DockerMachine < Formula
   desc "Create Docker hosts locally and on cloud providers"
   homepage "https://docs.docker.com/machine"
-  url "https://gitlab.com/gitlab-org/ci-cd/docker-machine.git",
-      tag:      "v0.16.2-gitlab.23",
-      revision: "c57b3d7e5613393b5102d295e4ceeccaf80a5105"
-  version "0.16.2-gitlab.23"
+  url "https://gitlab.com/gitlab-org/ci-cd/docker-machine/-/archive/v0.16.2-gitlab.25/docker-machine-v0.16.2-gitlab.25.tar.bz2"
+  version "0.16.2-gitlab.25"
+  sha256 "a4b7f3f68891206acd3e75bd55ed3b32d92926fd525ca11a85a73612ced308b3"
   license "Apache-2.0"
   head "https://gitlab.com/gitlab-org/ci-cd/docker-machine.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3cb251929d0b164418fbab2bbb6a76836b8dfee37823cb008d680f5fbfff145d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "38b4bc24bf04af27e03e11021febc42af27300bd345952ec63b59e057e2495f5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5f80d55b6c43025745166ebb7d6dfec9b0a0c3539c47b284b912252c9fe5dce3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "570779e7df9702b3b0ee9e4bb325868164e734a1f6cf479a5e283fff1abf5e7d"
-    sha256 cellar: :any_skip_relocation, ventura:        "27afe8031ab01ccc35eb62465bbe30ecacb0bce05d30d08604b3128a186971cc"
-    sha256 cellar: :any_skip_relocation, monterey:       "a84963d45669cf7af168963e171ec3227ebe9751a0cae286e380011412c52f44"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "98dc3c6b44ecb7242954b862fd54154177629a03802bd2c8df7c39f68fe0d57d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b8f02c44567cd932a4476fd2d551c012c2fbb5a911dd52ad11c55d937f4b3d5e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "db48e2eb63201e9cd7ef2565788d23e5bcbab0c18c2f8eb9b395d91b60540bbb"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f317831b155dcf621a7d4fa4c1bbda790b5277d02a1196b506c3a53523dfb7bd"
+    sha256 cellar: :any_skip_relocation, sonoma:         "0b8d1531f12a01eeee1bc0a9205b1705c2aaf251c258ea791bd2eeb0b8bd3cd0"
+    sha256 cellar: :any_skip_relocation, ventura:        "e926d4bdd5b681ad72f6e5bb3f0ed7eac596d8e8216b3776b852c357d24a722e"
+    sha256 cellar: :any_skip_relocation, monterey:       "e535c5d86b72d45158f58d4c6abafcfde4b36dd33213bc7b5149152be9b25347"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "095a0ec6ca21ffe4be78f5f03ddb89a3e6f191adc821ca2fb5f6d32892468fa4"
   end
 
-  depends_on "automake" => :build
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
-    ENV["GO111MODULE"] = "auto"
-    (buildpath/"src/github.com/docker/machine").install buildpath.children
-    cd "src/github.com/docker/machine" do
-      system "make", "build"
-      bin.install Dir["bin/*"]
-      bash_completion.install Dir["contrib/completion/bash/*.bash"]
-      zsh_completion.install "contrib/completion/zsh/_docker-machine"
-      prefix.install_metafiles
-    end
+    ldflags = "-s -w"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/docker-machine"
+
+    bash_completion.install Dir["contrib/completion/bash/*.bash"]
+    zsh_completion.install "contrib/completion/zsh/_docker-machine"
   end
 
   service do

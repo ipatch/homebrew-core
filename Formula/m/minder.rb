@@ -1,19 +1,19 @@
 class Minder < Formula
   desc "CLI for interacting with Stacklok's Minder platform"
   homepage "https://minder-docs.stacklok.dev"
-  url "https://github.com/stacklok/minder/archive/refs/tags/v0.0.28.tar.gz"
-  sha256 "be418bcad52acc5e4097682733673307849b663ca5b1f34efdcf0e0bf4f5b374"
+  url "https://github.com/stacklok/minder/archive/refs/tags/v0.0.37.tar.gz"
+  sha256 "dd62463cff126d472246db26d4188beae75e7649260e4bb8dd1ee3ee9a3672fd"
   license "Apache-2.0"
   head "https://github.com/stacklok/minder.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f0c217969d001bee7bb239a7d5374b592ed110e9e09d0543ddd3641a3bafd485"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2f1d262ccb1459cb59bd526608b471740fe5173bacec96a446bc64a8d72f5d8c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "873b479a8d5642077a17955bcff591ed8dbc6a82ae7f1b036f34a4d119659897"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9399960b2122353eefe171712d2ab8f0f288ecbc6547140bd30f23a01d0b49f6"
-    sha256 cellar: :any_skip_relocation, ventura:        "27afb91a4900642bafb4420ffb03c0c96c1677ca562e8cbf2b6333ae5d4dea91"
-    sha256 cellar: :any_skip_relocation, monterey:       "bff7b0a27aa9c1598dd648e35438c3083b68746106306168f2f3c719dd9fb04e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "efe608c92868dda5afacaa3d6b491461e083a54118e3999acee5f89550d59a2b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a011d387fc642029da8116e8df95434c0b06390d91a320ee3eacc6947a72dadc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c34978b89faac7a8c75991448db82c8b3f9337cfacea1444686f011acdd0fe4f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "851d0966b348e3292e4ba4991da4fd2f85c3eb7f125b773a8f11a6cbf2299afa"
+    sha256 cellar: :any_skip_relocation, sonoma:         "72b6edd222061a716edc7481ed164bf5adeeb57769096802e4c14612b1592539"
+    sha256 cellar: :any_skip_relocation, ventura:        "7095ff76ea1a15f7950f284c2da066fae6f58e322a1271da9de72cb98afac8e2"
+    sha256 cellar: :any_skip_relocation, monterey:       "d7aff3c2cabe4386f2a41db2e66739b81a819b3c3b7d9aa3bb7f87d044d5bb86"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b8db9a6d2f51a4ac1fa64508e82c414ce476e116ff464a994514af3b0363f69d"
   end
 
   depends_on "go" => :build
@@ -23,7 +23,7 @@ class Minder < Formula
       -s -w
       -X github.com/stacklok/minder/internal/constants.CLIVersion=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/cli"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/cli"
 
     generate_completions_from_executable(bin/"minder", "completion")
   end

@@ -2,8 +2,8 @@ class Flyctl < Formula
   desc "Command-line tools for fly.io services"
   homepage "https://fly.io"
   url "https://github.com/superfly/flyctl.git",
-      tag:      "v0.1.147",
-      revision: "4c5c97cd4cf9fba252937825fba858177dff24ea"
+      tag:      "v0.2.23",
+      revision: "e2653c6f9ece29b6752300b7db5eabe4ca89d203"
   license "Apache-2.0"
   head "https://github.com/superfly/flyctl.git", branch: "master"
 
@@ -18,13 +18,13 @@ class Flyctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ba24f634d6eb70b34f3552414068f6ccf942b4ec0158acb7c2aecb27ddacd874"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ba24f634d6eb70b34f3552414068f6ccf942b4ec0158acb7c2aecb27ddacd874"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ba24f634d6eb70b34f3552414068f6ccf942b4ec0158acb7c2aecb27ddacd874"
-    sha256 cellar: :any_skip_relocation, sonoma:         "41774ab1f9e8ec57080b45c1905791bbc50ed4bdc8bf9aeb7b94792d9b98e4ff"
-    sha256 cellar: :any_skip_relocation, ventura:        "41774ab1f9e8ec57080b45c1905791bbc50ed4bdc8bf9aeb7b94792d9b98e4ff"
-    sha256 cellar: :any_skip_relocation, monterey:       "41774ab1f9e8ec57080b45c1905791bbc50ed4bdc8bf9aeb7b94792d9b98e4ff"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5d88a9f57da2d5b4dc545980b4841ec0c37fe4498dd92c96c2894ac746fc519d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "24b85e2dd8526a650cde364c8544fa97f466dd6e936135ec308d451b36c9f558"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "24b85e2dd8526a650cde364c8544fa97f466dd6e936135ec308d451b36c9f558"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "24b85e2dd8526a650cde364c8544fa97f466dd6e936135ec308d451b36c9f558"
+    sha256 cellar: :any_skip_relocation, sonoma:         "1ed8eb2c4d2953e46a9a2541d57484359a67a078c963a7dd120a78c53439efa7"
+    sha256 cellar: :any_skip_relocation, ventura:        "1ed8eb2c4d2953e46a9a2541d57484359a67a078c963a7dd120a78c53439efa7"
+    sha256 cellar: :any_skip_relocation, monterey:       "1ed8eb2c4d2953e46a9a2541d57484359a67a078c963a7dd120a78c53439efa7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e497a50012ab6622ad0442b6784a3b899db2e3aee5798652cd70ba2e18a53293"
   end
 
   depends_on "go" => :build
@@ -37,7 +37,7 @@ class Flyctl < Formula
       -X github.com/superfly/flyctl/internal/buildinfo.buildVersion=#{version}
       -X github.com/superfly/flyctl/internal/buildinfo.commit=#{Utils.git_short_head}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "-tags", "production"
+    system "go", "build", *std_go_args(ldflags:), "-tags", "production"
 
     bin.install_symlink "flyctl" => "fly"
 

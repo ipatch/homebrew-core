@@ -1,10 +1,9 @@
 class Vips < Formula
   desc "Image processing library"
   homepage "https://github.com/libvips/libvips"
-  url "https://github.com/libvips/libvips/releases/download/v8.15.1/vips-8.15.1.tar.xz"
-  sha256 "06811f5aed3e7bc03e63d05537ff4b501de5283108c8ee79396c60601a00830c"
+  url "https://github.com/libvips/libvips/releases/download/v8.15.2/vips-8.15.2.tar.xz"
+  sha256 "a2ab15946776ca7721d11cae3215f20f1f097b370ff580cd44fc0f19387aee84"
   license "LGPL-2.1-or-later"
-  revision 2
 
   livecheck do
     url :stable
@@ -12,13 +11,14 @@ class Vips < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "a0749997ff5816cb91fde6245faefeeb779406a6e01eed5066dab7d0c04f78a8"
-    sha256 arm64_ventura:  "14c821b0e22ed0ac696439ff56c107c559d19d9ae68ed18cbd63097ed5810e91"
-    sha256 arm64_monterey: "e00796685e92788ed10bfc19ffdf60e6175be80c19e61229d97f3953fd55c2ee"
-    sha256 sonoma:         "54758e656cb4d1ebd0e93315db4c180d2b66a937ceb979636b640f7f830f9ffa"
-    sha256 ventura:        "4e0e2d7844dc730536652d3bad4e040aeab7a62e03c961191e30774da02222d7"
-    sha256 monterey:       "e79c6b7c557a4b6e477680cd56055389fd233d1cd59a553314bbadaed5a56323"
-    sha256 x86_64_linux:   "08fbcf6c9e2ed7348d1034080f4aac8b018a0f257e646aa6af7ce15e691929b0"
+    rebuild 1
+    sha256 arm64_sonoma:   "107818125f290b973e4153f4ceba38e3681446e01021e417f532d286d96bcaad"
+    sha256 arm64_ventura:  "aabbb32d5abf9f0ca8dfc503f4f51448fe6939cc48c3d2f08e8fec0170eea8f2"
+    sha256 arm64_monterey: "67a92f062a0de63219a3165c6cabc4497ef1037d9b56c9c4b7a08f91414f708c"
+    sha256 sonoma:         "9259852d45f4d6e76db87f3a597cfd023ca9b43ebac4b8fa435bb98f05d026d6"
+    sha256 ventura:        "cc1227a6f5f465fa3035f3fd460923844080cb698ba145082f8702cf1d800cde"
+    sha256 monterey:       "500c05dd04debeb1d0f66c48ccb408ec73d12c5924c93b3ff9698e879adbdd67"
+    sha256 x86_64_linux:   "6c2230970574bc18d499228cfb979e3044710025e4dc397045a5078d87aa2ff5"
   end
 
   depends_on "gobject-introspection" => :build
@@ -32,6 +32,7 @@ class Vips < Formula
   depends_on "fontconfig"
   depends_on "gettext"
   depends_on "glib"
+  depends_on "highway"
   depends_on "imagemagick"
   depends_on "jpeg-xl"
   depends_on "libarchive"
@@ -47,7 +48,6 @@ class Vips < Formula
   depends_on "openexr"
   depends_on "openjpeg"
   depends_on "openslide"
-  depends_on "orc"
   depends_on "pango"
   depends_on "poppler"
   depends_on "webp"

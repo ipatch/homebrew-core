@@ -1,19 +1,21 @@
 class Fwupd < Formula
+  include Language::Python::Virtualenv
+
   desc "Firmware update daemon"
   homepage "https://github.com/fwupd/fwupd"
-  url "https://github.com/fwupd/fwupd/releases/download/1.9.12/fwupd-1.9.12.tar.xz"
-  sha256 "d2596ca8ff2320ca76e69d4617b72cf322f654979270553e4f0267ae2ccec839"
+  url "https://github.com/fwupd/fwupd/releases/download/1.9.15/fwupd-1.9.15.tar.xz"
+  sha256 "6a69667d999eb4591293796351f163074dddb1dae8a5b6ae00cdc6098a856da2"
   license "LGPL-2.1-or-later"
   head "https://github.com/fwupd/fwupd.git", branch: "main"
 
   bottle do
-    sha256 arm64_sonoma:   "61b478cc4ecb449ad9d10d6bc0d87d9aefa31c0be301562d22bbf1bb6c505f9f"
-    sha256 arm64_ventura:  "a923ebfbd269eddc36fb717dae81768fdc6050886f898d85d6b05cf3f13ef86a"
-    sha256 arm64_monterey: "1248539e53e45e4b50b35b7ff96363ea09a6ae382d828eb585336991849400d0"
-    sha256 sonoma:         "c96c1c5c1fde23f7d1464b0da518cf0349a894651038d2eaf5281c56c93b8ead"
-    sha256 ventura:        "e02d8ffee25bb65a948641a76c477c1c1e1f5fe8a229c81328c901946b756d18"
-    sha256 monterey:       "10bdcd35cbf6e7a48092f1739ab071fa277bbb07fa94e28deadc7bbb3747cfd8"
-    sha256 x86_64_linux:   "75a66ae0e3f17df3b9b34a6596959ca1f9851a94b212a0aee740524211c593b2"
+    sha256 arm64_sonoma:   "fb0334c7f8fbd01cc8738bac4214e685c2e125757d1a89af2085b648f2f5cb6b"
+    sha256 arm64_ventura:  "600111a63102aeb4658dbd4ba7d81313234c2efd1f6d3b9a179bcf34c5a37fb2"
+    sha256 arm64_monterey: "569b238c477493fe3df5afb337a1780bc4f5c9133eae45265de04de77110d2be"
+    sha256 sonoma:         "3d32cf61bdd00901e8f93488e2467cf2f57ac75762c279d31c4822052ce9e84a"
+    sha256 ventura:        "a5b224c2ddff67db4d5f9688b0af2176ff6cf4c1cc17af62d696a68a2e53d024"
+    sha256 monterey:       "c40b46a83eead07d4169cd0c6f360b5aadeb2e370dc7ef893ecd8485a0b8f8a3"
+    sha256 x86_64_linux:   "663cc267a8b9f62913273ee034e9b25b2856a4b1e23a26df6b935f618df93233"
   end
 
   depends_on "gi-docgen" => :build
@@ -21,8 +23,6 @@ class Fwupd < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python-jinja" => :build
-  depends_on "python-markupsafe" => :build
   depends_on "python@3.12" => :build
   depends_on "vala" => :build
   depends_on "gcab"
@@ -40,11 +40,25 @@ class Fwupd < Formula
   uses_from_macos "curl"
   uses_from_macos "sqlite"
 
+  resource "jinja2" do
+    url "https://files.pythonhosted.org/packages/b2/5e/3a21abf3cd467d7876045335e681d276ac32492febe6d98ad89562d1a7e1/Jinja2-3.1.3.tar.gz"
+    sha256 "ac8bd6544d4bb2c9792bf3a159e80bba8fda7f07e81bc3aed565432d5925ba90"
+  end
+
+  resource "markupsafe" do
+    url "https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz"
+    sha256 "d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b"
+  end
+
   def python3
     "python3.12"
   end
 
   def install
+    venv = virtualenv_create(buildpath/"venv", python3)
+    venv.pip_install resources
+    ENV.prepend_path "PYTHONPATH", buildpath/"venv"/Language::Python.site_packages(python3)
+
     system "meson", "setup", "build",
                     "-Dbuild=standalone", # this is used as PolicyKit is not available on macOS
                     "-Dlibarchive=enabled", # fail if missing

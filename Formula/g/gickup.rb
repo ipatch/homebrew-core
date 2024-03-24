@@ -1,26 +1,26 @@
 class Gickup < Formula
   desc "Backup all your repositories with Ease"
   homepage "https://cooperspencer.github.io/gickup-documentation/"
-  url "https://github.com/cooperspencer/gickup/archive/refs/tags/v0.10.26.tar.gz"
-  sha256 "8076e0bc5fd35eedaa21315857c80950a90cc286caf154854ebd19c8318aae51"
+  url "https://github.com/cooperspencer/gickup/archive/refs/tags/v0.10.28.tar.gz"
+  sha256 "b7eb8d84908e04ee61b6a835b947c3817f610698ec22d1a876966457f7ce90c2"
   license "Apache-2.0"
   head "https://github.com/cooperspencer/gickup.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fe30da0f3b497cf5e1037840bb0a5cb05a2c10c1fb80b0058b1c0bb6beb1f0e8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "74c74db6075c92321184a17e623d8c621ff3157b14be19ad468e14d409e33840"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f54949dead6010f6ac02f5b8f76d0b635983e37320150ec01ed3b12fb68c2c52"
-    sha256 cellar: :any_skip_relocation, sonoma:         "7a22ac4148390b00286458d018fc851c051f5a838c79c9bf9e62f421d39b52cf"
-    sha256 cellar: :any_skip_relocation, ventura:        "b45fe612f71e1240ce93083a41cc0e1512f60be6a56cbd5da9dc7660d6d9e13b"
-    sha256 cellar: :any_skip_relocation, monterey:       "04b7fd0c855db0cbd949b665ee6abc9cfca496a97654e62d8e8c1ca4fb1fc5dd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0224e62a79ed467f740165c77eef2a1d42d98fcaaa6b415ec2d43a82a9e0b688"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "cb5a547ffda82468488d48a2ccd0f8b52b566284ccbf098c99c473edb5d4bb0f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4c19bbc9b9a56d10b313ea4b3bd27625074174cbb3c6aa284f28dd595edf085f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4e5fe73366053db6e4b12e0c44ac0291c7e6f5a6022ad3d90d0b25dca67c848f"
+    sha256 cellar: :any_skip_relocation, sonoma:         "3abc6427495df1d2a82c18b20142b6deb0f2066da4bba8bb61677da6194314d0"
+    sha256 cellar: :any_skip_relocation, ventura:        "725cceb4980b9cf53704779a6f8de2411e46aa67e9e3c074695bb0d12deb353a"
+    sha256 cellar: :any_skip_relocation, monterey:       "c015e9b8015d366baff2c5eb40fd57513318ef31d54d402f87d83c3828164a7a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "111608b9615d535f2a0291c7f89c4eba417de7777e8c3e27c6d4754ee650a531"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X main.version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

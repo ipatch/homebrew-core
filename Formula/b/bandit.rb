@@ -3,24 +3,23 @@ class Bandit < Formula
 
   desc "Security-oriented static analyser for Python code"
   homepage "https://github.com/PyCQA/bandit"
-  url "https://files.pythonhosted.org/packages/50/04/f9efce9197981a6b36e44433c3f7349016f92ab69ddf9f9339d2fce0720d/bandit-1.7.7.tar.gz"
-  sha256 "527906bec6088cb499aae31bc962864b4e77569e9d529ee51df3a93b4b8ab28a"
+  url "https://files.pythonhosted.org/packages/92/60/3f6e0e58f3f53bbb7227daf61654c9b22ff651e670e44cdc08a0f1d0f493/bandit-1.7.8.tar.gz"
+  sha256 "36de50f720856ab24a24dbaa5fee2c66050ed97c1477e0a1159deab1775eab6b"
   license "Apache-2.0"
   head "https://github.com/PyCQA/bandit.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "68886ace37600dc4e29cfc0cf8df3f5b9adcd88d31b9743a2f4371e7d208daff"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "58adb640effcfff23693b3fbed1c787132e2f3f6393c3fe23b01e494b73b7fc2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6cdb47fb96134839304eb5a8fea400ee49a12c2eb59ad3e89220be3bd1ff5cf2"
-    sha256 cellar: :any_skip_relocation, sonoma:         "3d25433ae2f99a64f1ccbc1faee305b748fa13316d863601ad53e517caff6348"
-    sha256 cellar: :any_skip_relocation, ventura:        "29ed0f0774bb0940dcf4778858511fe5cc41711603803834b3bf5c52f8c2c89f"
-    sha256 cellar: :any_skip_relocation, monterey:       "4c9adc844d2e52e0e7b6f8d27b300fd243d945974f0b995add8bf8392022cfa6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "23e0dbc801ed827590e967201582db1c00d18f2b5492d70493443a03c7cad47a"
+    sha256 cellar: :any,                 arm64_sonoma:   "b472fbd7d48c3d3ae0dd0f3b9b23fb7d07de2b30297ad4320624f5e3df7e0427"
+    sha256 cellar: :any,                 arm64_ventura:  "7f682f60ca68357830249bbd07f357854f5cc6a9fa461b7022f1e1cec6669eae"
+    sha256 cellar: :any,                 arm64_monterey: "4d1274c2aec2fbab227265785f211ca04d61845432162c70ba006d9fce5a8f20"
+    sha256 cellar: :any,                 sonoma:         "f2cd3b9824227efb88cc59dbf43563aa21e51e9d3899bf7c283dd3ba3832c40e"
+    sha256 cellar: :any,                 ventura:        "bbb707daca599a120beb13995af487c35d58f3e5de2f60798c676bd8bbd340fc"
+    sha256 cellar: :any,                 monterey:       "6b3fb6ed08d0d8bcb27271306b19ece91344bc9614e5f8d45735fb7177f7c958"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "64d2cab7b38f5434f6c67f32c8ff340d73d79fa863dac9a22d49fd7815eae411"
   end
 
-  depends_on "pygments"
+  depends_on "libyaml"
   depends_on "python@3.12"
-  depends_on "pyyaml"
 
   resource "markdown-it-py" do
     url "https://files.pythonhosted.org/packages/38/71/3b932df36c1a044d397a1f92d1cf91ee0a503d91e470cbd670aa66b07ed0/markdown-it-py-3.0.0.tar.gz"
@@ -37,14 +36,24 @@ class Bandit < Formula
     sha256 "d1377122a5a00e2f940ee482999518efe16d745d423a670c27773dfbc3c9a7d9"
   end
 
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
+    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
+    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+  end
+
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/a7/ec/4a7d80728bd429f7c0d4d51245287158a1516315cadbb146012439403a9d/rich-13.7.0.tar.gz"
-    sha256 "5cb5123b5cf9ee70584244246816e9114227e0b98ad9176eede6ad54bf5403fa"
+    url "https://files.pythonhosted.org/packages/b3/01/c954e134dc440ab5f96952fe52b4fdc64225530320a910473c1fe270d9aa/rich-13.7.1.tar.gz"
+    sha256 "9be308cb1fe2f1f57d67ce99e95af38a1e2bc71ad9813b0e247cf7ffbcc3a432"
   end
 
   resource "stevedore" do
-    url "https://files.pythonhosted.org/packages/ac/d6/77387d3fc81f07bc8877e6f29507bd7943569093583b0a07b28cfa286780/stevedore-5.1.0.tar.gz"
-    sha256 "a54534acf9b89bc7ed264807013b505bf07f74dbe4bcfa37d32bd063870b087c"
+    url "https://files.pythonhosted.org/packages/e7/c1/b210bf1071c96ecfcd24c2eeb4c828a2a24bf74b38af13896d02203b1eec/stevedore-5.2.0.tar.gz"
+    sha256 "46b93ca40e1114cea93d738a6c1e365396981bb6bb78c27045b7587c9473544d"
   end
 
   def install

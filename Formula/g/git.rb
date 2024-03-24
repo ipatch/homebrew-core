@@ -2,8 +2,8 @@ class Git < Formula
   desc "Distributed revision control system"
   homepage "https://git-scm.com"
   # Don't forget to update the documentation resources along with the url!
-  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.43.0.tar.xz"
-  sha256 "5446603e73d911781d259e565750dcd277a42836c8e392cac91cf137aa9b76ec"
+  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.44.0.tar.xz"
+  sha256 "e358738dcb5b5ea340ce900a0015c03ae86e804e7ff64e47aa4631ddee681de3"
   license "GPL-2.0-only"
   head "https://github.com/git/git.git", branch: "master"
 
@@ -13,13 +13,13 @@ class Git < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "2c321629c0d47c0384ddf23f58a1edb3dbb4b93e594bcee060d361e2229d9193"
-    sha256 arm64_ventura:  "4f8cf2bf2832df15c4af81ba93cc95c4ebef439f7be02ccfe8d271637afe20a4"
-    sha256 arm64_monterey: "aee8771d3280b61213c1d3bf5eb3e80c0dc907e80332bdde2b32e966d4b24129"
-    sha256 sonoma:         "a846c77897272979161ada75a449b8d47c58521f9f8c9c51a97ef99b9b304eec"
-    sha256 ventura:        "e1b880d4eb4191603ad658050fa493e803468195626a59399ca0d00eb3935363"
-    sha256 monterey:       "689f97df1f095af19a11276c33adec024279db276907e699117860e987bbd58d"
-    sha256 x86_64_linux:   "82fd41404f35e23d7c10efcd9c7dbad28febf07e0b94828c59a96f24aa935d2e"
+    sha256 arm64_sonoma:   "5d4c3e312af15cd9576a91892cd6bde3ca897c037453f5b08edd6c5a3b968a10"
+    sha256 arm64_ventura:  "d43e086b5f28ac4cdd774bda38ae8f510a8324735c6fecc916f1a1c258f2d65e"
+    sha256 arm64_monterey: "b6ddb205139a08b25588e5fa11fd5d4d1268280bc90d5b248e07b49376176b5c"
+    sha256 sonoma:         "e95ddd7b09ffc68b76d99e0f0c4f235359bd9cd74c62f0de7602738d13fda872"
+    sha256 ventura:        "3b84bb672cfefb6da9dcc88a8e69c69068776485aa4ef35769ee021ea4e57550"
+    sha256 monterey:       "43bd7abdb7cf52c4d31a7fb9eba98360f2c9149d8d668fcec7724bbae72db634"
+    sha256 x86_64_linux:   "7d7db9f8aa687f7a1879ee298f843d5c7b3e9f2463b22caf52b8edc4f1a8f329"
   end
 
   depends_on "gettext"
@@ -35,13 +35,13 @@ class Git < Formula
   end
 
   resource "html" do
-    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-htmldocs-2.43.0.tar.xz"
-    sha256 "8b02e46a5fb41971be8cd2347dbc14d53802a08b0822adc1f822831da8f31f60"
+    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-htmldocs-2.44.0.tar.xz"
+    sha256 "808f1221940de2a32d7b4a3f675f968a7d0a75058a12a791afcda58b01a6e820"
   end
 
   resource "man" do
-    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.43.0.tar.xz"
-    sha256 "ef18df09444a60c70be996a481fde093928996055f61a585e9ea07b5bdc6d4d8"
+    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.44.0.tar.xz"
+    sha256 "777be83bd54e301988fc49708cae3b5ce4b0971c2ca3b7a720be58e2f4633fcb"
   end
 
   resource "Net::SMTP::SSL" do
@@ -50,6 +50,9 @@ class Git < Formula
   end
 
   def install
+    odie "html resource needs to be updated" if build.stable? && version != resource("html").version
+    odie "man resource needs to be updated" if build.stable? && version != resource("man").version
+
     # If these things are installed, tell Git build system not to use them
     ENV["NO_FINK"] = "1"
     ENV["NO_DARWIN_PORTS"] = "1"
@@ -179,9 +182,6 @@ class Git < Formula
   end
 
   test do
-    assert_equal version, resource("html").version, "`html` resource needs updating!"
-    assert_equal version, resource("man").version, "`man` resource needs updating!"
-
     system bin/"git", "init"
     %w[haunted house].each { |f| touch testpath/f }
     system bin/"git", "add", "haunted", "house"

@@ -1,13 +1,13 @@
 class Meson < Formula
   desc "Fast and user friendly build system"
   homepage "https://mesonbuild.com/"
-  url "https://github.com/mesonbuild/meson/releases/download/1.3.1/meson-1.3.1.tar.gz"
-  sha256 "6020568bdede1643d4fb41e28215be38eff5d52da28ac7d125457c59e0032ad7"
+  url "https://github.com/mesonbuild/meson/releases/download/1.4.0/meson-1.4.0.tar.gz"
+  sha256 "8fd6630c25c27f1489a8a0392b311a60481a3c161aa699b330e25935b750138d"
   license "Apache-2.0"
   head "https://github.com/mesonbuild/meson.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "949ec0bb552146f962e41086b6b827e6d1bc7d130616361c472d1313afdd257f"
+    sha256 cellar: :any_skip_relocation, all: "0754ab41a963c010173f20f5d8a13bb39078d3a26544aba20eb4071cc9914722"
   end
 
   depends_on "python-setuptools" => :build
@@ -43,7 +43,7 @@ class Meson < Formula
   test do
     (testpath/"helloworld.c").write <<~EOS
       #include <stdio.h>
-      main() {
+      int main(void) {
         puts("hi");
         return 0;
       }

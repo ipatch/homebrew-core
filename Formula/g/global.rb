@@ -1,21 +1,23 @@
 class Global < Formula
   include Language::Python::Shebang
+  include Language::Python::Virtualenv
 
   desc "Source code tag system"
   homepage "https://www.gnu.org/software/global/"
-  url "https://ftp.gnu.org/gnu/global/global-6.6.11.tar.gz"
-  mirror "https://ftpmirror.gnu.org/global/global-6.6.11.tar.gz"
-  sha256 "0533319f78d3860b81668dfaeaa507901541e5dda8cfc30d52dfc6ce9489f5e3"
+  url "https://ftp.gnu.org/gnu/global/global-6.6.12.tar.gz"
+  mirror "https://ftpmirror.gnu.org/global/global-6.6.12.tar.gz"
+  sha256 "542a5b06840e14eca548b4bb60b44c0adcf01024e68eb362f8bf716007885901"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 arm64_sonoma:   "0ae09c0b9471d905f5a9f399bb17643dd153862116a56c81601b99bfe767ed8a"
-    sha256 arm64_ventura:  "14a33276a751118b2ebeea099902a25bbd7b826dfd172e379213877ae64c8697"
-    sha256 arm64_monterey: "de0f3eee9456a3799591efb3c87218eb9699117b7f9fc5c83cd4e39b6df6e925"
-    sha256 sonoma:         "3160ee134e7d82c258d7cc52728e22435cd4ccf4692fd888e855ddb28f3beec9"
-    sha256 ventura:        "b21d93a8e536e27767ab1e6bc2688f2f3bec6d9e5ae4a72ff9d8149b2ae53b3d"
-    sha256 monterey:       "c163ba5b737475fc2a376dbd37f672331b3d7764a4147791d4672407a0b7c361"
-    sha256 x86_64_linux:   "08bd95658b13c787c01605f57a0ce4c359ab1a20fe490742b724a3989774a911"
+    rebuild 1
+    sha256 arm64_sonoma:   "b02f7ab847bbff8ed6ae98ba5ae9057e87ceed845a3626863e933a3731dea8c8"
+    sha256 arm64_ventura:  "853208dcab6b2da814d4144e13a385c54c674b83c5660aaf9452e599f8dd9b0e"
+    sha256 arm64_monterey: "ec4a0d0255b7023bdeb89d98086ff021ef7cdf99cc97c40199ef467c4d5a02ba"
+    sha256 sonoma:         "47b9879a3743bfa7f1dadb1a05c2e45182c03c7722453c0f2b1076d01f77c774"
+    sha256 ventura:        "41a680877f21ca02b2b0aea13da1c8e9ce8722a43e6f8e93363dd73ccc2a6098"
+    sha256 monterey:       "27f2fa10cea92c3e4261ba98f2f164a42cdde4b02de6cf8b8cc50320a8cf452e"
+    sha256 x86_64_linux:   "1423d091f9579d8688e5c20de615a4e54e094e45cb8662f2b670ceee8e947872"
   end
 
   head do
@@ -31,33 +33,34 @@ class Global < Formula
 
   depends_on "libtool"
   depends_on "ncurses"
-  depends_on "pygments"
   depends_on "python@3.12"
   depends_on "sqlite"
   depends_on "universal-ctags"
 
   skip_clean "lib/gtags"
 
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
+    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
+  end
+
   def install
     system "sh", "reconf.sh" if build.head?
 
     python3 = "python3.12"
-    ENV.prepend_create_path "PYTHONPATH", libexec/Language::Python.site_packages(python3)
+    venv = virtualenv_create(libexec, python3)
+    venv.pip_install resources
 
     args = %W[
       --disable-dependency-tracking
-      --prefix=#{prefix}
       --sysconfdir=#{etc}
       --with-sqlite3=#{Formula["sqlite"].opt_prefix}
+      --with-python-interpreter=#{venv.root}/bin/python
       --with-universal-ctags=#{Formula["universal-ctags"].opt_bin}/ctags
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
-
-    rewrite_shebang detected_python_shebang, share/"gtags/script/pygments_parser.py"
-
-    bin.env_script_all_files(libexec/"bin", PYTHONPATH: ENV["PYTHONPATH"])
 
     etc.install "gtags.conf"
 

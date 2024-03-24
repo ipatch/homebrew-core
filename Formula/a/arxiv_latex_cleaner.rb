@@ -1,35 +1,44 @@
 class ArxivLatexCleaner < Formula
+  include Language::Python::Virtualenv
+
   desc "Clean LaTeX code to submit to arXiv"
   homepage "https://github.com/google-research/arxiv-latex-cleaner"
-  url "https://files.pythonhosted.org/packages/38/fb/139464323ae1f8c623b0b61c21d276264c009b3908b3af541408d0044234/arxiv_latex_cleaner-1.0.3.tar.gz"
-  sha256 "c2a0996c5c4bebfd91fed0cb16b16644856b9221574c8a1326069de80d1edf92"
+  url "https://files.pythonhosted.org/packages/2b/51/480fd178c8a0ef0b3b8a7280dfc47273f512a8acc51ef92841152f503b17/arxiv_latex_cleaner-1.0.5.tar.gz"
+  sha256 "df9a9035b5a94873be77999f52683233619fc39e5ad7b5632934974bb2d4348d"
   license "Apache-2.0"
   head "https://github.com/google-research/arxiv-latex-cleaner.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2664e03fcfdbdeda9f2527bac4659fd01cdb5b100b720ce6c8640a05dcfaad74"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "66007a412fb318084bfca2a593ee1f541f61efbeaf8c4dfd23a25cab422228af"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3f1b10d9ac0f1da0d1d31ba47bbe9c3ccdc3ec0d7641f71f2c9fe6c214c67d0d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "83924767dde4297d8bd2f65d2ad7d1ce1afb71cfabc7340c05e8c9a1431820bd"
-    sha256 cellar: :any_skip_relocation, ventura:        "8eed6cd727cd44c958182d869b406fdb733b66a7fd6112cd1de02ac6197b1d3b"
-    sha256 cellar: :any_skip_relocation, monterey:       "a6f2d7c4e98cdf3280532020d80c091ecf37deb4a5162672f5b06e52a8d91a89"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c7af0a8e674d707650f99c40c7d88fed6a069e4feebde4cb44eb9648810aa48c"
+    sha256 cellar: :any,                 arm64_sonoma:   "8f6de1b22e5d020534388d22df0529276f389ffb72c301eaad34213cf08c7463"
+    sha256 cellar: :any,                 arm64_ventura:  "bb9a986fdceafbda0c25fb0d337a3b561bf3a95e013af7979456575dc262b007"
+    sha256 cellar: :any,                 arm64_monterey: "1f80f53f410141b7c91b2d4cf0e6dfd7a4082eff2157ec32a28a38b73f16df01"
+    sha256 cellar: :any,                 sonoma:         "bc5e11edf6af1baeba52a6708d9ab93159b83761c3394fde90f06b14099cff26"
+    sha256 cellar: :any,                 ventura:        "fa192de0424d068bb53d31bb48d74795a663de071373ec61d2bacbd61ca30766"
+    sha256 cellar: :any,                 monterey:       "f3c8cd3cd991d2bc09a3883f9fd553a0bba24b474ace696ccf4eda4114d8cb92"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2e314c116276dcf202f358e0d7abc8a4c062c44e22b87c5becd4dbae4d6df3bb"
   end
 
-  depends_on "python-setuptools" => :build
+  depends_on "libyaml"
   depends_on "pillow"
-  depends_on "python-abseil"
-  depends_on "python-regex"
   depends_on "python@3.12"
-  depends_on "pyyaml"
-  depends_on "six"
 
-  def python3
-    "python3.12"
+  resource "absl-py" do
+    url "https://files.pythonhosted.org/packages/7a/8f/fc001b92ecc467cc32ab38398bd0bfb45df46e7523bf33c2ad22a505f06e/absl-py-2.1.0.tar.gz"
+    sha256 "7820790efbb316739cde8b4e19357243fc3608a152024288513dd968d7d959ff"
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
+    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+  end
+
+  resource "regex" do
+    url "https://files.pythonhosted.org/packages/b5/39/31626e7e75b187fae7f121af3c538a991e725c744ac893cc2cfd70ce2853/regex-2023.12.25.tar.gz"
+    sha256 "29171aa128da69afdf4bde412d5bedc335f2ca8fcfe4489038577d05f16181e5"
   end
 
   def install
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
   end
 
   test do

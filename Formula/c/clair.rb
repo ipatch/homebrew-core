@@ -1,8 +1,8 @@
 class Clair < Formula
   desc "Vulnerability Static Analysis for Containers"
   homepage "https://github.com/quay/clair"
-  url "https://github.com/quay/clair/archive/refs/tags/v4.7.2.tar.gz"
-  sha256 "dfeccda372f8298a84a8b4bceebb4fb2f893e77f232e6b5d453db1652d345c78"
+  url "https://github.com/quay/clair/archive/refs/tags/v4.7.3.tar.gz"
+  sha256 "9386b9076a8781b793b851b4b62bd48f0137b9d9018d2e2e4231d340730e8cc2"
   license "Apache-2.0"
 
   livecheck do
@@ -11,16 +11,16 @@ class Clair < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0ae3e85126240fd24fa213b59eca3471a5f6091bbded991e4c33f80310680120"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fa8503477ab71c480bd363c1e7c4307c41f7d267759ad7104b9b9ede4993a442"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3eced5d3fd65b01be22fcf5fc0ca7754e8d0f33b95e6e6242937ca5714e86664"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a2bedd64e6d81f40d1c6bfeef83ad6cd977aa958a5ec38f524f76a4e903e74d9"
-    sha256 cellar: :any_skip_relocation, ventura:        "3f2cc0fc5baead4e9853dcaa3009c69043333a6da93c9b11165ed0cc8ede9a5c"
-    sha256 cellar: :any_skip_relocation, monterey:       "82e820020ca49308b5602cfd8d34d14c10c1a0fab71e7d4368148931221ffb44"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb434c8789c0d0b1fe858eb2573cd97a9c52cf34b04872b03126a10ace8f43b6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4f1dd5f975b4fbb95ad6295794cce39a4990c1410a51802fa7e60a5f23d7482a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7141497e5ab91fc3f9078cc6ffae0abcb61ec6a3f8e9cbb99c08b8ada245a28b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "04434618dff6a1ae39495c59135ce37aaa7add46de7e463706cdbe32017f342a"
+    sha256 cellar: :any_skip_relocation, sonoma:         "0af1794c1f2ae85802df3b7054e5c4b8071ab13c0d47ea32197047bae97fe8b9"
+    sha256 cellar: :any_skip_relocation, ventura:        "82ca298b6fea6844fd56d30e01108df1d0999eaabc74494d19337dcff141dc89"
+    sha256 cellar: :any_skip_relocation, monterey:       "f19e38e5208e3e044859a33a6e7f7003c4d783ba9558ffe8d6b4f1984eaece7b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ca3dc1aaac1944193d494b58e7911cfe8e19c534029f91c5f870237bc830104c"
   end
 
-  depends_on "go" => :build
+  depends_on "go@1.21" => :build # use "go" again when https://github.com/quay/clair/pull/1942 is released
 
   def install
     ldflags = %W[
@@ -28,7 +28,7 @@ class Clair < Formula
       -X main.Version=#{version}
     ]
 
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/clair"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/clair"
     (etc/"clair").install "config.yaml.sample"
   end
 

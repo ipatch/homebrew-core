@@ -1,37 +1,48 @@
 class GitReview < Formula
+  include Language::Python::Virtualenv
+
   desc "Submit git branches to gerrit for review"
   homepage "https://opendev.org/opendev/git-review"
-  url "https://files.pythonhosted.org/packages/8e/5c/18f534e16b193be36d140939b79a8046e07f343b426054c084b12d59cf0b/git-review-2.3.1.tar.gz"
-  sha256 "24e938136eecb6e6cbb38b5e2b034a286b70b5bb8b5a2853585c9ed23636014f"
+  url "https://files.pythonhosted.org/packages/79/ae/1c161f8914731ca5a5b3ce0784f5bc47d9a68f4ce33123d431bf30fc90b6/git-review-2.4.0.tar.gz"
+  sha256 "a350eaa9c269a1fe3177a5ffd4ae76f2b604e1af122eb0de08ab07252001722a"
   license "Apache-2.0"
-  revision 3
   head "https://opendev.org/opendev/git-review.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7d5d414cdf10919defc6b017799249cdb150fbe3bd64ea3ac4f155037c52fc90"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "db17a9e895ee7d18eddfe94b6c3c3798b3020a7a793039f410c9331232739157"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2b6646591dc77bca2e0825bfd0a0ab61260ef9915444f61ac783b6a194769f32"
-    sha256 cellar: :any_skip_relocation, sonoma:         "fb8c641a5531c73335e61314cc08da60d19f86670150b410a9d6729fa0ac7cac"
-    sha256 cellar: :any_skip_relocation, ventura:        "22c31a9c79bc2b4aefb797ea12d89b90f03ab20f8220e0a42493df00ec5b82a7"
-    sha256 cellar: :any_skip_relocation, monterey:       "72dc7edeae00453acda5d92736f375e96e1e9196ce44619aebfe56e3f1604e8d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "81911c588fb66a24bf496193671a967d8a342a96596e45737eaafa0df542d2f2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3265f6e2135f3caabdb76ad466795753c0614b65fcdf53341eca550b9963b1f1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3265f6e2135f3caabdb76ad466795753c0614b65fcdf53341eca550b9963b1f1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3265f6e2135f3caabdb76ad466795753c0614b65fcdf53341eca550b9963b1f1"
+    sha256 cellar: :any_skip_relocation, sonoma:         "3265f6e2135f3caabdb76ad466795753c0614b65fcdf53341eca550b9963b1f1"
+    sha256 cellar: :any_skip_relocation, ventura:        "3265f6e2135f3caabdb76ad466795753c0614b65fcdf53341eca550b9963b1f1"
+    sha256 cellar: :any_skip_relocation, monterey:       "3265f6e2135f3caabdb76ad466795753c0614b65fcdf53341eca550b9963b1f1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a4eede950326b9b85fe23f8c4620406126b44e3e29d52ed92b1657e76bc660ab"
   end
 
-  depends_on "python-setuptools" => :build
-  depends_on "python-requests"
+  depends_on "certifi"
   depends_on "python@3.12"
 
-  # Drop setuptools dep
-  # https://review.opendev.org/c/opendev/git-review/+/907101
-  patch :DATA
+  resource "charset-normalizer" do
+    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
+    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
+  end
 
-  def python3
-    "python3.12"
+  resource "idna" do
+    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
+    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
+  end
+
+  resource "requests" do
+    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
+    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+  end
+
+  resource "urllib3" do
+    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
+    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
   end
 
   def install
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
   end
 
   test do
@@ -46,61 +57,3 @@ class GitReview < Formula
     system bin/"git-review", "--dry-run"
   end
 end
-
-__END__
-From 7b823c16e22f115684ede6bdd6bac72e258ca410 Mon Sep 17 00:00:00 2001
-From: Tim Burke <tim.burke@gmail.com>
-Date: Mon, 29 Jan 2024 08:58:07 -0800
-Subject: [PATCH] Use importlib.metadata instead of pkg_resources
-
-...if available. It was added in Python 3.8, and marked no-longer-
-provisional in Python 3.10.
-
-Python 3.12 no longer pre-installs setuptools in virtual environments,
-which means we can no longer rely on distutils, setuptools,
-pkg_resources, and easy_install being available.
-
-Fortunately, importlib.metadata covers the one use we have of
-pkg_resources.
-
-Change-Id: Iaa68282960a1c73569f916c3b00acf7f839b9807
----
-
-diff --git a/git_review/cmd.py b/git_review/cmd.py
-index 837bfa7..d3fce69 100644
---- a/git_review/cmd.py
-+++ b/git_review/cmd.py
-@@ -32,9 +32,16 @@
- from urllib.parse import urljoin
- from urllib.parse import urlparse
-
--import pkg_resources
- import requests
-
-+try:
-+    import importlib.metadata as importlib_metadata
-+    pkg_resources = None
-+except ImportError:
-+    # Pre-py38
-+    importlib_metadata = None
-+    import pkg_resources
-+
-
- VERBOSE = False
- UPDATE = False
-@@ -220,9 +227,12 @@
-
-
- def get_version():
--    requirement = pkg_resources.Requirement.parse('git-review')
--    provider = pkg_resources.get_provider(requirement)
--    return provider.version
-+    if importlib_metadata:
-+        return importlib_metadata.version('git-review')
-+    else:
-+        requirement = pkg_resources.Requirement.parse('git-review')
-+        provider = pkg_resources.get_provider(requirement)
-+        return provider.version
-
-
- def get_git_version():

@@ -1,8 +1,8 @@
 class MongoCDriver < Formula
   desc "C driver for MongoDB"
   homepage "https://github.com/mongodb/mongo-c-driver"
-  url "https://github.com/mongodb/mongo-c-driver/archive/refs/tags/1.25.4.tar.gz"
-  sha256 "0ab3c5b238803b82a6b217d1ef21ea71a6e96251063322dc1038bea70a3da541"
+  url "https://github.com/mongodb/mongo-c-driver/archive/refs/tags/1.26.1.tar.gz"
+  sha256 "718922183339db70079d4b56d37789a9e4aa0a62bb4d5eac55e3013da18e6d39"
   license "Apache-2.0"
   head "https://github.com/mongodb/mongo-c-driver.git", branch: "master"
 
@@ -12,13 +12,13 @@ class MongoCDriver < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "bfc83ab7bf397c82e69171ad67c364ece7699dd334f60054af3017aa803acc43"
-    sha256 cellar: :any,                 arm64_ventura:  "20572c6695d6c53ae7a774fa3bc0ca4dac713c8e3bf447a1a72e6720e8a66a77"
-    sha256 cellar: :any,                 arm64_monterey: "71c4b1650d9d7ca9251e886c8cedc40973f0f9dd3f40fb712786b4ecf5923f0f"
-    sha256 cellar: :any,                 sonoma:         "b484ae1b3b4da5d84ee2dc3958ff4f5cb108574fbb161836ebc595ede541cc87"
-    sha256 cellar: :any,                 ventura:        "44154af8a5cb401159560f1954739b14e395b24d3aefc40b7d2d0f487e2ea8d1"
-    sha256 cellar: :any,                 monterey:       "8d445014c4e4e77e7e867893e42e2374280c52f4a15d884fed1eecb697121a4b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2ff5a8a85490bcd496963020da8e51a9fee1f6584be5ddd5c332f3b5ca0e782d"
+    sha256 cellar: :any,                 arm64_sonoma:   "924e13178463e0274f00ae43f27d7c01deeedfdd282644bb4b66524ff6269a1c"
+    sha256 cellar: :any,                 arm64_ventura:  "b4861b7fc6a822b721e90953b3b4154f9e36982f8c028f4648daba77668c3f67"
+    sha256 cellar: :any,                 arm64_monterey: "adbd9f257746fc848c265ef2099d35f1107991092c0c5acd72e3bb00e7e0beb4"
+    sha256 cellar: :any,                 sonoma:         "e01a3358b145289f6ea7e2e6da012ce85f3db1fb69fc22a659484aa0fcba97de"
+    sha256 cellar: :any,                 ventura:        "ee0fd47fab5380fccc3c880533c9b6cefc69373536dfbe4db0d333ca0110c9da"
+    sha256 cellar: :any,                 monterey:       "7210b64f7713265d13feb96ce3beb97e28b617ae58c71c5d7ceb99f7f3c4efc7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a1dd891fd43f5d60a36954ced21161b1fb9e526607a678d5cac72904b34d676b"
   end
 
   depends_on "cmake" => :build

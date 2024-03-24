@@ -1,19 +1,19 @@
 class SpicetifyCli < Formula
   desc "Command-line tool to customize Spotify client"
   homepage "https://github.com/spicetify/spicetify-cli"
-  url "https://github.com/spicetify/spicetify-cli/archive/refs/tags/v2.31.0/v2.31.0.tar.gz"
-  sha256 "b96d55a6735dbcf788146590174243bad0bb49edc43215c38e63b6353be73dea"
+  url "https://github.com/spicetify/spicetify-cli/archive/refs/tags/v2.35.1/v2.35.1.tar.gz"
+  sha256 "63a7485cfcc2ac74ce274ebac95b35d0de01b8d56bb7619d0dbe66aa87bc3720"
   license "LGPL-2.1-only"
   head "https://github.com/spicetify/spicetify-cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0ea8bc12ca16f5786a902409443114192333392229c8e87431ebd6baa41a381a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5347020c4cd483ea12471dd94cffce4d413c642c2c157f0e62fb04e47cba7ce5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "88b278311dc1847b0b3904e1c22ee3fab0640224a277d736918c66fa1b609c2b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "3f613dde6f1effa92d827c60b2358ddff17f584ace2d083f737b481a434515fa"
-    sha256 cellar: :any_skip_relocation, ventura:        "1361b985202ce8d829f5b827691b3d6f6ea463af4cde7f4d66f4de9b1acf0ba8"
-    sha256 cellar: :any_skip_relocation, monterey:       "670895916bc28e2731bcab3d34a0e45f2b769fa41e719e6203b7848b93adf2c4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "41886f46ce15327193fe59a740ced43dd1af6ed08b8cc588748e1abb396f22e9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4434806743dcae6914ed542f4b7da0c97ad4460f9eee1145a0d83894899ae989"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d5bddcc36b612ee71aea2c7c0c204da9370384e07c60f2bffcfea6d3fd5f75f3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c6e62f9dc85803cf7ab57e2f9d0387687bc683f6a91e9bcee18e3313aace71c3"
+    sha256 cellar: :any_skip_relocation, sonoma:         "6464acfb10076699276ac46fe2999cbe35ece58a72ecee5105ab20198194a502"
+    sha256 cellar: :any_skip_relocation, ventura:        "123847e07f9b80ffcc548f638962262074e54925f568b8848349b06ce72ab45a"
+    sha256 cellar: :any_skip_relocation, monterey:       "43906fd12c528bd5bc4bef0304b9a3cf0d0fd5b48f6285bd161a9b66ef6d6681"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c4f50c99110932a94a00492413fff994faf35ea5c83bdeb7dcce15ca26cfeba4"
   end
 
   depends_on "go" => :build
@@ -23,7 +23,7 @@ class SpicetifyCli < Formula
       -s -w
       -X main.version=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags, output: libexec/"spicetify")
+    system "go", "build", *std_go_args(ldflags:, output: libexec/"spicetify")
     cd buildpath do
       libexec.install [
         "css-map.json",

@@ -2,9 +2,9 @@ class MinioMc < Formula
   desc "Replacement for ls, cp and other commands for object storage"
   homepage "https://github.com/minio/mc"
   url "https://github.com/minio/mc.git",
-      tag:      "RELEASE.2024-01-31T08-59-40Z",
-      revision: "62b12a2770828f9d35ee7c5614d900b95ff6e6ab"
-  version "20240131085940"
+      tag:      "RELEASE.2024-03-20T21-07-29Z",
+      revision: "9043bbf545d244b2dee9eefc5031d5dca1ccf78f"
+  version "20240320210729"
   license "AGPL-3.0-or-later"
   head "https://github.com/minio/mc.git", branch: "master"
 
@@ -17,13 +17,13 @@ class MinioMc < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fbbd951aa96cbe1a8780b83ad231479effd5498b6e1acd838e9c60b83b342317"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d45947b87fd142f1f27c6c4384a1b270cb0ebb7b58a692d6fee4fa4db355ab83"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "633462921eea33cb020121001afd6e54479e0594f64dc2d34705af7049eb3080"
-    sha256 cellar: :any_skip_relocation, sonoma:         "11484f490a4ac91ba2b67e2dd26d6cce59413f2fdbafefa1723b7a92c75a1a62"
-    sha256 cellar: :any_skip_relocation, ventura:        "a29b3137bbe69df4f7274ff4b1be9e477bcd207f6815ec448649c21fc197f2ba"
-    sha256 cellar: :any_skip_relocation, monterey:       "cf56d5a20705d05ce67accc33722f86b3e1f9b620d28c9f14e108640f1843102"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "be82ee44aecd31a8e13ef762206c5c48aaccfa480398b64939273ac4ea64d1f6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b2220c648480c12034b33add6e626d75754af627060fa67e9fda81dbec1c0933"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "64c531c2ce8dd1d5e18e8fc4ed03f58d0269589393b8d2200bbfcdb551609150"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "fb4b9e8cc474a0ee58d58e31eb7c3968aeea8569f587be1432c448eb1d92521e"
+    sha256 cellar: :any_skip_relocation, sonoma:         "9fa79a1a8c2a808856960856219d3a8ad6186724fee35748782c99db564351c0"
+    sha256 cellar: :any_skip_relocation, ventura:        "e609244ab3c389e1c6c4736cbb456f04feb74de16131612c7fd1d56e2526783f"
+    sha256 cellar: :any_skip_relocation, monterey:       "74424d834f89cc2a8e325519c4d88ec5ba0ca66a0fdb0eee83288a7716fd5f97"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "979a6d1d9ffa8c452be6bddd34135c9bfdb5a1c06ed8feacc7bca786b2c6e54c"
   end
 
   depends_on "go" => :build
@@ -42,11 +42,18 @@ class MinioMc < Formula
         -X #{proj}/cmd.ReleaseTag=#{minio_release}
         -X #{proj}/cmd.CommitID=#{Utils.git_head}
       ]
-      system "go", "build", *std_go_args(output: bin/"mc", ldflags: ldflags)
+      system "go", "build", *std_go_args(output: bin/"mc", ldflags:)
     end
   end
 
   test do
+    assert_equal version.to_s,
+                 shell_output("#{bin}/mc --version 2>&1")
+                   .match(/(?:RELEASE[._-]?)?([\dTZ-]+)/)
+                   .to_s
+                   .gsub(/[^\d]/, ""),
+                 "`version` is incorrect"
+
     system bin/"mc", "mb", testpath/"test"
     assert_predicate testpath/"test", :exist?
   end

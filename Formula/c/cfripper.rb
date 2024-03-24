@@ -3,39 +3,41 @@ class Cfripper < Formula
 
   desc "Library and CLI tool to analyse CloudFormation templates for security issues"
   homepage "https://cfripper.readthedocs.io"
-  url "https://files.pythonhosted.org/packages/8c/3e/5370821e6551771cb974950c22feb329fcb09205151f9f12822d2f9e696e/cfripper-1.15.3.tar.gz"
-  sha256 "cbf0c0d42dfbb91eba292a79543ddc9ded7cf65f2beadcc845737b31304fb7c3"
+  url "https://files.pythonhosted.org/packages/d4/a5/24a27c794b802c08e4fdfd232f3a451c3f327f1021e5f01d13589695c768/cfripper-1.15.6.tar.gz"
+  sha256 "b781729f902df4c3abdbca41a614e6647f8abf456cd4bb6bfe9049a023ec71c9"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "03a964032e42370cd1929d66cf14490b2140cb68dc0560e995698988904b5ba7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "803f9f1c7ece274822ebaa909ecdade8b85f5b4d109d2951127009276684ddda"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e11a62db16379fc07a4829284909b25a29c4511e38a4f466f44433361cd37172"
-    sha256 cellar: :any_skip_relocation, sonoma:         "be0a0b0c49a3c5f5c86783ef39d2445eb5eb1aa6c38c9d2a2e7ddec540abee78"
-    sha256 cellar: :any_skip_relocation, ventura:        "d866f57658e71663cc162ee22e10620bfeb12424aac8e312c8d450afd4745d96"
-    sha256 cellar: :any_skip_relocation, monterey:       "54f8b4f2b0001aa9e6d6c7b893a7d832d8ef47b13112f257fbee24085da4f58c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "44919b7bf64cf5f4eed40e953c930d83b13fab090d946a5d51e77b2cb6120bf3"
+    sha256 cellar: :any,                 arm64_sonoma:   "d8988899b003eb57bac074a1b07c852462440e2656413f1fb7c08a835c137eaf"
+    sha256 cellar: :any,                 arm64_ventura:  "b9c4ec5cb8ac582fb7ebc1edd58cd209536a76374b87add9194983cd9af74b0c"
+    sha256 cellar: :any,                 arm64_monterey: "7ff8f2e3cfac5f6017e9b2481c6c8347ce9a552955553ede84fd0f23ab025c45"
+    sha256 cellar: :any,                 sonoma:         "783dc29df7ed72f0f0bfc00441d35bb873dae424d2424c1beb2d17b860ffce3e"
+    sha256 cellar: :any,                 ventura:        "a97621c31e0fecc112d983738f9cac9040f0bf5465ddf451cbb23115b31006a5"
+    sha256 cellar: :any,                 monterey:       "7c54bf75c0435ecdbce45aefb034f30bcb41c81d966a5eef4004a0d458372514"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2b0b9bc2faa245400bc383382d7512f6b8f91e0e03fa6ab160cdb222e2b875d9"
   end
 
-  depends_on "python-click"
-  depends_on "python-typing-extensions"
+  depends_on "libyaml"
   depends_on "python@3.12"
-  depends_on "pyyaml"
-  depends_on "six"
 
   resource "boto3" do
-    url "https://files.pythonhosted.org/packages/4f/2e/ef7530d7e5d0576ca252fbdd99001ebbd94f3d7ffb8b4a496915d07fdddf/boto3-1.34.19.tar.gz"
-    sha256 "95d2c2bde86a0934d4c461020c50fc1344b444f167654e215f1de549bc77fc0f"
+    url "https://files.pythonhosted.org/packages/f8/e9/d16f4c5614fdb2a5d12af17dc0c0517fba999fa50daa5e2e55ab1b6375e6/boto3-1.34.54.tar.gz"
+    sha256 "8b3f5cc7fbedcbb22271c328039df8a6ab343001e746e0cdb24774c426cadcf8"
   end
 
   resource "botocore" do
-    url "https://files.pythonhosted.org/packages/bc/d8/a31a6f55f2e438e6e3f19fc302a540ecf2c545684be5b7f5b875aca54892/botocore-1.34.19.tar.gz"
-    sha256 "64352b2f05de5c6ab025c1d5232880c22775356dcc5a53d798a6f65db847e826"
+    url "https://files.pythonhosted.org/packages/f7/f3/797c4c19071699ce87f7e76229d56c2a79af4f4431aa84f8988bdb52a047/botocore-1.34.54.tar.gz"
+    sha256 "4061ff4be3efcf53547ebadf2c94d419dfc8be7beec24e9fa1819599ffd936fa"
   end
 
   resource "cfn-flip" do
     url "https://files.pythonhosted.org/packages/ca/75/8eba0bb52a6c58e347bc4c839b249d9f42380de93ed12a14eba4355387b4/cfn_flip-1.3.0.tar.gz"
     sha256 "003e02a089c35e1230ffd0e1bcfbbc4b12cc7d2deb2fcc6c4228ac9819307362"
+  end
+
+  resource "click" do
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
   end
 
   resource "jmespath" do
@@ -49,28 +51,43 @@ class Cfripper < Formula
   end
 
   resource "pycfmodel" do
-    url "https://files.pythonhosted.org/packages/70/ad/ed2cada00e9403fd4eb5ffd199071caa825712cf609798ca9088b61d52c7/pycfmodel-0.21.2.tar.gz"
-    sha256 "bb2ac910fde368cc470133fa3568a6aad55a87ac93ec9da9efa2cd4cff27262e"
+    url "https://files.pythonhosted.org/packages/de/7a/bab391457bd63298866854a203d243e794f779d933b468211712c62f84fb/pycfmodel-0.22.0.tar.gz"
+    sha256 "af07ea1dd2f8c4f5f187595e420ba841f30bce4e785ecab17d68248e64085a52"
   end
 
   resource "pydantic" do
-    url "https://files.pythonhosted.org/packages/51/cd/721eb771f3f09f60de0807e240c3acf44c38828d0ced869fe8df7e79801b/pydantic-1.10.13.tar.gz"
-    sha256 "32c8b48dcd3b2ac4e78b0ba4af3a2c2eb6048cb75202f0ea7b34feb740efc340"
+    url "https://files.pythonhosted.org/packages/df/ab/67eda485b025e9253cce0eaede9b6158a08f62af7013a883b2c8775917b2/pydantic-1.10.14.tar.gz"
+    sha256 "46f17b832fe27de7850896f3afee50ea682220dd218f7e9c88d436788419dca6"
   end
 
   resource "pydash" do
-    url "https://files.pythonhosted.org/packages/98/1c/b07ca0ab2f7d5e4df0eadb95337776406ea30ec53edfdbf21a1ce8a62230/pydash-7.0.6.tar.gz"
-    sha256 "7d9df7e9f36f2bbb08316b609480e7c6468185473a21bdd8e65dda7915565a26"
+    url "https://files.pythonhosted.org/packages/1a/15/dfb29b8c49e40b9bfd2482f0d81b49deeef8146cc528d21dd8e67751e945/pydash-7.0.7.tar.gz"
+    sha256 "cc935d5ac72dd41fb4515bdf982e7c864c8b5eeea16caffbab1936b849aaa49a"
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
-    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+    url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
+    sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
+    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
   end
 
   resource "s3transfer" do
     url "https://files.pythonhosted.org/packages/a0/b5/4c570b08cb85fdcc65037b5229e00412583bb38d974efecb7ec3495f40ba/s3transfer-0.10.0.tar.gz"
     sha256 "d0c8bbf672d5eebbe4e57945e23b972d963f07d82f661cabf678a5c88831595b"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+  end
+
+  resource "typing-extensions" do
+    url "https://files.pythonhosted.org/packages/16/3a/0d26ce356c7465a19c9ea8814b960f8a36c3b0d07c323176620b7b483e44/typing_extensions-4.10.0.tar.gz"
+    sha256 "b0abd7c89e8fb96f98db18d86106ff1d90ab692004eb746cf6eda2682f91b3cb"
   end
 
   resource "urllib3" do

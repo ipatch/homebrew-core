@@ -1,10 +1,9 @@
 class Postgis < Formula
   desc "Adds support for geographic objects to PostgreSQL"
   homepage "https://postgis.net/"
-  url "https://download.osgeo.org/postgis/source/postgis-3.3.4.tar.gz"
-  sha256 "9d41eaef70e811a4fe2f4a431d144c0c57ce17c2c1a3c938ddaf4e5a3813b0d8"
+  url "https://download.osgeo.org/postgis/source/postgis-3.4.2.tar.gz"
+  sha256 "c8c874c00ba4a984a87030af6bf9544821502060ad473d5c96f1d4d0835c5892"
   license "GPL-2.0-or-later"
-  revision 2
 
   livecheck do
     url "https://download.osgeo.org/postgis/source/"
@@ -12,13 +11,13 @@ class Postgis < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "e74f3e4bf077bdb6aa52e098fb1c394425a09201c9acf1c2189bd25446361841"
-    sha256 cellar: :any,                 arm64_ventura:  "0dbe367c54977e73e3cf3bfaacc208632f76459d58cec0597167965e8947a7f0"
-    sha256 cellar: :any,                 arm64_monterey: "908be7a092d53d578db2df61b65bb5dce65bfd29725baf12deb61037c6342dbb"
-    sha256 cellar: :any,                 sonoma:         "94cbd06c34f239ac055e368c1c62e3df7e08a863b38ded63418e0721985db4f3"
-    sha256 cellar: :any,                 ventura:        "dfeab5ec84f76469d464dccbb68bb5acc579a75c448277e81825112760f3eb3c"
-    sha256 cellar: :any,                 monterey:       "3e7035ec96c3154a21a89afded07200dbeca39b648f32c4c81f46f6a9f3ce69e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6d280074f7bfc72e4620ef41b00035ebfd6955e47ba9e33f8b035f985a312f66"
+    sha256 cellar: :any,                 arm64_sonoma:   "801392519623c3752d312c6c468f5768bb05fa301a6b08bae0e73ce2ac97b281"
+    sha256 cellar: :any,                 arm64_ventura:  "af61fb4778a11d4b28012aed15d4a2592a49f5cd51f75cc07a3d1d3953396745"
+    sha256 cellar: :any,                 arm64_monterey: "3be85d7e1db47b4182a4ae581f048394dfbab6b82a815aadedff627971e61dcc"
+    sha256 cellar: :any,                 sonoma:         "f64c676865047ce8e899457ef13fc4eadf3a9ab4bdd5e7b2719ada435801303b"
+    sha256 cellar: :any,                 ventura:        "707db5fc4503d9a6ae1883cf27be78a91e32022bf42ebf84784692dd110e8ac3"
+    sha256 cellar: :any,                 monterey:       "caa0b3b884a2ba9d196c0742396a86ce4c493e69344af51839beecdac62a1899"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ad1912dc05bced77a4f42355297ad0da97081edbbf4f5914d8cc6277e8abf587"
   end
 
   head do
@@ -53,8 +52,6 @@ class Postgis < Formula
     # C++17 is required.
     ENV.append "CXXFLAGS", "-std=c++17"
 
-    ENV["PG_CONFIG"] = postgresql.opt_bin/"pg_config"
-
     args = [
       "--with-projdir=#{Formula["proj"].opt_prefix}",
       "--with-jsondir=#{Formula["json-c"].opt_prefix}",
@@ -68,36 +65,19 @@ class Postgis < Formula
     ]
 
     system "./autogen.sh" if build.head?
-    # Fixes config/install-sh: No such file or directory
-    # This is caused by a misalignment between ./configure in postgresql@14 and postgis
-    mv "build-aux", "config"
-    inreplace %w[configure utils/Makefile.in] do |s|
-      s.gsub! "build-aux", "config"
-    end
-    system "./configure", *args
+    # Pretend to install into HOMEBREW_PREFIX to allow PGXS to find PostgreSQL binaries
+    system "./configure", *args, *std_configure_args(prefix: HOMEBREW_PREFIX)
     system "make"
-
-    # Install to a staging directory to circumvent the hardcoded install paths
-    # set by the PGXS makefiles.
-    mkdir "stage"
-    system "make", "install", "DESTDIR=#{buildpath}/stage"
-
-    # Some files are stored in the stage directory with the cellar prefix of
-    # the version of postgresql used to build postgis.  Since we copy these
-    # files into the postgis keg and symlink them to HOMEBREW_PREFIX, postgis
-    # only needs to be rebuilt when there is a new major version of postgresql.
-    postgresql_prefix = postgresql.prefix.realpath
-    postgresql_stage_path = File.join("stage", postgresql_prefix)
-    bin.install (buildpath/postgresql_stage_path/"bin").children
-    doc.install (buildpath/postgresql_stage_path/"share/doc").children
-
-    stage_path = File.join("stage", HOMEBREW_PREFIX)
-    lib.install (buildpath/stage_path/"lib").children
-    share.install (buildpath/stage_path/"share").children
+    # Override the hardcoded install paths set by the PGXS makefiles
+    system "make", "install", "bindir=#{bin}",
+                              "docdir=#{doc}",
+                              "mandir=#{man}",
+                              "pkglibdir=#{lib/postgresql.name}",
+                              "datadir=#{share/postgresql.name}",
+                              "PG_SHAREDIR=#{share/postgresql.name}"
 
     # Extension scripts
     bin.install %w[
-      utils/create_undef.pl
       utils/create_upgrade.pl
       utils/postgis_restore.pl
       utils/profile_intersects.pl

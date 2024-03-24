@@ -1,8 +1,8 @@
 class Qbs < Formula
   desc "Build tool for developing projects across multiple platforms"
   homepage "https://wiki.qt.io/Qbs"
-  url "https://download.qt.io/official_releases/qbs/2.2.1/qbs-src-2.2.1.tar.gz"
-  sha256 "84dad32ff12fda91d4a57c637c86200cdedc7fa56e04daf1c544908ffdb6a2a6"
+  url "https://download.qt.io/official_releases/qbs/2.2.2/qbs-src-2.2.2.tar.gz"
+  sha256 "93e0938fbef2f60f175ae4070fbec5066744f61424ef80f9e65b54f1be8615b4"
   license :cannot_represent
   head "https://code.qt.io/qbs/qbs.git", branch: "master"
 
@@ -12,19 +12,27 @@ class Qbs < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "4bcbaaf8f97889190995ceafcfcaba4e12abf80d279a1450b78dd50d659401d4"
-    sha256 cellar: :any,                 arm64_ventura:  "afde3c6fd1e7a445a6cfd25b45c7bed73491ceb3a0b8b5105c7e97bd5d2e28af"
-    sha256 cellar: :any,                 arm64_monterey: "8feba916b1b98252b0d94feb35010e9d099c630bff1d4f076e397ba77875bcc1"
-    sha256 cellar: :any,                 sonoma:         "8930a6fb92006898c356686a91f30a18bf211bd6e324d39ed61481380738de00"
-    sha256 cellar: :any,                 ventura:        "03724426646d6483a2874dde764b52a28f3a46f477619ff8d0a609f2f036f864"
-    sha256 cellar: :any,                 monterey:       "72aded6a2b0ce1cca126a61d6990d44e3211fe514b4cb28e922c4a17f746484a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "91164bc000c950ab18c631d6b6ca0669a9f5e8653c0111e62809f179c40cd1df"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sonoma:   "1aef0597a90185bab8945e7795e53344c7a2360b54ce0ad2966b37aa049e64a3"
+    sha256 cellar: :any,                 arm64_ventura:  "607e0b4a326ae60c9b3deaa87c9a20aae1f592f3bdb82136faa9d848eb32bd52"
+    sha256 cellar: :any,                 arm64_monterey: "85e2cecfc063abe38c921395a827f25ffd436083cef9455ffae9bf0092c4bb0a"
+    sha256 cellar: :any,                 sonoma:         "d09d190826553ad2ba36d407154bc79aa1593ce86b223f8a1121245d4742dfa7"
+    sha256 cellar: :any,                 ventura:        "0b66a3c79ddc14ff5c14e9691135fd8d693929aef786e7ba78effc4968301dc6"
+    sha256 cellar: :any,                 monterey:       "523bc05a90b98567b3c7efc5f20a083a26605e4aa30616379de68edb00bf662e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d340fdd7c8117cae9e91fe50bd86a4c5835d5407f5eb6c1b0f1aa519610bd664"
   end
 
   depends_on "cmake" => :build
   depends_on "qt"
 
   fails_with gcc: "5"
+
+  # Fix for Xcode 15.3, patch can be removed
+  # for 2.3 release: https://bugreports.qt.io/browse/QBS-1786
+  patch do
+    url "https://code.qt.io/cgit/qbs/qbs.git/patch/?id=5c88b6b11b762cf5861c9d1570df4f1f050c826e"
+    sha256 "bf49f5519122b37c1632ff465ea7df086cc618769e000811fb1f9002e77daed6"
+  end
 
   def install
     qt = Formula["qt"].opt_prefix

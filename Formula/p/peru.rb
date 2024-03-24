@@ -8,22 +8,27 @@ class Peru < Formula
   license "MIT"
 
   bottle do
-    rebuild 3
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4fe6741a51002284c7cf18864a7d7e75f55dd82ba085102fe5785f392a60b7db"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ecf79403dba06b8ed9b82d9a2a4f307b91d7cf08773b606921ea9dea006e017e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "219316df676d2b308854a5fb074836cab3d9cdc9c520b3354c29de3218cb19a3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a73f064a78a1e8c353e798f7c3471f156d59d3a04f66f184460b53a8de6f5e22"
-    sha256 cellar: :any_skip_relocation, ventura:        "8b850b6763e6b83854e06bdc81ed512f3b3cb7f45c8178b9c1ec241306697744"
-    sha256 cellar: :any_skip_relocation, monterey:       "f473af78b2dbca0073c4ab4be030b2ff57f1cb505fc4ba8368a5df1609b74690"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "761eccab8b61910522dd259608851e2dcd533f92e5c02272e21f760e1f3ddd4c"
+    rebuild 5
+    sha256 cellar: :any,                 arm64_sonoma:   "6bbfa6021acb4de8dc1031932083f0e0ca2acc3296dec9dd87c9e77e389d9d49"
+    sha256 cellar: :any,                 arm64_ventura:  "8dade0a9d43215a49d727c92312ca7bfa777ce0f4e91dea0c98944abee794ed3"
+    sha256 cellar: :any,                 arm64_monterey: "806150274ee7f2e12348d7025968174a01c12cf4da437fa6c1ae191fc8e19136"
+    sha256 cellar: :any,                 sonoma:         "5b2f8e9640bf44828878d727ec08acc4d4aa74fc07dd2cb9819c395491950fb4"
+    sha256 cellar: :any,                 ventura:        "73263481f1bd20dd689d255565e8c93a5c86e9475a86922af76cb83634910e04"
+    sha256 cellar: :any,                 monterey:       "c70dc90087a362d3c131be4b2a54a14cc9f1c21828433ef73c5e2ed1d125a44e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "52fdcc8015a74fbb3c94714c8113f53cc1ede04a363044f2392a2af9990076b8"
   end
 
+  depends_on "libyaml"
   depends_on "python@3.12"
-  depends_on "pyyaml"
 
   resource "docopt" do
     url "https://files.pythonhosted.org/packages/a2/55/8f8cab2afd404cf578136ef2cc5dfb50baa1761b68c9da1fb1e4eed343c9/docopt-0.6.2.tar.gz"
     sha256 "49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
+    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
   end
 
   def install

@@ -3,28 +3,23 @@ class Wtfis < Formula
 
   desc "Passive hostname, domain, and IP lookup tool"
   homepage "https://github.com/pirxthepilot/wtfis"
-  url "https://files.pythonhosted.org/packages/25/2a/6ede7b982da3e94102b3d7cfe968b95bad28364c082fbff4cf88ab9aba40/wtfis-0.7.1.tar.gz"
-  sha256 "812cc1679f5bc4b07f73d84d96a963b16cbed2e4ccc07c7f24b2b696abba3dd3"
+  url "https://files.pythonhosted.org/packages/53/22/df5fdf569254b5e13710deb6b561ad68fa35aee36b2dabf87c5351453c58/wtfis-0.8.0.tar.gz"
+  sha256 "ac4264def13f50962f4b0717774c2918036e320104c4c52682d6846b8ec2a974"
   license "MIT"
-  revision 2
   head "https://github.com/pirxthepilot/wtfis.git", branch: "main"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "233844cbd16e97ae8c525c3cc6f5909d62cd46780f4723106f3d0cc6de415608"
-    sha256 cellar: :any,                 arm64_ventura:  "fd95067a0a47e21da60a5a414cde8bb53fbb2f094589f852a53c3004d0bd6f25"
-    sha256 cellar: :any,                 arm64_monterey: "364914dbbb72903e4275594b3801ecf4ab81e52f17e95ea6daf8de75b7d4fb7e"
-    sha256 cellar: :any,                 sonoma:         "6091e89a430cbe071282c2771b8ac789111d49cf34223fb916d17fbcc2feb9d2"
-    sha256 cellar: :any,                 ventura:        "652f919585daeda1dbd97463fee7a45f2847bb64de7e621a71f6375780f82d55"
-    sha256 cellar: :any,                 monterey:       "f2649af2573b9bb57608aba36905096000906b240b5bfb279099d16c95fc9fb5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c6b14ef9a5407580831adf79b5a7ded88a5831138f025c0bdedf8ff20572708"
+    sha256 cellar: :any,                 arm64_sonoma:   "a1a01774f58968abeb63e18f8ebfb288db0ebd76d331f2c1a2494826aff05f38"
+    sha256 cellar: :any,                 arm64_ventura:  "93b3b386249a76365e778951c7d15168ab439904588b09b4ea5a10d47bff645d"
+    sha256 cellar: :any,                 arm64_monterey: "1e427516f23d9898ff1ee0d319dea6aa92ef3a12a35e565fc835f2b701faf582"
+    sha256 cellar: :any,                 sonoma:         "b0c4ae10223132d8a3406efbcd1d3e57d71b78b050415bfd013fb6ba2472deb1"
+    sha256 cellar: :any,                 ventura:        "5cecaf904c779a6c9563106cc3e60917c489a5775585fa30ec20633eec400ba1"
+    sha256 cellar: :any,                 monterey:       "15bc1dda25baf1e929af316c1ffa2ba209a20f6a62eee4c1c7f7fac61e2e3077"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "57977be5bc7806733d9cbd8fe84217145b21bd0eba4254173bbaa9c472c4dc64"
   end
 
   depends_on "rust" => :build
-  depends_on "pygments"
-  depends_on "python-certifi"
-  depends_on "python-click"
-  depends_on "python-typing-extensions"
+  depends_on "certifi"
   depends_on "python@3.12"
 
   resource "annotated-types" do
@@ -33,8 +28,13 @@ class Wtfis < Formula
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/cf/ac/e89b2f2f75f51e9859979b56d2ec162f7f893221975d244d8d5277aa9489/charset-normalizer-3.3.0.tar.gz"
-    sha256 "63563193aec44bce707e0c5ca64ff69fa72ed7cf34ce6e11d5127555756fd2f6"
+    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
+    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
+  end
+
+  resource "click" do
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
   end
 
   resource "click-plugins" do
@@ -48,8 +48,8 @@ class Wtfis < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
-    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
+    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
+    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
   end
 
   resource "markdown-it-py" do
@@ -72,9 +72,14 @@ class Wtfis < Formula
     sha256 "5cfb5ac4e82c47d5dc25b209dd4c3989e284b80109f9e08b33c895080c424b4f"
   end
 
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
+    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
+  end
+
   resource "python-dotenv" do
-    url "https://files.pythonhosted.org/packages/31/06/1ef763af20d0572c032fa22882cfbfb005fba6e7300715a37840858c919e/python-dotenv-1.0.0.tar.gz"
-    sha256 "a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"
+    url "https://files.pythonhosted.org/packages/bc/57/e84d88dfe0aec03b7a2d4327012c1627ab5f03652216c63d49846d7a6c58/python-dotenv-1.0.1.tar.gz"
+    sha256 "e324ee90a023d808f1959c46bcbc04446a10ced277783dc6ee09987c37ec10ca"
   end
 
   resource "requests" do
@@ -92,14 +97,19 @@ class Wtfis < Formula
     sha256 "e2af6254e19d2a8fa4e929738be551e25dc7aafc394732e776e7e30fa44ce339"
   end
 
+  resource "typing-extensions" do
+    url "https://files.pythonhosted.org/packages/0c/1d/eb26f5e75100d531d7399ae800814b069bc2ed2a7410834d57374d010d96/typing_extensions-4.9.0.tar.gz"
+    sha256 "23478f88c37f27d76ac8aee6c905017a143b0b1b886c3c9f66bc2fd94f9f5783"
+  end
+
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/af/47/b215df9f71b4fdba1025fc05a77db2ad243fa0926755a52c5e71659f4e3c/urllib3-2.0.7.tar.gz"
-    sha256 "c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84"
+    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
+    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
   end
 
   resource "xlsxwriter" do
-    url "https://files.pythonhosted.org/packages/da/b3/90e50e5c285f48b5fc251a6e8ec255a110dc194349b992a18c5b9ae3e713/XlsxWriter-3.1.8.tar.gz"
-    sha256 "059d0786fbfa3055588e81e9d5acf4ace28394bf09353a31ae2cae635740fc15"
+    url "https://files.pythonhosted.org/packages/a6/c3/b36fa44a0610a0f65d2e65ba6a262cbe2554b819f1449731971f7c16ea3c/XlsxWriter-3.2.0.tar.gz"
+    sha256 "9977d0c661a72866a61f9f7a809e25ebbb0fb7036baa3b9fe74afcfca6b3cb8c"
   end
 
   def install

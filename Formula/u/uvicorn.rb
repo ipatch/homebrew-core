@@ -3,29 +3,33 @@ class Uvicorn < Formula
 
   desc "ASGI web server"
   homepage "https://www.uvicorn.org/"
-  url "https://files.pythonhosted.org/packages/38/56/7bc5cf1d693d0c8e5d9dd66c29808691c17260b31346e4ddfbee26ba9bc2/uvicorn-0.27.0.post1.tar.gz"
-  sha256 "54898fcd80c13ff1cd28bf77b04ec9dbd8ff60c5259b499b4b12bb0917f22907"
+  url "https://files.pythonhosted.org/packages/49/8d/5005d39cd79c9ae87baf7d7aafdcdfe0b13aa69d9a1e3b7f1c984a2ac6d2/uvicorn-0.29.0.tar.gz"
+  sha256 "6a69214c0b6a087462412670b3ef21224fa48cae0e452b5883e8e8bdfdd11dd0"
   license "BSD-3-Clause"
   head "https://github.com/encode/uvicorn.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "4ba87519a2e5eee891a2e15aa0bb9957f2779471d4f0420e60e059d939f204d7"
-    sha256 cellar: :any,                 arm64_ventura:  "8a0a908c44a455ef6681a043e85f97a464953ed13759c7a3062d9c71538e81b0"
-    sha256 cellar: :any,                 arm64_monterey: "48865ca23cee3336429990b580316f567858f3006f58baf2eae4e2660efd7291"
-    sha256 cellar: :any,                 sonoma:         "730587fc9ff4ead54b728ea8bf518490b686f2a8c008bd03a572359c8af6fb00"
-    sha256 cellar: :any,                 ventura:        "a18de6b198fbb99e51e1d5c60e5411c2c3d520688c5b73b6c5ea7ffc604a6a0f"
-    sha256 cellar: :any,                 monterey:       "64b5b01fce91a9c6fdfaeed89c408398552b2a723b2abf9637c5eb37b6e78dd1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9debfb1f76814a6052adc310785611a5fc9da1566549301b24b6b73593b9b431"
+    sha256 cellar: :any,                 arm64_sonoma:   "8b9ab6c2b2e9ec073845456e775f4f65b78070217263a4bea626620803b68f60"
+    sha256 cellar: :any,                 arm64_ventura:  "e0c93ea2eea1065fcbf606c7b56745c73e7f10fa824ab430e39a971ac0788c51"
+    sha256 cellar: :any,                 arm64_monterey: "1fb5a9ea3d7fe5399642eee70e2801eb08f9945d1d51f148096d1eebc192b204"
+    sha256 cellar: :any,                 sonoma:         "1b5e10a935416084cd40efc7b58ff264b5335f66e383dc36292997126d8374cf"
+    sha256 cellar: :any,                 ventura:        "74d1d2040ec967d1111c02a776e3aa4f7ab380d5fa022e0f4ca477ca355bdb4f"
+    sha256 cellar: :any,                 monterey:       "dc874d8ba56c8f7f6510031a6be8e21788bc1465796422ed176d5c6a623c63be"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5bc87db2125d322adadccbc915342a73ba9464fb1fc9bb6ec2144869fcfc2e49"
   end
 
   depends_on "rust" => :build
-  depends_on "python-click"
+  depends_on "libyaml"
   depends_on "python@3.12"
-  depends_on "pyyaml"
 
   resource "anyio" do
-    url "https://files.pythonhosted.org/packages/2d/b8/7333d87d5f03247215d86a86362fd3e324111788c6cdd8d2e6196a6ba833/anyio-4.2.0.tar.gz"
-    sha256 "e1875bb4b4e2de1669f4bc7869b6d3f54231cdced71605e6e64c9be77e3be50f"
+    url "https://files.pythonhosted.org/packages/db/4d/3970183622f0330d3c23d9b8a5f52e365e50381fd484d08e3285104333d3/anyio-4.3.0.tar.gz"
+    sha256 "f75253795a87df48568485fd18cdd2a3fa5c4f7c5be8e5e36637733fce06fed6"
+  end
+
+  resource "click" do
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
   end
 
   resource "h11" do
@@ -48,9 +52,14 @@ class Uvicorn < Formula
     sha256 "e324ee90a023d808f1959c46bcbc04446a10ced277783dc6ee09987c37ec10ca"
   end
 
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
+    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+  end
+
   resource "sniffio" do
-    url "https://files.pythonhosted.org/packages/cd/50/d49c388cae4ec10e8109b1b833fd265511840706808576df3ada99ecb0ac/sniffio-1.3.0.tar.gz"
-    sha256 "e60305c5e5d314f5389259b7f22aaa33d8f7dee49763119234af3755c55b9101"
+    url "https://files.pythonhosted.org/packages/a2/87/a6771e1546d97e7e041b6ae58d80074f81b7d5121207425c964ddf5cfdbd/sniffio-1.3.1.tar.gz"
+    sha256 "f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc"
   end
 
   resource "uvloop" do

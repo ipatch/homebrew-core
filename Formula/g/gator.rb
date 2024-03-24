@@ -1,19 +1,19 @@
 class Gator < Formula
   desc "CLI Utility for Open Policy Agent Gatekeeper"
   homepage "https://open-policy-agent.github.io/gatekeeper/website/docs/gator"
-  url "https://github.com/open-policy-agent/gatekeeper/archive/refs/tags/v3.14.0.tar.gz"
-  sha256 "85fd4da39be9b852f6be8ae519d091151e4991f8ba7c7870d705f396086e8038"
+  url "https://github.com/open-policy-agent/gatekeeper/archive/refs/tags/v3.15.1.tar.gz"
+  sha256 "6134ad53f29b7746847851ae41743f8011e2a83fcdf67ac35f11855cbdcbc9e1"
   license "Apache-2.0"
   head "https://github.com/open-policy-agent/gatekeeper.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "210d5d9c058ab95264e15d5d8118ce162f431cfe2a22b1465f35e3ab534300ec"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6099abd536bcc0bb30bbb786f49a2d0d49b8c021b30aeb84a43d125318f0468e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0753648970e44a60cbaec8c5e43b0429f7cd6738add0736759542997fbca4042"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6263055d6e7f1dbf006a9660183cf6c44050f4746ea1c0683da9a143ed6b5b5c"
-    sha256 cellar: :any_skip_relocation, ventura:        "068fbcec6f54bb97f9b30cd68a8afeceb832a57e8bc80402962bf78d84056f7b"
-    sha256 cellar: :any_skip_relocation, monterey:       "122ad23dc34e7fcf4085d2ae997d48c789b463fad7997cf7550438019cdae4d6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "14dfb35ce4809a8ad54577da7942bf9f0b0ee5048d745252da99a1fc73eff5cb"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1225c02783995b778c32dd0a5664b351ccf5e6d87a4451cd2f34ed0752c7b8ec"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6f8ce2f9a11716a1681fa107bfbb13317e1971e7cffb836ef6ed008f4bdc13d7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7d5bf793c7666ec64e5d270c51231f840696ecc09f3ebfabd9a33d9ec21dabf2"
+    sha256 cellar: :any_skip_relocation, sonoma:         "edd3978deb30a6a8c1b759f81949f09b3dabba5266410aa408ebea98a13c33e8"
+    sha256 cellar: :any_skip_relocation, ventura:        "970b0ab03ab4dfe8ccf0cbfba4caede0743562c495af82bd9407464ed2bfd2b7"
+    sha256 cellar: :any_skip_relocation, monterey:       "7480670933e43e69df98902ec703713c7ea5f54b61791732be289985a0356d11"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9122a037794127e0f001b417078e67542c5f67ffce57fb5927e80541400ea326"
   end
 
   depends_on "go" => :build
@@ -23,7 +23,7 @@ class Gator < Formula
       -s -w
       -X github.com/open-policy-agent/gatekeeper/v3/pkg/version.Version=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/gator"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/gator"
 
     generate_completions_from_executable(bin/"gator", "completion")
   end

@@ -1,8 +1,8 @@
 class Pdal < Formula
   desc "Point data abstraction library"
   homepage "https://www.pdal.io/"
-  url "https://github.com/PDAL/PDAL/releases/download/2.6.2/PDAL-2.6.2-src.tar.bz2"
-  sha256 "4ec3d128af4d15924ddac91ddac56335cf32897c743349460cfa41d51f0f9e4e"
+  url "https://github.com/PDAL/PDAL/releases/download/2.7.0/PDAL-2.7.0-src.tar.bz2"
+  sha256 "a4e480b6a3a1967a65cad68ac02cf156029d67fcf3764def6ed235639826c1a5"
   license "BSD-3-Clause"
   head "https://github.com/PDAL/PDAL.git", branch: "master"
 
@@ -17,13 +17,13 @@ class Pdal < Formula
   end
 
   bottle do
-    sha256                               arm64_sonoma:   "774cbf6e8652b95ff981e98e2d3e86279b077493f0c29698b81c25f38f365861"
-    sha256                               arm64_ventura:  "ab090acc74e147d5e0a5d4c05ea7abc0dae7593dce8d987d627600c02195bbed"
-    sha256                               arm64_monterey: "ed99bc2a74f6167d119b4d8070899595b535d17cd186c2bad4d0a8eebf9ce96b"
-    sha256                               sonoma:         "0a2c2c22af42a0c43f99051e8f32b62dc3f6f1e96b63b00074ae140f07f793b2"
-    sha256                               ventura:        "0f54a519c686f76680ebd253452dc368f59c321c1a4e87ce847494cfb8e14970"
-    sha256                               monterey:       "c95dbc7aaf2325fce3f18b219e757cb05defecf2e4d3c58f97ba03b104ffffec"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "872084063a98d3027fdb800174b609e6f9df3949a47dc47c60c474627cfaf82c"
+    sha256 cellar: :any,                 arm64_sonoma:   "19c22d49e9f5e1e74b0e18a294121c7a2a0181886c73bcd4636be7ba3d72401f"
+    sha256 cellar: :any,                 arm64_ventura:  "190dca378ab836e4c84414115c85677d8931b8424210af3fd227d8aa651fb1c4"
+    sha256 cellar: :any,                 arm64_monterey: "5f6aa7b559b2c08af9328a578ca6aface3b905193c4bfc6a479bf77ddba407b7"
+    sha256 cellar: :any,                 sonoma:         "ed59b25b0ecd9397028c9025bb87df61a9cd9c98d357dedef8caa7fe8de9f15a"
+    sha256 cellar: :any,                 ventura:        "042932e8c56aa93960d6202165806ac827c5b5f392bb953f148dd4ba56579fb8"
+    sha256 cellar: :any,                 monterey:       "66aae785b4cb85582ea55457783c607fc98a97be36caba8a59d46c23429bf01f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "10adbe9115257b5fd59a0c98ce1e04a9fa257bd55aec84999e8360d2043402e1"
   end
 
   depends_on "cmake" => :build
@@ -38,6 +38,10 @@ class Pdal < Formula
   fails_with gcc: "5" # gdal is compiled with GCC
 
   def install
+    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
+    # libunwind due to it being present in a library search path.
+    ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib if DevelopmentTools.clang_build_version >= 1500
+
     system "cmake", ".", *std_cmake_args,
                          "-DWITH_LASZIP=TRUE",
                          "-DBUILD_PLUGIN_GREYHOUND=ON",
@@ -53,5 +57,6 @@ class Pdal < Formula
 
   test do
     system bin/"pdal", "info", doc/"test/data/las/interesting.las"
+    assert_match "pdal #{version}", shell_output("#{bin}/pdal --version")
   end
 end

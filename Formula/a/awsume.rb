@@ -9,19 +9,18 @@ class Awsume < Formula
   head "https://github.com/trek10inc/awsume.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0baab1cd576a8746670b27b527c33ece0d92c7b6710f425e848eb9c23c26a729"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "073ea726d720fcd52c18eddd8b42573dee7000aa813e90680ca1dbedd6b243d6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a6dabc02c6053c1e1e18b2e85cfc8c59052bb118a583e6f7917b00d5a2674ed5"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2de589c76b7ceaf0700ebb168b9909a1698cc00587acd3b45109757299e54029"
-    sha256 cellar: :any_skip_relocation, ventura:        "f2325f84c18bab11f3e7fc389a6beba8bf9f54e573a46bd4b71c54ee50580287"
-    sha256 cellar: :any_skip_relocation, monterey:       "652571844ec1f914a6bf896766bd03e1a50476ac3d51fcdfc411ff00953a5a16"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6d424431bae3fd74268153e164d9008408f3c87fcced8d048eba3ba6fee9d060"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_sonoma:   "84aa955718f42b2fb6684efcdf9d73c00aae0d97704c9fa955bec671b15299b5"
+    sha256 cellar: :any,                 arm64_ventura:  "57ec3efa9a742eaaf5d8a910aa24cc18e10c2531cdb384e36596c0eab890c992"
+    sha256 cellar: :any,                 arm64_monterey: "43b0e1e0b8e913876d422619787cfcd02fd8697d9a367dd7be0d496721152310"
+    sha256 cellar: :any,                 sonoma:         "0553ae46a87165c714f0906e3877ac637ecd7f58f56238fec080c9d22b0e227f"
+    sha256 cellar: :any,                 ventura:        "7f8d4cb7f2ce640a009bef0e982384cae9ef033cbecac23763c21671f9b70f3a"
+    sha256 cellar: :any,                 monterey:       "39f9b6599717ad85d77be2777ebc19da1af4c0fbe20f4ed48ba7bfc3c3cf7d40"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "beb0ef6c8d3a7e7aa9c477dd723d10102ca3f5b942a17bb7cd821ff8e1d1f233"
   end
 
-  depends_on "python-psutil"
+  depends_on "libyaml"
   depends_on "python@3.12"
-  depends_on "pyyaml"
-  depends_on "six"
 
   uses_from_macos "sqlite"
 
@@ -50,14 +49,29 @@ class Awsume < Formula
     sha256 "cf61ae8f126ac6f7c451172cf30e3e43d3ca77615509771b3a984a0730651e12"
   end
 
+  resource "psutil" do
+    url "https://files.pythonhosted.org/packages/90/c7/6dc0a455d111f68ee43f27793971cf03fe29b6ef972042549db29eec39a2/psutil-5.9.8.tar.gz"
+    sha256 "6be126e3225486dff286a8fb9a06246a5253f4c7c53b475ea5f5ac934e64194c"
+  end
+
   resource "python-dateutil" do
     url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
     sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
   end
 
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
+    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+  end
+
   resource "s3transfer" do
     url "https://files.pythonhosted.org/packages/a0/b5/4c570b08cb85fdcc65037b5229e00412583bb38d974efecb7ec3495f40ba/s3transfer-0.10.0.tar.gz"
     sha256 "d0c8bbf672d5eebbe4e57945e23b972d963f07d82f661cabf678a5c88831595b"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
   end
 
   resource "urllib3" do

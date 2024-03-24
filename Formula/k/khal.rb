@@ -3,25 +3,23 @@ class Khal < Formula
 
   desc "CLI calendar application"
   homepage "https://lostpackets.de/khal/"
-  url "https://files.pythonhosted.org/packages/68/ac/e94853c63676a536b3cdd758442a5df678bbe42eed06e46673fc5ba97d72/khal-0.11.2.tar.gz"
-  sha256 "8fb8d89371e53e2235953a0765e41b97e174848a688d63768477576d03f899ba"
+  url "https://files.pythonhosted.org/packages/d3/58/665551b1fea58a70d0f70fb539d2cd6be9ec106f36023d62c3ec5c7b2de1/khal-0.11.3.tar.gz"
+  sha256 "a8ccbcc43fc1dbbc464e53f7f1d99cf15832be43a67f38700e535d99d9c1325e"
   license "MIT"
   head "https://github.com/pimutils/khal.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1e671db017a9b6e807f1b098b42593427cddbd70ed06de717e06cb126731f361"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "52fdce743553f2af2af295fee810a3d837d52b9ca4a270d1633e9e04722c89ae"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "71b82f87b1b6311127969e6d3f3d3a1c1961b98fc39fbe222b18cdbc7f6d45a8"
-    sha256 cellar: :any_skip_relocation, sonoma:         "cb28514c5452e2b86fdfec706e5e08650cb87e1650ac060c6b307fad48d8d8af"
-    sha256 cellar: :any_skip_relocation, ventura:        "c568707247602a690fc403f3947af35398c5496abecc65e1550c0c1c8588e560"
-    sha256 cellar: :any_skip_relocation, monterey:       "a06aa22256ebdd9093848e938ce2b1b3dc11056c8bc32086ff8b3abe7c69942d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d0204a134f9bd75f6f2f851f55302daddb3861b549ccf9cb4c8d12da76dec885"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9f3fbc8049b7c7513cdb4b6bf81f4f36cd486686c28a7aa14e0a1d0b4cf85ac9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3f8a596c34d193ecd89c0cd948ecb094d51b3703423a2e415ecc26371b958471"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5650a4455364dd5c93e6b88cc96f654b8ee48fcd845bd68212194efb40f47146"
+    sha256 cellar: :any_skip_relocation, sonoma:         "287062cef51ae2527f3419df8dac967cfac2a14a4ece4865f0c1213b550e46c4"
+    sha256 cellar: :any_skip_relocation, ventura:        "f31c81152c8a813ff954d6dda621b176db3761344d2b4b24cd3a7de2e37c3410"
+    sha256 cellar: :any_skip_relocation, monterey:       "0cb181fc7d1fb9cf96e2ceb0f3aad5adcefd09b1b4b1f1f0a391ce1965a4450e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "de66343179e652332444261662cb30fbe20f5da76bde6f4d729d4afac3ad5002"
   end
 
-  depends_on "python-pytz"
   depends_on "python@3.12"
-  depends_on "six"
 
   resource "atomicwrites" do
     url "https://files.pythonhosted.org/packages/87/c6/53da25344e3e3a9c01095a89f16dbcda021c609ddb42dd6d7c0528236fb2/atomicwrites-1.4.1.tar.gz"
@@ -44,8 +42,8 @@ class Khal < Formula
   end
 
   resource "icalendar" do
-    url "https://files.pythonhosted.org/packages/40/d7/06707c968c2ce93e60eeb9f849c84e96c710660054e09791ffa3e5ef04ad/icalendar-5.0.10.tar.gz"
-    sha256 "34f0ca020b804758ddf316eb70d1d46f769bce64638d5a080cb65dd46cfee642"
+    url "https://files.pythonhosted.org/packages/6c/23/187a28257fe26848d07af225cef86abe3712561bd8af93cbd3a64d6eb6ea/icalendar-5.0.11.tar.gz"
+    sha256 "7a298bb864526589d0de81f4b736eeb6ff9e539fefb405f7977aa5c1e201ca00"
   end
 
   resource "python-dateutil" do
@@ -53,19 +51,39 @@ class Khal < Formula
     sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
   end
 
+  resource "pytz" do
+    url "https://files.pythonhosted.org/packages/90/26/9f1f00a5d021fff16dee3de13d43e5e978f3d58928e129c3a62cf7eb9738/pytz-2024.1.tar.gz"
+    sha256 "2a29735ea9c18baf14b448846bde5a48030ed267578472d8955cd0e7443a9812"
+  end
+
   resource "pyxdg" do
     url "https://files.pythonhosted.org/packages/b0/25/7998cd2dec731acbd438fbf91bc619603fc5188de0a9a17699a781840452/pyxdg-0.28.tar.gz"
     sha256 "3267bb3074e934df202af2ee0868575484108581e6f3cb006af1da35395e88b4"
   end
 
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+  end
+
+  resource "typing-extensions" do
+    url "https://files.pythonhosted.org/packages/0c/1d/eb26f5e75100d531d7399ae800814b069bc2ed2a7410834d57374d010d96/typing_extensions-4.9.0.tar.gz"
+    sha256 "23478f88c37f27d76ac8aee6c905017a143b0b1b886c3c9f66bc2fd94f9f5783"
+  end
+
   resource "tzlocal" do
-    url "https://files.pythonhosted.org/packages/b2/e2/adf17c75bab9b33e7f392b063468d50e513b2921bbae7343eb3728e0bc0a/tzlocal-5.1.tar.gz"
-    sha256 "a5ccb2365b295ed964e0a98ad076fe10c495591e75505d34f154d60a7f1ed722"
+    url "https://files.pythonhosted.org/packages/04/d3/c19d65ae67636fe63953b20c2e4a8ced4497ea232c43ff8d01db16de8dc0/tzlocal-5.2.tar.gz"
+    sha256 "8d399205578f1a9342816409cc1e46a93ebd5755e39ea2d85334bea911bf0e6e"
   end
 
   resource "urwid" do
-    url "https://files.pythonhosted.org/packages/5f/cf/2f01d2231e7fb52bd8190954b6165c89baa17e713c690bdb2dfea1dcd25d/urwid-2.2.2.tar.gz"
-    sha256 "5f83b241c1cbf3ec6c4b8c6b908127e0c9ad7481c5d3145639524157fc4e1744"
+    url "https://files.pythonhosted.org/packages/bb/18/5312d4b55ab8f69cb82de25a68ed2efd303409bc564f403623f561e8cfde/urwid-2.5.3.tar.gz"
+    sha256 "9c9129a07027794d7250e3bcf2f64cbdf59a35d001d670b507f72c7c2e4bb3b5"
+  end
+
+  resource "wcwidth" do
+    url "https://files.pythonhosted.org/packages/6c/63/53559446a878410fc5a5974feb13d31d78d752eb18aeba59c7fef1af7598/wcwidth-0.2.13.tar.gz"
+    sha256 "72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5"
   end
 
   def install

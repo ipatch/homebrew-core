@@ -9,35 +9,34 @@ class SshMitm < Formula
   head "https://github.com/ssh-mitm/ssh-mitm.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "ef44cda2dd3d934893a1d62473a689e0e8400bc2174f943f7adb98b2f3248dd7"
-    sha256 cellar: :any,                 arm64_ventura:  "75c75cb175c2d9f29a95bcb924409f09f44f03407891f3c6f34cabd025c3522a"
-    sha256 cellar: :any,                 arm64_monterey: "6023c376f2559861ab8121dff2b1f872c89044d654bade57b2184b62b3219d1b"
-    sha256 cellar: :any,                 sonoma:         "402c84a3b7b4730da1b8c444548215270cc52e61cbc947299e0a9ac83258a53b"
-    sha256 cellar: :any,                 ventura:        "e8ad2860bca8d53caba09c56a6466408e4ad62ca12af33b34ece6d50829a65ff"
-    sha256 cellar: :any,                 monterey:       "bb04d30ddcc4b4ca5e6bf495b326c8372fc4e471864767f38639b03b3d3693e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ceb68e14347fc6f094cc4c20d2ffbd8639147201c8362f1108388940a7dc24c3"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_sonoma:   "a2741cc5e68bc8215df3f087e37b6001e26aaabdf1e03d3815bf34520d038c37"
+    sha256 cellar: :any,                 arm64_ventura:  "48cf0fbc3401b8149048cebe29d9a374c5ae00fd83991198baef0ab0a303d4f5"
+    sha256 cellar: :any,                 arm64_monterey: "ba8106bcfc4b5277e79295925fbce5f56a9f14ca5b69731fdef47e6f817b3ed3"
+    sha256 cellar: :any,                 sonoma:         "96c25b0fab39b86eb1124b1e6496284b1c11ec1772d8f0c182ff6062e927cbdf"
+    sha256 cellar: :any,                 ventura:        "dcf42fdec3cc0305f932a28e360d3fe8e394701060cf7dcc8dafed081e35d7a0"
+    sha256 cellar: :any,                 monterey:       "70d4a4915b719f9d77fb461f1660fb2aac67bd08cccf6ece70d3c52a1ca9bab4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b3bf8d6504deb1768a4edb790441a7ceff359e8c3b305e16108a6cd2d2df17b9"
   end
 
   depends_on "rust" => :build # for bcrypt
-  depends_on "cffi"
-  depends_on "pycparser"
-  depends_on "pygments"
-  depends_on "python-argcomplete"
-  depends_on "python-cryptography"
-  depends_on "python-packaging"
-  depends_on "python-pytz"
+  depends_on "cryptography"
+  depends_on "libyaml"
   depends_on "python@3.12"
-  depends_on "pyyaml"
-  depends_on "six"
+
+  resource "argcomplete" do
+    url "https://files.pythonhosted.org/packages/3c/c0/031c507227ce3b715274c1cd1f3f9baf7a0f7cec075e22c7c8b5d4e468a9/argcomplete-3.2.3.tar.gz"
+    sha256 "bf7900329262e481be5a15f56f19736b376df6f82ed27576fa893652c5de6c23"
+  end
 
   resource "bcrypt" do
-    url "https://files.pythonhosted.org/packages/8c/ae/3af7d006aacf513975fd1948a6b4d6f8b4a307f8a244e1a3d3774b297aad/bcrypt-4.0.1.tar.gz"
-    sha256 "27d375903ac8261cfe4047f6709d16f7d18d39b1ec92aaf72af989552a650ebd"
+    url "https://files.pythonhosted.org/packages/72/07/6a6f2047a9dc9d012b7b977e4041d37d078b76b44b7ee4daf331c1e6fb35/bcrypt-4.1.2.tar.gz"
+    sha256 "33313a1200a3ae90b75587ceac502b048b840fc69e7f7a0905b5f87fac7a1258"
   end
 
   resource "colored" do
-    url "https://files.pythonhosted.org/packages/d2/ce/cca52eb08fdb44fd99e0dd16de52228cb4ef108d7aff7c3bc359bc9b103c/colored-2.2.3.tar.gz"
-    sha256 "1905ae45fa2b7fd63a8b4776586e63aeaba4df8db225b72b78fd167408558983"
+    url "https://files.pythonhosted.org/packages/2f/98/4d4546307039955eec131cf9538732fb7a28d2db2090cd1d4e4a135829e1/colored-2.2.4.tar.gz"
+    sha256 "595e1dd7f3b472ea5f12af21d2fec8a2ea2cf8f9d93e67180197330b26df9b61"
   end
 
   resource "ecdsa" do
@@ -55,9 +54,19 @@ class SshMitm < Formula
     sha256 "bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"
   end
 
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
+    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+  end
+
   resource "paramiko" do
     url "https://files.pythonhosted.org/packages/44/03/158ae1dcb950bd96f04038502238159e116fafb27addf5df1ba35068f2d6/paramiko-3.3.1.tar.gz"
     sha256 "6a3777a961ac86dbef375c5f5b8d50014a1a96d0fd7f054a43bc880134b0ff77"
+  end
+
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
+    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
   end
 
   resource "pynacl" do
@@ -70,9 +79,29 @@ class SshMitm < Formula
     sha256 "23e7ec02d34237c5aa1e29a070193a4ea87583bb4e7f8fd06d3de8264c4b2e1c"
   end
 
+  resource "pytz" do
+    url "https://files.pythonhosted.org/packages/90/26/9f1f00a5d021fff16dee3de13d43e5e978f3d58928e129c3a62cf7eb9738/pytz-2024.1.tar.gz"
+    sha256 "2a29735ea9c18baf14b448846bde5a48030ed267578472d8955cd0e7443a9812"
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
+    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+  end
+
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/b1/0e/e5aa3ab6857a16dadac7a970b2e1af21ddf23f03c99248db2c01082090a3/rich-13.6.0.tar.gz"
-    sha256 "5c14d22737e6d5084ef4771b62d5d4363165b403455a30a1c8ca39dc7b644bef"
+    url "https://files.pythonhosted.org/packages/b3/01/c954e134dc440ab5f96952fe52b4fdc64225530320a910473c1fe270d9aa/rich-13.7.1.tar.gz"
+    sha256 "9be308cb1fe2f1f57d67ce99e95af38a1e2bc71ad9813b0e247cf7ffbcc3a432"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/c8/1f/e026746e5885a83e1af99002ae63650b7c577af5c424d4c27edcf729ab44/setuptools-69.1.1.tar.gz"
+    sha256 "5c0806c7d9af348e6dd3777b4f4dbb42c7ad85b190104837488eab9a7c945cf8"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
   end
 
   resource "sshpubkeys" do
@@ -81,12 +110,16 @@ class SshMitm < Formula
   end
 
   resource "wrapt" do
-    url "https://files.pythonhosted.org/packages/f8/7d/73e4e3cdb2c780e13f9d87dc10488d7566d8fd77f8d68f0e416bfbd144c7/wrapt-1.15.0.tar.gz"
-    sha256 "d06730c6aed78cee4126234cf2d071e01b44b915e725a6cb439a879ec9754a3a"
+    url "https://files.pythonhosted.org/packages/95/4c/063a912e20bcef7124e0df97282a8af3ff3e4b603ce84c481d6d7346be0a/wrapt-1.16.0.tar.gz"
+    sha256 "5f370f952971e7d17c7d1ead40e49f32345a7f7a5373571ef44d800d06b1899d"
   end
 
   def install
-    virtualenv_install_with_resources
+    # Multiple resources require `setuptools`, so it must be installed first
+    venv = virtualenv_create(libexec, "python3.12")
+    venv.pip_install resource("setuptools")
+    venv.pip_install resources.reject { |r| r.name == "setuptools" }
+    venv.pip_install_and_link buildpath
   end
 
   test do

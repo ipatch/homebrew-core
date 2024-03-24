@@ -1,18 +1,18 @@
 class Frugal < Formula
   desc "Cross language code generator for creating scalable microservices"
   homepage "https://github.com/Workiva/frugal"
-  url "https://github.com/Workiva/frugal/archive/refs/tags/v3.17.6.tar.gz"
-  sha256 "b9cc9261f29f46fce7989bbe1795741ff8fd6fb240874114af759340c5ea1e46"
+  url "https://github.com/Workiva/frugal/archive/refs/tags/v3.17.9.tar.gz"
+  sha256 "54d2a4a20e52c10a2325c6952355eb91e02ab0720756963d59be43de88ef685d"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ef2fbfa5c41c03e0290e05f2d1ab2cd6eb97ce71e44b593fe1e0949aec980e46"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ef2fbfa5c41c03e0290e05f2d1ab2cd6eb97ce71e44b593fe1e0949aec980e46"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ef2fbfa5c41c03e0290e05f2d1ab2cd6eb97ce71e44b593fe1e0949aec980e46"
-    sha256 cellar: :any_skip_relocation, sonoma:         "195a865aa3fc95f0cede636587b09e2a328376fa4aa0e4c3c6c75e165080d6fc"
-    sha256 cellar: :any_skip_relocation, ventura:        "195a865aa3fc95f0cede636587b09e2a328376fa4aa0e4c3c6c75e165080d6fc"
-    sha256 cellar: :any_skip_relocation, monterey:       "195a865aa3fc95f0cede636587b09e2a328376fa4aa0e4c3c6c75e165080d6fc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e028756c542e375271b57089af5b3b22556d30f592ad3a5f029cbf0867089be6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bb70cc746e89ae1dc09722cf0720527cde49decceecbab3a0d80640ef35588c7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bb70cc746e89ae1dc09722cf0720527cde49decceecbab3a0d80640ef35588c7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "bb70cc746e89ae1dc09722cf0720527cde49decceecbab3a0d80640ef35588c7"
+    sha256 cellar: :any_skip_relocation, sonoma:         "0a3ff2c23bf06e9988309f2f333b23b69b2c96056f020d93a913764139fc4ff1"
+    sha256 cellar: :any_skip_relocation, ventura:        "0a3ff2c23bf06e9988309f2f333b23b69b2c96056f020d93a913764139fc4ff1"
+    sha256 cellar: :any_skip_relocation, monterey:       "0a3ff2c23bf06e9988309f2f333b23b69b2c96056f020d93a913764139fc4ff1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3fecc819fd62a02b8fc02050d541aead46598d4676311f0c4bdbdd8f454b9514"
   end
 
   depends_on "go" => :build

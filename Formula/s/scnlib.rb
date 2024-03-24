@@ -1,35 +1,43 @@
 class Scnlib < Formula
   desc "Scanf for modern C++"
   homepage "https://scnlib.dev"
-  url "https://github.com/eliaskosunen/scnlib/archive/refs/tags/v2.0.0.tar.gz"
-  sha256 "2a35356a3a7485fdf97f28cfbea52db077cf4e7bab0a5a0fc3b04e89630334cd"
+  url "https://github.com/eliaskosunen/scnlib/archive/refs/tags/v2.0.2.tar.gz"
+  sha256 "a485076b8710576cf05fbc086d39499d16804575c0660b0dfaeeaf7823660a17"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/eliaskosunen/scnlib.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "160139345f1ecb71a4889408a553348e3ff757bc993f2fa4ee7d44ef6ee5dafc"
-    sha256 cellar: :any, arm64_ventura:  "a857e39ca2054beafbf8cfd7ce6129388e2dc605cd64fc3e749edf04e603a37b"
-    sha256 cellar: :any, arm64_monterey: "10043eb4a407068ae0da43190e5843d11c2eaea9057d6528039b0b790979feed"
-    sha256 cellar: :any, sonoma:         "4563ca716a5975eb0404539ff69d1c7547a4befeba314109c46d2dc598617720"
-    sha256 cellar: :any, ventura:        "2296167e227d5ebbc935b7bfc3a35a67925333f422b9512b33161740241e3a16"
-    sha256 cellar: :any, monterey:       "41e1e7238c0d60fd61a09294a3629fe811abc13f2e2e5f3f720b9bcac0280671"
+    sha256 cellar: :any, arm64_sonoma:   "e0e820a21b0d5b709bfe633bb9423d8655cf7b55894ff0d0cb5b7a6078c91968"
+    sha256 cellar: :any, arm64_ventura:  "090fe1a7c4bd431e2282c3cc6c6326db58c3e828315b77024b315842f657c753"
+    sha256 cellar: :any, arm64_monterey: "43ef5a3b45568849dfcdba3f1d0772386cabdad807756771f4193f787b6a21c4"
+    sha256 cellar: :any, sonoma:         "3e02537c9c2c1e290841a75d97b1bfcbcb8faf81663c941bab984efc24bd95bf"
+    sha256 cellar: :any, ventura:        "0481b6aafbf8f5fa59f0ed88f4ac3ef8c8ef6b3389a00241961d16f580ce28ec"
+    sha256 cellar: :any, monterey:       "1b034acf078d25518bf9ea25084d254d40e88397a5c68b61e3b183920eb18a6a"
   end
 
   depends_on "cmake" => :build
   depends_on "simdutf"
 
+  # patch to support simdutf 5.0.0, https://github.com/eliaskosunen/scnlib/pull/102
+  patch do
+    url "https://github.com/eliaskosunen/scnlib/commit/5398f91aa42f5bc88bab00447e51ad0eab65300d.patch?full_index=1"
+    sha256 "43d2f868589515d7369ce35d5a9700f17275a54b670b6928c6be344735c1ae9b"
+  end
+
   def install
-    system "cmake", "-S", ".",
-                    "-B", "build",
-                    "-DBUILD_SHARED_LIBS=ON",
-                    "-DSCN_TESTS=OFF",
-                    "-DSCN_DOCS=OFF",
-                    "-DSCN_EXAMPLES=OFF",
-                    "-DSCN_BENCHMARKS=OFF",
-                    "-DSCN_BENCHMARKS_BUILDTIME=OFF",
-                    "-DSCN_BENCHMARKS_BINARYSIZE=OFF",
-                    "-DSCN_USE_EXTERNAL_SIMDUTF=ON",
-                    *std_cmake_args
+    args = %w[
+      -DBUILD_SHARED_LIBS=ON
+      -DSCN_TESTS=OFF
+      -DSCN_DOCS=OFF
+      -DSCN_EXAMPLES=OFF
+      -DSCN_BENCHMARKS=OFF
+      -DSCN_BENCHMARKS_BUILDTIME=OFF
+      -DSCN_BENCHMARKS_BINARYSIZE=OFF
+      -DSCN_USE_EXTERNAL_SIMDUTF=ON
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -47,12 +55,8 @@ class Scnlib < Formula
         return result == expected ? EXIT_SUCCESS : EXIT_FAILURE;
       }
     EOS
-    system ENV.cxx, "-std=c++17",
-                    "test.cpp",
-                    "-o", "test",
-                    "-I#{include}",
-                    "-L#{lib}",
-                    "-lscn"
+
+    system ENV.cxx, "-std=c++17", "test.cpp", "-o", "test", "-I#{include}", "-L#{lib}", "-lscn"
     system "./test"
   end
 end

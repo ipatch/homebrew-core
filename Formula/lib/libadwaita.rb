@@ -1,8 +1,8 @@
 class Libadwaita < Formula
   desc "Building blocks for modern adaptive GNOME applications"
   homepage "https://gnome.pages.gitlab.gnome.org/libadwaita/"
-  url "https://download.gnome.org/sources/libadwaita/1.4/libadwaita-1.4.2.tar.xz"
-  sha256 "33fa16754e7370c841767298b3ff5f23003ee1d2515cc2ff255e65ef3d4e8713"
+  url "https://download.gnome.org/sources/libadwaita/1.5/libadwaita-1.5.0.tar.xz"
+  sha256 "fd92287df9bb95c963654fb6e70d3e082e2bcb37b147e0e3c905567167993783"
   license "LGPL-2.1-or-later"
 
   # libadwaita doesn't use GNOME's "even-numbered minor is stable" version
@@ -14,13 +14,13 @@ class Libadwaita < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "9ee825cd15be20ba5a07c46b425a2fc34a31e2d28b166b887f05256bc45dc9b6"
-    sha256 arm64_ventura:  "ee3d4ff9e9780820b439675448c6cab316108108a739f73c677b8a6f687c12f3"
-    sha256 arm64_monterey: "1bdb0d6456bec3664d8f51faf1f978252f93639ca8ad3c1ad06f8b67b7f546b2"
-    sha256 sonoma:         "2e85f305e5db472be9697f670047fe5cc40a86c662d15e069f32efc262e41545"
-    sha256 ventura:        "a9dc8302efa3a626074a004330647cd80276967072164d02d8037d796ea1a2d7"
-    sha256 monterey:       "0f401fa3377d537f4943e3c99536ec4de7c98541cdcdf80bcdd96951268bada0"
-    sha256 x86_64_linux:   "2c046bafeb69764a4515de7a226aeac68c2302ac9a93d19748403b5e6726bb0b"
+    sha256 arm64_sonoma:   "141f8951e517f984acc674a4a8822afbc54faf10810f4722b8604a8c95bd08fb"
+    sha256 arm64_ventura:  "6d634bbb0e09f253063be4bd1250841a30468bdff2735e79c7590481288e058d"
+    sha256 arm64_monterey: "cc53aedcc0d535a8366c4c5c8abbbc103a8cc755efeb89be90dea0076877170f"
+    sha256 sonoma:         "7e22b362836ebe2677eaecb10682091c3a6486418709143a61c7355a5e3e9e7a"
+    sha256 ventura:        "7be0d127b045cee3ac7b8f24cd25a2a75717f218df17d75e97c5eb0a42b4a101"
+    sha256 monterey:       "c2817f55bc11b02fd8c65cc61b65a384f86ed17a2347f14a897e41bef2efef59"
+    sha256 x86_64_linux:   "3915cdf230e9d640a6fc8bfd4ccfdd7be5bf553d82fdc659256878243d610a22"
   end
 
   depends_on "cmake" => :build

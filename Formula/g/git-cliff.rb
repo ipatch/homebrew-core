@@ -1,19 +1,18 @@
 class GitCliff < Formula
   desc "Highly customizable changelog generator"
   homepage "https://github.com/orhun/git-cliff"
-  url "https://github.com/orhun/git-cliff/archive/refs/tags/v1.4.0.tar.gz"
-  sha256 "8ec9a2c9cd0e97a8111a82bcf2fce415f40818897bdc76a2c5cc63d99114ec30"
+  url "https://github.com/orhun/git-cliff/archive/refs/tags/v2.1.2.tar.gz"
+  sha256 "1c321b180b071ccfa8986931576fc02ca4dbc75dff035e4c663c2cfb8ecd4683"
   license all_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "860c578c40f61ace2cb91a18012ba7a8af7806be08f338cdb591e1d52b82ca06"
-    sha256 cellar: :any,                 arm64_ventura:  "0ad0eb3b0662c90820d45c3f06d47ea959551cae96cf7d71bfc0ebb0611d5fe3"
-    sha256 cellar: :any,                 arm64_monterey: "a08586ac6cfb1901d89209b487ab4b5eb66e54bdafc334e5e29e087ed6159240"
-    sha256 cellar: :any,                 sonoma:         "1be7a2a7465f9f230232afd4a4bb0dfb20d1bcc96489a43561918b3b1889f6db"
-    sha256 cellar: :any,                 ventura:        "d7efd7a6d669949a91bf05ac86870ab016cc607b0b77c2fd8818f67ddf0d5be9"
-    sha256 cellar: :any,                 monterey:       "71f9dca3327915bc870260a7fc210f6e0660bbba2ab04324bd69cb2f36a16239"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8b3ebdabc943fee8f4ec71ec08edcf5a5922d5f248f1db286c499c9d219bbaa7"
+    sha256 cellar: :any,                 arm64_sonoma:   "61ac163767c260e569433e87a1e30b6230df93e41f0bde2cca46f6a59ffb522c"
+    sha256 cellar: :any,                 arm64_ventura:  "c65a52cbbdd2dfdb4862796a2e30a26139732d27c5c690a2692b55e5997bdebc"
+    sha256 cellar: :any,                 arm64_monterey: "43c61feb45cff2f3079a4ca6b16dd405dfd32bb5dbbd965898c03ab92d0cb4c3"
+    sha256 cellar: :any,                 sonoma:         "37ccac8bfc63dd7de1611e62ff31e24d9e256fc8d97f2abbbe58937187807454"
+    sha256 cellar: :any,                 ventura:        "0e809293b5e935c67f4fbb633f4a389963121a669af8ff3e591ed38ec1e7d46b"
+    sha256 cellar: :any,                 monterey:       "ef43913de1b458bfbb8951390858b95a633149ee2320a48267a4a2795abc1719"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6e07083289c3625e9343f121b4626c5d16e1454a426e2f19026f04fabaee16e2"
   end
 
   depends_on "pkg-config" => :build
@@ -49,8 +48,16 @@ class GitCliff < Formula
     system "git", "init"
     system "git", "add", "cliff.toml"
     system "git", "commit", "-m", "chore: initial commit"
-    changelog = "### Miscellaneous Tasks\n\n- Initial commit"
-    assert_match changelog, shell_output("git cliff")
+
+    assert_match <<~EOS, shell_output("git cliff")
+      All notable changes to this project will be documented in this file.
+
+      ## [unreleased]
+
+      ### ⚙️ Miscellaneous Tasks
+
+      - Initial commit
+    EOS
 
     linkage_with_libgit2 = (bin/"git-cliff").dynamically_linked_libraries.any? do |dll|
       next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)

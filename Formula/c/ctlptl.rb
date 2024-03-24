@@ -1,18 +1,18 @@
 class Ctlptl < Formula
   desc "Making local Kubernetes clusters fun and easy to set up"
   homepage "https://github.com/tilt-dev/ctlptl"
-  url "https://github.com/tilt-dev/ctlptl/archive/refs/tags/v0.8.26.tar.gz"
-  sha256 "7b0bb2ba31b7b0e4f8a57e903fccdd96d6281431b4157806c04a8cae87552daf"
+  url "https://github.com/tilt-dev/ctlptl/archive/refs/tags/v0.8.28.tar.gz"
+  sha256 "7f973f10e7bf634c7fa0129619202e64f1ef2bdc5483ff1499270f782836520c"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ec7cec557b239cf113aa482b5d030595c9a619733bd10651d567651b58015f5b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c99ea578ba0280fc0790977bee5d9c10a77f5b8e5588b4c36c99df126cf8e721"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9428e92ed037f793c50928930c8a2b35339252e7af13e9e2e6c6018234d10894"
-    sha256 cellar: :any_skip_relocation, sonoma:         "567827bff1e860c217d2f712a92933b65bc66da9e56b7ae4ac509a40c9cc7856"
-    sha256 cellar: :any_skip_relocation, ventura:        "0d7b5458db6feecbd28edbe464a23979537f0978c4cbeee82dfaed8278e705b6"
-    sha256 cellar: :any_skip_relocation, monterey:       "db8d730be29389d1cfe16e96a89691d9bda93d89659ad7653f3d79faf64017ab"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "15624128537a577dafae930a9d756e27c044670af8cd7cada9deb902b916d3a3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "427b7857c5a1e9f5900dbf089c0bf27283bbdd3e066456b73cb66d0b93cb4909"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "60f4871c6b36eaad0dced39e979231c9a04d7056a5c3dd9fdbba3f6c4aa78e57"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1fcf349c485c63d3c875d90b9b7a7cd3784acb5663bd7bd7de959aa0e5ee6c6c"
+    sha256 cellar: :any_skip_relocation, sonoma:         "b200f34eedc4623b2d269779d572a64a3191e23cb40e78bd9999caed7efcf0d3"
+    sha256 cellar: :any_skip_relocation, ventura:        "f1694f936c5dbddda23f0dff4317956afd76d630e70d77ede2a5a1d379a8c9f6"
+    sha256 cellar: :any_skip_relocation, monterey:       "d3927357b07395e94b5a895b17b5a796137257a436c291149e3128ef3c2bedb1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec430025d727ccc5ffd11b9cf2fa5d879c778cd24838b9fa0b9061468edf528e"
   end
 
   depends_on "go" => :build
@@ -23,7 +23,7 @@ class Ctlptl < Formula
       -X main.version=#{version}
       -X main.date=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/ctlptl"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/ctlptl"
 
     generate_completions_from_executable(bin/"ctlptl", "completion")
   end

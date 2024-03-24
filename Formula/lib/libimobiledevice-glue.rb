@@ -1,21 +1,19 @@
 class LibimobiledeviceGlue < Formula
   desc "Library with common system API code for libimobiledevice projects"
   homepage "https://libimobiledevice.org/"
-  url "https://github.com/libimobiledevice/libimobiledevice-glue/releases/download/1.0.0/libimobiledevice-glue-1.0.0.tar.bz2"
-  sha256 "160a70e2edc318312fc40b6a71f85bfdfabdfba10bcfc5bb6fb40ed95088f4a0"
+  url "https://github.com/libimobiledevice/libimobiledevice-glue/releases/download/1.2.0/libimobiledevice-glue-1.2.0.tar.bz2"
+  sha256 "ff9cbc240c9780edfa43914a057b86362054053721b65fb04f54a25023b92b62"
   license "LGPL-2.1-or-later"
   head "https://github.com/libimobiledevice/libimobiledevice-glue.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "ef2149f0101eb75af1efc6937503454158b0abdfc1cec1f34e812e2ac7923f7a"
-    sha256 cellar: :any,                 arm64_ventura:  "d0075ad2928c0d58bb082a560ed98d99cf707ec7aa38468dcd2a8de7e4318e2c"
-    sha256 cellar: :any,                 arm64_monterey: "2df780fb2c3db6fd9ef4d2ce93bf7485ca048835684fa6c52f4cabfcd6ecde5b"
-    sha256 cellar: :any,                 arm64_big_sur:  "102c5bfea819697a98424e60a2d7ac144a29cd3bacd7b8985aa145b7cf3fe2f9"
-    sha256 cellar: :any,                 sonoma:         "2e80b8aa3d5627f2a6f496f882254511cd7dc07803d933df2398d43604f8d89f"
-    sha256 cellar: :any,                 ventura:        "b54a189cad02331e9d9260f62bfacfc5479cb8751029f4911bb26ab817cb7789"
-    sha256 cellar: :any,                 monterey:       "e4bb7b80e1f4c1c9e49da748805534f77f153f92549db058cc6b15e2d07aae4d"
-    sha256 cellar: :any,                 big_sur:        "f56f9258d3653ebe550079fbd4db06c0d6d65e5f944bbb072d5874e762212434"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6df3bb9fa34708bddc165c568ed80517235e5813dc7640843ac28380ef39bec6"
+    sha256 cellar: :any,                 arm64_sonoma:   "5e00139aad86809adde7ad17bceeedda2a3177372df04fbe9a91bc3fa1366a5b"
+    sha256 cellar: :any,                 arm64_ventura:  "005fde87e6014290eb3c9e08712b6dc93dc3febf2d56c44094f37f34fe149d10"
+    sha256 cellar: :any,                 arm64_monterey: "f433d2bd7a0f0af23fe462fcd8df88e87fc0c8f908d92c7f67a4a2f7a320a441"
+    sha256 cellar: :any,                 sonoma:         "a248f4d3c9fdf4608e941d818317e5d86c2132c1140daa45bbf6a82f8f90a53c"
+    sha256 cellar: :any,                 ventura:        "4580c48aec859791cb1771caf7ff609f09af8a4d9352883d1b104d6039cb193b"
+    sha256 cellar: :any,                 monterey:       "607706dd2f6675ee2ff5900fe82ae1b666e10bb17892eb9c2b5ba9d3391219b4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1c30c5964567df2dcb1b86e70e41622aaf72d533effecc6ee0ef7348171eefdd"
   end
 
   depends_on "autoconf" => :build

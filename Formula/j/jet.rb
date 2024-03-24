@@ -1,21 +1,19 @@
 class Jet < Formula
   desc "Type safe SQL builder with code generation and auto query result data mapping"
   homepage "https://github.com/go-jet/jet"
-  url "https://github.com/go-jet/jet/archive/refs/tags/v2.10.1.tar.gz"
-  sha256 "94f964b2eba69e2df1f922cf83b193a276f6b64ac742bd65670fd07a307aee22"
+  url "https://github.com/go-jet/jet/archive/refs/tags/v2.11.1.tar.gz"
+  sha256 "a046e5982eb972825b2dce80548ff1e77dfdaaea2f3dea016e6e5d376cbbc822"
   license "Apache-2.0"
   head "https://github.com/go-jet/jet.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e6c5a750da0df61e3e3dd8140d8dab7988208a040e58e2bb8297764467b350ac"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "19e720e66149cd632a73fce73bbb3993f4b278bef524e70c0b5d380d176b2151"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3575267bfac6e2915d6509d120b3997f35c319e1bf5a2874562775edd8aa34a4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5558fc8b5d0bbd7309dd2985d957ad62e38631202a9473b331e70fb6d557086a"
-    sha256 cellar: :any_skip_relocation, sonoma:         "08583e8b31ccca7ce40cd1928fdf650609fff73d4f7436389819ee6d9d529942"
-    sha256 cellar: :any_skip_relocation, ventura:        "22c63a2140468e0b01a9d9db4905cc9a9111bb92e79e719d7924cc3f64ac5ff7"
-    sha256 cellar: :any_skip_relocation, monterey:       "0864144bde8a0a64321dc4f52999cf7cecec52335653f17e81b09797315e7b01"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d7a0db87b66cc64e9dc734bc917f8f02fb2c7bfd359ca20403845f5c565eea77"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "51793306a7358db7fddce5dcc2da3506e852c1428b8ec2470f4989f12e355e83"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c8e365e76e3e2b3bbc4e7a257dfe3ad1004bf5ffc2163c3852c94dc11f380f0e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "772811a7e784d95d4215cb5fee17f1fa305f5aa7c7340375b6737573ae4c17c6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "08621eb4c223ed9171115e5e7cf4db9c408194e43ca76031bc2d653692eaea0a"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ff0a49e6c0567d7992a054f8d2b9b68cd4ed785bb20de9a5d30ab75da36eb63c"
+    sha256 cellar: :any_skip_relocation, ventura:        "d1542b742bfab00324695753c04d3376bde37343fd00b0718718c0bd6d8b5426"
+    sha256 cellar: :any_skip_relocation, monterey:       "b8ee73142506f7f5830b70a1c5a6a7ea8ff1043c1ec9ce01de0c0669e4873101"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c3fcb0048ffc0776f975baea12887b6f12c61baa197372041a79cbe9123239cc"
   end
 
   depends_on "go" => :build

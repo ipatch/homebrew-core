@@ -2,8 +2,8 @@ class Stackql < Formula
   desc "SQL interface for arbitrary resources with full CRUD support"
   homepage "https://stackql.io/"
   url "https://github.com/stackql/stackql.git",
-      tag:      "v0.5.552",
-      revision: "c5f7a7e5ac66710192da23544e85951a32c406ce"
+      tag:      "v0.5.591",
+      revision: "9e5a9d67bc14ee479e4250d9b39efa28f44730c8"
   license "MIT"
 
   livecheck do
@@ -12,13 +12,13 @@ class Stackql < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "08cc994ca99beae7ad4876522b4c76a56a8c6c79f239fb5ca114cd3e4718b0de"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9315c3592bf3d1d8bf74e1cff207870f42d1075e185d0686ff4662075260f83f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9885de2cc56e83c68a435ee482d1abd62cad616cfda17a330fc5c646f3ad4715"
-    sha256 cellar: :any_skip_relocation, sonoma:         "00e92faaf6a4a5b5f5dddc0d96fbe4289afad1f82672ba82c32bd31e5580c5ed"
-    sha256 cellar: :any_skip_relocation, ventura:        "bc068214e7455a5e13551ec6c233250a3749ce13617b3cd26835809f4068b9ec"
-    sha256 cellar: :any_skip_relocation, monterey:       "3ef8bf64a5edf32d7e2021bd30974024ac28557d93ceef23b310e3480a56121c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bfac6eedbb504c5c5922313b98199fe6a201fbf4a517c493db3cdcf2ac0d405a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f23fb98f5c2970285713bd292eecfbd7fb3327a43cb62ccc965129458dac1f54"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "910ace15c39815f99b523e6efecfbbe881ee465d05675dd427b87542ee3a7555"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d9678175f8b966437d8b07b13f4898f5079f96983a4d77c0fd61a9fc7fb65743"
+    sha256 cellar: :any_skip_relocation, sonoma:         "8847fe666648dfee29d4209334626b7507afbe3bb2288501a358882bdd96d5ee"
+    sha256 cellar: :any_skip_relocation, ventura:        "bb83d20d5f9981372052a154c83e0d3c6f0b7774a65008e4b77f0b5720962dcd"
+    sha256 cellar: :any_skip_relocation, monterey:       "b4ad3e22d105be57751956be633bd5fcd06535973ce4f62cb86366803e88b0bb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "daecba4185be33cd7358a533d068b21b5108b672e3a66e8a56a82974380c3ca6"
   end
 
   depends_on "go" => :build
@@ -35,7 +35,7 @@ class Stackql < Formula
       "-X github.com/stackql/stackql/internal/stackql/cmd.BuildShortCommitSHA=#{Utils.git_short_head}",
       "-X stackql/internal/stackql/planbuilder.PlanCacheEnabled=true",
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "--tags", "json1 sqleanall", "./stackql"
+    system "go", "build", *std_go_args(ldflags:), "--tags", "json1 sqleanall", "./stackql"
   end
 
   test do

@@ -1,20 +1,18 @@
 class Freerdp < Formula
   desc "X11 implementation of the Remote Desktop Protocol (RDP)"
   homepage "https://www.freerdp.com/"
-  url "https://github.com/FreeRDP/FreeRDP/archive/refs/tags/2.11.2.tar.gz"
-  sha256 "674b5600bc2ae3e16e5b5a811c7d5b0daaff6198601ba278bd15b4cb9b281044"
+  url "https://github.com/FreeRDP/FreeRDP/archive/refs/tags/3.4.0.tar.gz"
+  sha256 "0fe77b2b838f32598a11c63ff4a1c0482d5bac0da7753ce6446039349ed96b00"
   license "Apache-2.0"
 
   bottle do
-    sha256                               arm64_sonoma:   "09b8124496fda4bbf7ad3e2838da0ffb85af13bc89b00db4a51ba0fc59c8fa54"
-    sha256                               arm64_ventura:  "086d8da3ced45839a4305af669f2129244fe6f4876dab9d51ee1db99df704d0f"
-    sha256                               arm64_monterey: "212b40f435c732a2b0df6953d98b2700609bfb1410fdd625151710b1d11f773d"
-    sha256                               arm64_big_sur:  "2f70e7eb0f7769365e366bc2b8d5f521605adfe6a7185e420b1935e7db3a1dee"
-    sha256                               sonoma:         "d9b28c0cb94c08fe32f9051170f76d4feb52ab32afd7092906154f0bb22e62e6"
-    sha256                               ventura:        "22606e33705046efc043b8e086c709498acdce02f2210b1eaf6c1afcb27cec95"
-    sha256                               monterey:       "adbc165e1eb025bd9a52af75c575ce64cb39037dd9f45100677083cd83f3c791"
-    sha256                               big_sur:        "522750f966e0f0d5886a34bfea642837b13b4ba40aff9dd3e9a83839a4afa2cd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9aec0ffb441572dc1ed378fe30ae851bcb4e2db6c9f2df80f04ba7780c44c0b8"
+    sha256 arm64_sonoma:   "712a72aa8fcd7d1202f93bfd2fce1fd2a70d692615110da24f319655935cec2f"
+    sha256 arm64_ventura:  "79535139bf45740426adb59a3c6342c5548d633c7160913a77b2e3617e71a197"
+    sha256 arm64_monterey: "1f54390117d0f395620b50b9ba7278953be83813c263d211ee08286f84a31e98"
+    sha256 sonoma:         "1132855b7e0bcf5c176c38d3fabcae5476e601f5152c74511c18c02bfcf4e051"
+    sha256 ventura:        "83338de572ec1ce03c28cbfafd6ebe67ad6a46ed963d7e9ebdedeb5ddddfeac6"
+    sha256 monterey:       "5f8e6916ead9a12fb2d64e263b43e22e2207709345c8c182a4af87414c47df53"
+    sha256 x86_64_linux:   "49fd8beaaaddbc5a9a63ecc0a020258f35c20ced35383c74b55314e1a67539ec"
   end
 
   head do
@@ -24,6 +22,8 @@ class Freerdp < Formula
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "cjson"
+  depends_on "ffmpeg"
   depends_on "jpeg-turbo"
   depends_on "libusb"
   depends_on "libx11"
@@ -36,6 +36,7 @@ class Freerdp < Formula
   depends_on "libxrender"
   depends_on "libxv"
   depends_on "openssl@3"
+  depends_on "pkcs11-helper"
 
   uses_from_macos "cups"
 
@@ -43,16 +44,22 @@ class Freerdp < Formula
     depends_on "alsa-lib"
     depends_on "ffmpeg"
     depends_on "glib"
+    depends_on "libfuse"
     depends_on "systemd"
     depends_on "wayland"
   end
 
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
-                    "-DWITH_X11=ON",
-                    "-DBUILD_SHARED_LIBS=ON",
-                    "-DWITH_JPEG=ON",
-                    "-DCMAKE_INSTALL_NAME_DIR=#{lib}"
+    args = %W[
+      -DWITH_X11=ON
+      -DBUILD_SHARED_LIBS=ON
+      -DWITH_JPEG=ON
+      -DCMAKE_INSTALL_NAME_DIR=#{lib}
+      -DWITH_MANPAGES=OFF
+      -DWITH_WEBVIEW=OFF
+      -DWITH_CLIENT_SDL=OFF
+    ]
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

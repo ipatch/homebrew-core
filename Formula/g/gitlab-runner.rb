@@ -2,8 +2,8 @@ class GitlabRunner < Formula
   desc "Official GitLab CI runner"
   homepage "https://gitlab.com/gitlab-org/gitlab-runner"
   url "https://gitlab.com/gitlab-org/gitlab-runner.git",
-      tag:      "v16.8.0",
-      revision: "c72a09b670c4370a9e57e4ed89697ff3ce3ab84f"
+      tag:      "v16.9.1",
+      revision: "782c6ecbac8e4a5d48cb16e781ea62ddc4068541"
   license "MIT"
   head "https://gitlab.com/gitlab-org/gitlab-runner.git", branch: "main"
 
@@ -13,13 +13,13 @@ class GitlabRunner < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "455fcfb53a843ebf04baa4915f2a5d7f0be321d2bd98241a9967b19273df2d7e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1db992ca42126caa80e4dfe6a8246971422599b44e66941bd48291ed9982218b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a174e2b7cbcc573a1c51b22a0d7fc66362ed06ad74b1268ebb7897cdb5d0cbc6"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c419c05f98797926908714a207aa83e590e6778dac563762ee14c7a4a0d6cf0b"
-    sha256 cellar: :any_skip_relocation, ventura:        "86113b0808f1ee3f1dc8459280a281e7c755819d892c5b040615d63fc55ed5d3"
-    sha256 cellar: :any_skip_relocation, monterey:       "40269d9aaa1cfcdf06e41fd64683164b8e1a90f44c20ce7557b147e9485cebe8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3acd625bf06124bec6bd3ac38b906ed655a8a7a47f9429de525320bd4e726179"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "46316f4c7ff2523683feb202dbdcc5787d5376baf413c0da663cfbfb930ff264"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bd66eccbbdac3ebe8dbc446bed2c9bc9a5681a7aadafd6eabaddc7ae67a39210"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "823c157fe9cc7fc4323f1994883db3a5dcd97dbccb862a3051e2901fde428120"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ab251411cbdba14b8f73ccafe59429080ee602412546f123082bc5dd36eca685"
+    sha256 cellar: :any_skip_relocation, ventura:        "b5ba99b23bd7ccbf074da5aaab37c3a97917510d562b9c566faaf981669eab25"
+    sha256 cellar: :any_skip_relocation, monterey:       "c74d78640823de0ba7ba749b3e5fef0ef967b4cd8a0e61b84450b91a569d38e8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4d487f033cf82ece33fad99978303713071a8d698e156414616c01dd14a56b52"
   end
 
   depends_on "go" => :build
@@ -33,7 +33,7 @@ class GitlabRunner < Formula
       -X #{proj}/common.BRANCH=#{version.major}-#{version.minor}-stable
       -X #{proj}/common.BUILT=#{time.strftime("%Y-%m-%dT%H:%M:%S%:z")}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   service do

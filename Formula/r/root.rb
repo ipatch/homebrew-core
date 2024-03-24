@@ -15,12 +15,14 @@ class Root < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "dacfe11fa048be0850bb3f8d6063b2eabd45179ca5e0db6d38a12b7a5723f942"
-    sha256 arm64_ventura:  "b3235f9c9d75696a6d257e934535382db6e951b91dde71f2b58421c8496f1398"
-    sha256 arm64_monterey: "2c3be78e473e1b9ef477403207ab51bac76bbce245c261aafb5ef7a6220614e2"
-    sha256 sonoma:         "3844e74c8b2a1654e2f5ad3dae992dca30c6e9fcf0f3a22c4484eff7ddc9bdf7"
-    sha256 ventura:        "a2e4a35baf6703261cec740f62aa6f6e49dc5a3f6b7bdd7144c56be4651c923d"
-    sha256 monterey:       "47d12445b293713b6b865bd1fcd8e020eef75e0cffae82a11110dae605d3888b"
+    rebuild 2
+    sha256 arm64_sonoma:   "b2c664232a77fb4bd0c72652ee940be4d1b98f2521cc3f8bc8ba63849a3872cb"
+    sha256 arm64_ventura:  "ab1fa0afde5ab57bfac330a3e56443a5cae76f6986d1066611f5ee7a3322f6a7"
+    sha256 arm64_monterey: "0d8f67393774ce0f1df21b1875671d10545604d56f148d1cbc974598e9e0ba40"
+    sha256 sonoma:         "86c5602967c3e9042fea1658a6118855d08b25e1391a9b44235538ad8e15e7ce"
+    sha256 ventura:        "b02a025adb7a3736bb7d05e971400d19133b993bbb82660a4dc7a56aa140be1b"
+    sha256 monterey:       "238d3562f55b9d4e07b99261ce1261d8156c83d7d517cd99a7057d6da1b95a90"
+    sha256 x86_64_linux:   "8bb1b867bc40c1174a105b5828b0c6ead3adf16ea9a237cb05fa440ee93239bb"
   end
 
   depends_on "cmake" => :build
@@ -43,7 +45,7 @@ class Root < Formula
   depends_on "openblas"
   depends_on "openssl@3"
   depends_on "pcre"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
   depends_on "sqlite"
   depends_on "tbb"
   depends_on :xcode
@@ -65,8 +67,15 @@ class Root < Formula
 
   fails_with gcc: "5"
 
+  # Upstream fix for Xcode 15.3 build failure
+  # https://github.com/root-project/root/issues/14902
+  patch do
+    url "https://github.com/root-project/root/commit/440c7303a95ad53ecd0e5ae7d6ebd0f29a733fa6.patch?full_index=1"
+    sha256 "6cd88fecaf104591a9f43ada36a2daa13d5c8c0aa48b97d1bd5ed1b090fe80e9"
+  end
+
   def python3
-    "python3.11"
+    "python3.12"
   end
 
   def install
@@ -85,7 +94,7 @@ class Root < Formula
       -DCLING_CXX_PATH=clang++
       -DCMAKE_CXX_STANDARD=17
       -DCMAKE_INSTALL_ELISPDIR=#{elisp}
-      -DPYTHON_EXECUTABLE=#{python3}
+      -DPYTHON_EXECUTABLE=#{which(python3)}
       -DXROOTD_ROOT_DIR=#{Formula["xrootd"].opt_prefix}
       -Dbuiltin_afterimage=ON
       -Dbuiltin_cfitsio=OFF

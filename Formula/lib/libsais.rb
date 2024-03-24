@@ -1,21 +1,19 @@
 class Libsais < Formula
   desc "Fast linear time suffix array, lcp array and bwt construction"
   homepage "https://github.com/IlyaGrebnov/libsais"
-  url "https://github.com/IlyaGrebnov/libsais/archive/refs/tags/v2.7.3.tar.gz"
-  sha256 "45d37dc12975c4d40db786f322cd6dcfd9f56a8f23741205fcd0fca6ec0bf246"
+  url "https://github.com/IlyaGrebnov/libsais/archive/refs/tags/v2.8.0.tar.gz"
+  sha256 "71f608d1e2a28652e66076f42becc3bbd3e0c8a21ba11a4de226a51459e894a9"
   license "Apache-2.0"
   head "https://github.com/IlyaGrebnov/libsais.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "93b1a2b0dfd2d541d080639d25846481698ed274ef40ff32c2daceebc3e524c0"
-    sha256 cellar: :any,                 arm64_ventura:  "a3f7cf156031c58cd43aa63838edd85f7f8b00f7d28e0f62a076bb4f30129a0f"
-    sha256 cellar: :any,                 arm64_monterey: "6305881a8579ea1c15ad2cb5a8531edbf6817b0b37d8282998c6dcffae3832db"
-    sha256 cellar: :any,                 arm64_big_sur:  "ab217c02a0b3dc17772557ff7144371c45d468af0174e61d7e8975e13a859318"
-    sha256 cellar: :any,                 sonoma:         "e8711d668cb44d059cb5a7347e782a61eea7cf21016683703094108b66ab7bf1"
-    sha256 cellar: :any,                 ventura:        "d377a2ebcdb7161b8d76b895245ebf6ebbf5809c52eb7cd1990a568fb5f070fe"
-    sha256 cellar: :any,                 monterey:       "8009459840d9f8f470dd9af3b32cdb6c73fdf4014f9d54910bafddafd61e69d2"
-    sha256 cellar: :any,                 big_sur:        "5191f9864ce178045da8775789e58a057f97d09dfdd09ada4950a05ad1216adf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "91c8074d6679c238dd5481e53ffb4459dd576b0b3be9f9cf344b6e4af291477d"
+    sha256 cellar: :any,                 arm64_sonoma:   "3933494cba07975af38834898f56f291f35ec919fc5f73514b7b50bfe29ce05c"
+    sha256 cellar: :any,                 arm64_ventura:  "090d96eeb77c865e2e5389ad6acfe9738adb37586807fa3fd1be1520ed478e4d"
+    sha256 cellar: :any,                 arm64_monterey: "f362792216ec5d2ad6479a92d18bc96620d960053d5c5e36a0757e6f6c389f1e"
+    sha256 cellar: :any,                 sonoma:         "668bf44b32baf724b9f46245dd4ab0a9a21e85efa14cb353f6ce8a96abe04f3d"
+    sha256 cellar: :any,                 ventura:        "986c26b5d8e5610b024038129941838812997fd3bbe2e66c8316703250814fcc"
+    sha256 cellar: :any,                 monterey:       "fb1ff0da782f19d0037a35e5382f0a3cb1135c6fb0ec67d71e4a7b170da7f17b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8c6f41c30c8160aea7fac0b81740a31d5c9b2789d259005aed4bd83c2791059b"
   end
 
   depends_on "cmake" => :build

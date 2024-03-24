@@ -4,7 +4,7 @@ class Opencv < Formula
   url "https://github.com/opencv/opencv/archive/refs/tags/4.9.0.tar.gz"
   sha256 "ddf76f9dffd322c7c3cb1f721d0887f62d747b82059342213138dc190f28bc6c"
   license "Apache-2.0"
-  revision 2
+  revision 5
 
   livecheck do
     url :stable
@@ -12,13 +12,14 @@ class Opencv < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "050aa40b98415ba10aab9b69e507c9d295d31da23a1545b326f1bd99d4754cbc"
-    sha256 arm64_ventura:  "43cacdbe37f2eb9f81b7f87c57ffad60d50333876e8939a7331eeb8ce6fdaa2a"
-    sha256 arm64_monterey: "e9b2f94bbe92fb141c190bcc8b621ce0ccc97164ed2d529e29a2d381fc340173"
-    sha256 sonoma:         "9f2650ae41df1c0b540ecb36b88765961134835817fee78102222c6efc3732b4"
-    sha256 ventura:        "ec71cbbe353790086f33f71d1430cfb25503236677cfce5e4a7c8da85957e29c"
-    sha256 monterey:       "b51f19cc6c4355e3a26deb3a90c9b05b12ccc091feeb4fdd370945f0b0048d10"
-    sha256 x86_64_linux:   "94ca35799aaf5aa74718936babeaef82b9c4b2c3096a856ede434d2aa8b6066b"
+    rebuild 1
+    sha256 arm64_sonoma:   "14e72df1f939ea3ec4d4aaad3e0cd359847ed13947f06799428545882daa3f21"
+    sha256 arm64_ventura:  "a0d69b15e8525f22d73a96fbcef5a7da2872f024640016d3aa9b37268d90b103"
+    sha256 arm64_monterey: "cf0133cbca2a151e69ddce93747cf30db7910ecaf184520aa20dd40be8bb5918"
+    sha256 sonoma:         "68a927fa7bdd8f4b162a92a8ba114e30e8ff7a0bdde6a31e6c44f0ef13999a37"
+    sha256 ventura:        "4ecfdefa4296b237148b8a54aac4d293890fa4167ed2b415964ca31de1a1bd88"
+    sha256 monterey:       "7e51b60650e6bfa14add77a44b0adf50fc015ceb5a15726fb3f6a686ccef7496"
+    sha256 x86_64_linux:   "cf57517e14a1da55feced547377c1c19fbf0c03e77a9f8394345e3c1c71893e1"
   end
 
   depends_on "cmake" => :build
@@ -62,6 +63,18 @@ class Opencv < Formula
     "python3.12"
   end
 
+  # Patch for DNN module to work with OpenVINO API 2.0(enabled starting OV 2022.1 release)
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/a10057a843de773896a50e9b18f4559a8bbc4d27/opencv/openvino-api2.0.patch"
+    sha256 "08f918fa762715d0fbc558baee9867be8f059ee3008831dc0a09af63404a9048"
+  end
+
+  # Patch for G-API to work with OpenVINO API 2.0(enabled starting OV 2022.1 release)
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/a10057a843de773896a50e9b18f4559a8bbc4d27/opencv/gapi-openvino-api2.0.patch"
+    sha256 "b67aa8882559858824c5841ba3d0746078273be081540b0d339c0ff58dc9452d"
+  end
+
   def install
     resource("contrib").stage buildpath/"opencv_contrib"
 
@@ -76,7 +89,7 @@ class Opencv < Formula
     libdirs.each { |l| (buildpath/"3rdparty"/l).rmtree }
 
     args = %W[
-      -DCMAKE_CXX_STANDARD=11
+      -DCMAKE_CXX_STANDARD=17
       -DCMAKE_OSX_DEPLOYMENT_TARGET=
       -DBUILD_JASPER=OFF
       -DBUILD_JPEG=OFF
@@ -170,7 +183,7 @@ class Opencv < Formula
         return 0;
       }
     EOS
-    system ENV.cxx, "-std=c++11", "test.cpp", "-I#{include}/opencv4", "-o", "test"
+    system ENV.cxx, "-std=c++17", "test.cpp", "-I#{include}/opencv4", "-o", "test"
     assert_equal shell_output("./test").strip, version.to_s
 
     output = shell_output("#{python3} -c 'import cv2; print(cv2.__version__)'")

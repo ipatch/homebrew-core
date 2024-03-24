@@ -57,6 +57,24 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr edit --add-label workflows '${{ github.event.number }}'
 
+  limit-pull-requests:
+    if: >
+      always() && github.repository_owner == 'Homebrew' &&
+      (github.event_name == 'pull_request_target' &&
+       github.event.action == 'opened')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Homebrew/actions/limit-pull-requests@master
+        with:
+          except-users: |
+            BrewTestBot
+          comment-limit: 15
+          comment: |
+            Hi, thanks for your contribution to Homebrew! You already have >=15 open pull requests, so please get them ready to be merged or close them before you open more. If CI fails on any of them, please fix it or ask for help doing so.
+            If you are performing simple version bumps, @BrewTestBot automatically bumps [a list of formulae](https://github.com/${{ github.repository }}/blob/HEAD/.github/autobump.txt) so you don't need to. Please take a look at issues and pull requests labelled https://github.com/${{ github.repository }}/labels/help%20wanted and see if you can help to fix any of them. Thanks!
+          close-limit: 30
+          close: true
+
   triage:
     runs-on: ubuntu-22.04
     steps:
@@ -81,10 +99,6 @@ jobs:
             - label: marked for removal/rejection
               status: removed
               path: Formula/.+
-
-            - label: bottle unneeded
-              path: Formula/.+
-              content: \n  (bottle :unneeded)\n
 
             - label: no ARM bottle
               path: Formula/.+
@@ -111,8 +125,9 @@ jobs:
               path: Formula/.+@.+
               except:
                 - Formula/b/bash-completion@2.rb
+                - Formula/lib/libxml++@5.rb
                 - Formula/o/openssl@3.rb
-                - Formula/p/postgresql@15.rb
+                - Formula/p/postgresql@16.rb
                 - Formula/p/python@3.12.rb
                 - Formula/p/python-gdbm@3.12.rb
                 - Formula/p/python-tk@3.12.rb
@@ -203,27 +218,29 @@ jobs:
               content: system "swift", "build"
 
             - label: long build
-              path: Formula/.+/(agda|aom|apache-pulsar|arangodb|aws-sdk-cpp|boost|brotli|c-ares|cp2k|deno|dotnet|emscripten|envoy|freetype|gcc|ghc|glib|graph-tool|gstreamer|gtk\+3|harfbuzz|haskell-language-server|hwloc|icu4c|imath|libgcrypt|libidn2|librist|libnghttp2|libomp|libpng|libtensorflow|llvm|mame|metashell|mlkit|mpfr|nghttp2|node|numpy|nwchem|openblas|p11-kit|pango|ponyc|python-setuptools|pytorch|rav1e|rust|shared-mime-info|suite-sparse|swift|texlive|qt|readline|root|souffle|v8|verilator|vtk|xz|zstd)(@[0-9]+)?.rb
+              path: Formula/.+/(agda|aom|apache-pulsar|arangodb|at-spi2-core|aws-sdk-cpp|boost|brotli|c-ares|cp2k|dav1d|deno|dotnet|emscripten|envoy|freetype|gcc|ghc|glib|graph-tool|gsettings-desktop-schemas|gstreamer|gtk\+3|harfbuzz|haskell-language-server|highway|hwloc|icu4c|imath|jasper|jpeg-turbo|libgcrypt|libgpg-error|libidn2|libmicrohttpd|librist|libnghttp2|libomp|libpng|libtensorflow|libunistring|llvm|mame|metashell|mlkit|mpfr|mpg123|mpich|nghttp2|node|numpy|nwchem|openblas|openjpeg|p11-kit|pango|pcre2|ponyc|pytorch|rav1e|rust|shared-mime-info|suite-sparse|swift|texlive|qt|readline|root|souffle|sui|unbound|v8|vtk|xz|zstd)(@[0-9]+)?.rb
               keep_if_no_match: true
+              allow_any_match: true
 
             - label: CI-build-dependents-from-source
               path: Formula/.+/(cabal-install|docbook-xsl|emscripten|erlang|ghc|go|ocaml|ocaml-findlib|ocaml-num|openjdk|rust).rb
               keep_if_no_match: true
 
             - label: CI-skip-recursive-dependents
-              path: Formula/.+/(ca-certificates|curl|gettext|openssl@(3|1.1)|sqlite).rb
+              path: Formula/.+/(ca-certificates|curl|gettext|openssl@3|sqlite).rb
               keep_if_no_match: true
 
             - label: CI-linux-self-hosted
-              path: Formula/.+/(alsa-lib|aom|brotli|cups|dart-sdk|dbus|envoy|freetype|gdbm|glib|glslang|gmp|gtk4|gzip|harfbuzz|hdf5|icu4c|json-c|krb5|libarchive|libedit|libnghttp2|libsndfile|libssh2|libtiff|libva|libx11|libxcrypt|libxml2|libxrandr|llvm|mesa|minizip|mpfr|mysql-connector-c\+\+|nghttp2|nss|numpy|open-mpi|openexr|p11-kit|pygments|python-setuptools|python@3.11|qt(@5)?|readline|remind|shared-mime-info|souffle|systemd|texlive|unbound|utf8cpp|util-linux|webp|xz|zlib|zstd).rb
+              path: Formula/.+/(alsa-lib|aom|brotli|cups|dart-sdk|dbus|envoy|freetype|gdbm|glib|glslang|gmp|gtk4|gzip|harfbuzz|hdf5|icu4c|json-c|krb5|libarchive|libedit|libnghttp2|libsndfile|libssh2|libtiff|libva|libx11|libxcrypt|libxml2|libxrandr|llvm|mesa|minizip|mpfr|mysql-connector-c\+\+|nghttp2|nss|numpy|open-mpi|openexr|p11-kit|python@3.12|qt(@5)?|readline|remind|shared-mime-info|souffle|sui|systemd|texlive|unbound|utf8cpp|util-linux|webp|xz|zlib|zstd).rb
               keep_if_no_match: true
-
-            - label: large-bottle-upload
-              path: Formula/.+/(joern|nifi-registry|nifi|prestodb|texlive).rb
-              keep_if_no_match: true
+              allow_any_match: true
 
             - label: bump-formula-pr
               pr_body_content: Created with `brew bump-formula-pr`
 
             - label: pip-audit
               pr_body_content: Created by `brew-pip-audit`
+
+            - label: autobump
+              path: \.github/autobump\.txt
+              allow_any_match: true

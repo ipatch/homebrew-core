@@ -4,7 +4,7 @@ class VulkanVolk < Formula
   url "https://github.com/zeux/volk/archive/refs/tags/vulkan-sdk-1.3.275.0.tar.gz"
   sha256 "b68d24e139190e49e5eafd72894f6e85c80472b8745bddc6ef91d6bf339df813"
   license "MIT"
-  revision 2
+  revision 5
   head "https://github.com/zeux/volk.git", branch: "master"
 
   livecheck do
@@ -13,13 +13,13 @@ class VulkanVolk < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "235bab913c770c9e20656c0590f06190d2d85b6b5d49ddd11b2d6ea19320ce7c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "97699b468ff1e9cfc3a79aedddfd5976607f520fe4f1454dbc950178a552476a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "acf51d17740fe46d159ba00a32a818db6b08ec4442f4a0b362c729447504f6ca"
-    sha256 cellar: :any_skip_relocation, sonoma:         "8afd99e6578a1e55a2d3eed34c07abc56db866393edd27b40ba52cb0420a5a2f"
-    sha256 cellar: :any_skip_relocation, ventura:        "48af8d3d969195c3633258b220ad8a2bac2108ec279b2b4da9e22372d1ef5050"
-    sha256 cellar: :any_skip_relocation, monterey:       "faf60710db7c02db94ffa0f56f9e27a4ecf50edbe46deb0af87a36d738518e1b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "092e5cc8b832136b0afd09a9f82bd6fa62fb2b18cc64ad9487824d86ac31f072"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "949dd91ce4fec8c352466645b29c4b34364b7fc4193279b8037b275674e0be25"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6e969576ad888cb439282cdd69b56fedeb0ed92d053cf039e60605fb0ba605a3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2a5d4d43245ac7e7bdef2b5a657bdc69985639aff0b90e0d6766bdd503bc51e2"
+    sha256 cellar: :any_skip_relocation, sonoma:         "cbfc54509d3ca24290a0ca0788982baad14417c9fb5a51e6e78cb8effbf99184"
+    sha256 cellar: :any_skip_relocation, ventura:        "f8125c4da1cc3a0827a0516d8fae62da3ec2cf0d0425129f877146b1714b27ef"
+    sha256 cellar: :any_skip_relocation, monterey:       "44f1083d1513aaef1191d2ca0351a475c8c2ffb4b6a5538e6d0b4c0b0cfad491"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "85df8371339b72616368ce8bfd3d6da3f7f9154b49e11b81357fee00f178c77c"
   end
 
   depends_on "cmake" => :build

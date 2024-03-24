@@ -9,22 +9,21 @@ class KeepkeyAgent < Formula
   revision 7
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "52db6bb9fd11137695a981b86d1b3c5ac048c5686ed17a18c54032fcfc6ded8c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a8bb2a5258cbdbff56c69d95b8e918c4302affb62711491bc3f434c6999bdc0f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c481751646bcca9d692ff6c06fc922e4b942fbcfe036094a51cd2f1951ce2dad"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2f34153b051799fd38c96c3a9d686588476e2835ef83f537e25912d457a0b46f"
-    sha256 cellar: :any_skip_relocation, ventura:        "1197f3babc713a21585a8b631552f4742e086e64da174e6367ee38d4a13582f8"
-    sha256 cellar: :any_skip_relocation, monterey:       "46ebe1d4f3e6fe5c619d2608b17ce9fa073ca94fb8e802dfec64582875abc291"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bfb3ada54aff7d45ae3715ab874239d0c890f73695a201ab265b27342884d546"
+    rebuild 4
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d36b22419357d30d48aceb26fa8bce10517985f20080c2adb560e18609499ece"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ed9fa00e85e9d137a0928301d7863246dcaeb02d619938cbfc97534f37149154"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e9b652b903065baca32d01cb77f6bfacad17a5023d800a49054f0ee0efb3d6f0"
+    sha256 cellar: :any_skip_relocation, sonoma:         "915b9fdd224cadd4f008f0164875b23fe62f367289f682755d35ceda62f4b2e0"
+    sha256 cellar: :any_skip_relocation, ventura:        "77a3cb350acd77ebf524c5ce1eadc865734d80fac75d25dc1589da30895bdb8c"
+    sha256 cellar: :any_skip_relocation, monterey:       "74e3dd6941cb4abe9ed551699143ab2098b20521df7fa898455d2026f952daf8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "54d01a0cea61c9546517ffcea9a32b9bb43254ab2189c1767ffbadd00bf411f9"
   end
 
-  depends_on "cffi"
-  depends_on "docutils"
+  depends_on "cryptography"
   depends_on "libusb"
-  depends_on "python-cryptography"
   depends_on "python@3.12"
-  depends_on "six"
+
+  uses_from_macos "libffi"
 
   resource "backports-shutil-which" do
     url "https://files.pythonhosted.org/packages/a0/22/51b896a4539f1bff6a7ab8514eb031b9f43f12bff23f75a4c3f4e9a666e5/backports.shutil_which-3.5.2.tar.gz"
@@ -39,6 +38,11 @@ class KeepkeyAgent < Formula
   resource "configargparse" do
     url "https://files.pythonhosted.org/packages/70/8a/73f1008adfad01cb923255b924b1528727b8270e67cb4ef41eabdc7d783e/ConfigArgParse-1.7.tar.gz"
     sha256 "e7067471884de5478c58a511e529f0f9bd1c66bfef1dea90935438d6c23306d1"
+  end
+
+  resource "docutils" do
+    url "https://files.pythonhosted.org/packages/1f/53/a5da4f2c5739cf66290fac1431ee52aff6851c7c8ffd8264f13affd7bcdd/docutils-0.20.1.tar.gz"
+    sha256 "f08a4e276c3a1583a86dce3e34aba3fe04d02bba2dd51ed16106244e8a923e3b"
   end
 
   resource "ecdsa" do
@@ -68,8 +72,8 @@ class KeepkeyAgent < Formula
   end
 
   resource "libusb1" do
-    url "https://files.pythonhosted.org/packages/f4/83/59bf75e74e0c4859ea63eae0c7da660c1dcb78b31667d4a5f735d52f5974/libusb1-3.0.0.tar.gz"
-    sha256 "5792a9defee40f15d330a40d9b1800545c32e47ba7fc66b6f28f133c9fcc8538"
+    url "https://files.pythonhosted.org/packages/af/19/53ecbfb96d6832f2272d13b84658c360802fcfff7c0c497ab8f6bf15ac40/libusb1-3.1.0.tar.gz"
+    sha256 "4ee9b0a55f8bd0b3ea7017ae919a6c1f439af742c4a4b04543c5fd7af89b828c"
   end
 
   resource "lockfile" do
@@ -78,8 +82,8 @@ class KeepkeyAgent < Formula
   end
 
   resource "mnemonic" do
-    url "https://files.pythonhosted.org/packages/f8/8d/d4dc2b2bddfeb57cab4404a41749b577f578f71140ab754da9afa8f5c599/mnemonic-0.20.tar.gz"
-    sha256 "7c6fb5639d779388027a77944680aee4870f0fcd09b1e42a5525ee2ce4c625f6"
+    url "https://files.pythonhosted.org/packages/ff/77/e6232ed59fbd7b90208bb8d4f89ed5aabcf30a524bc2fb8f0dafbe8e7df9/mnemonic-0.21.tar.gz"
+    sha256 "1fe496356820984f45559b1540c80ff10de448368929b9c60a2b55744cc88acf"
   end
 
   resource "protobuf" do
@@ -107,14 +111,24 @@ class KeepkeyAgent < Formula
     sha256 "6253adb39c70f6e51afed2fa7152bcd414c411286088fb4b9effb133885ab4cc"
   end
 
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/c8/1f/e026746e5885a83e1af99002ae63650b7c577af5c424d4c27edcf729ab44/setuptools-69.1.1.tar.gz"
+    sha256 "5c0806c7d9af348e6dd3777b4f4dbb42c7ad85b190104837488eab9a7c945cf8"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+  end
+
   resource "unidecode" do
-    url "https://files.pythonhosted.org/packages/80/5d/f156f6a7254ecc0549de0eb75f786d2df724c0310b97c825383517d2c98d/Unidecode-1.3.7.tar.gz"
-    sha256 "3c90b4662aa0de0cb591884b934ead8d2225f1800d8da675a7750cbc3bd94610"
+    url "https://files.pythonhosted.org/packages/f7/89/19151076a006b9ac0dd37b1354e031f5297891ee507eb624755e58e10d3e/Unidecode-1.3.8.tar.gz"
+    sha256 "cfdb349d46ed3873ece4586b96aa75258726e2fa8ec21d6f00a591d98806c2f4"
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/a4/99/78c4f3bd50619d772168bec6a0f34379b02c19c9cced0ed833ecd021fd0d/wheel-0.41.2.tar.gz"
-    sha256 "0c5ac5ff2afb79ac23ab82bab027a0be7b5dbcf2e54dc50efe4bf507de1f7985"
+    url "https://files.pythonhosted.org/packages/b0/b4/bc2baae3970c282fae6c2cb8e0f179923dceb7eaffb0e76170628f9af97b/wheel-0.42.0.tar.gz"
+    sha256 "c45be39f7882c9d34243236f2d63cbd58039e360f85d0913425fbd7ceea617a8"
   end
 
   def install

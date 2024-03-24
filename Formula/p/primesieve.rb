@@ -1,18 +1,18 @@
 class Primesieve < Formula
   desc "Fast C/C++ prime number generator"
   homepage "https://github.com/kimwalisch/primesieve"
-  url "https://github.com/kimwalisch/primesieve/archive/refs/tags/v11.2.tar.gz"
-  sha256 "86c31bae9c378340b19669eafef8c5e45849adf7b9c92af1d212a2a2bfa0a5db"
+  url "https://github.com/kimwalisch/primesieve/archive/refs/tags/v12.1.tar.gz"
+  sha256 "64e7f5d3ce680262b865c7aec1381ffb13d13f75dd985b964ce33806e1bbf386"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "c554fe8c6e5545cd9b570931791f7cad2440ffa31fe9087748f403debc03baf6"
-    sha256 cellar: :any,                 arm64_ventura:  "6edf3adda232c1585500ca4ea41b9c14c8f82d29db3f7ea42edc6c9671ac6527"
-    sha256 cellar: :any,                 arm64_monterey: "a7fa0584a0c7004e81fa6c40713546cc207a45ecafdad3925549ae04727f36db"
-    sha256 cellar: :any,                 sonoma:         "c784d89196a0482719a50284d20dc8f2d74759b85785b55d3745814097f12498"
-    sha256 cellar: :any,                 ventura:        "67583054ab17a56f6b39c12b399cb4a1bb9ec6eb6760b0b3923bc17f5965b541"
-    sha256 cellar: :any,                 monterey:       "ed8573067b089a3c3d9b4faaba28dcd2fe5c889b3c8371c6dc2ae28e280bd16a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "69d70d9af64bc8162960dcb581d7b34ffa96d4f20cc10e8dacf26e1360ef35f4"
+    sha256 cellar: :any,                 arm64_sonoma:   "d0a2bc5684a209029fd4cf0f597f351add96110a453b1db1c18773bfe6537f89"
+    sha256 cellar: :any,                 arm64_ventura:  "9bab8dce016fc005cd2fe823b5ea772205da5158ef55e4123dc367f932b384f2"
+    sha256 cellar: :any,                 arm64_monterey: "02c488e6d3bb6c746f35b61e0ffc9c5e5fed8ccc60c0dd491f3beb68bdd2c540"
+    sha256 cellar: :any,                 sonoma:         "726329c7b1ff868bd35fe3c01ef593b8f29c790f4da30f2953beb9dfb8bbff8a"
+    sha256 cellar: :any,                 ventura:        "a5ff1332a0362c7c649282a4f14f0f0b41e0428ef1a5c79d146fc81e25aae7b9"
+    sha256 cellar: :any,                 monterey:       "ea94ba935bbc9cb9795062c48c8da7875398f5782c1077611eac8e197d49e514"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2a5b6f4f46c560f873545f412daee09b5b829b9dcf9be3d869591fbb318c6ec8"
   end
 
   depends_on "cmake" => :build

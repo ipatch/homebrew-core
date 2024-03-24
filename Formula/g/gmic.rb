@@ -1,27 +1,29 @@
 class Gmic < Formula
   desc "Full-Featured Open-Source Framework for Image Processing"
   homepage "https://gmic.eu/"
-  url "https://gmic.eu/files/source/gmic_3.3.3.tar.gz"
-  sha256 "903937d6475878df1e2130eee32d1fd93c4597bd2ef7f94e1d9775da1839645d"
+  url "https://gmic.eu/files/source/gmic_3.3.5.tar.gz"
+  sha256 "052456e0d9dd6a3c1e102a857ae32150ee6d5cb02a1d2f810c197ec490e56c1b"
   license "CECILL-2.1"
   head "https://github.com/GreycLab/gmic.git", branch: "master"
 
   livecheck do
-    url "https://gmic.eu/files/source/"
-    regex(/href=.*?gmic[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url "https://gmic.eu/download.html"
+    regex(/Latest\s+stable:.*?href=.*?gmic[._-]v?(\d+(?:\.\d+)+)\.t/im)
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "c017182de383ceeb1c847248f7e88d6b25ac4ab6cfc7f9709fefa2969a656147"
-    sha256 cellar: :any,                 arm64_ventura:  "2dcbd3e565151fbf658d82f073a0482f4672e4da608f2d389918558f567a71ae"
-    sha256 cellar: :any,                 arm64_monterey: "5602408e543eb44f5e07621d31fcdc0b63d6184bf5a9f7066f72159209abd0f5"
-    sha256 cellar: :any,                 sonoma:         "c4710e4e00626b1ecda687c0c938d39ae6251699c79f9f205ca30dd500fc4105"
-    sha256 cellar: :any,                 ventura:        "0979eaeb8c7e1d6cb2756382dda1608b256e21b097a36924af760a00b9b79d7f"
-    sha256 cellar: :any,                 monterey:       "2d1d7d17c60d1ab8deae26aa4d176e106419ec13f7d24bcd3a652c514bc67f68"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fdd18bded3d129a1b2009d82a0faeba92e40d0fd26f1314c8041fc347dff126d"
+    sha256 cellar: :any,                 arm64_sonoma:   "bc1544c0477c2ff9650ab2d9edc331d903964a5cd67220e418fa224ace593c4b"
+    sha256 cellar: :any,                 arm64_ventura:  "a9a4396de37ae1cd09ca6ad3a556db1de11196f7db8973a0a6673062dfa3b49a"
+    sha256 cellar: :any,                 arm64_monterey: "87b4dea960e0c75db00122c07dd9961ae37fe96f54ccd73e1d7e818255624201"
+    sha256 cellar: :any,                 sonoma:         "e952054cdd2911676f0bd96e9b8b575cc8a48df22f42ae8b0973d8a421ff7f53"
+    sha256 cellar: :any,                 ventura:        "42c7a71152831f76aecbed7877796575077b101a85d48324a31de208eb39f743"
+    sha256 cellar: :any,                 monterey:       "88b1083843201c1f3e13c8dba094562ab59a2920ab70ad35c64fedeb321928a4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c3777e122bd44e120c96b1302a2fce51ed2ca52cd75b00277e66af45d1858786"
   end
 
+  depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "cimg"
   depends_on "fftw"
   depends_on "jpeg-turbo"
   depends_on "libpng"
@@ -31,41 +33,26 @@ class Gmic < Formula
   uses_from_macos "curl"
   uses_from_macos "zlib"
 
-  on_macos do
-    depends_on "bash-completion"
-  end
-
-  # Use .dylibs instead of .so on macOS
-  patch do
-    on_macos do
-      url "https://raw.githubusercontent.com/macports/macports-ports/a859c5929c929548f5156f5cab13a2f341982e72/science/gmic/files/patch-src-Makefile.diff"
-      sha256 "5b4914a05135f6c137bb5980d0c3bf8d94405f03d4e12b6ee38bd0e0e004a358"
-      directory "src"
-    end
+  on_linux do
+    depends_on "libx11"
   end
 
   def install
-    # The Makefile is not safe to run in parallel.
-    # Issue ref: https://github.com/dtschump/gmic/issues/406
-    ENV.deparallelize
-
-    # Use PLUGINDIR to avoid trying to create "/plug-ins" on Linux without GIMP.
-    # Disable X11 by using the values from Makefile when "/usr/X11" doesn't exist.
     args = %W[
-      PLUGINDIR=#{buildpath}/plug-ins
-      USR=#{prefix}
-      X11_CFLAGS=-Dcimg_display=0
-      X11_LIBS=-lpthread
-      SOVERSION=#{version}
+      -DCMAKE_EXE_LINKER_FLAGS=-Wl,-rpath,#{rpath}
+      -DENABLE_DYNAMIC_LINKING=ON
+      -DENABLE_FFMPEG=OFF
+      -DENABLE_GRAPHICSMAGICK=OFF
+      -DUSE_SYSTEM_CIMG=ON
     ]
-    system "make", "lib", "cli_shared", *args
-    system "make", "install", *args, "PREFIX=#{prefix}"
-    lib.install "src/libgmic.a"
+    if OS.mac?
+      args << "-DENABLE_X=OFF"
+      inreplace "CMakeLists.txt", "COMMAND LD_LIBRARY_PATH", "COMMAND DYLD_LIBRARY_PATH"
+    end
 
-    # Need gmic binary to build completions
-    ENV.prepend_path "PATH", bin
-    system "make", "bashcompletion", *args
-    bash_completion.install "resources/gmic_bashcompletion.sh" => "gmic"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

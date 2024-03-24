@@ -1,8 +1,8 @@
 class DockerCompose < Formula
   desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
-  url "https://github.com/docker/compose/archive/refs/tags/v2.24.5.tar.gz"
-  sha256 "160c575658cdd65836ea3138bb6337f75877df6cbad8e2d4bf4ddcf850cee382"
+  url "https://github.com/docker/compose/archive/refs/tags/v2.26.0.tar.gz"
+  sha256 "b42bb6b118b664db8a37a160b4b3782712199fedd35731a2314b5762b2700d3f"
   license "Apache-2.0"
   head "https://github.com/docker/compose.git", branch: "main"
 
@@ -15,13 +15,13 @@ class DockerCompose < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4bc016abf6d75202e44fd9b877f36e7779d5e431ec0e72b28e29be55aebb6398"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "46ab6f56ae915136838ade2907b7156e9d826fa8ce8355393af1a43d67d73d12"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1aea1f5fa4abf0a67fbc47b9e736900348b5fe0a31a0c05e12473bdfa1115bad"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a1614b0dc392ab71b3fe6971d9310b4e9175f545962c501bc4d8e976f8cbeed8"
-    sha256 cellar: :any_skip_relocation, ventura:        "6b18f7a34393bcc19fc140595e5ffa64a376292ae257b5a8289cdf7dc0ef3a57"
-    sha256 cellar: :any_skip_relocation, monterey:       "9b0cb7595882ac776e6e8dfcbbd3622b70fa9c9eb29a9e72bec0454d478c480e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c97621c551fb36a97ba6161882d265d9a9a45110a077c0c589a2f587be4bb3cb"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9a2bb7e50ec4b602f4f78a7f8bcd5d7e435be6c6dee43c03608f1562e4a28e31"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ad5b5e14872eb84b400de3a23ab09e1e758b17b85efd6c24e8f453013dab56a2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c3f13ac0d38be6ababe2aa995194aa11192befc6d1b20e7c0be82080d09676db"
+    sha256 cellar: :any_skip_relocation, sonoma:         "6841e9a979852c6581e1c39dd853cbbcceffa649c53ca19afd926bb6dfcec50f"
+    sha256 cellar: :any_skip_relocation, ventura:        "a5122bf80ff898671bc9041ececfa3332bf534cd02137fd3fa572e7eb8a25849"
+    sha256 cellar: :any_skip_relocation, monterey:       "46625ee2ec778c4125923454eab7a78e0f5f3189385cf81d2c068cde61ed6f33"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3f5ab8c9256f507e388de249f98d9ddd99e8fd1d6ba1ca304b81360b985325eb"
   end
 
   depends_on "go" => :build
@@ -31,14 +31,17 @@ class DockerCompose < Formula
       -s -w
       -X github.com/docker/compose/v2/internal.Version=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd"
+    system "go", "build", *std_go_args(ldflags:), "./cmd"
+
+    (lib/"docker/cli-plugins").install_symlink bin/"docker-compose"
   end
 
   def caveats
     <<~EOS
-      Compose is now a Docker plugin. For Docker to find this plugin, symlink it:
-        mkdir -p ~/.docker/cli-plugins
-        ln -sfn #{opt_bin}/docker-compose ~/.docker/cli-plugins/docker-compose
+      Compose is a Docker plugin. For Docker to find the plugin, add "cliPluginsExtraDirs" to ~/.docker/config.json:
+        "cliPluginsExtraDirs": [
+            "#{HOMEBREW_PREFIX}/lib/docker/cli-plugins"
+        ]
     EOS
   end
 
