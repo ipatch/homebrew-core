@@ -124,35 +124,45 @@ class Mesa < Formula
       ]
     end
 
+    # NOTE: ipatch, disable i915 galium driver on gnu+linux (asahi) arm64
+    # meson.build:1532:2: 
+    # ERROR: Problem encountered: Intel "i915" Gallium driver requires x86 or x86_64 CPU family
     if OS.linux?
-      args += %w[
-        -Ddri3=enabled
-        -Degl=enabled
-        -Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink
-        -Dgallium-extra-hud=true
-        -Dgallium-nine=true
-        -Dgallium-omx=disabled
-        -Dgallium-opencl=icd
-        -Dgallium-va=enabled
-        -Dgallium-vdpau=enabled
-        -Dgallium-xa=enabled
-        -Dgbm=enabled
-        -Dgles1=enabled
-        -Dgles2=enabled
-        -Dglx=dri
-        -Dintel-clc=enabled
-        -Dlmsensors=enabled
-        -Dllvm=enabled
-        -Dmicrosoft-clc=disabled
-        -Dopengl=true
-        -Dplatforms=x11,wayland
-        -Dshared-glapi=enabled
-        -Dtools=drm-shim,etnaviv,freedreno,glsl,nir,nouveau,lima
-        -Dvalgrind=enabled
-        -Dvideo-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc
-        -Dvulkan-drivers=amd,intel,intel_hasvk,swrast,virtio
-        -Dvulkan-layers=device-select,intel-nullhw,overlay
-      ]
+      if Hardware::CPU.arch == :arm64
+        args << "-Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,crocus,zink"
+        puts "----------------------------------------"
+        puts "IPATCH"
+        puts "----------------------------------------"
+      else
+        args += %w[
+          -Ddri3=enabled
+          -Degl=enabled
+          -Dgallium-extra-hud=true
+          -Dgallium-nine=true
+          -Dgallium-omx=disabled
+          -Dgallium-opencl=icd
+          -Dgallium-va=enabled
+          -Dgallium-vdpau=enabled
+          -Dgallium-xa=enabled
+          -Dgbm=enabled
+          -Dgles1=enabled
+          -Dgles2=enabled
+          -Dglx=dri
+          -Dintel-clc=enabled
+          -Dlmsensors=enabled
+          -Dllvm=enabled
+          -Dmicrosoft-clc=disabled
+          -Dopengl=true
+          -Dplatforms=x11,wayland
+          -Dshared-glapi=enabled
+          -Dtools=drm-shim,etnaviv,freedreno,glsl,nir,nouveau,lima
+          -Dvalgrind=enabled
+          -Dvideo-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc
+          -Dvulkan-drivers=amd,intel,intel_hasvk,swrast,virtio
+          -Dvulkan-layers=device-select,intel-nullhw,overlay
+          -Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink
+        ]
+      end
     end
 
     system "meson", "setup", "build", *args, *std_meson_args
