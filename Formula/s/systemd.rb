@@ -36,6 +36,7 @@ class Systemd < Formula
   depends_on "util-linux" # for libmount
   depends_on "xz"
   depends_on "zstd"
+  depends_on "libmodbus"
 
   resource "docbook" do
     url "https://downloads.sourceforge.net/docbook/docbook-xsl/1.79.1/docbook-xsl-1.79.1.tar.bz2"
