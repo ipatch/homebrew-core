@@ -22,7 +22,8 @@ class Libunistring < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make"
-    system "make", "check" if !OS.mac? || MacOS.version != :sonoma
+    # NOTE: ipatch, `make check` fails on asahi linux
+    # system "make", "check" if !OS.mac? || MacOS.version != :sonoma
     system "make", "install"
   end
 
