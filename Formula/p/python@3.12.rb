@@ -42,6 +42,10 @@ class PythonAT312 < Formula
   on_linux do
     depends_on "berkeley-db@5"
     depends_on "libnsl"
+    # NOTE: ipatch, ./Modules/_uuidmodule.c:11:12: fatal error: uuid.h: No such file or directory
+    # 11 |   #include <uuid.h>
+      # |            ^~~~~~~~
+    depends_on "util-linux"
   end
 
   skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5", "bin/pip-3.6", "bin/pip-3.7", "bin/pip-3.8", "bin/pip-3.9",
