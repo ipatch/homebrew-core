@@ -47,6 +47,13 @@ class Llvm < Formula
     depends_on "elfutils" # openmp requires <gelf.h>
   end
 
+  # NOTE: ipatch, build / configure err with asahi linux
+  # -- Could NOT find Z3: Found unsuitable version "/opt/tmp/homebrew/llvm-20240704-2665323-v79f3g/llvm-project-18.1.8.src/llvm/build/CMakeFiles/CMakeTmp/cmTC_c7805: /lib64/libstdc++.so.6: version `CXXABI_1.3.15' not found (required by /home/capin/homebrew/opt/z3/lib/libz3.so.4.13)
+  # ", but required is at least "4.7.1" (found /home/capin/homebrew/lib/libz3.so)
+  # CMake Error at CMakeLists.txt:564 (message):
+  #   LLVM_ENABLE_Z3_SOLVER cannot be enabled when Z3 is not available.
+  # -- Configuring incomplete, errors occurred!
+
   # Fails at building LLDB
   fails_with gcc: "5"
 
