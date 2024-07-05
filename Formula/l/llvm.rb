@@ -121,7 +121,7 @@ class Llvm < Formula
       -DLLVM_INCLUDE_DOCS=OFF
       -DLLVM_INCLUDE_TESTS=OFF
       -DLLVM_INSTALL_UTILS=ON
-      -DLLVM_ENABLE_Z3_SOLVER=#{versioned_formula? ? "OFF" : "ON"}
+      -DLLVM_ENABLE_Z3_SOLVER=OFF
       -DLLVM_OPTIMIZED_TABLEGEN=ON
       -DLLVM_TARGETS_TO_BUILD=all
       -DLLDB_USE_SYSTEM_DEBUGSERVER=ON
@@ -138,6 +138,9 @@ class Llvm < Formula
       -DBUG_REPORT_URL=#{tap.issues_url}
       -DCLANG_VENDOR_UTI=org.#{tap.user.downcase}.clang
     ]
+
+    # NOTE: ipatch, asahi linux tmp fix, disable z3 solver
+    # -DLLVM_ENABLE_Z3_SOLVER=#{versioned_formula? ? "OFF" : "ON"}
 
     runtimes_cmake_args = []
     builtins_cmake_args = []
