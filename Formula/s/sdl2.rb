@@ -1,8 +1,8 @@
 class Sdl2 < Formula
   desc "Low-level access to audio, keyboard, mouse, joystick, and graphics"
   homepage "https://www.libsdl.org/"
-  url "https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-2.30.3.tar.gz"
-  sha256 "820440072f8f5b50188c1dae104f2ad25984de268785be40c41a099a510f0aec"
+  url "https://github.com/libsdl-org/SDL/releases/download/release-2.30.5/SDL2-2.30.5.tar.gz"
+  sha256 "f374f3fa29c37dfcc20822d4a7d7dc57e58924d1a5f2ad511bfab4c8193de63b"
   license "Zlib"
 
   livecheck do
@@ -12,13 +12,13 @@ class Sdl2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "c72d10aa8917464d64ef798a954c793780f9bc06ddda89efc35cda9f8faea50c"
-    sha256 cellar: :any,                 arm64_ventura:  "29c5addcc012d9a07b57fa1056dcdafe1f10effee899e23e2ea80b934dd8717a"
-    sha256 cellar: :any,                 arm64_monterey: "1d1b2dcc16d62cc0c973d052657c4677a6f36ad614f8d75b27d7bb69a4a3072b"
-    sha256 cellar: :any,                 sonoma:         "ba00d374737a8172c9bce91454e8e91e7bbb38cb947ffd0e015045525cab0b31"
-    sha256 cellar: :any,                 ventura:        "10b5474186913990eccf356d36688ba8887c90a5b2a3ece81e52c8e559e0dd7b"
-    sha256 cellar: :any,                 monterey:       "566f1cb5554609bb53da300caa83b6f005c822493dcce5f0fa88e02fb1dba92e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8a9300479781de3296084e3590c1583085b05eb12371c8d302d2f4c7df7e5602"
+    sha256 cellar: :any,                 arm64_sonoma:   "5e9b9b1a24ad6a8c05d0858730aca5f75ae2b1197a312416151533f367c7c037"
+    sha256 cellar: :any,                 arm64_ventura:  "ee1f33db9be6386e45e0fd81ab48deea2d565dc6dce5b3fa83d28d19793803f3"
+    sha256 cellar: :any,                 arm64_monterey: "cda59dd78051e791fb83fedc121f96cbdee035ba300256b4a149c51afad73045"
+    sha256 cellar: :any,                 sonoma:         "2b7c4db615f81e16fe8d952d4dd27901bec2c85c7aea956c3d91d42baf76879b"
+    sha256 cellar: :any,                 ventura:        "1a78cbffbc95d76f17a3575ab8acf529b711c9913cf8337011e43cbdfc26d997"
+    sha256 cellar: :any,                 monterey:       "fccef8c11880a12af15c5858aae966592ef68b2ad1820c222418cc4db8782922"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "01c38de35a37756e052e78f8951fa0fbede0d8f47f97cfae58d17de97ed2c50a"
   end
 
   head do

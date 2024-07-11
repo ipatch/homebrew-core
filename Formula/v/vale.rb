@@ -1,18 +1,18 @@
 class Vale < Formula
   desc "Syntax-aware linter for prose"
   homepage "https://vale.sh/"
-  url "https://github.com/errata-ai/vale/archive/refs/tags/v3.4.2.tar.gz"
-  sha256 "e1696739f13c8b579d96a9e4df4592f0bbda167aa74872eede6cc9482374d32b"
+  url "https://github.com/errata-ai/vale/archive/refs/tags/v3.6.1.tar.gz"
+  sha256 "545e71c16270af5badb90b4dd3e2813ec5372adf6bbfc935b552db16f9c98582"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e6f250a0471324535feac12638a63ec393a14d57318827258b6c2fdd4c4eef62"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2edb3ac3f5c30b0f6c66f37b425122168d9c0af63d58dfaa8cc66e24e25ec3e5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6917c94d9354c55d3708cb6e74af76220cad2e7eb27ca4564d1001a1d0623e64"
-    sha256 cellar: :any_skip_relocation, sonoma:         "765ba253b7f1e5f92c73c38cf0c5595c838d8ce11dde3c814096d2ef9ed1cdb5"
-    sha256 cellar: :any_skip_relocation, ventura:        "0a2602323e195730c89a54f65771f92035d029f9a9cd991c6cc4d62567116668"
-    sha256 cellar: :any_skip_relocation, monterey:       "2952d5604f2f6e339d62a42e6d8dd9ce5f9039c97615e23bc4a679d381275706"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fa4c6dfb80c2d3937626f90ce51a543bb93b8c58f91dbaa0ca70a8c85113dac5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f7d8415ec0f64476e1e0e5fec250565bbc7175eff1618b5e28277511c89a30f5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "48c556e12bd9b3e27339c05a963ff842fbdeb06c64b9a79887c7aa5c6d954479"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c6454aca4eb71e9827f1aebbe869436d1c7cecc364dfb69a7f69ef1887f2920f"
+    sha256 cellar: :any_skip_relocation, sonoma:         "0cae4969c0355b2694ac9eadce70490c9f37a81255c5c487d99c08ba2a065578"
+    sha256 cellar: :any_skip_relocation, ventura:        "e0d9a98ed2ac718cbe38c53f3a5b82830a2da32a1982af888fd56254c989f017"
+    sha256 cellar: :any_skip_relocation, monterey:       "8c33550ecbb31d25175d1faa8609da8087e66a1629ed71d0ccbd5bbf7dac8002"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "21a83bc60ab6d08eb5f96fe867064ea76d45d6e2a33d79828690dc3881ff4620"
   end
 
   depends_on "go" => :build

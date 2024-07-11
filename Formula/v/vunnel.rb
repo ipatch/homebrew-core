@@ -3,19 +3,19 @@ class Vunnel < Formula
 
   desc "Tool for collecting vulnerability data from various sources"
   homepage "https://github.com/anchore/vunnel"
-  url "https://files.pythonhosted.org/packages/ef/bb/b6aa9e15ed49b2d273f99f71ebc517e70a300b85444bdf8c2d306f6cdaf1/vunnel-0.24.0.tar.gz"
-  sha256 "abf2d05806e72c545868bd007f923f09817ffdc365e241b091acc7a37faadeb2"
+  url "https://files.pythonhosted.org/packages/0e/ce/37ee5bf252db226824d34c1f0b0519c9742d92a59f0b7055e4c40faaf8cb/vunnel-0.26.1.tar.gz"
+  sha256 "812c2037cfcd7bce67f4d917e8f573c96f48f61cba9594932192c8300011c864"
   license "Apache-2.0"
   head "https://github.com/anchore/vunnel.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f4413183fdd12e4f684268f86781bc45555dd507bfb479f3074a3d1c02e2f4f1"
-    sha256 cellar: :any,                 arm64_ventura:  "b0a8ba39529b3e88d7f8a8a6142b4ce3ddcfadaeebaa9b41eed35194432db102"
-    sha256 cellar: :any,                 arm64_monterey: "c64e3fde70c8a7951ba025a40417d88fa0cacd96f1fa70f6c599821764ba3fb6"
-    sha256 cellar: :any,                 sonoma:         "8e399f0d01ec9524b7dd985ec6a19a0759b452f5f4aff0c268f68bbe63e06b6d"
-    sha256 cellar: :any,                 ventura:        "f033f5f46942049272044b02d28fd000012264e92ca4f13dd3fef1fcb8e8b191"
-    sha256 cellar: :any,                 monterey:       "6d883d12c138a1e8f155196dd5c5b6facd25ace03e726897e71624407c7a0f3c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5c017d8eac471ef7ecfd6da042592958fedb6584a80a3ea1bdeed19ba44f2119"
+    sha256 cellar: :any,                 arm64_sonoma:   "c7fefad6d25f6718b4f1e614d33d8c09a7b72a94d9a6eadeabab9ac0278792b0"
+    sha256 cellar: :any,                 arm64_ventura:  "11b212a9997accc89ab52b7c57f448f41278ebc24b2abb32cfd27e45152dc542"
+    sha256 cellar: :any,                 arm64_monterey: "b5bc69cdf04d121fb77612a31ebba6377483f99869623e6ff05d4645394b0ad1"
+    sha256 cellar: :any,                 sonoma:         "501acda3c870a2091e17b10fabbdd9efc76b0b45588f60035666ed0b3b86b394"
+    sha256 cellar: :any,                 ventura:        "be0cab06f3edec46a78886f06813155a11b6dde2851a86603180e21d6ec4c520"
+    sha256 cellar: :any,                 monterey:       "e4ed71d01af1a5501ce8ef66323cfe5b92cd553ac1eee669a9e2c5df98fd7329"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a8cd62327b11884145c55c3f848a7c5fedc35c2a9467724e8ec00b944c7f5cfc"
   end
 
   depends_on "rust" => :build
@@ -77,8 +77,8 @@ class Vunnel < Formula
   end
 
   resource "importlib-metadata" do
-    url "https://files.pythonhosted.org/packages/a0/fc/c4e6078d21fc4fa56300a241b87eae76766aa380a23fc450fc85bb7bf547/importlib_metadata-7.1.0.tar.gz"
-    sha256 "b78938b926ee8d5f020fc4772d487045805a55ddbad2ecf21c6d60938dc7fcd2"
+    url "https://files.pythonhosted.org/packages/76/72/33d1bb4be61f1327d3cd76fc41e2d001a6b748a0648d944c646643f123fe/importlib_metadata-7.2.1.tar.gz"
+    sha256 "509ecb2ab77071db5137c655e24ceb3eee66e7bbc6574165d0d114d9fc4bbe68"
   end
 
   resource "iniconfig" do
@@ -107,8 +107,8 @@ class Vunnel < Formula
   end
 
   resource "mashumaro" do
-    url "https://files.pythonhosted.org/packages/85/fe/a6b35aa5fbb500892cc0ec24543bc54941a9c8855aeb1a78362c0a0b061d/mashumaro-3.13.tar.gz"
-    sha256 "636c31afe39d991efe4cad269fef0c8ba408d87581118784d2a47924c2073faa"
+    url "https://files.pythonhosted.org/packages/b3/40/753855b41db0db9a2bed0c83aaf9432df724acb21ab779f2a20b73f613ae/mashumaro-3.13.1.tar.gz"
+    sha256 "169f0290253b3e6077bcb39c14a9dd0791a3fdedd9e286e536ae561d4ff1975b"
   end
 
   resource "mergedeep" do
@@ -117,13 +117,13 @@ class Vunnel < Formula
   end
 
   resource "orjson" do
-    url "https://files.pythonhosted.org/packages/f8/16/c10c42b69beeebe8bd136ee28b76762837479462787be57f11e0ab5d6f5d/orjson-3.10.3.tar.gz"
-    sha256 "2b166507acae7ba2f7c315dcf185a9111ad5e992ac81f2d507aac39193c2c818"
+    url "https://files.pythonhosted.org/packages/70/24/8be1c9f6d21e3c510c441d6cbb6f3a75f2538b42a45f0c17ffb2182882f1/orjson-3.10.6.tar.gz"
+    sha256 "e54b63d0a7c6c54a5f5f726bc93a2078111ef060fec4ecbf34c5db800ca3b3a7"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/ee/b5/b43a27ac7472e1818c4bafd44430e69605baefe1f34440593e0332ec8b4d/packaging-24.0.tar.gz"
-    sha256 "eb82c5e3e56209074766e6885bb04b8c38a0c015d0a30036ebe7ece34c9989e9"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "pluggy" do
@@ -132,8 +132,8 @@ class Vunnel < Formula
   end
 
   resource "pytest" do
-    url "https://files.pythonhosted.org/packages/cf/4e/0ceea141f0e5d09de4053c5338c62615ae2bd9bd3f013813f5ec62e3cf97/pytest-8.2.1.tar.gz"
-    sha256 "5046e5b46d8e4cac199c373041f26be56fdb81eb4e67dc11d4e10811fc3408fd"
+    url "https://files.pythonhosted.org/packages/a6/58/e993ca5357553c966b9e73cb3475d9c935fe9488746e13ebdf9b80fae508/pytest-8.2.2.tar.gz"
+    sha256 "de4bb8104e201939ccdc688b27a89a7be2079b22e2bd2b07f806b6ba71117977"
   end
 
   resource "pytest-snapshot" do
@@ -177,8 +177,8 @@ class Vunnel < Formula
   end
 
   resource "typing-extensions" do
-    url "https://files.pythonhosted.org/packages/ce/6a/aa0a40b0889ec2eb81a02ee0daa6a34c6697a605cf62e6e857eead9e4f85/typing_extensions-4.12.0.tar.gz"
-    sha256 "8cbcdc8606ebcb0d95453ad7dc5065e6237b6aa230a31e81d0f440c30fed5fd8"
+    url "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz"
+    sha256 "1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"
   end
 
   resource "untokenize" do
@@ -187,8 +187,8 @@ class Vunnel < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/43/6d/fa469ae21497ddc8bc93e5877702dca7cb8f911e337aca7452b5724f1bb6/urllib3-2.2.2.tar.gz"
+    sha256 "dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168"
   end
 
   resource "xsdata" do
@@ -202,8 +202,8 @@ class Vunnel < Formula
   end
 
   resource "zipp" do
-    url "https://files.pythonhosted.org/packages/e2/ec/48de0d79306a109f9872cca6b48e360e3d2d28893f472a3011005511985f/zipp-3.19.0.tar.gz"
-    sha256 "952df858fb3164426c976d9338d3961e8e8b3758e2e059e0f754b8c4262625ee"
+    url "https://files.pythonhosted.org/packages/d3/20/b48f58857d98dcb78f9e30ed2cfe533025e2e9827bbd36ea0a64cc00cbc1/zipp-3.19.2.tar.gz"
+    sha256 "bf1dcf6450f873a13e952a29504887c89e6de7506209e5b1bcc3460135d4de19"
   end
 
   resource "zstandard" do

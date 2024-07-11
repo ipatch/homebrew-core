@@ -10,6 +10,9 @@ class Hyperkit < Formula
     sha256 cellar: :any_skip_relocation, monterey: "69e59bde1dae4ff1da807711cd9060cdf81e248aa55a0dd761a20abd8787e20b"
   end
 
+  # does not build for 13 and 14, and no upstream commits in the past two years
+  deprecate! date: "2024-06-06", because: :unmaintained
+
   depends_on "ocaml" => :build
   depends_on "opam" => :build
   depends_on "pkg-config" => :build

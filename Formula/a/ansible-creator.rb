@@ -3,18 +3,18 @@ class AnsibleCreator < Formula
 
   desc "CLI tool for scaffolding Ansible Content"
   homepage "https://ansible.readthedocs.io/projects/creator/"
-  url "https://files.pythonhosted.org/packages/f6/7d/72547d62b755884eec83efa86cb59890ac544e321b4854335af472fdd0b2/ansible_creator-24.6.0.tar.gz"
-  sha256 "dd5633623c2fd53f20e2d77a0b8b3616b48b3474df91ce4d17a40bf763906079"
+  url "https://files.pythonhosted.org/packages/f2/cb/fcfbbb78792835a95d223a50e9bbd9bc66b12c6d46b21566f1a3a3bf47e7/ansible_creator-24.7.0.tar.gz"
+  sha256 "f30bd039a7b39b6963a1b897b4c684eb69cba3fa1d175dbbf154669c2bfe3aab"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f1fe8041cd00cd0dc4a585f3d1c24bf6a98d2d57809c895a27acb0a0f193774c"
-    sha256 cellar: :any,                 arm64_ventura:  "7046783781d912581322db58d0cd141a73a213ff382782e1e5d6943e534c536d"
-    sha256 cellar: :any,                 arm64_monterey: "973543a8c85799d6bb8f6ae7325a319fe4c8a4484a9a88cdb5cc125265081df8"
-    sha256 cellar: :any,                 sonoma:         "80a6efc96d724645029af067dfff7fc8f91469fcf9aafdb2f7fe6d2ea078cf8f"
-    sha256 cellar: :any,                 ventura:        "476665a0701a626c2938c93483f355ab4d6142c3a2efad6243bc1dd7b470a324"
-    sha256 cellar: :any,                 monterey:       "99abe05b7cb29de27caa25007110fa66a3b5cec77c14a6806874ee079e1c96bc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c83d4623c00c1bd2d827101a9c79e6332ed621f4c2b6ac062f8eccc44ca179f0"
+    sha256 cellar: :any,                 arm64_sonoma:   "012cc77c97452bc107a326a940dd25fd48f8bf35b0362ea140856da74574cc2c"
+    sha256 cellar: :any,                 arm64_ventura:  "0d356c29412fdab32a4fec46a2972325a375c7c0154d682197b05dcfcfd6ed33"
+    sha256 cellar: :any,                 arm64_monterey: "95da35737e255f6cdb263cc7832a2c9aa289493d2c6bf0173042e60902bdf408"
+    sha256 cellar: :any,                 sonoma:         "112682d68f8173f906b9ab9d1ac570965487610f10cbe810f25b5c331f372ff3"
+    sha256 cellar: :any,                 ventura:        "8238df48f5542b61c59e605bb923a1cf21984a319f060197ceee680774c16c5c"
+    sha256 cellar: :any,                 monterey:       "76560ed2889f08621f41099fc1b7210260bafe0affba3ce8d6b1a2505677d5f6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e186f8e4c8619fd8a23ca11bf8bb0318fb6acb731f71a20aa1da6da6a684104b"
   end
 
   depends_on "libyaml"
@@ -41,8 +41,10 @@ class AnsibleCreator < Formula
 
   test do
     ENV["ANSIBLE_REMOTE_TEMP"] = testpath/"tmp"
-    system bin/"ansible-creator", "init", "exampleNamespace.exampleName",
+    system bin/"ansible-creator", "init", "examplenamespace.examplename",
       "--init-path", testpath/"example"
     assert_predicate testpath/"example/galaxy.yml", :exist?
+
+    assert_match version.to_s, shell_output("#{bin}/ansible-creator --version")
   end
 end

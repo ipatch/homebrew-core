@@ -1,19 +1,20 @@
 class UutilsCoreutils < Formula
   desc "Cross-platform Rust rewrite of the GNU coreutils"
   homepage "https://github.com/uutils/coreutils"
-  url "https://github.com/uutils/coreutils/archive/refs/tags/0.0.26.tar.gz"
-  sha256 "2a0e8511f1e6adf7f1003ce4536b8a8bb1b2289364efe55edf96f2fc9e2f00a4"
+  url "https://github.com/uutils/coreutils/archive/refs/tags/0.0.27.tar.gz"
+  sha256 "3076543a373c8e727018bd547cc74133f4a6538849e4990388f2bbea9a9aff6b"
   license "MIT"
   head "https://github.com/uutils/coreutils.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7a888d2935b2c1e834a16a671e9c9d9095afa69bc16d462d48adad0580b70813"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d3b7b267465a1c92bdf51eee22263af78df24e8b0dda8acc42b27a5cc092fe80"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5a7695cc8a17ead073eddc4294eda80c30c1c1221c33122d17f162459d9750b9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "0df1c93b17982d1c1719ef323eb58894ff575722b0918d1284eaad6ea3332e39"
-    sha256 cellar: :any_skip_relocation, ventura:        "c1303b92e6abc485692f4eff534ab51542517ccb164aef291408f891e088886c"
-    sha256 cellar: :any_skip_relocation, monterey:       "03ef48c72913a452a39f8426945e6ba7630fa3254b52795c09a9c329246fce1b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d9478b683ba3f6953ef39320320f6755c6693e78b412e33e80ee630401effb9f"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "909f65abde6d575efbd663905b1af083ee02b6ee3dbf9785838403a1ed48c0e1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9513777efc24f8f5afa53b26512303c24644472982be1e9409e43ae5c5c3b315"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5981c792d41976b5478ae9d7abcc6254913c3f830986fac7762900f5e5904918"
+    sha256 cellar: :any_skip_relocation, sonoma:         "8f329b6db2133f8fd9cc382fcfc638db824a3ea192bde0419ad661ea4c433738"
+    sha256 cellar: :any_skip_relocation, ventura:        "16d1a6e842797a06f97ff64d43290b1fc4a9d5abb08eef0a62fb539cf66bfa2b"
+    sha256 cellar: :any_skip_relocation, monterey:       "039454774e3ebb1f6e658b725d43c829dede270ea56b21dab9e6b6d2c53f4875"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "95279f741499a4d83312ac28ce40bf1a260bb30e23cbeb545475f7348159c77a"
   end
 
   depends_on "make" => :build
@@ -24,6 +25,8 @@ class UutilsCoreutils < Formula
     conflicts_with "coreutils", because: "uutils-coreutils and coreutils install the same binaries"
     conflicts_with "aardvark_shell_utils", because: "both install `realpath` binaries"
   end
+
+  conflicts_with "unp", because: "both install `ucat` binaries"
 
   def install
     man1.mkpath

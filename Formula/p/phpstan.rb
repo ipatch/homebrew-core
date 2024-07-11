@@ -1,18 +1,18 @@
 class Phpstan < Formula
   desc "PHP Static Analysis Tool"
   homepage "https://github.com/phpstan/phpstan"
-  url "https://github.com/phpstan/phpstan/releases/download/1.11.4/phpstan.phar"
-  sha256 "81d6c6a79b8e68c1e21315290b614d2fb7dfae775dd4021c92abc2b0b07a02c0"
+  url "https://github.com/phpstan/phpstan/releases/download/1.11.7/phpstan.phar"
+  sha256 "427d2e5820e736baf667da12e07baef15c356a03b253ba812583d2d9b75af69e"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "737f25e4b5624c723127461c6e6315e72e412712436b3505d1386b39bb9ed0c8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "737f25e4b5624c723127461c6e6315e72e412712436b3505d1386b39bb9ed0c8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "737f25e4b5624c723127461c6e6315e72e412712436b3505d1386b39bb9ed0c8"
-    sha256 cellar: :any_skip_relocation, sonoma:         "762b679121c08ed26bc6a3b4cea4c76cce2830e3bbdebb3134eb089a0bbaa284"
-    sha256 cellar: :any_skip_relocation, ventura:        "762b679121c08ed26bc6a3b4cea4c76cce2830e3bbdebb3134eb089a0bbaa284"
-    sha256 cellar: :any_skip_relocation, monterey:       "762b679121c08ed26bc6a3b4cea4c76cce2830e3bbdebb3134eb089a0bbaa284"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "54a5607f5d35bf9881a52f35936e130ae128bd470653d4a6cf2291534c89e251"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3b154ab49ed30e9b9b10d6574c4a641fac664ed7c080168a1613f4e3532d5837"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3b154ab49ed30e9b9b10d6574c4a641fac664ed7c080168a1613f4e3532d5837"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3b154ab49ed30e9b9b10d6574c4a641fac664ed7c080168a1613f4e3532d5837"
+    sha256 cellar: :any_skip_relocation, sonoma:         "265919c429b9c0efd77fe64c3f8f48e5f2bfe4aa435d7f749002d4a09db3c3aa"
+    sha256 cellar: :any_skip_relocation, ventura:        "265919c429b9c0efd77fe64c3f8f48e5f2bfe4aa435d7f749002d4a09db3c3aa"
+    sha256 cellar: :any_skip_relocation, monterey:       "265919c429b9c0efd77fe64c3f8f48e5f2bfe4aa435d7f749002d4a09db3c3aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2e2f9d273fac2b16e90c500520cebd7f258de74ce36d39ab7e4164251b19dec9"
   end
 
   depends_on "php" => :test

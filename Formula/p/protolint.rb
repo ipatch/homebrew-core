@@ -1,19 +1,19 @@
 class Protolint < Formula
   desc "Pluggable linter and fixer to enforce Protocol Buffer style and conventions"
   homepage "https://github.com/yoheimuta/protolint"
-  url "https://github.com/yoheimuta/protolint/archive/refs/tags/v0.49.8.tar.gz"
-  sha256 "fa84c2161936d6dd001b452cf6c59c8090c92fc022fca664c25b959ee33fb25a"
+  url "https://github.com/yoheimuta/protolint/archive/refs/tags/v0.50.3.tar.gz"
+  sha256 "f0555090c3b435a942ee3db80d63a862de9728a14ad3b831bc4445a1e824bf85"
   license "MIT"
   head "https://github.com/yoheimuta/protolint.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "53bdd2d057e9c7f241626076de3991eec79e2faff522203e816c17f7fdd47d71"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bca83adf10d0021a24af3617a8acf0a71306df442b9cc6910ee93c126e4ffcf4"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b9234cea2271336207b50735989beb3e23c88f2c1836d89dc0d5ba0c7fa62982"
-    sha256 cellar: :any_skip_relocation, sonoma:         "eb210c4e2f2820ae08a079dfa2df41ee058fd25727b8d8c30d9abfe843b3f907"
-    sha256 cellar: :any_skip_relocation, ventura:        "4990b08f8fb1fd477c74796a7dceb2dc9e98bea27a5f72cc6ce6ef31edb0857e"
-    sha256 cellar: :any_skip_relocation, monterey:       "1fcc605276abc0c4cd2c9e2a1aea692953fc24ea3f6ac274185bf6bc0c065250"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "29d79ebf451dc9c5374b94b3777acac38631a523c90571c65847f13219cb690a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "684bf1214a4d489b8d2cfa7bd6d7e37b42eeb41245afefacd0b2e5f6a04a7e14"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "090e4e15eab3cbe1a31b8ddf61b023267b3423582ad83b0efc79e01596a56473"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d53eeab7d2bf5c1b7c94a0780e54eb099b597663eb6e6434fd4cd7e48c056cfc"
+    sha256 cellar: :any_skip_relocation, sonoma:         "638f81186a8917b1bc981bdcf4975c62b9bf4d36bcc49802e66e4a38bd34620f"
+    sha256 cellar: :any_skip_relocation, ventura:        "d3d51f43f4372d00569424ba6ff91cd7bb79cf701cf6ceffb230d8c9f78efd91"
+    sha256 cellar: :any_skip_relocation, monterey:       "88639fd2095ec4632f87075a2502a2814be44f78d408a9997c366c1be03c84b1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "654c434496e5799077ab73b2401b3472666a8ea1123edddf13e2f0d200cd8665"
   end
 
   depends_on "go" => :build

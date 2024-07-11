@@ -3,18 +3,18 @@ class Molecule < Formula
 
   desc "Automated testing for Ansible roles"
   homepage "https://molecule.readthedocs.io"
-  url "https://files.pythonhosted.org/packages/59/ad/303a000ff2e2ae9b0cf5300c37d79e7058607f16d9b1c667088d666c32e4/molecule-24.6.0.tar.gz"
-  sha256 "8decb4c684fcafb85a7b4f038da125ed425bdd10db76bf0cdb413f9b84e41b58"
+  url "https://files.pythonhosted.org/packages/7e/bd/3a9d05a1c5acdcb8da0fd7e9a0f8d8a68f4f450f194a327d4c2f8fb7e8ac/molecule-24.7.0.tar.gz"
+  sha256 "db2c7fa59923e9bf23d61a92a5b19d6881ec9ee5fe96ed9e9e9d700b02723f03"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "8386f1b53748b40160b3fe57e3d06e7758e940592e07c4f2a437c5b711352cba"
-    sha256 cellar: :any,                 arm64_ventura:  "ea80ee15e6dc0b25cbebca79c514d916034832c18e997f32d6ac4e29e1e508c8"
-    sha256 cellar: :any,                 arm64_monterey: "f661dee5a2951db373f283ad7a5aebf9b06eb7959d7de49d4169ed00f50ccc86"
-    sha256 cellar: :any,                 sonoma:         "f1b1b347b9346bac415f38d3814fd10e75418f8076ecf4115dafbf791960855d"
-    sha256 cellar: :any,                 ventura:        "ef8fb184dffb51bfef62d5a4e3996dc84ea38e9c4728f8edd599d5873eb4c3db"
-    sha256 cellar: :any,                 monterey:       "708936eb8e9384f14760d49b8210e6c79ea3640ecd77a24d8fbda9871e8edea3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2797495e286a62e5d29132e8840108e1f6c37707c8772e062bb0de3ef91d8dd1"
+    sha256 cellar: :any,                 arm64_sonoma:   "1609b536dada3952d506037ff58eaa6b730f911a7b4f635ea31f84edbfcda8a2"
+    sha256 cellar: :any,                 arm64_ventura:  "f14933b0803838e767e047b8c19b645959971422f1d0b97ad55e7c9c0b0b1590"
+    sha256 cellar: :any,                 arm64_monterey: "7efb9962ab1d3382b75c9c208fac287d246868b7ad5db03d9bd386cbb27da7be"
+    sha256 cellar: :any,                 sonoma:         "e50083c0961a20f2c91d85ba5036f94193f29eeeb168adab4f43ff92ca4ae294"
+    sha256 cellar: :any,                 ventura:        "70f67b899a0c429f80cc95b64b1128bc083414006ed8f3465e2902bed5adb76b"
+    sha256 cellar: :any,                 monterey:       "e56b970437f14771388e9f0da6753254e176f0d20dbacbda2811a1c027404def"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "29efce68ee8adebae9843f80ff342c246966416b7b80ce5d36a37d44e99dd5fb"
   end
 
   depends_on "rust" => :build
@@ -31,13 +31,13 @@ class Molecule < Formula
   end
 
   resource "ansible-compat" do
-    url "https://files.pythonhosted.org/packages/81/88/ae87126cee0295bd2906d8e74a157478447e46641d24ee9083fb881c4d66/ansible_compat-24.6.1.tar.gz"
-    sha256 "f93d4c347d8e1903c292449441c09a987d70366f9cadf9afe5e32dc8a0193cac"
+    url "https://files.pythonhosted.org/packages/81/81/6ca881fa0afc1f9975feb96d08e48f048d0e6542ea66cc9f67f79a403607/ansible_compat-24.7.0.tar.gz"
+    sha256 "7bc7a0c20a505a1eb6ff9877071fe20330130429087da298e25099a14f70d02f"
   end
 
   resource "ansible-core" do
-    url "https://files.pythonhosted.org/packages/a7/e5/956a16811044c28663d88740932de9c3fbbe2ec14fabe86a69b3cfe4842b/ansible_core-2.17.0.tar.gz"
-    sha256 "bd16e30ecac405dac594de3e1b1b4d9cc6fa1a9f7a01a6a8d4c471b20660716d"
+    url "https://files.pythonhosted.org/packages/c4/76/e7b0ac590ef1f100fef0ae6875dbbab06d74edfac8b050024ef28cab1c3d/ansible_core-2.17.1.tar.gz"
+    sha256 "46449d71bbd17c3ce85fe379721d88d333fd23637b5c3798e83fae5fa38def00"
   end
 
   resource "attrs" do
@@ -96,8 +96,8 @@ class Molecule < Formula
   end
 
   resource "jsonschema" do
-    url "https://files.pythonhosted.org/packages/19/f1/1c1dc0f6b3bf9e76f7526562d29c320fa7d6a2f35b37a1392cc0acd58263/jsonschema-4.22.0.tar.gz"
-    sha256 "5b22d434a45935119af990552c862e5d6d564e8f6601206b305a61fdf661a2b7"
+    url "https://files.pythonhosted.org/packages/38/2e/03362ee4034a4c917f697890ccd4aec0800ccf9ded7f511971c75451deec/jsonschema-4.23.0.tar.gz"
+    sha256 "d71497fef26351a33265337fa77ffeb82423f3ea21283cd9467bb03999266bc4"
   end
 
   resource "jsonschema-specifications" do
@@ -126,8 +126,8 @@ class Molecule < Formula
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/ee/b5/b43a27ac7472e1818c4bafd44430e69605baefe1f34440593e0332ec8b4d/packaging-24.0.tar.gz"
-    sha256 "eb82c5e3e56209074766e6885bb04b8c38a0c015d0a30036ebe7ece34c9989e9"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "pluggy" do
@@ -171,8 +171,8 @@ class Molecule < Formula
   end
 
   resource "rpds-py" do
-    url "https://files.pythonhosted.org/packages/2d/aa/e7c404bdee1db7be09860dff423d022ffdce9269ec8e6532cce09ee7beea/rpds_py-0.18.1.tar.gz"
-    sha256 "dc48b479d540770c811fbd1eb9ba2bb66951863e448efec2e2c102625328e92f"
+    url "https://files.pythonhosted.org/packages/36/a2/83c3e2024cefb9a83d832e8835f9db0737a7a2b04ddfdd241c650b703db0/rpds_py-0.19.0.tar.gz"
+    sha256 "4fdc9afadbeb393b4bbbad75481e0ea78e4469f2e1d713a90811700830b553a9"
   end
 
   resource "selinux" do
@@ -186,13 +186,13 @@ class Molecule < Formula
   end
 
   resource "subprocess-tee" do
-    url "https://files.pythonhosted.org/packages/f6/a0/acafd85c7c0aead293a16a70a49aba20ba2af9478771370b2897eae6059c/subprocess-tee-0.4.1.tar.gz"
-    sha256 "b3c124993f8b88d1eb1c2fde0bc2069787eac720ba88771cba17e8c93324825d"
+    url "https://files.pythonhosted.org/packages/d7/22/991efbf35bc811dfe7edcd749253f0931d2d4838cf55176132633e1c82a7/subprocess_tee-0.4.2.tar.gz"
+    sha256 "91b2b4da3aae9a7088d84acaf2ea0abee3f4fd9c0d2eae69a9b9122a71476590"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/43/6d/fa469ae21497ddc8bc93e5877702dca7cb8f911e337aca7452b5724f1bb6/urllib3-2.2.2.tar.gz"
+    sha256 "dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168"
   end
 
   resource "wcmatch" do

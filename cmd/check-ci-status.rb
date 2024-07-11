@@ -6,19 +6,17 @@ module Homebrew
   module Cmd
     class CheckCiStatusCmd < AbstractCommand
       cmd_args do
-        Homebrew::CLI::Parser.new do
-          description <<~EOS
-            Check the status of CI tests. Used to determine whether tests can be
-            cancelled, or whether a long-timeout label can be removed.
-          EOS
+        description <<~EOS
+          Check the status of CI tests. Used to determine whether tests can be
+          cancelled, or whether a long-timeout label can be removed.
+        EOS
 
-          switch "--cancel", description: "Determine whether tests can be cancelled."
-          switch "--long-timeout-label", description: "Determine whether a long-timeout label can be removed."
+        switch "--cancel", description: "Determine whether tests can be cancelled."
+        switch "--long-timeout-label", description: "Determine whether a long-timeout label can be removed."
 
-          named_args :pull_request_number, number: 1
+        named_args :pull_request_number, number: 1
 
-          hide_from_man_page!
-        end
+        hide_from_man_page!
       end
 
       GRAPHQL_WORKFLOW_RUN_QUERY = <<~GRAPHQL

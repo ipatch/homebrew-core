@@ -1,19 +1,20 @@
 class Gptscript < Formula
   desc "Develop LLM Apps in Natural Language"
   homepage "https://gptscript.ai"
-  url "https://github.com/gptscript-ai/gptscript/archive/refs/tags/v0.8.0.tar.gz"
-  sha256 "7c85bc7e6edd835220db7a695fe51176b4dd228e25069ae0aae27af27e8e1174"
+  url "https://github.com/gptscript-ai/gptscript/archive/refs/tags/v0.9.2.tar.gz"
+  sha256 "d0eafd87b503a193e47fc0b2fbe926b27fbaa871455ac318da67079f28ffc852"
   license "Apache-2.0"
   head "https://github.com/gptscript-ai/gptscript.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8060a166676faf1d82c20c23980394237905e61fd078be4dd102b8e39f3b3a2d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ba7f1b93842f122e87c9037d8a55ffd177024abe8a423cd06cf032394b8d1fc9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c56039cb645e01578fd22e4d00106677670e37e6fa0cf9b311eb8356bc1f4534"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9265f66308812ab8e70720f104d6910507cd2c57b64b3f81aee48ea3c6bcf407"
-    sha256 cellar: :any_skip_relocation, ventura:        "029c8f0060f741352f8b5db50b03d27e972055b77a80c8e5c272fbf9c4df21b5"
-    sha256 cellar: :any_skip_relocation, monterey:       "9f33c4bba54eae59c6b12c9cbe8b69b3ddf283830a0a6d4a8e4f6d9f549de95a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8d68b74928530b08a2c9cd3a7471165030cf7fbfe2a9a6d89eae3771d5dfa130"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "872e389dc19a9383d72c638954f1948533de5b0325747ad06dc1b4a883d54235"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "75d358441d8304b71dfdaa96e508f8269f2e35f9e7a83395e6167f624e0ed12f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d01e1b0fe74517bd3aafdfe3a203fb95fbea706d4b79a2a1c5f7800015716e91"
+    sha256 cellar: :any_skip_relocation, sonoma:         "74a0c9cf7752729ec56af0391b39c95b915a3b066ab5fbbab1fa374e2eeca17a"
+    sha256 cellar: :any_skip_relocation, ventura:        "0e1df46aa0487df360902f4c319ffae88b16d9e31f7f3e28adfc5e8cd52678c8"
+    sha256 cellar: :any_skip_relocation, monterey:       "d5459ef88997c2182d49d8dc2c427aa16e484ab6b9d271de0a83e5cb56490e29"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9abc33c32ca0702cf1b238bb808a9d79c4f5f05dbfb5f82b3bcd267bd7ef87d0"
   end
 
   depends_on "go" => :build
@@ -21,11 +22,12 @@ class Gptscript < Formula
   def install
     ldflags = %W[
       -s -w
-      -X github.com/gptscript-ai/gptscript/pkg/version.Tag=#{version}
+      -X github.com/gptscript-ai/gptscript/pkg/version.Tag=v#{version}
     ]
     system "go", "build", *std_go_args(ldflags:)
 
     pkgshare.install "examples"
+    generate_completions_from_executable(bin/"gptscript", "completion")
   end
 
   test do

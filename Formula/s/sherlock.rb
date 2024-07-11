@@ -2,20 +2,20 @@ class Sherlock < Formula
   include Language::Python::Virtualenv
 
   desc "Hunt down social media accounts by username"
-  homepage "https://sherlock-project.github.io"
-  url "https://files.pythonhosted.org/packages/eb/57/0ac8fcde9e2dbdacb20f48e8c20f3049972a59839d8bccbef0799b944140/sherlock_project-0.14.4.tar.gz"
-  sha256 "3c0edc4ebbcdb8eae03d5ce2e377e1c6839d73b8e77388b70125120537917022"
+  homepage "https://sherlockproject.xyz/"
+  url "https://files.pythonhosted.org/packages/0a/95/b4f7a399c43d1d57a703ddf08513411bbb0bfc6bbaabab7ad4e2c534bba7/sherlock_project-0.15.0.tar.gz"
+  sha256 "1ae2ef98a0d482039ff00743e702f28ddf4a0d6260b0fbc2579d680469874910"
   license "MIT"
   head "https://github.com/sherlock-project/sherlock.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2c9aa8b48768ebdb3a1f75d57dbb1b5494e328cb960442d151dfe61d19af290c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f2313da93e039f071360a265ec9405e0c7ff99a24e3623908cfa1807e5b6d073"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "55b06aab82e51d750745088c8fc21c63c2c0544a7b7fe27198db418ece12bee7"
-    sha256 cellar: :any_skip_relocation, sonoma:         "962fb08052f1cef920bbfe7a7c7f3642f7b9c84a7037818f0f6f538b3dd42fee"
-    sha256 cellar: :any_skip_relocation, ventura:        "90db2f5ecac6ed021485664b2a477dea8e9c4e53c98063c83516521d1ca40386"
-    sha256 cellar: :any_skip_relocation, monterey:       "01e31530d3c0e54a1e6a255fb4d2640821e1b3a2a064371ae7bf9d8a64a86a92"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1aab9b488bfd11364f1b6e3a94f2ae2acfbb293e605bce48fb2b87815ccb0cbc"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8345de85f112cc086ac469f31a31a8b3776845024c1187762ec07b966dc60560"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5ba7bf78a6649390a4ef1665e87ca89f7a2f1c2ab3d612aea1f542042be9a9b4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1bd1b1ef99db8e219b21417971000e2c26db6ff7f0b6bcb0f9bc2f7edd7aee80"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ad04c2512b4831b2203d6ffff576e4cf607c635c7378db71c74c4f1f2c4ff05f"
+    sha256 cellar: :any_skip_relocation, ventura:        "20249260bca45b83eae5e37fd46e8a7bcb2f7fc57f08ae3b3853d7d26cb71566"
+    sha256 cellar: :any_skip_relocation, monterey:       "bf85f8c4823f023ff414ef55c7fd855ee73d2e592b23f144e04db3e718dbaf28"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "acd837d9f3ff0e6a9f643b079e015a869da0c7f3344c3cfab160ac14986fa621"
   end
 
   depends_on "cmake" => :build
@@ -42,19 +42,14 @@ class Sherlock < Formula
     sha256 "8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c"
   end
 
-  resource "exrex" do
-    url "https://files.pythonhosted.org/packages/21/39/8f143f76fa9f6048cb42fa0594fc1a57fd143e69a7d42a35d4e16cabc7d9/exrex-0.11.0.tar.gz"
-    sha256 "59912f0234567a5966b10d963c37ca9fe07f1640fd158e77c0dc7c3aee780489"
-  end
-
   resource "idna" do
     url "https://files.pythonhosted.org/packages/21/ed/f86a79a07470cb07819390452f178b3bef1d375f2ec021ecfc709fc7cf07/idna-3.7.tar.gz"
     sha256 "028ff3aadf0609c1fd278d8ea3089299412a7a8b9bd005dd08b9f8285bcb5cfc"
   end
 
   resource "openpyxl" do
-    url "https://files.pythonhosted.org/packages/42/e8/af028681d493814ca9c2ff8106fc62a4a32e4e0ae14602c2a98fc7b741c8/openpyxl-3.1.2.tar.gz"
-    sha256 "a6f5977418eff3b2d5500d54d9db50c8277a368436f4e4f8ddb1be3422870184"
+    url "https://files.pythonhosted.org/packages/3d/f9/88d94a75de065ea32619465d2f77b29a0469500e99012523b91cc4141cd1/openpyxl-3.1.5.tar.gz"
+    sha256 "cf0e3cf56142039133628b5acffe8ef0c12bc902d2aadd3e0fe5878dc08d1050"
   end
 
   resource "pandas" do
@@ -78,8 +73,8 @@ class Sherlock < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/86/ec/535bf6f9bd280de6a4637526602a146a68fde757100ecf8c9333173392db/requests-2.32.2.tar.gz"
-    sha256 "dd951ff5ecf3e3b3aa26b40703ba77495dab41da839ae72ef3c8e5d8e2433289"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "requests-futures" do
@@ -97,19 +92,14 @@ class Sherlock < Formula
     sha256 "83fb19ffd4c9f82207c006051480389f80af221a7e4783000aedec4e384eb582"
   end
 
-  resource "torrequest" do
-    url "https://files.pythonhosted.org/packages/a3/d2/00538e47a2c80979231313c346a0abc3927c7b230d69eb923bb5b221ec62/torrequest-0.1.0.tar.gz"
-    sha256 "3745d4ea3ffda98d7a034363c787adb37aab77bdab40094a4d937392cd4dae82"
-  end
-
   resource "tzdata" do
     url "https://files.pythonhosted.org/packages/74/5b/e025d02cb3b66b7b76093404392d4b44343c69101cc85f4d180dd5784717/tzdata-2024.1.tar.gz"
     sha256 "2674120f8d891909751c38abcdfd386ac0a5a1127954fbc332af6b5ceae07efd"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/43/6d/fa469ae21497ddc8bc93e5877702dca7cb8f911e337aca7452b5724f1bb6/urllib3-2.2.2.tar.gz"
+    sha256 "dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168"
   end
 
   def install

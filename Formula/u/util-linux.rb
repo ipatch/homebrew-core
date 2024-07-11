@@ -1,8 +1,8 @@
 class UtilLinux < Formula
   desc "Collection of Linux utilities"
   homepage "https://github.com/util-linux/util-linux"
-  url "https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.40/util-linux-2.40.1.tar.xz"
-  sha256 "59e676aa53ccb44b6c39f0ffe01a8fa274891c91bef1474752fad92461def24f"
+  url "https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.40/util-linux-2.40.2.tar.xz"
+  sha256 "d78b37a66f5922d70edf3bdfb01a6b33d34ed3c3cafd6628203b2a2b67c8e8b3"
   license all_of: [
     "BSD-3-Clause",
     "BSD-4-Clause-UC",
@@ -24,17 +24,19 @@ class UtilLinux < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "47e2f20b4278c4e20de4886ce0dc56e61f6cbaaa8a226c04bd412ff171c0ca48"
-    sha256 arm64_ventura:  "e780e389150f94ed154079df0f24aa0220e17eade0082b44ce1aca197a5d88f4"
-    sha256 arm64_monterey: "5d08ea506b31e9ac4fff8bd53a8499d20b13488a6d9b85c8a2e007a75043a59d"
-    sha256 sonoma:         "0be86a08a696b60bf5567edbbf6ab0d325987919d22d511e03ddeec9d099f695"
-    sha256 ventura:        "c694b7cb31490b7d8b6ee108813f2fab2d2f23dfdd5a06cfd0745f37ce3f3a55"
-    sha256 monterey:       "5d8ebdda62cef0f9c5177db92debda32482d338095cd29ea8641a7c49f93669a"
-    sha256 x86_64_linux:   "2471fb33843afa81c3518904e60cc302fe3473eefa41fd5d8c2c3d9aaac149c0"
+    sha256 arm64_sonoma:   "dc18e89c3ac8ebea09caac2f1a3bc0f6e3416da1a3a747f310054dddc702924e"
+    sha256 arm64_ventura:  "5c4f9d4fd727f05219af9a9121958ea7a5c108d9f9706be4e03ddd62d5ec7665"
+    sha256 arm64_monterey: "fa0d6e71473544c03133c8b465433f16cca2aeddf83e51207c709d862b49c3eb"
+    sha256 sonoma:         "83c2c08d2c66a378b31f6edd91da6669a48631f4b2d8d24641fb88dcef6e5b05"
+    sha256 ventura:        "c193f0ccd7a9dd4b1ec81b41544bc963f50258a8713ff3112bb30e98b0385541"
+    sha256 monterey:       "0d0dc0fd8860b3a95a6248a60782f0e4770989ca81f5e8e02d8e3622596776d3"
+    sha256 x86_64_linux:   "2ab17c3336042dc8e51d1564ffec4320f7b29e2e7be561970e434d82fe8bf075"
   end
 
   keg_only :shadowed_by_macos, "macOS provides the uuid.h header"
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on "pkg-config" => :build
 
   uses_from_macos "libxcrypt"
@@ -90,7 +92,7 @@ class UtilLinux < Formula
       args << "--without-python"
     end
 
-    system "./configure", *std_configure_args, *args
+    system "./configure", *args, *std_configure_args.reject { |s| s["--disable-debug"] }
     system "make", "install"
 
     # install completions only for installed programs

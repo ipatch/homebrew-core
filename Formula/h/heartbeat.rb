@@ -2,19 +2,19 @@ class Heartbeat < Formula
   desc "Lightweight Shipper for Uptime Monitoring"
   homepage "https://www.elastic.co/beats/heartbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v8.14.0",
-      revision: "de52d1434ea3dff96953a59a18d44e456a98bd2f"
+      tag:      "v8.14.2",
+      revision: "e9455e203842edf9086f34b3ca2fa2b08bc76081"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "028c5fa809c90c58185508c0179273aeb0cbbd1eccd01572a98c3702964af35a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3ac586d30db23ee58558a73d3d669d881920c43c02f3a37b34615ef5809c218e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "849fba9e5055eaa05422a7be4ae3eee1aed1cdac13a03ce0416f39e56f3f9ea1"
-    sha256 cellar: :any_skip_relocation, sonoma:         "24a341881589a2fe5ac1163dcf85f7450e90de1c7da451d5d211f687ccaa261b"
-    sha256 cellar: :any_skip_relocation, ventura:        "8dd674ec0de1da4336ac7c331167fa19948ee7816dcedc0b06eb43509a385acc"
-    sha256 cellar: :any_skip_relocation, monterey:       "d40298cc7ffce6ca74ef73f9408ee3920042b1044aaf632f02613c9f472b7bf2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec87db5a86fc36a1fb0ee0bec85f018bf2e86eb1648840faac16b96655effd10"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5c3441ee17861ffc82bea217ac7ce1564ea715f5c5d083715ba1e51f21bd56ad"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "962eedb3042eb6d8e603e4bb9f8a61e44fe0160f6c9896c35f90b5ce24f07a1c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "37fe07f9a342a745de79553589b79ee8b90f171a89bc8378f6b30f1be8d2c621"
+    sha256 cellar: :any_skip_relocation, sonoma:         "d0e8339a7dbb29a7dc81f541f5aa2a9e3a9ff1c6f8515358ada1cd79b813ef45"
+    sha256 cellar: :any_skip_relocation, ventura:        "bd29f7c7b10721cb69e3f9402d7b20b49534e6a410073b087285f70f96206ded"
+    sha256 cellar: :any_skip_relocation, monterey:       "6154fb90157adf799782eb3059dc266fa7f918fe139937c886e1c6b7141a5fba"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "670fe6e59564122bce59592322e88d52860be0b556d5f7a0edb2ac86d0f877a6"
   end
 
   depends_on "go" => :build

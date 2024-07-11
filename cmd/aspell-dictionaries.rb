@@ -8,13 +8,11 @@ module Homebrew
   module Cmd
     class AspellDictionariesCmd < AbstractCommand
       cmd_args do
-        Homebrew::CLI::Parser.new do
-          usage_banner <<~EOS
-            `aspell-dictionaries`
+        usage_banner <<~EOS
+          `aspell-dictionaries`
 
-            Generates the new dictionaries for the `aspell` formula.
-          EOS
-        end
+          Generates the new dictionaries for the `aspell` formula.
+        EOS
       end
 
       def run

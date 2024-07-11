@@ -3,20 +3,19 @@ class YleDl < Formula
 
   desc "Download Yle videos from the command-line"
   homepage "https://aajanki.github.io/yle-dl/index-en.html"
-  url "https://files.pythonhosted.org/packages/4d/6a/60344980cdb6e40e93608ed81f31a844773cda5d3e90aa1e84f05308b54a/yle_dl-20240429.tar.gz"
-  sha256 "d1618505c41916f8620ae5704939b0a127dd653bc91afb20d0e6183e342cdb7c"
+  url "https://files.pythonhosted.org/packages/f7/12/0e91744c461d577385274d4df87d3b99896b97ab1402b93f2557e43664dc/yle_dl-20240706.tar.gz"
+  sha256 "ebc2103d43b3bf76209469ba9a6cf8db0e2ec0483a85dc5c3430245c7e18f4ed"
   license "GPL-3.0-or-later"
-  revision 1
   head "https://github.com/aajanki/yle-dl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "00c638afa77a5396203bc872a9ac2162c59082df4f219d70034f6ed074872985"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d4b30a6f478479db651ab76dd7d95b95a201e7c62d17a110a19ae09199c02a10"
-    sha256 cellar: :any,                 arm64_monterey: "4394424723e5d44809fdfaa90b272e433e15e0163c3ce21fa8bdccae3895b77c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b6f5d7f8164d8b92ed49010e43227d39d596d0d1178bdf6dd434499264abb8f1"
-    sha256 cellar: :any_skip_relocation, ventura:        "3fb7757424337c567da72e7478a71334e601af7630ef05d3b1089e08b33e55a4"
-    sha256 cellar: :any,                 monterey:       "1470e97892c4ba198df6da6e0711af57466cd5a12cb49354f7de46556375889c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "604fb1965cce0e2aa823d265f97f7b7ce75a5e212911fe6a64e4f84aaa87feaf"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ecb8dbdd7842a73894103b1697f2a4dcf77c347674482b7315fbd9cd549a669c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7f7fe051d42d618e7cd0226f3c59e12d7245e7622f31abc0c879d6710350f9b4"
+    sha256 cellar: :any,                 arm64_monterey: "07abd23278fe156885632b01a9fadc212eca43718d5c26de46d4e29c36c94a60"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ee4157d0bd490457614baecdb7ffe4465cf658c0f91a113860ce312d432e2faa"
+    sha256 cellar: :any_skip_relocation, ventura:        "86baa644bc8c035dd92e8735b8452fb2e8aa2ae00856f7b0d23c9729093119cc"
+    sha256 cellar: :any,                 monterey:       "400ccff9d5fd37c08672caf9e6acf86804b6bc6bc3f14775e11033d20edd5f33"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3b0d97bfec25f8da8923161d6e50f10c65f51a5ab6b3f933c85b492e886e8624"
   end
 
   depends_on "certifi"
@@ -48,13 +47,13 @@ class YleDl < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/86/ec/535bf6f9bd280de6a4637526602a146a68fde757100ecf8c9333173392db/requests-2.32.2.tar.gz"
-    sha256 "dd951ff5ecf3e3b3aa26b40703ba77495dab41da839ae72ef3c8e5d8e2433289"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/43/6d/fa469ae21497ddc8bc93e5877702dca7cb8f911e337aca7452b5724f1bb6/urllib3-2.2.2.tar.gz"
+    sha256 "dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168"
   end
 
   def install

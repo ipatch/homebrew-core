@@ -1,8 +1,8 @@
 class Libxslt < Formula
   desc "C XSLT library for GNOME"
   homepage "http://xmlsoft.org/XSLT/"
-  url "https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.39.tar.xz"
-  sha256 "2a20ad621148339b0759c4d4e96719362dee64c9a096dbba625ba053846349f0"
+  url "https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.42.tar.xz"
+  sha256 "85ca62cac0d41fc77d3f6033da9df6fd73d20ea2fc18b0a3609ffb4110e1baeb"
   license "X11"
 
   # We use a common regex because libxslt doesn't use GNOME's "even-numbered
@@ -13,13 +13,13 @@ class Libxslt < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "28019195eef786264be3a0e67f814753a9108653c5f9e07964b89502c66b06e9"
-    sha256 cellar: :any,                 arm64_ventura:  "9921d7bd84d8fc6914244d5142fb60741eabc71a9a3af87b3c04967f9d334aba"
-    sha256 cellar: :any,                 arm64_monterey: "c48449d1ad89ada8cf9133ea7ea88b247730144ea874dff9608eae0a7b89b882"
-    sha256 cellar: :any,                 sonoma:         "9a4458989d734defc29a7c042b1144a0a66c3768530fb0e07fe52ea78828e606"
-    sha256 cellar: :any,                 ventura:        "695cb26667ee927b4f20fae395b48b8af4bf666f3dc9625bef2e3823aa2e65d8"
-    sha256 cellar: :any,                 monterey:       "ed196bcf4372dacf751a8ba6d45feac8aa6220a877828785651c4694e6209f5b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "81e671ea1b060a25b0db9ab3486ae21b1da5982b6e4a35593a411e9c6d103544"
+    sha256 cellar: :any,                 arm64_sonoma:   "3c3a336b56c8384b9c2956202cc78e28271db8b627a65227f77f049d387b8c05"
+    sha256 cellar: :any,                 arm64_ventura:  "fd6b363128cde585e7086df6d54c8473475a568842b6aa04add1947dae8b9135"
+    sha256 cellar: :any,                 arm64_monterey: "27c8a5e233ab19a82557b33c99f4e226610859832b27c18276a49c1a3765621d"
+    sha256 cellar: :any,                 sonoma:         "33fbe4982e16be91957f9eeb77f35f70385831d479a15b87908389a1077a475c"
+    sha256 cellar: :any,                 ventura:        "82e7425e4331d0024a053434efbd3e6035721a3f792b3fb5b8b8d72fce88cc73"
+    sha256 cellar: :any,                 monterey:       "1609668b445f07134b3f6fafa6cc0307d0659466f2d4aa708e0787bf3a064a6b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "222f19398d1b8f2d1efb196b2336d9b6a8b805abd6b3ab3f1d002112dc7fa67c"
   end
 
   head do
@@ -35,6 +35,10 @@ class Libxslt < Formula
   depends_on "icu4c"
   depends_on "libgcrypt"
   depends_on "libxml2"
+
+  on_macos do
+    depends_on "libgpg-error"
+  end
 
   on_linux do
     depends_on "pkg-config" => :build

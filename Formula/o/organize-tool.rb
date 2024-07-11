@@ -3,19 +3,18 @@ class OrganizeTool < Formula
 
   desc "File management automation tool"
   homepage "https://github.com/tfeldmann/organize"
-  url "https://files.pythonhosted.org/packages/af/4a/11b1925844ad5fc2c5da1f210650f637000ca14bdb6e9c303ab744191337/organize_tool-3.2.3.tar.gz"
-  sha256 "a7b5a776dbfd4b25b5e69f400a9b6b39dd9cf4d430ef0f18bc837d424a007b77"
+  url "https://files.pythonhosted.org/packages/ef/45/6b36a81132cd91b35f6727826533e9f166070eace72f3a09d85e7829c515/organize_tool-3.2.5.tar.gz"
+  sha256 "319930ddaf76712cdf8e8d208ac5718bf87d1101d33339eda5fc84e73d2d70cc"
   license "MIT"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "d180c8bbaf47f37174b340e76252ef64a2b0df14f80bc4f1437a76e51a849849"
-    sha256 cellar: :any,                 arm64_ventura:  "ddd749149a6fe69fe751a2bed8624f2345f01be7dec578f595d2b011a202fd8b"
-    sha256 cellar: :any,                 arm64_monterey: "f575e210a03736c487383cdf7c267c69d6436f02f1ce833f08c9f4c7d3302fc0"
-    sha256 cellar: :any,                 sonoma:         "786129a90421910b80c81161dd57732335e4b6bde33a98484c0f237f73df3018"
-    sha256 cellar: :any,                 ventura:        "314665245b962aa8a24f8e06378815525367c8deeabf57c08f8bcd5a69f799fc"
-    sha256 cellar: :any,                 monterey:       "15411456e2c15cee0c945adb18cab9132190eee2584db9887368d0bc3f72a900"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3ad3439dfc01e2ca8ffda0f36419111ad3e8bd22982bbd3140ef11f21db26f24"
+    sha256 cellar: :any,                 arm64_sonoma:   "c1b17f658d37eb98e49a13c4cbbd7638cfcb1dc0cfd7d0dc33deac219b4c5863"
+    sha256 cellar: :any,                 arm64_ventura:  "8f80e0370202f9e12d8c22125bf5399d17d99fe3329d3a97f9cce8eebece36b2"
+    sha256 cellar: :any,                 arm64_monterey: "5f4ab525a626df8818847a83dc674fb27134297bbfe47125d39d81681677e01c"
+    sha256 cellar: :any,                 sonoma:         "d4a3feaa037e8559f40a787b685fa2bb4a092ca59188b1642888dd01101e0384"
+    sha256 cellar: :any,                 ventura:        "52bc5d9448deca0743e75845f05fa917cba3131f8b10869319b5fd91314ab931"
+    sha256 cellar: :any,                 monterey:       "994ad202d2786184ae6bd2f5b4496a85790a278def5d0c00ec2cff9704c39c59"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "601a782331a666d86187440c6935ab87b9d7e33c7490ca7b2ed8a0bbff0d10a1"
   end
 
   depends_on "cmake" => :build
@@ -27,8 +26,8 @@ class OrganizeTool < Formula
   depends_on "python@3.12"
 
   resource "annotated-types" do
-    url "https://files.pythonhosted.org/packages/67/fe/8c7b275824c6d2cd17c93ee85d0ee81c090285b6d52f4876ccc47cf9c3c4/annotated_types-0.6.0.tar.gz"
-    sha256 "563339e807e53ffd9c267e99fc6d9ea23eb8443c08f112651963e24e22f84a5d"
+    url "https://files.pythonhosted.org/packages/ee/67/531ea369ba64dcff5ec9c3402f9f51bf748cec26dde048a2f973a4eea7f5/annotated_types-0.7.0.tar.gz"
+    sha256 "aff07c09a53a08bc8cfccb9c85b05f1aa9a2a6f23728d790723543408344ce89"
   end
 
   resource "arrow" do
@@ -97,18 +96,18 @@ class OrganizeTool < Formula
   end
 
   resource "platformdirs" do
-    url "https://files.pythonhosted.org/packages/b2/e4/2856bf61e54d7e3a03dd00d0c1b5fa86e6081e8f262eb91befbe64d20937/platformdirs-4.2.1.tar.gz"
-    sha256 "031cd18d4ec63ec53e82dceaac0417d218a6863f7745dfcc9efe7793b7039bdf"
+    url "https://files.pythonhosted.org/packages/f5/52/0763d1d976d5c262df53ddda8d8d4719eedf9594d046f117c25a27261a19/platformdirs-4.2.2.tar.gz"
+    sha256 "38b7b51f512eed9e84a22788b4bce1de17c0adb134d6becb09836e37d8654cd3"
   end
 
   resource "pydantic" do
-    url "https://files.pythonhosted.org/packages/1f/74/0d009e056c2bd309cdc053b932d819fcb5ad3301fc3e690c097e1de3e714/pydantic-2.7.1.tar.gz"
-    sha256 "e9dbb5eada8abe4d9ae5f46b9939aead650cd2b68f249bb3a8139dbe125803cc"
+    url "https://files.pythonhosted.org/packages/8c/99/d0a5dca411e0a017762258013ba9905cd6e7baa9a3fd1fe8b6529472902e/pydantic-2.8.2.tar.gz"
+    sha256 "6f62c13d067b0755ad1c21a34bdd06c0c12625a22b0fc09c6b149816604f7c2a"
   end
 
   resource "pydantic-core" do
-    url "https://files.pythonhosted.org/packages/e9/23/a609c50e53959eb96393e42ae4891901f699aaad682998371348650a6651/pydantic_core-2.18.2.tar.gz"
-    sha256 "2e29d20810dfc3043ee13ac7d9e25105799817683348823f305ab3f349b9386e"
+    url "https://files.pythonhosted.org/packages/12/e3/0d5ad91211dba310f7ded335f4dad871172b9cc9ce204f5a56d76ccd6247/pydantic_core-2.20.1.tar.gz"
+    sha256 "26ca695eeee5f9f1aeeb211ffc12f10bcb6f71e2989988fda61dabd65db878d4"
   end
 
   resource "pygments" do
@@ -117,13 +116,13 @@ class OrganizeTool < Formula
   end
 
   resource "pyobjc-core" do
-    url "https://files.pythonhosted.org/packages/24/ac/61c58e65780c6ba0523997d236fac99e38e5ddfabfd5b500409f8239a257/pyobjc-core-10.2.tar.gz"
-    sha256 "0153206e15d0e0d7abd53ee8a7fbaf5606602a032e177a028fc8589516a8771c"
+    url "https://files.pythonhosted.org/packages/b7/40/a38d78627bd882d86c447db5a195ff307001ae02c1892962c656f2fd6b83/pyobjc_core-10.3.1.tar.gz"
+    sha256 "b204a80ccc070f9ab3f8af423a3a25a6fd787e228508d00c4c30f8ac538ba720"
   end
 
   resource "pyobjc-framework-cocoa" do
-    url "https://files.pythonhosted.org/packages/b0/c0/7eb30628e1a60c8b700f0b15280417c754eda9f186d05d47f4cac6f4e1a7/pyobjc-framework-Cocoa-10.2.tar.gz"
-    sha256 "6383141379636b13855dca1b39c032752862b829f93a49d7ddb35046abfdc035"
+    url "https://files.pythonhosted.org/packages/a7/6c/b62e31e6e00f24e70b62f680e35a0d663ba14ff7601ae591b5d20e251161/pyobjc_framework_cocoa-10.3.1.tar.gz"
+    sha256 "1cf20714daaa986b488fb62d69713049f635c9d41a60c8da97d835710445281a"
   end
 
   resource "python-dateutil" do
@@ -162,8 +161,8 @@ class OrganizeTool < Formula
   end
 
   resource "typing-extensions" do
-    url "https://files.pythonhosted.org/packages/f6/f3/b827b3ab53b4e3d8513914586dcca61c355fa2ce8252dea4da56e67bf8f2/typing_extensions-4.11.0.tar.gz"
-    sha256 "83f085bd5ca59c80295fc2a82ab5dac679cbe02b9f33f7d83af68e241bea51b0"
+    url "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz"
+    sha256 "1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"
   end
 
   resource "xattr" do

@@ -1,8 +1,8 @@
 class Node < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v22.2.0/node-v22.2.0.tar.xz"
-  sha256 "889908a8828d1484910d7e659b6aa57ade8d528ff0e390e9a77ef659a7628474"
+  url "https://nodejs.org/dist/v22.4.1/node-v22.4.1.tar.xz"
+  sha256 "65fc857f5aa8256aafc900b344c0115c9aeae25a02541fd5ce0dbd4dfd1c5fb9"
   license "MIT"
   head "https://github.com/nodejs/node.git", branch: "main"
 
@@ -12,13 +12,13 @@ class Node < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "e5136cf5f60e0dec5911e8f7bcf6a17909a2d043aa0203144a2c6d7431f74b3e"
-    sha256 arm64_ventura:  "eda5dd987bc37b8ec31e06e34f3ffa574cdf3a2930e08476f64d8a3b17faf848"
-    sha256 arm64_monterey: "6999c3139fbfa0b8937f6a0793b51e9e1206ab2841a4c676b63b33875871f9a5"
-    sha256 sonoma:         "1550bb353d43877f3df0a302fa6be5e08df0dcab4b5933a0d2335eb622ca4985"
-    sha256 ventura:        "cc3adc9f16f74cad21df1b2a7b975aadf6d9f3c58d7cbd1b9cb079b8eea107cb"
-    sha256 monterey:       "0f3aac142a02f3e01908aa8faa47920230258cae2bfb0d4a0c407e27a855e263"
-    sha256 x86_64_linux:   "b2c52dfd4670e09e7604af698efdd254e1bd085baac6f16737491f6eacd3bb75"
+    sha256 arm64_sonoma:   "216cf9f3decc10a3ff2f8c05261589b266b4dbe1d90ed0b89d2dcb6de6435ddf"
+    sha256 arm64_ventura:  "482166f8932d89c8ba3947efd9ec66df6566336cb52e6d4c607ea152098f6ffc"
+    sha256 arm64_monterey: "9c920df74e4e0b165e40fe9f9d19ea3fa1cc7c70034de776d39585d508938c32"
+    sha256 sonoma:         "d20bc9e22395c5b7b0c9886598b24f9ded801fe089c3bbcb7bc54b7f9c150a3a"
+    sha256 ventura:        "29fd803f5f21529244452ff88ded4a8e0fbd97d2c25776a7feff79bdfbbb9629"
+    sha256 monterey:       "d92e3a02327d989ecc327a7cc1707b6fdf988a3efe873b7f1e42d66cefc266a1"
+    sha256 x86_64_linux:   "ca40d979c2d42346861c3921d184a735732b4ab362fccfea1f69fe8cc11f5c12"
   end
 
   depends_on "pkg-config" => :build
@@ -49,8 +49,8 @@ class Node < Formula
   # We track major/minor from upstream Node releases.
   # We will accept *important* npm patch releases when necessary.
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-10.7.0.tgz"
-    sha256 "f443ed4364ea11ac5cf7cae7fb4731278c64dd6839093f8a46eabde0430e0fcd"
+    url "https://registry.npmjs.org/npm/-/npm-10.8.1.tgz"
+    sha256 "b8807aebb9656758e2872fa6e7c564b506aa2faa9297439a478d471d2fe32483"
   end
 
   def install

@@ -3,20 +3,19 @@ class PolicySentry < Formula
 
   desc "Generate locked-down AWS IAM Policies"
   homepage "https://policy-sentry.readthedocs.io/en/latest/"
-  url "https://files.pythonhosted.org/packages/7e/7a/7fbb394f21a3c43edcb7d04382b6d93567900b4c8ea4b224b284656115ed/policy_sentry-0.12.11.tar.gz"
-  sha256 "8db1ea570e835d87c57ef51bf6f2372a8b78d463549a5f9c65cb5f8103cd1ed8"
+  url "https://files.pythonhosted.org/packages/ca/f1/496838fb09f5bb76d178616bf6c5029634d33a115e1702550f623a9d6ea6/policy_sentry-0.12.14.tar.gz"
+  sha256 "4c71d8e6a827168f1283d51f5b502aeb66ba2f8aaf89088f0a40e0460bd29cec"
   license "MIT"
-  revision 2
   head "https://github.com/salesforce/policy_sentry.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "4e2758649b1f5931549ceffb9735f503b5ee3e7fb3d10112f47d27fdfba9dee6"
-    sha256 cellar: :any,                 arm64_ventura:  "619932791ef3987f46ebb381f403b8ba7ff8b80a0e0be64c9cec2410bc5355e3"
-    sha256 cellar: :any,                 arm64_monterey: "abc80581116f816c879c808bea0d27d9b5089ff2f9bbf2630d2b059279a3d322"
-    sha256 cellar: :any,                 sonoma:         "e4c0df0a3f35a639d5997589b91dfb26315966b26b25f9d363d39f1b76ce06c3"
-    sha256 cellar: :any,                 ventura:        "d1fbe3f7b2c2250785d5b6bbf78983dfa477f94b564dd15621f29b6494fa43b8"
-    sha256 cellar: :any,                 monterey:       "02ca0fe4f9477af07aae4f1c7f2c0f194f1cbef38d9d3d7fcb7b1d5d9a6c2d89"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "556914d4c45e3753d8423437b127d3de1ff5f07e86c65a2a08d3a084c642ca8c"
+    sha256 cellar: :any,                 arm64_sonoma:   "5430188c83ed9429ab4969ab0ece7e1b09819ee073c658fec973c7af363a146a"
+    sha256 cellar: :any,                 arm64_ventura:  "4e39fffb802e74b35a40e5291623a6487197af4cf5883b20a75739d719c8eb48"
+    sha256 cellar: :any,                 arm64_monterey: "f39ebd81cc45f012f06a037f325a7a1b90e1a1c77156330380ee603143d744a7"
+    sha256 cellar: :any,                 sonoma:         "50be8b80434439e8047a62a8acd0164e98c1453ee9922623eab0a5f40523675c"
+    sha256 cellar: :any,                 ventura:        "8ffba8af4e314b16f3656176d65e63cd9422c443a26924fb8ef479f5421e9742"
+    sha256 cellar: :any,                 monterey:       "0da424bec7b1fef03a830ec302be01ad0a71f5f3d1b4d771be065a91391c90f6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "56640ff5306923b4be3ea82bcb7870973b9feac18f994feeeb38d763528df255"
   end
 
   depends_on "certifi"
@@ -49,8 +48,8 @@ class PolicySentry < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/86/ec/535bf6f9bd280de6a4637526602a146a68fde757100ecf8c9333173392db/requests-2.32.2.tar.gz"
-    sha256 "dd951ff5ecf3e3b3aa26b40703ba77495dab41da839ae72ef3c8e5d8e2433289"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "schema" do
@@ -64,8 +63,8 @@ class PolicySentry < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/43/6d/fa469ae21497ddc8bc93e5877702dca7cb8f911e337aca7452b5724f1bb6/urllib3-2.2.2.tar.gz"
+    sha256 "dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168"
   end
 
   def install

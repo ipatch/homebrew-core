@@ -1,8 +1,8 @@
 class Nss < Formula
   desc "Libraries for security-enabled client and server applications"
   homepage "https://firefox-source-docs.mozilla.org/security/nss/index.html"
-  url "https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_100_RTM/src/nss-3.100.tar.gz"
-  sha256 "1e35373ce9cb5b776f678bb341b0625c437520d09ebd91d1abd622e072e38d88"
+  url "https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_102_RTM/src/nss-3.102.tar.gz"
+  sha256 "c29b03f24856db18a34fbcde737fcca6407c27b5f3f60baba5111460e6cb307b"
   license "MPL-2.0"
 
   livecheck do
@@ -14,13 +14,13 @@ class Nss < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f4bebb70a8e49ac3ce43404b6bbb948b600b2f2819fd5e21faa983422a210e12"
-    sha256 cellar: :any,                 arm64_ventura:  "e2a738111b6dc4412caf7e43dba40a73cb7c0211d6b22564e933a56dda567bfb"
-    sha256 cellar: :any,                 arm64_monterey: "ca7c782399623b3765580641858895ffa62efaef7131a6e4b73f6b6679e8695b"
-    sha256 cellar: :any,                 sonoma:         "a367e39e4e531241240e51fd7cd4600802aa6a2142559d2b0941b24284bda44e"
-    sha256 cellar: :any,                 ventura:        "c5e3ac9263befe0cbefb102c01ecd1e8683a59af4dcff9b14300e5ba5e13a27b"
-    sha256 cellar: :any,                 monterey:       "2c13e6bd11883477b7f9ff20aeadaab4ba860fd7a0471ef28e1603f37db2f465"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a42e5651005afcbb67eecd6a08d1c1b534d8a7131fd066a22ea44077b4c37b15"
+    sha256 cellar: :any,                 arm64_sonoma:   "fcfc55ac5b71bb96e7c110262a0d3b059322595c8fdadd9159df467b9aed1b49"
+    sha256 cellar: :any,                 arm64_ventura:  "d987b510266d2900668044282d344e87ae9729d252f1a32f89ad1469fb18fdb7"
+    sha256 cellar: :any,                 arm64_monterey: "0c9ce6b8371e5666032d43022740fafd8962ae2c38ce11e39807e0245c15bca3"
+    sha256 cellar: :any,                 sonoma:         "534885ef21063ea9aabd53101dd8093b929f7172dda20f0557315d810e29655a"
+    sha256 cellar: :any,                 ventura:        "9c8be4a77063a52cd1f5b5aa9d2d0a5f12a59f114f258424ddd8412146bb32a5"
+    sha256 cellar: :any,                 monterey:       "46197f051795032f490dbebde7d996196803f387747de040a62e2ca2d8e99068"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9edb28b56b9c6494428f85d31938b5a4fbaaa4b986f014b2b61851f764a492ef"
   end
 
   depends_on "nspr"

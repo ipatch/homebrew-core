@@ -1,19 +1,19 @@
 class Elixir < Formula
   desc "Functional metaprogramming aware language built on Erlang VM"
   homepage "https://elixir-lang.org/"
-  url "https://github.com/elixir-lang/elixir/archive/refs/tags/v1.16.3.tar.gz"
-  sha256 "a163128e618e5205ea749f8effafa5b540008fd0bed863e75e2e09663a00ec45"
+  url "https://github.com/elixir-lang/elixir/archive/refs/tags/v1.17.2.tar.gz"
+  sha256 "7bb8e6414b77c1707f39f620a2ad54f68d64846d663ec78069536854247fb1ab"
   license "Apache-2.0"
   head "https://github.com/elixir-lang/elixir.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e99addb10343d3fc64ab491cf52aa8480dac2ad9c7f4aec7cff192bedf20cdd9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9fcaeb0f5b29b03ce87fa36e3b5d2dea6d036dab8fb296a8f5668bafb058650e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ed00ef83ec15f2ac4e5d77bb04d15200f398f1999ebf2761a2a733d4e9a30b30"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a129853cd793c522b09470d1b3c3361ee6b312391ec8e64242cc6869fcbba273"
-    sha256 cellar: :any_skip_relocation, ventura:        "569a2f6e835a809ead8165236aeaa9522b8053b305f844a765e6b0779f4e0268"
-    sha256 cellar: :any_skip_relocation, monterey:       "1c63469cadc0f1df7308535e1db7ae32260e37ea1ecf1db005b6c33a8e86f105"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2abc282e6a89acc619e0332d7e0988f94e3fc81e8daf2e0c15f1a148778b1a24"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "424318d1e358738bae6b7962592be58a3254172872a6d78640a97e45ac475ae7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5aea5e80878f7ea14ed3fd534bf26a0c2bf3fffac5323c0bf349d7ccffb21999"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4bddc5525f797de8a69a156eea21111499d2ea0da39ae70ea8c3ecbacb6515ac"
+    sha256 cellar: :any_skip_relocation, sonoma:         "e2725b97ebda4e2d34277c129cd173d244de4ece061e12dc31f9abf952c7dca5"
+    sha256 cellar: :any_skip_relocation, ventura:        "75dec7062894feb5ef0ea2c1002bec5609b387afe302146a651e0fccf1b644f5"
+    sha256 cellar: :any_skip_relocation, monterey:       "84ee927110ebe3741751680cfc9c060919ecb6479973a0c05f9dcd9d141f926d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6d380aa5f17083f3a8493e6f0991e2738773bee44badab0bfb39d18033307de4"
   end
 
   depends_on "erlang"

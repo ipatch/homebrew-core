@@ -1,18 +1,18 @@
 class VideoCompare < Formula
   desc "Split screen video comparison tool using FFmpeg and SDL2"
   homepage "https://github.com/pixop/video-compare"
-  url "https://github.com/pixop/video-compare/archive/refs/tags/20240525.tar.gz"
-  sha256 "7a8f559da1f069270495bfabe19cde4a0102187812afbd6885430d4a7b3bd9c2"
+  url "https://github.com/pixop/video-compare/archive/refs/tags/20240710.tar.gz"
+  sha256 "0e4edb537cc74d5b862994523b28fdd4d6b54c0bea94beaff64f26cf99fa4a77"
   license "GPL-2.0-only"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "b73f4ff42f2b8132f782b7a4866a02acd7c9420586aa5092e1feb8a6116892d6"
-    sha256 cellar: :any,                 arm64_ventura:  "f753b5e47084f5d4eae88127bc4afd7177968e65a50bc057daaf7b7e6a127218"
-    sha256 cellar: :any,                 arm64_monterey: "4ca06931868379ed17568c780365e44a709ce6849a397c977da4ebbfb7beb194"
-    sha256 cellar: :any,                 sonoma:         "a3981c1c5b3f4a25688bcb0502ca207fc7173fbbdc337f92b5391fb943c08909"
-    sha256 cellar: :any,                 ventura:        "8365fffba9948b99ed64ff3ef861cf95ee45433975a490d8f7a9d0bb0498ff6f"
-    sha256 cellar: :any,                 monterey:       "fa44a0b6538d0881c49beafb15c0a3a57063158625ae54576048aaad6c7fbb87"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "45e93e3fa6744b1b6b5e4a9b7a01c159fd246f7f972485b5b6ec324af9318ad7"
+    sha256 cellar: :any,                 arm64_sonoma:   "1756a8b5c3645016cbdc7640c47fcea362ca11f2e498bac2238e42fa58445331"
+    sha256 cellar: :any,                 arm64_ventura:  "6a189524ba9f7df340e977c582e4c9c350270d442dd54115d150e6ee02b9f893"
+    sha256 cellar: :any,                 arm64_monterey: "0acf4e69880aebfa4aa67e9fb5520b9baad2e2938c322836f99dbefba3de0d18"
+    sha256 cellar: :any,                 sonoma:         "c17fafb8f37d36a9d83dc740df68c360064d5ba4f6a6c82ac926c720681c79c5"
+    sha256 cellar: :any,                 ventura:        "ede5e082275348dfc5f88fc565f7d7626893d8b88153113b6ce4b9ad3179d6ca"
+    sha256 cellar: :any,                 monterey:       "58dcab52dc89484d0a60d7feb48f96476dda9787c3752036040a24c8fe844d65"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f704307a8e37dba78666eec85837fcabc7c835060a450712a2f5d9c3660229b"
   end
 
   depends_on "ffmpeg"

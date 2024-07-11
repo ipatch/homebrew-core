@@ -1,8 +1,8 @@
 class JenkinsLts < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://www.jenkins.io/"
-  url "https://get.jenkins.io/war-stable/2.452.1/jenkins.war"
-  sha256 "d9ec867a35987b545c82ed0df5d2240ac208a8d06e065e9cdb869464f3b87a56"
+  url "https://get.jenkins.io/war-stable/2.452.3/jenkins.war"
+  sha256 "45fd2b877f9709a52b984d9c7d6f435bc05f6adee61291d22d30b5f1e8fd8c59"
   license "MIT"
 
   livecheck do
@@ -11,14 +11,13 @@ class JenkinsLts < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2555992970f2ed1bd3cc04ff672b1ac3665ea1d888a2a8a5ae22c526d02ed963"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2555992970f2ed1bd3cc04ff672b1ac3665ea1d888a2a8a5ae22c526d02ed963"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2555992970f2ed1bd3cc04ff672b1ac3665ea1d888a2a8a5ae22c526d02ed963"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2555992970f2ed1bd3cc04ff672b1ac3665ea1d888a2a8a5ae22c526d02ed963"
-    sha256 cellar: :any_skip_relocation, ventura:        "2555992970f2ed1bd3cc04ff672b1ac3665ea1d888a2a8a5ae22c526d02ed963"
-    sha256 cellar: :any_skip_relocation, monterey:       "2555992970f2ed1bd3cc04ff672b1ac3665ea1d888a2a8a5ae22c526d02ed963"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0e2109c326f41dfbaf9c347574f40a8e3f2b1b19edb890e1afa29ad456277040"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8bcd6a862bedf76fda734efdda905655b41a46fb1fc173d8f0f433c2234ce46b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8bcd6a862bedf76fda734efdda905655b41a46fb1fc173d8f0f433c2234ce46b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8bcd6a862bedf76fda734efdda905655b41a46fb1fc173d8f0f433c2234ce46b"
+    sha256 cellar: :any_skip_relocation, sonoma:         "8bcd6a862bedf76fda734efdda905655b41a46fb1fc173d8f0f433c2234ce46b"
+    sha256 cellar: :any_skip_relocation, ventura:        "8bcd6a862bedf76fda734efdda905655b41a46fb1fc173d8f0f433c2234ce46b"
+    sha256 cellar: :any_skip_relocation, monterey:       "8bcd6a862bedf76fda734efdda905655b41a46fb1fc173d8f0f433c2234ce46b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "491d71a4da02835be0a3b249601c46778c238ecce8ed064b73cd44fd789c1aab"
   end
 
   depends_on "openjdk@21"

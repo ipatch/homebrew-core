@@ -1,8 +1,8 @@
 class DosboxX < Formula
   desc "DOSBox with accurate emulation and wide testing"
   homepage "https://dosbox-x.com/"
-  url "https://github.com/joncampbell123/dosbox-x/archive/refs/tags/dosbox-x-v2024.03.01.tar.gz"
-  sha256 "2a89d3196ddc15361f6dc7e6ab142bfe95945d93d527cfd6bacca1f7a401a513"
+  url "https://github.com/joncampbell123/dosbox-x/archive/refs/tags/dosbox-x-v2024.07.01.tar.gz"
+  sha256 "23462a3398303f8558e86973af9ba5d3d6d53bdaf324ec749610f2baf1dd449b"
   license "GPL-2.0-or-later"
   version_scheme 1
   head "https://github.com/joncampbell123/dosbox-x.git", branch: "master"
@@ -19,13 +19,13 @@ class DosboxX < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "c5fc239fdfaecfe9e9aa5cd0b7011d2011d0f8df956d592011582388abdd22cf"
-    sha256 arm64_ventura:  "b0e949524fab090eeb53f501526ee34a9238c4851ea3af1772aaf660cfeed586"
-    sha256 arm64_monterey: "85cad3def53f998a9b2d57cfe0e34b7a7d2ad7f9207f8cab09b4682bcd003ac3"
-    sha256 sonoma:         "315e1ad4e8dd4161dd8ad9439182b7a67b24444b03a39f8ce66df3ebb981fe48"
-    sha256 ventura:        "36e89f27d3edad1b38ebfe9031620eb51166d9717cf5d72983729c303462fbf0"
-    sha256 monterey:       "bd1e197f12758fba0dc539d0bad12a0d185061c6abc3d34c40471ca22d2e30f3"
-    sha256 x86_64_linux:   "7000472cd311ec130d2844defac3447f85cff1c5e3b1d58328ae11c384c52b20"
+    sha256 arm64_sonoma:   "7a1799bfeb379368eada7999470ec97561992190d0efdafc9bec2ebdeddc1169"
+    sha256 arm64_ventura:  "d06034ea8c332aff03917656d4dc9eae12332f187466bc399be6d0357cb1ec05"
+    sha256 arm64_monterey: "0ddb17ee7afe510d74420bb6c689b6da2a1f7897ad44248b4c72d1068f34c28c"
+    sha256 sonoma:         "db5e1a4c59b8c8a9d4be01112bfaade0b90391fef49d7aafec424dd3d8068b09"
+    sha256 ventura:        "143e759651f1d7f8f8f905a1faefe14b22d66f87f57f35ee6ecf4fa1f846efbc"
+    sha256 monterey:       "c8e06ad5769214ee34bc7c09f424415e5a134da58469fbfbbbdb60f072ffd313"
+    sha256 x86_64_linux:   "0ec1091bad54cf93e3658cc989b46280e1b9a21ca338c7119dc3874bf68cae65"
   end
 
   depends_on "autoconf" => :build
@@ -50,7 +50,7 @@ class DosboxX < Formula
 
     # See flags in `build-macos-sdl2`.
     args = %w[
-      --enable-core-inline
+      --enable-debug=heavy
       --enable-sdl2
       --disable-sdl2test
       --disable-sdl

@@ -2,8 +2,8 @@ class Wolfssl < Formula
   desc "Embedded SSL Library written in C"
   homepage "https://www.wolfssl.com"
   url "https://github.com/wolfSSL/wolfssl.git",
-      tag:      "v5.7.0-stable",
-      revision: "8970ff4c34034dbb3594943d11f8c9d4c5512bd5"
+      tag:      "v5.7.2-stable",
+      revision: "00e42151ca061463ba6a95adb2290f678cbca472"
   license "GPL-2.0-or-later"
   head "https://github.com/wolfSSL/wolfssl.git", branch: "master"
 
@@ -14,13 +14,13 @@ class Wolfssl < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f3f5722adb7e5894916733b6057e0d6b0cd1e396ef25247178fffebe4f24de54"
-    sha256 cellar: :any,                 arm64_ventura:  "a02e95cd80bb1449b1c5d99980eae6e523c17db8288700fca3a9c93bd2fe30f7"
-    sha256 cellar: :any,                 arm64_monterey: "8a7b1552e6a8ddadbdc8503bca1491d8a9a9aee539e25eaa2b2706e77e1e1485"
-    sha256 cellar: :any,                 sonoma:         "d768072f12162da9d0b6a687fd5d3acc4ee71855dfee7a54fd0e4be6d92bd785"
-    sha256 cellar: :any,                 ventura:        "9bed028e5e37b2a4356a26fd119dfe5043a8fb58489c507645bb4beece5e543a"
-    sha256 cellar: :any,                 monterey:       "18cd06b3f18e2a09b00ba633b00dcec16b8a94ffd45b2bd1c091e688f9bfe801"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "85ce871f71dc0d62e530d3ff12ec1a1de7b8016f96ad7e8f8fc9e56b9aea3a45"
+    sha256 cellar: :any,                 arm64_sonoma:   "b5278c9a7db3c9e785a8d3b2ab7a1e6cc29200aa614eaf1b598ceddc724b3a5d"
+    sha256 cellar: :any,                 arm64_ventura:  "20f2ec33f81043bb963967bb298ded454d43838e59fcd157eacea4d6727bb24f"
+    sha256 cellar: :any,                 arm64_monterey: "81df63bf44a68a030d5d4b9bfa5bec852b6aa12bd87c235bc2f68ee76b3d4725"
+    sha256 cellar: :any,                 sonoma:         "f7d9057453252e1eb7f747b04684b4157e9aaecd9edf9d8f29fb0f5ce1e75dc0"
+    sha256 cellar: :any,                 ventura:        "83b42519303c99aec3d03bf33848d7232419221038c2877fdb4e0b5ae0055a57"
+    sha256 cellar: :any,                 monterey:       "7549e87a7899d14031dd50889f503b37fa3d27edd1e3f96b3b1ab99e8c0d01f0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "90b1cab01b0ec8c70155029061afb26ee73e759ca7a27b24474b7a24e3b53a79"
   end
 
   depends_on "autoconf" => :build
@@ -44,6 +44,7 @@ class Wolfssl < Formula
       --disable-webserver
       --enable-aesccm
       --enable-aesgcm
+      --enable-aesgcm-stream
       --enable-alpn
       --enable-blake2
       --enable-camellia
@@ -59,7 +60,6 @@ class Wolfssl < Formula
       --enable-eccencrypt
       --enable-ed25519
       --enable-filesystem
-      --enable-hc128
       --enable-hkdf
       --enable-inline
       --enable-ipv6
@@ -70,7 +70,6 @@ class Wolfssl < Formula
       --enable-poly1305
       --enable-psk
       --enable-quic
-      --enable-rabbit
       --enable-ripemd
       --enable-savesession
       --enable-savecert

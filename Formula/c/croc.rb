@@ -1,19 +1,19 @@
 class Croc < Formula
   desc "Securely send things from one computer to another"
   homepage "https://github.com/schollz/croc"
-  url "https://github.com/schollz/croc/archive/refs/tags/v10.04.tar.gz"
-  sha256 "c9bbfcd2503c8d5c33ec91b0a628b116be71ac4114ad17b6afa3aed99424caf5"
+  url "https://github.com/schollz/croc/archive/refs/tags/v10.0.10.tar.gz"
+  sha256 "0c36b63ce4c60d9cfc0d338329911e7f358d11a2a9463e2bf5a8972d9a9f4b36"
   license "MIT"
   head "https://github.com/schollz/croc.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4a5b7727ba65945f031aafb82104fcf18b7c65ec6a94f294de0f822a12dcd7e0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c781a054a1389e636ea799ff50ffd4ebd882f3d8af2d3b03d7c92026048ff868"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7ddcac0d12b5e674979dde035bcb583244c5229288eb9f312fe428c8da92aae2"
-    sha256 cellar: :any_skip_relocation, sonoma:         "94c33be069af802300f9435c13436a4161dc441324a28a26ea2be0024244768c"
-    sha256 cellar: :any_skip_relocation, ventura:        "479c6a1de8bbc3205ab467c99b133dee1a30dd90bc45088ba66c0160ddf312f2"
-    sha256 cellar: :any_skip_relocation, monterey:       "d1f5466607237976735e780978e22e511690be374d9495ae415da411c1e14237"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ffd37e0589c5351a654d10e0679d1fd6948cdd6ca02ad789e143bc12e7593cae"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b7702cbf68d35204b7253ff6702c27675d9632adb65876f824db0cddf2d0a8f0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9ddbe00a297561f62a1d03d54bcd5c5aa06e1962540c19bc7a6228386d2bf570"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d6ecae0c2fdf09d6d24c3e1ffecfbdbc0230ec5b12bf288df2dbb9579333991e"
+    sha256 cellar: :any_skip_relocation, sonoma:         "e522085ad6028a327a74eecfaf17f1b113b406aa259d33e4bd0ee38ec7fc090d"
+    sha256 cellar: :any_skip_relocation, ventura:        "9a59966f521b1db9cec574e0cfbde3aa80805ddb5dbcd431b79a030a41ea4182"
+    sha256 cellar: :any_skip_relocation, monterey:       "dd6445cced89dbcfe45b1b49a653ce07afd912bdd14c674cee1ff77b8b08a37a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2ae3aa73f8c214f192a814cea05523bda280d7d41da4771d5132ac7930517359"
   end
 
   depends_on "go" => :build
@@ -24,7 +24,7 @@ class Croc < Formula
 
   test do
     # As of https://github.com/schollz/croc/pull/701 an alternate method is used to provide the secret code
-    ENV["CROC_SECRET"] = "homebrew-test" if OS.linux?
+    ENV["CROC_SECRET"] = "homebrew-test"
 
     port=free_port
 

@@ -1,8 +1,8 @@
 class Neo4j < Formula
   desc "Robust (fully ACID) transactional property graph database"
   homepage "https://neo4j.com/"
-  url "https://neo4j.com/artifact.php?name=neo4j-community-5.20.0-unix.tar.gz"
-  sha256 "203215748402702871e511c6dfff3c62f72587c4e80df703bf854085c436d066"
+  url "https://neo4j.com/artifact.php?name=neo4j-community-5.21.2-unix.tar.gz"
+  sha256 "19fd2ddbedf9fab526cdec55d1d5cbc9ebda282984f8af9fb7216d9dbc7d0af6"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -12,16 +12,18 @@ class Neo4j < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "031d542cfab50907c5d96b2f5de91982dff6c94fb7a70e633ad2dc33b017f689"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1888fd646917efc98fcd31310094c04980635b9f6727ba16460288fd2a324829"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "07d740c4e2d2e64af354da6b0ff11ae9bb26af29493189a217f3d2599be33976"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a2fd01a59fa5e27428c329a1f52b7d29130328d02ae0acc967aa893e00915bf9"
-    sha256 cellar: :any_skip_relocation, ventura:        "9f9aa38a574abc2d9fad53ba96ad391cc428e7f916534387672ac1145c3843de"
-    sha256 cellar: :any_skip_relocation, monterey:       "d78200956821b6fae8af4e210a12c3d855da58075c648a36656d21cad0f88736"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9cb055e6920dab0cec271afa6e973d5def25c5fbbde0f445373e78e15b5a260a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b2d58d5f4da22e9a215c1cfc97e474e68903f2ba622a6bca709780fa399dd5dc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b2d58d5f4da22e9a215c1cfc97e474e68903f2ba622a6bca709780fa399dd5dc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b2d58d5f4da22e9a215c1cfc97e474e68903f2ba622a6bca709780fa399dd5dc"
+    sha256 cellar: :any_skip_relocation, sonoma:         "a24716bfce36860ea21f3da3f5d2fd47d2fdf4f85ea53571769f3836e4501f17"
+    sha256 cellar: :any_skip_relocation, ventura:        "a24716bfce36860ea21f3da3f5d2fd47d2fdf4f85ea53571769f3836e4501f17"
+    sha256 cellar: :any_skip_relocation, monterey:       "a24716bfce36860ea21f3da3f5d2fd47d2fdf4f85ea53571769f3836e4501f17"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a866261cbce0b07890ad2571fd9ed041081c2221a343618c8b0c7eb304039363"
   end
 
   depends_on "openjdk"
+
+  conflicts_with "cypher-shell", because: "both install `cypher-shell` binaries"
 
   def install
     env = {

@@ -1,31 +1,24 @@
 class Beakerlib < Formula
   desc "Shell-level integration testing library"
   homepage "https://github.com/beakerlib/beakerlib"
-  url "https://github.com/beakerlib/beakerlib/archive/refs/tags/1.30.tar.gz"
-  sha256 "9161dd08ca7a9066d2d85ff6911b7c8271fbd6ba76d5fe168f2ad3e705bd2615"
+  url "https://github.com/beakerlib/beakerlib/archive/refs/tags/1.31.1.tar.gz"
+  sha256 "5557f0226311d2cf234a4f5cd3edbf99f1e88c7f10210c5c0c17b43c220b6c81"
   license "GPL-2.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "11dd0e715e2060438e366eb6bccf7df706aeb3973959083ad3889b6029b0e2cf"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "513d1ad1390fba2d1ef87771c3d0e5b935badfd82039ffea13619b29e4bddb36"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "73e3106075b0e0b2f4fdc78098d3173761423a1c847e44149919ca4ddbceaa4c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ed654c8b1350c49242da1aa3c0be7153c336e34a2efc724857a84a350e8e0b0d"
-    sha256 cellar: :any_skip_relocation, ventura:        "7952e38923289e8232557aa25fb7070bb12b148850d99a63ef551f6928b7d0be"
-    sha256 cellar: :any_skip_relocation, monterey:       "78a88e0ccdd2d42d1373cf0d086d04f24075cef52b3617933dc38a1ea06f6b37"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1c54757f5688e1f72f09bf489880103e574598e10588a71dca5ec345cc3ec603"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f6a9bd8972db1eabd9348ed19150ffbe0264123f9e8a1b8085854e665a89d745"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0b99bdf60bcf892e0b978a74c0adcaffb6aef396356c27cae96d6884c335f8e3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3f5440a846295df9f114b82e8d31083ccbd3dfd26728b86be20bd527c09f919e"
+    sha256 cellar: :any_skip_relocation, sonoma:         "3c75b9044b36cd16335dfb007bb7810e862bd5754a9c60138a63808e646d5126"
+    sha256 cellar: :any_skip_relocation, ventura:        "2ecd3250e3f5e27ccfed3a03277522467013ce4c04a475faab462a28d87bd9ca"
+    sha256 cellar: :any_skip_relocation, monterey:       "6ceccc24b482bbd69e3b47ca84192a1c418f6cf4e5317fdaa1997fe6c9b13d9c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a30d3953941414e616984cdd98012e0db0efdfa5630293cdbbf89292bf5eb32d"
   end
 
   on_macos do
     # Fix `readlink`
     depends_on "coreutils"
     depends_on "gnu-getopt"
-  end
-
-  # Add BSD compatibility. Squash commit of:
-  # https://github.com/beakerlib/beakerlib/pull/172
-  patch do
-    url "https://github.com/LecrisUT/beakerlib/commit/367ccaeb9983752b5c6e93277fd333c29a58e8c2.patch?full_index=1"
-    sha256 "e50e098bd1668feb22d27aa604750f222a0df8566ae4887075e2861b760de1b9"
   end
 
   def install

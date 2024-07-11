@@ -1,8 +1,8 @@
 class ScmManager < Formula
   desc "Manage Git, Mercurial, and Subversion repos over HTTP"
   homepage "https://www.scm-manager.org"
-  url "https://packages.scm-manager.org/repository/releases/sonia/scm/packaging/unix/3.2.1/unix-3.2.1.tar.gz"
-  sha256 "6e9859b48da74d51a10d547d7310101e728d3b46054ec292c9bd4e1c6e0cc51b"
+  url "https://packages.scm-manager.org/repository/releases/sonia/scm/packaging/unix/3.3.0/unix-3.3.0.tar.gz"
+  sha256 "cf3fd465c385779a3a66b1655dfc81eda53a5474937a41d5eb00a4d7cab8c218"
   license all_of: ["Apache-2.0", "MIT"]
 
   livecheck do
@@ -11,14 +11,13 @@ class ScmManager < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dc40e1ab0dc62ad344d6adf8da3370116c71ac53dfdff9379441cbd25017371f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "dc40e1ab0dc62ad344d6adf8da3370116c71ac53dfdff9379441cbd25017371f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dc40e1ab0dc62ad344d6adf8da3370116c71ac53dfdff9379441cbd25017371f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "dc40e1ab0dc62ad344d6adf8da3370116c71ac53dfdff9379441cbd25017371f"
-    sha256 cellar: :any_skip_relocation, ventura:        "dc40e1ab0dc62ad344d6adf8da3370116c71ac53dfdff9379441cbd25017371f"
-    sha256 cellar: :any_skip_relocation, monterey:       "dc40e1ab0dc62ad344d6adf8da3370116c71ac53dfdff9379441cbd25017371f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0a17779339d3d1359b170d8518523cab99b3b73e5049c1e3ad2516eda0660051"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6f6cbf22743a06d4915cf4a44515d1eb3c2c215b7b497cc04568a64b537194fd"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6f6cbf22743a06d4915cf4a44515d1eb3c2c215b7b497cc04568a64b537194fd"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6f6cbf22743a06d4915cf4a44515d1eb3c2c215b7b497cc04568a64b537194fd"
+    sha256 cellar: :any_skip_relocation, sonoma:         "6f6cbf22743a06d4915cf4a44515d1eb3c2c215b7b497cc04568a64b537194fd"
+    sha256 cellar: :any_skip_relocation, ventura:        "6f6cbf22743a06d4915cf4a44515d1eb3c2c215b7b497cc04568a64b537194fd"
+    sha256 cellar: :any_skip_relocation, monterey:       "6f6cbf22743a06d4915cf4a44515d1eb3c2c215b7b497cc04568a64b537194fd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d175118e0f442074bd8e03240835982987b238fba8d02b944e38e141431e65bc"
   end
 
   depends_on "jsvc"

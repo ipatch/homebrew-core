@@ -4,18 +4,18 @@ class MetaPackageManager < Formula
 
   desc "Wrapper around all package managers with a unifying CLI"
   homepage "https://kdeldycke.github.io/meta-package-manager/"
-  url "https://files.pythonhosted.org/packages/c2/2a/6baf9e33b3bb63ef4857b903b44700e91a06609160e31070f58b387a9e46/meta_package_manager-5.16.0.tar.gz"
-  sha256 "5620d653cc31f98d9ae36b594929a5dca70438e25c2a9bdcd4a11b0677f30f9c"
+  url "https://files.pythonhosted.org/packages/c5/c0/35fc343df6f7fb9ca58d36f224132447ed613124c88e7e5f5604de5e05f1/meta_package_manager-5.17.0.tar.gz"
+  sha256 "96ba190a8e9bb67d6b230865ff06ff9c9bcc447377a0b219c0a8765f7e6f326d"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "ccb9e4c0acdc51587d4329856329ea3087c114dc88c01aa8ffeb2f15bfe1d14f"
-    sha256 cellar: :any,                 arm64_ventura:  "0b18aee16ffc29fbca563e5c1f43ad7cc2a4c99593763f1c1cdba1ee9e4bd418"
-    sha256 cellar: :any,                 arm64_monterey: "7a988e1ec20c84e55d5f851dc3ba1d791a731cf225f94384f78f76e345656a1c"
-    sha256 cellar: :any,                 sonoma:         "3ec7d99347b45a5f7e35ace5c5babc325e5a3091d946c558a01125d02a2a892f"
-    sha256 cellar: :any,                 ventura:        "a3211f5244626d28457be022b869a46d4e99486adc07e716ffa81f996c872fa2"
-    sha256 cellar: :any,                 monterey:       "985bd3ebf2280b861640ffb5f30239f889d47f301ec39442e3ee19784da86029"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9d9203bd27d80bcad476441fdc10c6e8d3f958a94cc17e16ac243650df25ee77"
+    sha256 cellar: :any,                 arm64_sonoma:   "3682e20f10fa44be8d0cd5319064c6b8506691cf98b876b31c99924f0b0aed86"
+    sha256 cellar: :any,                 arm64_ventura:  "83d2a054eeb49110bd73a50699d3691f34d9b65517599c3e17af34f4e3c5082e"
+    sha256 cellar: :any,                 arm64_monterey: "73b881e5ace1e5552ae36244d6a26368644af9f800a428ca4861b2d60f7b355e"
+    sha256 cellar: :any,                 sonoma:         "de1b6d98810c9eb74fcb362a14ac8e1dce66b9646411d35eb31fde57c1a9fd45"
+    sha256 cellar: :any,                 ventura:        "6208c647c05f2ffdd863d807c635df2bc2b8c2b30ed63aa41a7413ee5b9f2420"
+    sha256 cellar: :any,                 monterey:       "c0185bbae9b8931c3a4bb85002152a942494f65c757c66bedeefbf10db381119"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c7b0e5b79810c03a0380d5620687bf91396167bbc6b74237cd3aecdf23c3e172"
   end
 
   depends_on "certifi"
@@ -43,8 +43,8 @@ class MetaPackageManager < Formula
   end
 
   resource "click-extra" do
-    url "https://files.pythonhosted.org/packages/69/ff/6e97860dac64823a8c36c2e0c18781561f3f2f20e26207a969c220a0fc03/click_extra-4.8.1.tar.gz"
-    sha256 "ed7c8b078dd413fb7ff17c7ee14249051f1456e4f63166f06ef7c25c3a7c25fc"
+    url "https://files.pythonhosted.org/packages/f4/30/f411e19756fb2f512ea118e55207dff0558234f5bf504929c951a153b39c/click_extra-4.8.3.tar.gz"
+    sha256 "d0a2409d1c65ba40de73193bf5a589d4aa6ea913cd85bbcce72689a8844b0601"
   end
 
   resource "cloup" do
@@ -55,11 +55,6 @@ class MetaPackageManager < Formula
   resource "commentjson" do
     url "https://files.pythonhosted.org/packages/c0/76/c4aa9e408dbacee3f4de8e6c5417e5f55de7e62fb5a50300e1233a2c9cb5/commentjson-0.9.0.tar.gz"
     sha256 "42f9f231d97d93aff3286a4dc0de39bfd91ae823d1d9eba9fa901fe0c7113dd4"
-  end
-
-  resource "docutils" do
-    url "https://files.pythonhosted.org/packages/ae/ed/aefcc8cd0ba62a0560c3c18c33925362d46c6075480bfa4df87b28e169a9/docutils-0.21.2.tar.gz"
-    sha256 "3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f"
   end
 
   resource "idna" do
@@ -77,9 +72,14 @@ class MetaPackageManager < Formula
     sha256 "0096d52e9dad9939c3d975a774666af186eda617e6ca84df4c94dec30004f2a8"
   end
 
+  resource "more-itertools" do
+    url "https://files.pythonhosted.org/packages/01/33/77f586de725fc990d12dda3d4efca4a41635be0f99a987b9cc3a78364c13/more-itertools-10.3.0.tar.gz"
+    sha256 "e5d93ef411224fbcef366a6e8ddc4c5781bc6359d43412a65dd5964e46111463"
+  end
+
   resource "packageurl-python" do
-    url "https://files.pythonhosted.org/packages/93/d7/6ab8c91b1ef802d6b5905abe16289e1d84d426976ef0c475aa05f1499501/packageurl-python-0.15.0.tar.gz"
-    sha256 "f219b2ce6348185a27bd6a72e6fdc9f984e6c9fa157effa7cb93e341c49cdcc2"
+    url "https://files.pythonhosted.org/packages/b5/0c/08dfe9c4bf1dbb4aa06e1095bdbe636095e3b02e8212d3def3ea77c94c44/packageurl_python-0.15.2.tar.gz"
+    sha256 "9cd10eeedbc6680728c10a1585c6dd7bbad4ef4b389d80cd0ac223205e9c87df"
   end
 
   resource "pyyaml" do
@@ -93,8 +93,8 @@ class MetaPackageManager < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/86/ec/535bf6f9bd280de6a4637526602a146a68fde757100ecf8c9333173392db/requests-2.32.2.tar.gz"
-    sha256 "dd951ff5ecf3e3b3aa26b40703ba77495dab41da839ae72ef3c8e5d8e2433289"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "tabulate" do
@@ -108,8 +108,8 @@ class MetaPackageManager < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/43/6d/fa469ae21497ddc8bc93e5877702dca7cb8f911e337aca7452b5724f1bb6/urllib3-2.2.2.tar.gz"
+    sha256 "dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168"
   end
 
   resource "wcmatch" do

@@ -6,16 +6,16 @@ class Airshare < Formula
   url "https://files.pythonhosted.org/packages/cb/a2/d59c18cd6a143bf860c29acb70552b7351fd7e0f56213be86b624601106b/Airshare-0.1.6.tar.gz"
   sha256 "138976933bcf2c0bc99f18901242544919e9fafe43735b4f83b19d4ae5964be7"
   license "MIT"
-  revision 11
+  revision 13
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2b2b1f44c25684fe25c0b5a1598ec3126a08076deed9ff2c558f56a7854b5be8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c3df20fe7816635d7a947a86b0dc427b6bfe4710f528a55d3f0c23c6126b671f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "75ea298508c03d6dfd100cfb7d4ee1024b97ac6f4c9a317827403c5920a7870d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6cfa108815f79d347b84fa2453caebd0a9bcfe9cd95d018e2e2850c57cecb51c"
-    sha256 cellar: :any_skip_relocation, ventura:        "ed497742496d3b7bc26c985dfa274f5df9f1d90acadaa8d72aba63ef17b7ec8d"
-    sha256 cellar: :any_skip_relocation, monterey:       "bc96c2a0b76b3f78b0a0228b2d09dfa91d7093752a7967d2962c74eb1c87607c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fd552531123825c7611307c59ee0a4f40eb3e53f5b171e17e2a93e9dd632f895"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b726c95f57e3ddee4b0bd3ebe6dff3de90a36488b1b4c69e3d72e0a85cb30894"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4f62c94a933821c42a15b0d4afa93107d7b91dfd94576f86a6e6a04ce600b62f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "512200081c3e345c9ed30e3f69e4cfd9712d6c1367141d919d9aa1994a820e82"
+    sha256 cellar: :any_skip_relocation, sonoma:         "0f4db20f635531297f9e08896e763cac1f514d256b628388b0bacc44f17196d6"
+    sha256 cellar: :any_skip_relocation, ventura:        "38b8c84b427472d003621a6152962c380dc2ee30e2e3557798878c22cceb88dd"
+    sha256 cellar: :any_skip_relocation, monterey:       "63c6adf3b33325ca22d5a9472976de91097e63017bea413e289f38c3a29081e7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "06d8ffa9daa279f27e9c1b9a4a49c8e6059de3212354812591ad91f43154f47f"
   end
 
   depends_on "python@3.12"
@@ -41,8 +41,8 @@ class Airshare < Formula
   end
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/71/da/e94e26401b62acd6d91df2b52954aceb7f561743aa5ccc32152886c76c96/certifi-2024.2.2.tar.gz"
-    sha256 "0569859f95fc761b18b45ef421b1290a0f65f147e92a1e5eb3e635f9a5e4e66f"
+    url "https://files.pythonhosted.org/packages/c2/02/a95f2b11e207f68bc64d7aae9666fed2e2b3f307748d5123dffb72a1bbea/certifi-2024.7.4.tar.gz"
+    sha256 "5a1e7645bc0ec61a09e26c36f6106dd4cf40c6db3a1fb6352b0244e7fb057c7b"
   end
 
   resource "charset-normalizer" do
@@ -86,13 +86,13 @@ class Airshare < Formula
   end
 
   resource "pyperclip" do
-    url "https://files.pythonhosted.org/packages/a7/2c/4c64579f847bd5d539803c8b909e54ba087a79d01bb3aba433a95879a6c5/pyperclip-1.8.2.tar.gz"
-    sha256 "105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"
+    url "https://files.pythonhosted.org/packages/30/23/2f0a3efc4d6a32f3b63cdff36cd398d9701d26cda58e3ab97ac79fb5e60d/pyperclip-1.9.0.tar.gz"
+    sha256 "b7de0142ddc81bfc5c7507eea19da920b92252b548b96186caf94a5e2527d310"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/d8/c1/f32fb7c02e7620928ef14756ff4840cae3b8ef1d62f7e596bc5413300a16/requests-2.32.1.tar.gz"
-    sha256 "eb97e87e64c79e64e5b8ac75cee9dd1f97f49e289b083ee6be96268930725685"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "requests-toolbelt" do
@@ -111,8 +111,8 @@ class Airshare < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/43/6d/fa469ae21497ddc8bc93e5877702dca7cb8f911e337aca7452b5724f1bb6/urllib3-2.2.2.tar.gz"
+    sha256 "dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168"
   end
 
   resource "yarl" do

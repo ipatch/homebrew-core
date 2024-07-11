@@ -7,17 +7,15 @@ module Homebrew
   module Cmd
     class DetermineRebottleRunnersCmd < AbstractCommand
       cmd_args do
-        Homebrew::CLI::Parser.new do
-          usage_banner <<~EOS
-            `determine-rebottle-runners` <formula> <timeout>
+        usage_banner <<~EOS
+          `determine-rebottle-runners` <formula> <timeout>
 
-            Determines the runners to use to rebottle a formula.
-          EOS
+          Determines the runners to use to rebottle a formula.
+        EOS
 
-          named_args number: 2
+        named_args number: 2
 
-          hide_from_man_page!
-        end
+        hide_from_man_page!
       end
 
       def run

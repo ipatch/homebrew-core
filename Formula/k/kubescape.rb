@@ -1,8 +1,8 @@
 class Kubescape < Formula
   desc "Kubernetes testing according to Hardening Guidance by NSA and CISA"
   homepage "https://kubescape.io"
-  url "https://github.com/kubescape/kubescape/archive/refs/tags/v3.0.11.tar.gz"
-  sha256 "1cfd60663ac55e2f5be34b0fcfe4c11e60af36dd693e6e1fed026bcceb534314"
+  url "https://github.com/kubescape/kubescape/archive/refs/tags/v3.0.13.tar.gz"
+  sha256 "d6554bb55265222da562dd0148647724ce804fae497a85b74a0f74bdd47e79a5"
   license "Apache-2.0"
   head "https://github.com/kubescape/kubescape.git", branch: "master"
 
@@ -12,13 +12,13 @@ class Kubescape < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d7b3ca760643a294b5104d24bbd737b1c2e60bfaebe9bc74f5f48fb4ec767a15"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1611631a7b4a2ea072998debb7ccdd950abc4ca67cd30a241618c6bc84c5c855"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7b5960d229ccebc9cdf4db2ae16ffa2dd47a64a8dc08399be34cc6fd80bca349"
-    sha256 cellar: :any_skip_relocation, sonoma:         "417fb6b190eddefcaa968213900392ee8366b0b1faa11b0c51c76f123c6ea4a8"
-    sha256 cellar: :any_skip_relocation, ventura:        "243c70692925582f79df6e41c53a0863717b537bcb45c59143b698605ec3073a"
-    sha256 cellar: :any_skip_relocation, monterey:       "3752d2080cb62892b9b30b1ea5f16fcb954633f102cf7010a031600188f82697"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "987b02f9bb4320d8e197a7fb728a60c2df0146fae9f245198f594d821530d136"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4143ff86ed064b56f9b05bbbadea44a56bb81e8740f99e5187afe1689ada8647"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "89cd645ab84e0bef3b201e735d6707099b68a4e1912ce0ab539a89fc032cc457"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "dd571d9ded7c6fd02ec96841b551d7595a4f6744f4944eb8b367f1017d14c0cb"
+    sha256 cellar: :any_skip_relocation, sonoma:         "254747107cf3a62470898f08ed3ff0c6882cc6871476c064e6fe5c10ae209d79"
+    sha256 cellar: :any_skip_relocation, ventura:        "bc34c797758228a7dbeed8867edaa993699c2056251857c67ddaa4096dcd5b89"
+    sha256 cellar: :any_skip_relocation, monterey:       "6f49e4a01be588139a4786de04320656db2ff93b5928ac6103e05fa82bf8ef39"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d932f27e925fb8e5eae66f6bc80f1f366068c6a900d6cdbe32908433873b6705"
   end
 
   depends_on "go" => :build

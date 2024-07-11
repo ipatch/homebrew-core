@@ -1,9 +1,8 @@
 class ArduinoCli < Formula
   desc "Arduino command-line interface"
   homepage "https://github.com/arduino/arduino-cli"
-  url "https://github.com/arduino/arduino-cli.git",
-      tag:      "v0.35.3",
-      revision: "95cfd654fe0dd6b07e903d3132c0faceabfbe9e3"
+  url "https://github.com/arduino/arduino-cli/archive/refs/tags/v1.0.2.tar.gz"
+  sha256 "3741dee1cf63eecd0b8b42f51c8e1570ceb464a38ff3acdbbeb214a88645d930"
   license "GPL-3.0-only"
   head "https://github.com/arduino/arduino-cli.git", branch: "master"
 
@@ -13,13 +12,13 @@ class ArduinoCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "490da66935363b7a43d492bde7a10a734c5469eb8e6e0d710dca07be67ff1761"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5e49003a5ff03579941a8ec60694177392bb8635357c0d36b31d28e99de98f1a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ba8af5d91337c4d2be5be0c3ee1cd0bf9e7a3efa6a0a523dcbf3ea89b744b552"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a03dda880772b74b038abb20d6b36db9b363c73b0e1c8a05646e3e2717f449fc"
-    sha256 cellar: :any_skip_relocation, ventura:        "55caab9c9b0553dcac1803c21c222bd463bb626cef8bdf8c45cae8c1b141ea5b"
-    sha256 cellar: :any_skip_relocation, monterey:       "2091b69e81aa97b36e587e86c50b65526ba4f45644e81a9634bc6833047c756e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fcdfa3d4f57b7148a322078f3ed7cb1fa9dc0f0330fe29430d7bd4c6be5dfba5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c23185dd7b39b3f0dd94551df70685bd994afeac2f5e596495d348d2a4b87cd6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "05d67cdd1413ece5e745bec1d64acd3bf69e3a344446bdad0ec9309a232157de"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3eb4b947c7267435197f324790754652922d8034d2ff0ec1dac7afef0906f195"
+    sha256 cellar: :any_skip_relocation, sonoma:         "afa4d28dd10b32c3183753ee006a30df3272f725a8ba1d6ae23f7dceaec14c07"
+    sha256 cellar: :any_skip_relocation, ventura:        "f3181071468d4c4120a7d30d74cba25b3422d9e40ad1ca0cfa862a55afc6728b"
+    sha256 cellar: :any_skip_relocation, monterey:       "24d3123ed30c2f6e2e451d853187b27a4075f04bd946d92e0ab4c81a007c02be"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "328474a13115a3d70b0a0f8ca3b2f56059d4ca29630c86b669e180c1a2ed0d25"
   end
 
   depends_on "go" => :build
@@ -28,7 +27,7 @@ class ArduinoCli < Formula
     ldflags = %W[
       -s -w
       -X github.com/arduino/arduino-cli/version.versionString=#{version}
-      -X github.com/arduino/arduino-cli/version.commit=#{Utils.git_head(length: 8)}
+      -X github.com/arduino/arduino-cli/version.commit=#{tap.user}
       -X github.com/arduino/arduino-cli/version.date=#{time.iso8601}
     ]
     system "go", "build", *std_go_args(ldflags:)
@@ -37,14 +36,9 @@ class ArduinoCli < Formula
   end
 
   test do
-    system "#{bin}/arduino-cli", "sketch", "new", "test_sketch"
-    assert File.directory?("#{testpath}/test_sketch")
+    system bin/"arduino-cli", "sketch", "new", "test_sketch"
+    assert_predicate testpath/"test_sketch/test_sketch.ino", :exist?
 
-    version_output = shell_output("#{bin}/arduino-cli version 2>&1")
-    assert_match("arduino-cli  Version: #{version}", version_output)
-    assert_match("Commit:", version_output)
-    assert_match(/[a-f0-9]{8}/, version_output)
-    assert_match("Date: ", version_output)
-    assert_match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/, version_output)
+    assert_match version.to_s, shell_output("#{bin}/arduino-cli version")
   end
 end

@@ -1,8 +1,8 @@
 class Biome < Formula
   desc "Toolchain of the web"
   homepage "https://biomejs.dev/"
-  url "https://github.com/biomejs/biome/archive/refs/tags/cli/v1.8.0.tar.gz"
-  sha256 "fae441b335403076d6bb00f960ad25c3539bc2fe08d67e8de25d4feba7173e42"
+  url "https://github.com/biomejs/biome/archive/refs/tags/cli/v1.8.3.tar.gz"
+  sha256 "8e263bbc1ff644036409471f10320870510025fa1850912a02b1abcfc92ced79"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/biomejs/biome.git", branch: "main"
 
@@ -12,13 +12,13 @@ class Biome < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "064c0165b54a5b4e0e435b234586dcbfac02214fa020ee7c7e3d3a87aecdcf0b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "33fde567c73fe77bac8522f122e73a7fe29b339c9fe4b5eb7bfcafc890698c94"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "be080945c1d1d12f5537aca5184cb3442f02baaf0bb9a44dedd5ab9da0fc884a"
-    sha256 cellar: :any_skip_relocation, sonoma:         "47df8a8d056d3d7ebaa897c9cb9b0b3a45b93abea8ab72585dd5ea82904f4e93"
-    sha256 cellar: :any_skip_relocation, ventura:        "406fbdb43d39dbb2390880172d6c993930964bd99810a059f24e7f440cd594c3"
-    sha256 cellar: :any_skip_relocation, monterey:       "18f16d9feee476fefeda3347b94d549927c1a344af0a625845ab8471bda1334d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "59f07c00a05197b13f1f637da78fe6b7703a972450db969640810104921e0b48"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "14f285f035481e07f6b2ce128f5ebc74ddea146b71d9057c1175901edc6b9b17"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2ac096323e81dc12b926b1627207e0bf1c2ae4b48d7ff60eaff5e7b7a619aacc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ab37a3f3b410aec94208e2f710a7c341eb95242280ff3ffb218a97d802811696"
+    sha256 cellar: :any_skip_relocation, sonoma:         "132bf40be192b1dd674038c8a88456325b7a2981a4dcc22b4a216052f9a44b69"
+    sha256 cellar: :any_skip_relocation, ventura:        "19929d7c4794786ec2cc7dd7d624558d75476991cfeef97a89b6e43e79670aef"
+    sha256 cellar: :any_skip_relocation, monterey:       "60760380c50730f3c7a77786c95dc9a4f1bac945a3358f5b19504b7c42b1a458"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "630287008e3310981936b2c181e7e5d087028e5330354ce4d28ece2e70e76dd8"
   end
 
   depends_on "rust" => :build

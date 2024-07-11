@@ -1,8 +1,8 @@
 class Massdriver < Formula
   desc "Manage applications and infrastructure on Massdriver Cloud"
   homepage "https://www.massdriver.cloud/"
-  url "https://github.com/massdriver-cloud/mass/archive/refs/tags/1.7.0.tar.gz"
-  sha256 "1ebaed7746d01aea0e64a9857634c520f963de230f84411aaf191a27ed352d6e"
+  url "https://github.com/massdriver-cloud/mass/archive/refs/tags/1.8.2.tar.gz"
+  sha256 "c27fe250259226b9fbee1840f6c0e68d97d1ad686385d52571c7fe6a17802e2c"
   license "Apache-2.0"
   head "https://github.com/massdriver-cloud/mass.git", branch: "main"
 
@@ -15,13 +15,13 @@ class Massdriver < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d50c5640759a9575c9ecacd0941d22bf0b86a0d6b5f33f1650313a8227d98c52"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bb8e75e17c9601eba6fee6adfe9b5a3b951ea3cb9057f9c3ffd71c186a608efa"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6f9fe23b22e741bddc8e3e0035ad5377c6e1b64e72c980aa7c2bc2a0c4b3b6cc"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c9513b9e21ff7d2ad0593952a0936d6bc1ffec9f67ad8300236979ebab4d371e"
-    sha256 cellar: :any_skip_relocation, ventura:        "f249a49df8b6f130acfb49720bf4a58de4adc894bf9fdfa0fa39fd29ff042e94"
-    sha256 cellar: :any_skip_relocation, monterey:       "19144a0567df031b8c5b3807b4b46a53ab310658cad7aa64f90f46cd04447a96"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9e51315dadf9fc1b0e14fe2a65877c86213a3f2ddfb930e6d0dc27797720a892"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2c57b6020fb18eb10ec3262015aa895a8053c3f0b63e14603df59b68c3941c30"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6338819f8581a52e79dfe6cd16a533c8db353e380ebe155bf3dfa7f5cfba9f4b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d98d77072a29d1d0f1ca6edea4b6c5d6273ee491cd2204b353c86f95f56bfbbb"
+    sha256 cellar: :any_skip_relocation, sonoma:         "0598bf4a4e08c0f2d7693d8e7e47117c47f31b39ffd18f3e2378c27a0f9f4794"
+    sha256 cellar: :any_skip_relocation, ventura:        "b18686c837dd72c03cbfe3c177a47ba4e04838f7cb4df362857d7754b2336b1f"
+    sha256 cellar: :any_skip_relocation, monterey:       "89262b4a4bb98ab84c51979e2d657f474f72310b6493c702e28a7a126b8be38a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b87984d052f7af4c6ff7b551fa550cac89bd75ab9311f6076f7d76a8f847ff52"
   end
 
   depends_on "go" => :build

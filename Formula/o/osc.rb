@@ -3,8 +3,8 @@ class Osc < Formula
 
   desc "Command-line interface to work with an Open Build Service"
   homepage "https://openbuildservice.org"
-  url "https://github.com/openSUSE/osc/archive/refs/tags/1.7.0.tar.gz"
-  sha256 "326f8e58ccc12c99a26059a60bd52c0bd3226ad5676224fbfcbf9d53ee248ac4"
+  url "https://github.com/openSUSE/osc/archive/refs/tags/1.8.3.tar.gz"
+  sha256 "833efb2701718b4ec17adc6d621799e8169d4490774c33e2abd089194c0c1505"
   license "GPL-2.0-or-later"
   head "https://github.com/openSUSE/osc.git", branch: "master"
 
@@ -14,13 +14,13 @@ class Osc < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4a0b04f25aa783d054e113402400a00daaac8473284c40fff090b415d814d693"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b98fee216789941d84191fd15baa1e910b092222e38c0a7d2975ba9e6c0f2164"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8adc9bb1d98210f20fc1e68e980337337733eb38e0de1dcba42c46cd0d120967"
-    sha256 cellar: :any_skip_relocation, sonoma:         "d5e50d85339c53defb1ed2e0bd100dbc969440e54149700c8f7a81130b6f92d7"
-    sha256 cellar: :any_skip_relocation, ventura:        "8cc558f711a436b9cf4a1dbc77a8b2f3e9516631402d1a02a3ee318cbe4dcd2a"
-    sha256 cellar: :any_skip_relocation, monterey:       "3ff866d56e7300754cda85361a0167e7ed4056cbba710de1baa187d696b94937"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fa319b1700a4d5a9bfb5356c09815aee8e87deb6278c7dbc1a756492f55f3df5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4190de84cdf3b2986710a2568ca4d720b4888dc109703a95c84527b457669e73"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4190de84cdf3b2986710a2568ca4d720b4888dc109703a95c84527b457669e73"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4190de84cdf3b2986710a2568ca4d720b4888dc109703a95c84527b457669e73"
+    sha256 cellar: :any_skip_relocation, sonoma:         "80cb7356575689ca9bd7bc9ac64c1d55dc5c1522499d69adc964c88d14327806"
+    sha256 cellar: :any_skip_relocation, ventura:        "80cb7356575689ca9bd7bc9ac64c1d55dc5c1522499d69adc964c88d14327806"
+    sha256 cellar: :any_skip_relocation, monterey:       "80cb7356575689ca9bd7bc9ac64c1d55dc5c1522499d69adc964c88d14327806"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bc80e64f4b581cfc07e01dae65ac8028d241c9f651cd3916d5a789054b6db549"
   end
 
   depends_on "cryptography"
@@ -35,8 +35,8 @@ class Osc < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/43/6d/fa469ae21497ddc8bc93e5877702dca7cb8f911e337aca7452b5724f1bb6/urllib3-2.2.2.tar.gz"
+    sha256 "dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168"
   end
 
   def install

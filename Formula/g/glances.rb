@@ -3,20 +3,21 @@ class Glances < Formula
 
   desc "Alternative to top/htop"
   homepage "https://nicolargo.github.io/glances/"
-  url "https://files.pythonhosted.org/packages/6e/19/62010365c0694f801a878b4d0ace6b638312241228b6731f4dddd1c16c8c/glances-4.0.7.tar.gz"
-  sha256 "f476e86552da231799bd36e6e7e86e3463eb00505267181f6595c8a4125068f9"
+  url "https://files.pythonhosted.org/packages/1b/98/1ee2cf6c1c3d84f69ba23d5cd77973d04e8bf7136fe7a44416a408e05ff0/glances-4.1.2.tar.gz"
+  sha256 "56d954a20b46fee66257331f96e7107284c8d8e9f0c62d86126969e860378978"
   license "LGPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4e14ed8b0a655bada3f61f1fd4a78c627417e317fc00953fbb410cd70b70c81d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5f64024da68f80d832e82abeb3cd61f425f1de4d48686f05858f49f574450bcb"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "95e175336b8fcfd87e7883e8dc5130a620fc84c935ed70a5c2741712ae74247c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "acccfe275ed25f8276e20290e5626ae2c252ece855363757eb5bd8cc644f02bf"
-    sha256 cellar: :any_skip_relocation, ventura:        "cd48beb74172bba43979d0a458b6a7121fd279f4b2ebbeaef38e09f83c09a7b1"
-    sha256 cellar: :any_skip_relocation, monterey:       "956a233e7ed4dd1eef498587ea42cf94e65f316c19bdeef4f93b61781f3c88ad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "398f9bdb1e339be194a222a5983bf6073ca6c9ecd3cfc35f36181cfe52e2f3fa"
+    sha256 cellar: :any,                 arm64_sonoma:   "8726158f8d8ff7d410ad3df9d6861c84c6c377fe5b99d58f70135807cf0c6df9"
+    sha256 cellar: :any,                 arm64_ventura:  "18b38efc7bf7774bbaa90cfce9b16e306581d4c60d1af6d24e7ed24e512429fa"
+    sha256 cellar: :any,                 arm64_monterey: "4ae0ba21d220e5c736ba71b89e0f9aa8529526702bf23031d712e6f3845c7e73"
+    sha256 cellar: :any,                 sonoma:         "bf00edf0e41acef73d86fdbc9d0a7f6ae40612b23746a627328b8dd85fce6bab"
+    sha256 cellar: :any,                 ventura:        "ebcac258070d06db65423586e5987394b24e259ca0087c65a3e5e0f3a35d240b"
+    sha256 cellar: :any,                 monterey:       "0ded472c76f4787f9474f86eb5b8f0cfc9cb3dce40e55237551d18c519042cb3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5dba3d46dd1490e851374f9555455c25fd298f158571d0ecf5b00e4dff66138"
   end
 
+  depends_on "rust" => :build # for orjson
   depends_on "python@3.12"
 
   resource "defusedxml" do
@@ -24,19 +25,19 @@ class Glances < Formula
     sha256 "1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"
   end
 
+  resource "orjson" do
+    url "https://files.pythonhosted.org/packages/70/24/8be1c9f6d21e3c510c441d6cbb6f3a75f2538b42a45f0c17ffb2182882f1/orjson-3.10.6.tar.gz"
+    sha256 "e54b63d0a7c6c54a5f5f726bc93a2078111ef060fec4ecbf34c5db800ca3b3a7"
+  end
+
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/ee/b5/b43a27ac7472e1818c4bafd44430e69605baefe1f34440593e0332ec8b4d/packaging-24.0.tar.gz"
-    sha256 "eb82c5e3e56209074766e6885bb04b8c38a0c015d0a30036ebe7ece34c9989e9"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "psutil" do
-    url "https://files.pythonhosted.org/packages/90/c7/6dc0a455d111f68ee43f27793971cf03fe29b6ef972042549db29eec39a2/psutil-5.9.8.tar.gz"
-    sha256 "6be126e3225486dff286a8fb9a06246a5253f4c7c53b475ea5f5ac934e64194c"
-  end
-
-  resource "ujson" do
-    url "https://files.pythonhosted.org/packages/f0/00/3110fd566786bfa542adb7932d62035e0c0ef662a8ff6544b6643b3d6fd7/ujson-5.10.0.tar.gz"
-    sha256 "b3cd8f3c5d8c7738257f1018880444f7b7d9b66232c64649f562d7ba86ad4bc1"
+    url "https://files.pythonhosted.org/packages/18/c7/8c6872f7372eb6a6b2e4708b88419fb46b857f7a2e1892966b851cc79fc9/psutil-6.0.0.tar.gz"
+    sha256 "8faae4f310b6d969fa26ca0545338b21f73c6b15db7c4a8d934a5482faa818f2"
   end
 
   def install
