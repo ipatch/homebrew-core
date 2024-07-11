@@ -3,18 +3,18 @@ class Kaskade < Formula
 
   desc "TUI for Kafka"
   homepage "https://github.com/sauljabin/kaskade"
-  url "https://files.pythonhosted.org/packages/3e/27/df702ce723bc132957a67f92db0d77bf7fadf7d8f82e6fdac753d559da09/kaskade-2.1.5.tar.gz"
-  sha256 "a700cc1875a015d4986f206b0d7d23b0fdc1abedf17b4c3d2c06bda37e4d6be2"
+  url "https://files.pythonhosted.org/packages/bb/de/32612086137119208038f7b978def5ac4f19669614fd89f2b1489d3c10b6/kaskade-2.1.6.tar.gz"
+  sha256 "2a8015b4c6b3c3a121ba73c3ffd87af48e687c5d812de6d257239f12090a1235"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "e9e792400d49b21282f04a19416eedb2c0095fb9a61cb6b7d83c7eddf57711ad"
-    sha256 cellar: :any,                 arm64_ventura:  "4344acbaa1a679a1c1122f02e4e13ba9c8e50f21d51a21bf7ededec40a384e47"
-    sha256 cellar: :any,                 arm64_monterey: "50e2028fc2cb1213d8bcfa524dfed3f1d8766d0d2e1421655ac43768ed27ad65"
-    sha256 cellar: :any,                 sonoma:         "7c2ab4dd0247182b86d3956739b5528f3c4ba1f962aee5b28e9bcc0c02a59d32"
-    sha256 cellar: :any,                 ventura:        "2dabc96016ffff6b88cba5197c9dc2c26c0a9c1683fabea7e7a6be81b025597e"
-    sha256 cellar: :any,                 monterey:       "a57c4b0a26db94048383df10779eb4472f68a3327ac79e26fd9c05fa0005a888"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "66b1f9979d47049050f63f200552c4c36ef3971190247fa6bcc3fd39a6e63605"
+    sha256 cellar: :any,                 arm64_sonoma:   "e958d67c3c78ac84478cdc8c7a52b5b64587fdbc4401dd43ac8911612cebb49a"
+    sha256 cellar: :any,                 arm64_ventura:  "cb5d158786b377b1556aba54c1b94d9418b2645fdc77117e25afc45e5be73529"
+    sha256 cellar: :any,                 arm64_monterey: "654f49e92cfb3fb746aa29c22b16a72a5dd4e726d5a979d8c23a59e3793e07df"
+    sha256 cellar: :any,                 sonoma:         "97f6198d30c0993463ca66509928a41f5ded4fd409e3692e71cb1e9f15b49795"
+    sha256 cellar: :any,                 ventura:        "2a6242da2f701f112778d29edf7efd14d36c4ce6eeb76e7186a4512e44c0478c"
+    sha256 cellar: :any,                 monterey:       "8551c854dc0e35261bfeb785cf742d8bd52c9b29e936d03d91e83f287e2b4fe3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8f5e1a9282d75d8bb261cd74ac5cd279fcdfe72cbf3045a566a07a144041b712"
   end
 
   depends_on "rust" => :build # for rpds-py
