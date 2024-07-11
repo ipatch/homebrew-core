@@ -81,6 +81,10 @@ class FfmpegAT6 < Formula
 
   fails_with gcc: "5"
 
+  patch do
+    url "https://git.ffmpeg.org/gitweb/ffmpeg.git/patch/fef22c87ada4517441701e6e61e062c9f4399c8e"
+    sha256 "c2ef9c35082ed2e5989428d086b7bfef1dfe9e0a85e6d259daf46f369f115483"
+  end
   # Fix for QtWebEngine, do not remove
   # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=270209
   patch do
