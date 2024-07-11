@@ -663,6 +663,7 @@ dumpling
 dunamai
 dune
 duo_unix
+duply
 dust
 dvc
 dwarfutils
@@ -1119,6 +1120,7 @@ htpdate
 htslib
 httm
 httpd
+httpie
 httping
 httpx
 httpyac
@@ -1701,6 +1703,7 @@ neon
 neonctl
 neosync
 nerdctl
+nerdfetch
 nest
 nestopia-ue
 netaddr
