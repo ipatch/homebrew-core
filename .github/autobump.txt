@@ -125,6 +125,7 @@ audacious
 auditbeat
 autobrr
 autodiff
+automake
 autopep8
 autorest
 autorestic
@@ -536,6 +537,7 @@ daq
 dar
 darcs
 darkhttpd
+darkice
 darkstat
 dart-sdk
 dartsim
@@ -781,6 +783,7 @@ fd
 fdk-aac-encoder
 fdroidcl
 fdroidserver
+fdupes
 feh
 feishu2md
 felinks
@@ -856,11 +859,13 @@ freetype
 freexl
 frei0r
 fribidi
+frizbee
 frpc
 frps
 frugal
 fselect
 fsql
+ftnchek
 fuc
 fuego-firestore
 func-e
@@ -1684,6 +1689,7 @@ n
 naabu
 nagios
 nagios-plugins
+nano
 nanoflann
 nasm
 nats-server
@@ -1702,6 +1708,7 @@ neomutt
 neon
 neonctl
 neosync
+neovide
 nerdctl
 nerdfetch
 nest
@@ -2034,6 +2041,7 @@ pyinstaller
 pylint
 pylyzer
 pymol
+pymupdf
 pyoxidizer
 pypy
 pypy3.10
@@ -2167,6 +2175,7 @@ rustfmt
 rustscan
 rustup-init
 rye
+ryelang
 s-nail
 s-search
 s2geometry
@@ -2422,6 +2431,7 @@ task
 tbb
 tbls
 tcl-tk
+tcpreplay
 tcsh
 tctl
 tealdeer

@@ -225,9 +225,10 @@ jobs:
           Closes #$PR
           MESSAGE
 
+          original_title="$(gh pr view "$PR" --json title --jq '.title')"
           gh pr create \
             --base "$GITHUB_REF" \
-            --title "Replacement for #$PR"\
+            --title "$original_title (replacement for #$PR)" \
             --body-file body.txt \
             --head "$REPLACEMENT_BRANCH" \
             --reviewer "$REVIEWERS" \

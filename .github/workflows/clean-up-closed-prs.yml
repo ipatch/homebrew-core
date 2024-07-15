@@ -1,4 +1,4 @@
-name: Cancel PR tests
+name: Clean up closed PRs
 
 on:
   pull_request_target:
@@ -53,3 +53,24 @@ jobs:
         run: |
           echo "::notice ::Cancelling tests on closed PR #$PR"
           gh run cancel "$RUN_ID"
+
+  delete-branch:
+    if: >
+      github.repository_owner == 'Homebrew' &&
+      !github.event.pull_request.merged
+    runs-on: ubuntu-latest
+    # Ignore errors as branch may already be deleted
+    continue-on-error: true
+    permissions:
+      contents: write
+    steps:
+      - name: Delete branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          gh api \
+            -X DELETE \
+            --header 'Accept: application/vnd.github+json' \
+            --header 'X-GitHub-Api-Version: 2022-11-28' \
+            "repos/{owner}/{repo}/git/refs/heads/$BRANCH"

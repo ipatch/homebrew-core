@@ -1,30 +1,30 @@
-name: Remove disabled formulae
+name: Remove disabled packages
 
 on:
   push:
     branches:
       - master
     paths:
-      - .github/workflows/remove-disabled-formulae.yml
+      - .github/workflows/remove-disabled-packages.yml
   schedule:
     # Once every day at midnight UTC
     - cron: "0 0 * * *"
 
 concurrency:
-  group: remove-disabled-formulae
+  group: remove-disabled-packages
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  remove-disabled-formulae:
+  remove-disabled-packages:
     if: github.repository_owner == 'Homebrew'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/homebrew/ubuntu22.04:master
     env:
-      REMOVAL_BRANCH: remove-disabled-formulae
+      REMOVAL_BRANCH: remove-disabled-packages
     permissions:
       contents: write # for Homebrew/actions/git-try-push
     steps:
@@ -51,15 +51,15 @@ jobs:
         run: git checkout -b "$REMOVAL_BRANCH" origin/master
         working-directory: ${{ steps.set-up-homebrew.outputs.repository-path }}
 
-      - name: Remove disabled formulae
+      - name: Remove disabled packages
         id: remove_disabled
-        uses: Homebrew/actions/remove-disabled-formulae@master
+        uses: Homebrew/actions/remove-disabled-packages@master
         env:
           HOMEBREW_GPG_PASSPHRASE: ${{ secrets.BREWTESTBOT_GPG_SIGNING_SUBKEY_PASSPHRASE }}
           HOMEBREW_EVAL_ALL: 1
 
       - name: Push commits
-        if: fromJson(steps.remove_disabled.outputs.formulae-removed)
+        if: fromJson(steps.remove_disabled.outputs.packages-removed)
         uses: Homebrew/actions/git-try-push@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -72,13 +72,13 @@ jobs:
 
       - name: Create pull request
         id: pr-create
-        if: fromJson(steps.remove_disabled.outputs.formulae-removed)
+        if: fromJson(steps.remove_disabled.outputs.packages-removed)
         working-directory: ${{ steps.set-up-homebrew.outputs.repository-path }}
         env:
           GH_TOKEN: ${{ secrets.HOMEBREW_GITHUB_PUBLIC_REPO_TOKEN }}
           PR_BODY: >
             This pull request was created automatically by the
-            [`remove-disabled-formulae`](https://github.com/Homebrew/homebrew-core/blob/HEAD/.github/workflows/remove-disabled-formulae.yml)
+            [`remove-disabled-packages`](https://github.com/Homebrew/homebrew-core/blob/HEAD/.github/workflows/remove-disabled-packages.yml)
             workflow.
         run: |
           gh pr create \
@@ -86,4 +86,4 @@ jobs:
             --body "$PR_BODY" \
             --head "$REMOVAL_BRANCH" \
             --label CI-no-bottles \
-            --title 'Remove disabled formulae'
+            --title 'Remove disabled packages'

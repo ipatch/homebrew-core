@@ -1,19 +1,19 @@
 class Typstyle < Formula
   desc "Beautiful and reliable typst code formatter"
   homepage "https://enter-tainer.github.io/typstyle/"
-  url "https://github.com/Enter-tainer/typstyle/archive/refs/tags/v0.11.28.tar.gz"
-  sha256 "4b35da6fe3c4a652a3afb493d9f28edf64e46631b1dba7c7727e669e57afd019"
+  url "https://github.com/Enter-tainer/typstyle/archive/refs/tags/v0.11.30.tar.gz"
+  sha256 "330d58f348a64c825e1bf86c5748b11bdbb25c6d72a97c0623d12f01a8af7226"
   license "Apache-2.0"
   head "https://github.com/Enter-tainer/typstyle.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "54e65864121b60186b556fd32b6917669fbc7bf15fa480b8872a4995d5554d09"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2e24c0c785a91e100ed5cc90d4bc665a4a394d70d7b121d108b52e6944e59a59"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b693baf74f7b9969ddc4ad5b7654a64ed0dfe0995d49ea2662916492e44eee9b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1d9b919cb5ce7a7746aa0575216bc2e5b2c1d5566382b514d5fe12b22c44b096"
-    sha256 cellar: :any_skip_relocation, ventura:        "837bcaa0018ffaba40c6af861575950b852c0b8a16d66b24cc0bdc7fb9224a03"
-    sha256 cellar: :any_skip_relocation, monterey:       "672b92b941ced65522b58c6d7d5bd9e4fc6e3034d5d28042eb3026091ff837e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e615f28d5156575404d68a930aa44350cbdaaa8cc02b3788538e69c0bfddffb0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e0d73ac4da5ac28263305eaffc186f9c6d5a1e4dbecbf26ae3f32f333afeefb4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "13c11d8254fb54e0df3a0c1a40437fe40e215ae2498cfd9b887bf463fb04380f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "24a0ae17c6a25014f9c5eafeced2940c283c3665f501d3ec695b64a511601804"
+    sha256 cellar: :any_skip_relocation, sonoma:         "01344ffc7f3b7caf6c9104d65c554d73d1a766d78118e20ec7ed439de5b861e1"
+    sha256 cellar: :any_skip_relocation, ventura:        "14973623dab83d22d56189d7ad1d7ec2d32b38d706172d6d1a89a7859b0002a3"
+    sha256 cellar: :any_skip_relocation, monterey:       "b3aac23471392f4686a61ca6ddb5da12faf313be403aabe51a403df7b08d4af1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7189e1bd70d760a6143cb5efa3dc460d92b91bd01977c959fb9d28b297a4fad3"
   end
 
   depends_on "rust" => :build

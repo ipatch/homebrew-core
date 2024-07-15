@@ -5,5 +5,6 @@
   "joshuto": "all",
   "lha": "all",
   "polynote": "all",
-  "thrift@0.9": "all"
+  "thrift@0.9": "all",
+  "openbao": "all"
 }

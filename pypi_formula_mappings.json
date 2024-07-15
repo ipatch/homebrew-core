@@ -2,6 +2,9 @@
   "aiven-client": {
     "exclude_packages": ["certifi"]
   },
+  "alot": {
+    "exclude_packages": ["notmuch2"]
+  },
   "animdl": {
     "exclude_packages": ["certifi"]
   },
@@ -459,7 +462,7 @@
     "exclude_packages": ["cryptography"]
   },
   "manim": {
-    "exclude_packages": ["numpy"]
+    "exclude_packages": ["pillow", "numpy", "scipy"]
   },
   "mapproxy": {
     "exclude_packages": ["certifi", "pillow"],
