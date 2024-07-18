@@ -213,6 +213,7 @@ bingrep
 biodiff
 biome
 bitrise
+bitwarden-cli
 bk
 bkcrack
 bkt
@@ -999,6 +1000,7 @@ golangci-lint
 google-authenticator-libpam
 google-benchmark
 google-java-format
+googletest
 goose
 gopass
 gopass-jsonapi
@@ -1095,6 +1097,7 @@ hcloud
 hcxtools
 heartbeat
 hebcal
+helix
 helm
 helm-docs
 helm-ls
@@ -1175,6 +1178,7 @@ internetarchive
 inxi
 ioctl
 ios-webkit-debug-proxy
+iowow
 iperf
 iperf3
 ipfs
@@ -1853,6 +1857,7 @@ oras
 orc
 orc-tools
 ord
+orgalorg
 orientdb
 ormolu
 orocos-kdl
@@ -1959,6 +1964,7 @@ po4a
 pocketbase
 pocl
 poco
+pod2man
 podlet
 podman
 podman-compose
@@ -2019,6 +2025,7 @@ ptex
 ptpython
 pueue
 pug
+pulsarctl
 pure
 purescript
 purescript-language-server
@@ -2239,6 +2246,7 @@ shaderc
 shadowenv
 shadowsocks-rust
 shairport-sync
+shallow-backup
 sheldon
 shell2http
 shellcheck

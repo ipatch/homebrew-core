@@ -75,7 +75,8 @@
     "exclude_packages": ["certifi"]
   },
   "awscli": {
-    "extra_packages": ["setuptools", "wheel"]
+    "exclude_packages": ["cryptography"],
+    "extra_packages": ["flit-core", "setuptools", "wheel"]
   },
   "awscurl": {
     "exclude_packages": ["certifi", "cryptography"]
@@ -163,7 +164,7 @@
   },
   "charmcraft": {
     "extra_packages": ["jeepney", "secretstorage"],
-    "exclude_packages": ["certifi", "cryptography"]
+    "exclude_packages": ["certifi", "cryptography", "pygit2"]
   },
   "chatblade": {
     "exclude_packages": ["certifi"]
@@ -768,6 +769,9 @@
   },
   "sysaidmin": {
     "exclude_packages": ["certifi"]
+  },
+  "tartufo": {
+    "exclude_packages": ["pygit2"]
   },
   "theharvester": {
     "exclude_packages": ["certifi"]
