@@ -42,6 +42,8 @@ class PythonAT312 < Formula
   on_linux do
     depends_on "berkeley-db@5"
     depends_on "libnsl"
+    # NOTE: ipatch, fix missing `uuid.h` header file
+    depends_on "util-linux"
   end
 
   link_overwrite "bin/2to3"
@@ -110,6 +112,17 @@ class PythonAT312 < Formula
   def python3
     bin/"python#{version.major_minor}"
   end
+
+  # NOTE: ipatch,
+  # /home/capin/homebrew/opt/binutils/bin/ld: Python/ceval_gil.o: in function `take_gil':
+  # ceval_gil.c:(.text+0x1661): undefined reference to `__pthread_cond_timedwait64'
+  # collect2: error: ld returned 1 exit status
+  # make[2]: *** [Makefile:1317: Programs/_freeze_module] Error 1
+  # make[2]: *** Waiting for unfinished jobs....
+  #   make[2]: Leaving directory '/opt/tmp/homebrew/pythonA3.12-20240813-2980689-ewoak2/Python-3.12.5'
+  # make[1]: *** [Makefile:803: profile-gen-stamp] Error 2
+  # make[1]: Leaving directory '/opt/tmp/homebrew/pythonA3.12-20240813-2980689-ewoak2/Python-3.12.5'
+  # make: *** [Makefile:815: profile-run-stamp] Error 2
 
   def install
     # Unset these so that installing pip and setuptools puts them where we want
@@ -209,6 +222,11 @@ class PythonAT312 < Formula
     args += %w[
       py_cv_module__tkinter=disabled
     ]
+
+    # NOTE: ipatch,
+    # Fix missing pthread symbols on Linux
+    ENV.append_to_cflags "-pthread" if OS.linux?
+    ENV.append "LDFLAGS", "-lpthread" if OS.linux?
 
     system "./configure", *args
     system "make"
