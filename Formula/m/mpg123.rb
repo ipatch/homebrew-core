@@ -21,10 +21,21 @@ class Mpg123 < Formula
     sha256 x86_64_linux:   "98cce11ffd6520c9de0e4be4b4d92aa80dcc4a60a6dd189c4aa309b75de2cb71"
   end
 
+  # NOTE: ipatch, adding below depends creates circular dependency loop
+  # ==> Upgrading 1 outdated package:
+  # mpg123 1.32.6 -> 1.32.7
+  # Error: The following packages contain cyclic dependencies:
+  #   mpg123, sdl2, pulseaudio and libsndfile
+  #----------------------------
+  # on_linux do
+  #   depends_on "sdl2"
+  # end
+
   def install
     args = %w[
       --with-module-suffix=.so
       --enable-static
+      --disable-modules
     ]
 
     args << "--with-default-audio=coreaudio" if OS.mac?
