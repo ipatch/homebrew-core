@@ -23,6 +23,10 @@ class Highway < Formula
 
   def install
     ENV.runtime_cpu_detection
+
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     system "cmake", "-S", ".", "-B", "builddir",
                     "-DBUILD_SHARED_LIBS=ON",
                     "-DHWY_ENABLE_TESTS=OFF",
