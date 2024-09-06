@@ -26,6 +26,12 @@ class Webp < Formula
     args = %W[
       -DCMAKE_INSTALL_RPATH=#{rpath}
     ]
+
+    # NOTE: ipatch, CXXABI error
+    if Hardware::CPU.arm? && OS.linux?
+      ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64"
+    end
+
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DBUILD_SHARED_LIBS=ON", *args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
