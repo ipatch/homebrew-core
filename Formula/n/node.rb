@@ -104,6 +104,8 @@ class Node < Formula
     # LTO is unpleasant if you have to build from source.
     args << "--enable-lto" if OS.mac? && DevelopmentTools.clang_build_version > 1500 && build.bottle?
 
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64"
+
     system "./configure", *args
     system "make", "install"
 
