@@ -22,7 +22,7 @@ class Glib < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python-setuptools" => :build # for gobject-introspection
+  # depends_on "python-setuptools" => :build # for gobject-introspection
   depends_on "pcre2"
   depends_on "python@3.12"
 
@@ -57,11 +57,20 @@ class Glib < Formula
     sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/8d/37/f4d4ce9bc15e61edba3179f9b0f763fc6d439474d28511b11f0d95bab7a2/setuptools-73.0.1.tar.gz"
+    sha256 ""
+  end
+
   # replace several hardcoded paths with homebrew counterparts
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/43467fd8dfc0e8954892ecc08fab131242dca025/glib/hardcoded-paths.diff"
     sha256 "d81c9e8296ec5b53b4ead6917f174b06026eeb0c671dfffc4965b2271fb6a82c"
   end
+
+  # NOTE: ipatch, build err when using setuptools v74.xxx
+  # ModuleNotFoundError: No module named 'distutils.msvccompiler'
+  # https://bugs.gentoo.org/938614#c1
 
   def install
     inreplace %w[gio/xdgmime/xdgmime.c glib/gutils.c], "@@HOMEBREW_PREFIX@@", HOMEBREW_PREFIX
@@ -78,6 +87,12 @@ class Glib < Formula
       system "python3.12", "-m", "pip", "install", "--target", share/"glib-2.0",
                                                    *std_pip_args(prefix: false, build_isolation: true), "."
     end
+
+    resource("setuptools").stage do
+      system "python3.12", "-m", "pip", "install", "--target", share/"glib-2.0",
+        *std_pip_args(prefix: false, build_isolation: true), "."
+    end
+
     ENV.prepend_path "PYTHONPATH", share/"glib-2.0"
 
     # Disable dtrace; see https://trac.macports.org/ticket/30413
