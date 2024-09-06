@@ -33,6 +33,9 @@ class Graphite2 < Formula
   end
 
   def install
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
