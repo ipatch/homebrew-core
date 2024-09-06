@@ -149,6 +149,8 @@ class Node < Formula
     # FIXME: re-enable me, currently crashes sequoia runner after 6 hours
     # args << "--enable-lto" if OS.mac? && DevelopmentTools.clang_build_version > 1699 && build.bottle?
 
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64"
+
     system "./configure", *args
     system "make", "install"
 
