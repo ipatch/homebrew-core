@@ -53,6 +53,11 @@ class JpegTurbo < Formula
     end
     args += std_cmake_args.reject { |arg| arg["CMAKE_INSTALL_LIBDIR"].present? }
 
+    # NOTE: ipatch, std cmake error about CXX ABI no compat
+    if Hardware::CPU.arm? && OS.linux?
+      ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64"
+    end
+
     system "cmake", "-S", ".", "-B", "build", *args
     system "cmake", "--build", "build"
     system "ctest", "--test-dir", "build", "--rerun-failed", "--output-on-failure", "--parallel", ENV.make_jobs
