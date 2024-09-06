@@ -23,12 +23,17 @@ class CAres < Formula
 
   depends_on "cmake" => :build
 
+  # NOTE: ipatch, bld err on asahi linux
+  # cmake: /lib64/libstdc++.so.6: version `CXXABI_1.3.15' not found (required by cmake)
+
   def install
     args = %W[
       -DCARES_STATIC=ON
       -DCARES_SHARED=ON
       -DCMAKE_INSTALL_RPATH=#{rpath}
     ]
+
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64"
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
