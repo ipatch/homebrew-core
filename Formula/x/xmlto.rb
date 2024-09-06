@@ -42,6 +42,10 @@ class Xmlto < Formula
     # Allow pre-C99 syntax
     ENV.append_to_cflags "-Wno-implicit-int" if DevelopmentTools.clang_build_version >= 1500
 
+    # NOTE: ipatch, attempt to fix, ...
+    # xmlif/xmlif.l:46:8: error: type defaults to 'int' in declaration of 'ifsense' [-Wimplicit-int]
+    ENV.append_to_cflags "-Wno-implicit-int"
+
     ENV.deparallelize
     system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
