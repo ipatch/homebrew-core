@@ -29,6 +29,9 @@ class Openexr < Formula
   link_overwrite "lib/libIlmThread.so"
 
   def install
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
