@@ -29,6 +29,8 @@ class Cmake < Formula
   uses_from_macos "ncurses"
 
   on_linux do
+    depends_on "gcc"
+    depends_on "ninja"
     depends_on "openssl@3"
   end
 
@@ -55,12 +57,47 @@ class Cmake < Formula
       ]
     end
 
+    # NOTE: ipatch, the below vars will fail when the gcc formula moves to gcc-15
+    # NOTE: ipatch, the below vars reqd, to solve the below err message
+    # /opt/tmp/homebrew/cmake-20240905-112568-kiigos/cmake-3.30.3/Bootstrap.cmk/cmake: 
+    # /lib64/libstdc++.so.6: version `CXXABI_1.3.15' ...
+    # not found (required by /opt/tmp/homebrew/cmake-20240905-112568-kiigos/cmake-3.30.3/Bootstrap.cmk/cmake)
+    if OS.linux?
+      ninja_bin = Formula["ninja"].opt_bin/"ninja"
+
+      args += %W[
+        CC=#{HOMEBREW_PREFIX}/opt/gcc/bin/gcc-14
+        CXX=#{HOMEBREW_PREFIX}/opt/gcc/bin/g++-14
+        --no-system-cppdap 
+        --no-system-curl
+        --no-system-jsoncpp
+        --no-system-nghttp2
+        --generator=Ninja
+      ]
+    end
+
     system "./bootstrap", *args, "--", *std_cmake_args,
                                        "-DCMake_INSTALL_BASH_COMP_DIR=#{bash_completion}",
                                        "-DCMake_INSTALL_EMACS_DIR=#{elisp}",
-                                       "-DCMake_BUILD_LTO=ON"
-    system "make"
-    system "make", "install"
+                                       "-DCMake_BUILD_LTO=ON",
+                                       "-DCMAKE_IGNORE_PATH=/usr/lib64;/usr/lib;/usr;",
+                                       "-DCMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH=FALSE",
+                                       "-DCMAKE_FIND_USE_CMAKE_SYSTEM_PATH=FALSE",
+                                       "-DCMAKE_PREFIX_PATH=#{HOMEBREW_PREFIX}/opt/gcc",
+                                       "-DCMAKE_C_COMPILER=#{HOMEBREW_PREFIX}/opt/gcc/bin/gcc-14",
+                                       "-DCMAKE_CXX_COMPILER=#{HOMEBREW_PREFIX}/opt/gcc/bin/g++-14",
+                                       "-DCMAKE_MAKE_PROGRAM=#{ninja_bin}",
+                                       "-DCMAKE_AR=#{HOMEBREW_PREFIX}/opt/gcc/bin/gcc-ar-14"
+                                       # "-DCMAKE_MAKE_PROGRAM=#{HOMEBREW_PREFIX}/opt/make/bin/make"
+
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64"
+
+    puts "---------------------------------------------------------"
+    puts "foo"
+    puts "---------------------------------------------------------"
+
+    system "ninja"
+    system "ninja", "install"
   end
 
   def caveats
