@@ -36,6 +36,8 @@ class Netpbm < Formula
 
   conflicts_with "jbigkit", because: "both install `pbm.5` and `pgm.5` files"
 
+  patch :DATA
+
   def install
     cp "config.mk.in", "config.mk"
 
@@ -60,6 +62,17 @@ class Netpbm < Formula
     end
 
     ENV.deparallelize
+
+    # NOTE: ipatch, bld err
+    # libjasper_compat.c: In function 'pmjas_image_decode':
+    # libjasper_compat.c:19:18: error: assignment to 'const char *' ...
+    # from incompatible pointer type 'const char **' [-Wincompatible-pointer-types]
+    #    19 |         *errorP  = errorP;
+    #       |                  ^
+
+    # NOTE: ipatch, CXXABI error
+    # ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+    ENV.append_to_cflags "-Wno-implicit-function-declaration -Wincompatible-pointer-types"
 
     # Fix compile with newer Clang
     ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
@@ -119,3 +132,18 @@ class Netpbm < Formula
     refute_predicate ppmout, :empty?
   end
 end
+
+__END__
+diff --git a/converter/other/jpeg2000/libjasper_compat.c b/converter/other/jpeg2000/libjasper_compat.c
+index <old-index>..<new-index> 100644
+--- a/converter/other/jpeg2000/libjasper_compat.c
++++ b/converter/other/jpeg2000/libjasper_compat.c
+@@ -16,7 +16,7 @@
+
+     if (jasperP) {
+         *imagePP = jasperP;
+-        *errorP  = errorP;
++        *errorP  = NULL;  // Indicate no error if successful
+     } else {
+         pm_asprintf(errorP, "Failed.  Details may have been written to "
+                     "Standard Error");
