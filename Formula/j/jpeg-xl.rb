@@ -52,6 +52,9 @@ class JpegXl < Formula
   end
 
   def install
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     ENV.append_path "XML_CATALOG_FILES", HOMEBREW_PREFIX/"etc/xml/catalog"
     resources.each { |r| r.stage buildpath/"third_party"/r.name }
     system "cmake", "-S", ".", "-B", "build",
