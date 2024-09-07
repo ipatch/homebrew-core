@@ -24,8 +24,37 @@ class Aom < Formula
     depends_on "yasm" => :build
   end
 
+  # NOTE: ipatch, bld error
+  # [ 46%] Building C object CMakeFiles/aom_av1_common.dir/av1/common/resize.c.o
+  # /home/capin/homebrew/Library/Homebrew/shims/linux/super/gcc-14  -I/opt/tmp/homebrew/aom-20240907-2494118-byzn0p -I/opt/tmp/homebrew/aom-20240907-2494118-byzn0p/brewbuild -I/opt/tmp/homebrew/aom-20240907-2494118-byzn0p/apps -I/opt/tmp/homebrew/aom-20240907-2494118-byzn0p/common -I/opt/tmp/homebrew/aom-20240907-2494118-byzn0p/examples -I/opt/tmp/homebrew/aom-20240907-2494118-byzn0p/stats -I/opt/tmp/homebrew/aom-20240907-2494118-byzn0p/third_party/libyuv/include -I/opt/tmp/homebrew/aom-20240907-2494118-byzn0p/third_party/libwebm -O3 -DNDEBUG -std=c99 -Wall -Wdisabled-optimization -Wextra -Wextra-semi -Wextra-semi-stmt -Wfloat-conversion -Wformat=2 -Wimplicit-function-declaration -Wlogical-op -Wmissing-declarations -Wmissing-prototypes -Wpointer-arith -Wshadow -Wshorten-64-to-32 -Wsign-compare -Wstring-conversion -Wtype-limits -Wundef -Wuninitialized -Wunreachable-code-aggressive -Wunused -Wvla -Wstack-usage=100000 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -I/home/capin/homebrew/Cellar/libvmaf/3.0.0/include -fPIC -MD -MT CMakeFiles/aom_av1_common.dir/av1/common/resize.c.o -MF CMakeFiles/aom_av1_common.dir/av1/common/resize.c.o.d -o CMakeFiles/aom_av1_common.dir/av1/common/resize.c.o -c /opt/tmp/homebrew/aom-20240907-2494118-byzn0p/av1/common/resize.c
+  # during RTL pass: expand
+  # In file included from /opt/tmp/homebrew/aom-20240907-2494118-byzn0p/av1/common/arm/highbd_compound_convolve_sve2.c:19:
+  # In function 'aom_tbl_s16',
+  #     inlined from 'highbd_12_convolve4_4_x' at /opt/tmp/homebrew/aom-20240907-2494118-byzn0p/av1/common/arm/highbd_compound_convolve_sve2.c:177:33,
+  #     inlined from 'highbd_12_dist_wtd_convolve_x_4tap_sve2' at /opt/tmp/homebrew/aom-20240907-2494118-byzn0p/av1/common/arm/highbd_compound_convolve_sve2.c:223:23:
+  # /opt/tmp/homebrew/aom-20240907-2494118-byzn0p/aom_dsp/arm/aom_neon_sve_bridge.h:53:10: internal compiler error: Segmentation fault
+  #    53 |   return svget_neonq_s16(svtbl_s16(svset_neonq_s16(svundef_s16(), s),
+  #       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  #    54 |                                    svset_neonq_u16(svundef_u16(), tbl)));
+  #       |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # NOTE: ipatch,
+  # Warning: Files were found with references to the Homebrew shims directory.
+  # The offending files are:
+  #   .brew/aom.rb
+
+
   def install
     ENV.runtime_cpu_detection
+
+    # Conditional logic for setting compiler flags based on architecture
+    if Hardware::CPU.arm?
+      # This sets the environment variables for ARM architecture
+      ENV.append_to_cflags "-march=native -mtune=cortex-a8"
+    end
+
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
 
     args = [
       "-DCMAKE_INSTALL_RPATH=#{rpath}",
@@ -36,6 +65,12 @@ class Aom < Formula
       "-DENABLE_TOOLS=off",
       "-DBUILD_SHARED_LIBS=on",
       "-DCONFIG_TUNE_VMAF=1",
+      "-L",
+      "-DENABLE_NEON:BOOL=OFF",
+      "-DENABLE_NEON_DOTPROD:BOOL=OFF",
+      "-DENABLE_NEON_I8MM:BOOL=OFF",
+      "-DENABLE_SVE:BOOL=OFF",
+      "-DENABLE_SVE2:BOOL=OFF",
     ]
 
     system "cmake", "-S", ".", "-B", "brewbuild", *args, *std_cmake_args
