@@ -24,6 +24,10 @@ class Jasper < Formula
   depends_on "jpeg-turbo"
 
   def install
+
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     mkdir "tmp_cmake" do
       args = std_cmake_args
       args << "-DJAS_ENABLE_DOC=OFF"
