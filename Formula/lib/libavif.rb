@@ -24,6 +24,10 @@ class Libavif < Formula
   uses_from_macos "zlib"
 
   def install
+
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     args = %W[
       -DCMAKE_INSTALL_RPATH=#{rpath}
       -DAVIF_CODEC_AOM=SYSTEM
