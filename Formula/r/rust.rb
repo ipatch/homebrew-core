@@ -130,6 +130,9 @@ class Rust < Formula
       args << "--release-channel=stable"
     end
 
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     system "./configure", *args
     system "make"
     system "make", "install"
