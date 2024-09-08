@@ -51,6 +51,7 @@ class Mesa < Formula
   uses_from_macos "zlib"
 
   on_linux do
+    depends_on "bindgen"
     depends_on "elfutils"
     depends_on "glslang"
     depends_on "gzip"
@@ -97,13 +98,30 @@ class Mesa < Formula
     sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
+  resource "pycparser" do
+    url "https://files.pythonhosted.org/packages/1d/b2/31537cf4b1ca988837256c910a668b553fceb8f069bedc4b1c826024b52c/pycparser-2.22.tar.gz"
+    sha256 ""
+  end
+
   def python3
     "python3.13"
   end
 
   def install
+    # NOTE: ipatch, bld err
+    # src/etnaviv/isa/meson.build:106:25: ERROR: Program 'bindgen' not found or not executable
+    #...
+    # src/etnaviv/isa/meson.build:131:17: ERROR: Dependency 'indexmap' is required but not found.
+
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
+    # create the virtual environment first
     venv = virtualenv_create(buildpath/"venv", python3)
-    venv.pip_install resources.reject { |r| OS.mac? && r.name == "ply" }
+
+    # Only install Python-related resources, excluding indexmap
+      venv.pip_install resources.reject { |r| OS.mac? && r.name == "ply" }
+
     ENV.prepend_path "PYTHONPATH", venv.site_packages
     ENV.prepend_path "PATH", venv.root/"bin"
 
@@ -140,6 +158,7 @@ class Mesa < Formula
         -Dvideo-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc
         -Dvulkan-drivers=amd,intel,intel_hasvk,swrast,virtio
         -Dvulkan-layers=device-select,intel-nullhw,overlay
+        --force-fallback-for perfetto,syn,paste,pest,pest_derive,pest_generator,pest_meta,roxmltree,indexmap
       ]
       if Hardware::CPU.intel?
         args << "-Dgallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,softpipe,llvmpipe,i915,iris,crocus,zink"
