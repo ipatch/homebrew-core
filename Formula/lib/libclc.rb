@@ -25,6 +25,9 @@ class Libclc < Formula
   depends_on "spirv-llvm-translator" => :build
 
   def install
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     llvm_spirv = Formula["spirv-llvm-translator"].opt_bin/"llvm-spirv"
     system "cmake", "-S", ".", "-B", "build",
                     "-DLLVM_SPIRV=#{llvm_spirv}",
