@@ -66,21 +66,27 @@ class Mesa < Formula
   end
 
   on_linux do
+    depends_on "bindgen"
     depends_on "directx-headers" => :build
+    depends_on "elfutils"
+    depends_on "glslang"
     depends_on "gzip" => :build
-    depends_on "libva" => :build
-    depends_on "pycparser" => :build
-    depends_on "valgrind" => :build
-    depends_on "wayland-protocols" => :build
-
+    depends_on "libclc"
     depends_on "libdrm"
+    depends_on "libva" => :build
+    depends_on "libvdpau"
     depends_on "libxml2" # not used on macOS
     depends_on "libxshmfence"
+    depends_on "libxv"
     depends_on "libxxf86vm"
     depends_on "lm-sensors"
+    depends_on "pycparser" => :build
+    depends_on "spirv-llvm-translator"
+    depends_on "valgrind" => :build
     depends_on "wayland"
+    depends_on "wayland-protocols" => :build
     depends_on "zlib-ng-compat"
-
+    depends_on "zstd"
     on_intel do
       depends_on "cbindgen" => :build
       depends_on "elfutils"
@@ -115,6 +121,11 @@ class Mesa < Formula
     sha256 "d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f"
   end
 
+  resource "pycparser" do
+    url "https://files.pythonhosted.org/packages/1d/b2/31537cf4b1ca988837256c910a668b553fceb8f069bedc4b1c826024b52c/pycparser-2.22.tar.gz"
+    sha256 ""
+  end
+
   def python3
     "python3.14"
   end
@@ -129,8 +140,20 @@ class Mesa < Formula
       ENV.remove "HOMEBREW_DEPENDENCIES", "expat"
     end
 
+    # NOTE: ipatch, bld err
+    # src/etnaviv/isa/meson.build:106:25: ERROR: Program 'bindgen' not found or not executable
+    #...
+    # src/etnaviv/isa/meson.build:131:17: ERROR: Dependency 'indexmap' is required but not found.
+
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
+    # create the virtual environment first
     venv = virtualenv_create(buildpath/"venv", python3)
+
+    # Only install Python-related resources, excluding indexmap
     venv.pip_install resources.reject { |r| OS.mac? && r.name == "ply" }
+
     ENV.prepend_path "PYTHONPATH", venv.site_packages
     ENV.prepend_path "PATH", venv.root/"bin"
     ENV.append "LDFLAGS", "-Wl,-rpath,#{rpath}" if OS.mac?
@@ -178,7 +201,8 @@ class Mesa < Formula
         -Dvalgrind=enabled
         -Dvulkan-drivers=#{drivers}
         -Dvulkan-layers=device-select,intel-nullhw,overlay,screenshot,vram-report-limit
-        --force-fallback-for=indexmap,paste,pest_generator,roxmltree,rustc-hash,syn
+        --force-fallback-for perfetto,syn,paste,pest,pest_derive,pest_generator,pest_meta,roxmltree,indexmap
+        -Dvideo-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc
       ]
     end
 
