@@ -52,6 +52,8 @@ class GdkPixbuf < Formula
               "-DGDK_PIXBUF_LIBDIR=\"@0@\"'.format('#{HOMEBREW_PREFIX}/lib')"
 
     ENV["DESTDIR"] = "/"
+
+    # NOTE: ipatch, disabled tiff and jpeg
     system "meson", "setup", "build", "-Drelocatable=false",
                                       "-Dnative_windows_loaders=false",
                                       "-Dtests=false",
@@ -59,8 +61,8 @@ class GdkPixbuf < Formula
                                       "-Dman=true",
                                       "-Dgtk_doc=false",
                                       "-Dpng=enabled",
-                                      "-Dtiff=enabled",
-                                      "-Djpeg=enabled",
+                                      "-Dtiff=disabled",
+                                      "-Djpeg=disabled",
                                       "-Dothers=enabled",
                                       "-Dintrospection=enabled",
                                       *std_meson_args
