@@ -21,6 +21,9 @@ class Bindgen < Formula
   uses_from_macos "llvm" # for libclang
 
   def install
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     system "cargo", "install", *std_cargo_args(path: "bindgen-cli")
 
     generate_completions_from_executable(bin/"bindgen", "--generate-shell-completions")
