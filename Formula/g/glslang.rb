@@ -26,6 +26,9 @@ class Glslang < Formula
   uses_from_macos "python" => :build
 
   def install
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     system "cmake", "-S", ".", "-B", "build",
                     "-DBUILD_EXTERNAL=OFF",
                     "-DALLOW_EXTERNAL_SPIRV_TOOLS=ON",
