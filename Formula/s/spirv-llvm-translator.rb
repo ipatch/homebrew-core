@@ -28,6 +28,9 @@ class SpirvLlvmTranslator < Formula
   end
 
   def install
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     system "cmake", "-S", ".", "-B", "build",
                     "-DLLVM_BUILD_TOOLS=ON",
                     "-DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=#{Formula["spirv-headers"].opt_prefix}",
