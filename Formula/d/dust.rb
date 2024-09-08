@@ -24,6 +24,9 @@ class Dust < Formula
   depends_on "rust" => :build
 
   def install
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     system "cargo", "install", *std_cargo_args
 
     bash_completion.install "completions/dust.bash"
