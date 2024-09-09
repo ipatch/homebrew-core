@@ -70,6 +70,9 @@ class XorgServer < Formula
   end
 
   def install
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     # ChangeLog contains some non relocatable strings
     rm "ChangeLog"
     meson_args = std_meson_args.map { |s| s.sub prefix, HOMEBREW_PREFIX } + %W[
