@@ -31,6 +31,14 @@ class Nss < Formula
   conflicts_with "resty", because: "both install `pp` binaries"
 
   def install
+    # NOTE: ipatch, bld err
+    # d -Iverified/internal -Iverified/karamel/include -Iverified/karamel/krmllib/dist/minimal -Ideprecated  -march=armv8-a+crypto aes-armv8.c
+    # aes-armv8.c:14:2: error: #error "Compiler option is invalid"
+    # 14 | #error "Compiler option is invalid"
+    # |  ^~~~~
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     ENV.deparallelize
     cd "nss"
 
