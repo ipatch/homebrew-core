@@ -38,6 +38,11 @@ class Nss < Formula
     # |  ^~~~~
     # NOTE: ipatch, CXXABI error
     ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+    
+    # NOTE: ipatch, refs
+    # https://bugzilla.mozilla.org/show_bug.cgi?id=1608327
+    # https://bugs.gentoo.org/704786
+    # https://gitweb.gentoo.org/repo/gentoo.git/tree/dev-libs/nss/nss-3.104.ebuild
 
     ENV.deparallelize
     cd "nss"
@@ -50,6 +55,9 @@ class Nss < Formula
       NSPR_INCLUDE_DIR=#{Formula["nspr"].opt_include}/nspr
       NSPR_LIB_DIR=#{Formula["nspr"].opt_lib}
       USE_64=1
+
+      NS_USE_GCC=1
+      CC_IS_GCC=1
     ]
 
     # Remove the broken (for anyone but Firefox) install_name
