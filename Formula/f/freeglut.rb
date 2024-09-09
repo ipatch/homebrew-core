@@ -34,6 +34,9 @@ class Freeglut < Formula
   end
 
   def install
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
     args = %W[
       -DFREEGLUT_BUILD_DEMOS=OFF
       -DOPENGL_INCLUDE_DIR=#{Formula["mesa"].include}
