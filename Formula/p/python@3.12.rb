@@ -43,6 +43,7 @@ class PythonAT312 < Formula
     depends_on "berkeley-db@5"
     depends_on "libnsl"
     depends_on "libtirpc"
+    depends_on "util-linux"
   end
 
   # Always update to latest release
