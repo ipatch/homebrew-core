@@ -34,6 +34,20 @@ class Freeimage < Formula
     end
   end
 
+  # NOTE: ipatch, ie. local patch `url "file:///#{HOMEBREW_PREFIX}/Library/Taps/freecad/homebrew-freecad/patches/`
+  # below patch files are unix files with ^M line endings 😵‍💫 whatever the hell that means!
+  # patch do
+  #   url "file:///#{HOMEBREW_PREFIX}/Library/Taps/homebrew/homebrew-core/patches/foo.patch"
+  #   sha256 ""
+  # end
+  # patch do
+  #   url "file:///#{HOMEBREW_PREFIX}/Library/Taps/homebrew/homebrew-core/patches/foo2.patch"
+  #   sha256 ""
+  # end
+  #
+  # NOTE: ipatch, the below patch contents allows building on asahi linux f40
+  patch :DATA
+
   def install
     # Temporary workaround for ARM. Upstream tracking issue:
     # https://sourceforge.net/p/freeimage/bugs/325/
@@ -65,3 +79,78 @@ class Freeimage < Formula
     system "./test"
   end
 end
+
+__END__
+diff --git a/Source/ZLib/gzwrite.c b/Source/ZLib/gzwrite.c
+index c7b5651..e685f3e 100644
+--- a/Source/ZLib/gzwrite.c
++++ b/Source/ZLib/gzwrite.c
+@@ -3,6 +3,7 @@
+  * For conditions of distribution and use, see copyright notice in zlib.h
+  */
+
++#include <unistd.h>
+ #include "gzguts.h"
+
+ /* Local functions */
+
+diff --git a/Source/ZLib/gzread.c b/Source/ZLib/gzread.c
+index 956b91e..66089b6 100644
+--- a/Source/ZLib/gzread.c
++++ b/Source/ZLib/gzread.c
+@@ -3,6 +3,7 @@
+  * For conditions of distribution and use, see copyright notice in zlib.h
+  */
+
++#include <unistd.h>
+ #include "gzguts.h"
+
+ /* Local functions */
+
+diff --git a/Source/ZLib/gzlib.c b/Source/ZLib/gzlib.c
+index 4105e6a..eae3a38 100644
+--- a/Source/ZLib/gzlib.c
++++ b/Source/ZLib/gzlib.c
+@@ -3,6 +3,7 @@
+  * For conditions of distribution and use, see copyright notice in zlib.h
+  */
+
++#include <unistd.h>
+ #include "gzguts.h"
+
+ #if defined(_WIN32) && !defined(__BORLANDC__) && !defined(__MINGW32__)
+
+commit b5515955ec4b3b2bafd878192daeb66aeff69a84
+Author: chris <chris.r.jones.1983@gmail.com>
+Date:   Wed Sep 11 12:17:28 2024 -0500
+
+    add missing include
+
+diff --git a/Source/LibJXR/jxrgluelib/JXRGlueJxr.c b/Source/LibJXR/jxrgluelib/JXRGlueJxr.c
+index 2bf085a..7fb3cd9 100644
+--- a/Source/LibJXR/jxrgluelib/JXRGlueJxr.c
++++ b/Source/LibJXR/jxrgluelib/JXRGlueJxr.c
+@@ -26,6 +26,7 @@
+ // POSSIBILITY OF SUCH DAMAGE.
+ //
+ //*@@@---@@@@******************************************************************
++#include <wchar.h>
+ #include <limits.h>
+ #include <JXRGlue.h>
+ 
+diff --git a/Source/LibJXR/image/decode/segdec.c b/Source/LibJXR/image/decode/segdec.c
+index 1299458..47a8b8c 100644
+--- a/Source/LibJXR/image/decode/segdec.c
++++ b/Source/LibJXR/image/decode/segdec.c
+@@ -26,6 +26,11 @@
+ //
+ //*@@@---@@@@******************************************************************
+ 
++#if defined(__linux__) || defined(__APPLE__)
++#include <byteswap.h>
++#define _byteswap_ulong(x) __builtin_bswap32(x)
++#endif
++
+ #include "strcodec.h"
+ #include "decode.h"
+ 
