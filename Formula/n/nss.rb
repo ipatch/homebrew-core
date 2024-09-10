@@ -22,6 +22,7 @@ class Nss < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "be7a3cf4ac2ca7d306981cc1464799bcdb9335017499974c26d943e3822ac706"
   end
 
+  depends_on "llvm"
   depends_on "nspr"
 
   uses_from_macos "sqlite"
@@ -37,15 +38,19 @@ class Nss < Formula
     # 14 | #error "Compiler option is invalid"
     # |  ^~~~~
     # NOTE: ipatch, CXXABI error
-    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+    # ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
     
     # NOTE: ipatch, refs
     # https://bugzilla.mozilla.org/show_bug.cgi?id=1608327
     # https://bugs.gentoo.org/704786
     # https://gitweb.gentoo.org/repo/gentoo.git/tree/dev-libs/nss/nss-3.104.ebuild
+    # https://muc.lists.freebsd.ports.narkive.com/tTz3kyR5/security-nss-from-head-r515742-build-failure-for-poudriere-devel-based-amd64-armv7-cortex-a7-cross
 
     ENV.deparallelize
     cd "nss"
+
+    ENV["CC"] = "#{Formula["llvm"].opt_bin}/clang"
+    ENV["CXX"] = "#{Formula["llvm"].opt_bin}clang++"
 
     args = %W[
       BUILD_OPT=1
@@ -63,6 +68,10 @@ class Nss < Formula
     # Remove the broken (for anyone but Firefox) install_name
     inreplace "coreconf/Darwin.mk", "-install_name @executable_path", "-install_name #{lib}"
     inreplace "lib/freebl/config.mk", "@executable_path", lib
+
+    # NOTE: ipatch, neither of the compiler flags fixed the bld err
+    # ENV.append_to_cflags "-march=armv8-a"
+    # ENV.append_to_cflags "-march=armv8-a+crypto"
 
     system "make", "all", *args
 
