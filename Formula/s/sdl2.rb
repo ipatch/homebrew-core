@@ -31,6 +31,7 @@ class Sdl2 < Formula
   end
 
   on_linux do
+    depends_on "llvm" => :build
     depends_on "pkg-config" => :build
     depends_on "libdrm"
     depends_on "libice"
@@ -42,6 +43,12 @@ class Sdl2 < Formula
   end
 
   def install
+    # NOTE: ipatch, bld err with asahi linux
+    # undefined reference to `__pthread_cond_timedwait64'
+    # for reasons i need to further investigate gcc fails to link certain objects/bins using above func
+    # use llvm/clang instead
+    ENV["CC"] = Formula["llvm"].opt_bin/"clang"
+
     # We have to do this because most build scripts assume that all SDL modules
     # are installed to the same prefix. Consequently SDL stuff cannot be
     # keg-only but I doubt that will be needed.
@@ -71,6 +78,7 @@ class Sdl2 < Formula
         --with-x
       ]
     end
+    system "./configure", "--help"
     system "./configure", *args
     system "make", "install"
   end
