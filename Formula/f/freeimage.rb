@@ -34,6 +34,8 @@ class Freeimage < Formula
     end
   end
 
+  # NOTE: ipatch, using `brew style` will break below embedded patch files!!!
+
   # NOTE: ipatch, ie. local patch `url "file:///#{HOMEBREW_PREFIX}/Library/Taps/freecad/homebrew-freecad/patches/`
   # below patch files are unix files with ^M line endings 😵‍💫 whatever the hell that means!
   # patch do
@@ -49,16 +51,20 @@ class Freeimage < Formula
   patch :DATA
 
   def install
+    # NOTE: ipatch,
+    # Ensure that -fPIC is applied for both C and C++ code
+    if Hardware::CPU.arm? && OS.linux?
+      ENV.append "CXXFLAGS", "-std=c++98 -fPIC"
+      ENV.append "CFLAGS", "-O3 -fPIC -fexceptions -fvisibility=hidden -DPNG_ARM_NEON_OPT=0"
+    end
     # Temporary workaround for ARM. Upstream tracking issue:
     # https://sourceforge.net/p/freeimage/bugs/325/
     # https://sourceforge.net/p/freeimage/discussion/36111/thread/cc4cd71c6e/
-    ENV["CFLAGS"] = "-O3 -fPIC -fexceptions -fvisibility=hidden -DPNG_ARM_NEON_OPT=0" if Hardware::CPU.arm?
+    # ENV["CFLAGS"] = "-O3 -fPIC -fexceptions -fvisibility=hidden -DPNG_ARM_NEON_OPT=0" if Hardware::CPU.arm?
 
     # Fix compile with newer Clang
     ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
 
-    # Fix build error on Linux: ImathVec.h:771:37: error: ISO C++17 does not allow dynamic exception specifications
-    ENV["CXXFLAGS"] = "-std=c++98" if OS.linux?
     system "make", "-f", "Makefile.gnu"
     system "make", "-f", "Makefile.gnu", "install", "PREFIX=#{prefix}"
     system "make", "-f", "Makefile.fip"
@@ -119,6 +125,12 @@ index 4105e6a..eae3a38 100644
  #include "gzguts.h"
 
  #if defined(_WIN32) && !defined(__BORLANDC__) && !defined(__MINGW32__)
+
+commit b5515955ec4b3b2bafd878192daeb66aeff69a84
+Author: chris <chris.r.jones.1983@gmail.com>
+Date:   Wed Sep 11 12:17:28 2024 -0500
+
+    add missing include
 
 diff --git a/Source/LibJXR/jxrgluelib/JXRGlueJxr.c b/Source/LibJXR/jxrgluelib/JXRGlueJxr.c
 index 2bf085a..7fb3cd9 100644
