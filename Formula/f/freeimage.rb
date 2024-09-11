@@ -120,12 +120,6 @@ index 4105e6a..eae3a38 100644
 
  #if defined(_WIN32) && !defined(__BORLANDC__) && !defined(__MINGW32__)
 
-commit b5515955ec4b3b2bafd878192daeb66aeff69a84
-Author: chris <chris.r.jones.1983@gmail.com>
-Date:   Wed Sep 11 12:17:28 2024 -0500
-
-    add missing include
-
 diff --git a/Source/LibJXR/jxrgluelib/JXRGlueJxr.c b/Source/LibJXR/jxrgluelib/JXRGlueJxr.c
 index 2bf085a..7fb3cd9 100644
 --- a/Source/LibJXR/jxrgluelib/JXRGlueJxr.c
