@@ -55,6 +55,7 @@ class QtAT5 < Formula
   end
 
   on_linux do
+    depends_on "llvm" => :build
     depends_on "alsa-lib"
     depends_on "at-spi2-core"
     depends_on "dbus"
@@ -190,6 +191,7 @@ class QtAT5 < Formula
     sha256 "2129058a5e24d98ee80a776c49a58c2671e06c338dffa7fc0154e82eef96c9d4"
     directory "qtbase"
   end
+
   patch do
     url "https://download.qt.io/official_releases/qt/5.15/0002-CVE-2023-51714-qtbase-5.15.diff"
     sha256 "99d5d32527e767d6ab081ee090d92e0b11f27702619a4af8966b711db4f23e42"
@@ -201,6 +203,9 @@ class QtAT5 < Formula
     venv = virtualenv_create(buildpath/"venv", "python3.12")
     venv.pip_install resources.reject { |r| r.name == "qtwebengine" }
     ENV.prepend_path "PATH", venv.root/"bin"
+
+    # NOTE: ipatch, getting same linker error as sdl2 related to libpthread
+    ENV["CC"] = Formula["llvm"].opt_bin/"clang"
 
     rm_r(buildpath/"qtwebengine")
     (buildpath/"qtwebengine").install resource("qtwebengine")
