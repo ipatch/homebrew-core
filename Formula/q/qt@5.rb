@@ -205,7 +205,24 @@ class QtAT5 < Formula
     ENV.prepend_path "PATH", venv.root/"bin"
 
     # NOTE: ipatch, getting same linker error as sdl2 related to libpthread
-    ENV["CC"] = Formula["llvm"].opt_bin/"clang"
+    # qwaitcondition_unix.cpp:(.text+0x350): undefined reference to `__pthread_cond_timedwait64'
+    # /home/capin/homebrew/opt/binutils/bin/ld: .obj/qwaitcondition_unix.o: in function `QWaitCondition::wait(QReadWriteLock*, QDeadlineTimer)':
+    #   qwaitcondition_unix.cpp:(.text+0x57c): undefined reference to `__pthread_cond_timedwait64'
+    # ld.lld: error: undefined symbol: __pthread_cond_timedwait64
+    # >>> referenced by qwaitcondition_unix.cpp
+    # >>>               .obj/qwaitcondition_unix.o:(QWaitCondition::wait(QMutex*, QDeadlineTimer))
+    # >>> referenced by qwaitcondition_unix.cpp
+    # >>>               .obj/qwaitcondition_unix.o:(QWaitCondition::wait(QReadWriteLock*, QDeadlineTimer))
+    # collect2: error: ld returned 1 exit status
+
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64" if Hardware::CPU.arm? && OS.linux?
+
+    # ENV["CC"] = Formula["llvm"].opt_bin/"clang"
+    # ENV["CXX"] = Formula["llvm"].opt_bin/"clang++"
+    #---
+    # ENV["HOMEBREW_CC"] = Formula["llvm"].opt_bin/"clang"
+    # ENV["HOMEBREW_CXX"] = Formula["llvm"].opt_bin/"clang++"
 
     rm_r(buildpath/"qtwebengine")
     (buildpath/"qtwebengine").install resource("qtwebengine")
@@ -232,6 +249,7 @@ class QtAT5 < Formula
       -system-sqlite
       -system-zlib
       -webengine-python-version python3
+      -linker lld
     ]
 
     if OS.mac?
@@ -286,6 +304,13 @@ class QtAT5 < Formula
                 "\\0 \"-Wno-enum-constexpr-conversion\","
     end
 
+<<<<<<< HEAD
+||||||| parent of 1ff58746503 (qt@5: WIP tshoot bld err)
+    ENV.prepend_path "PATH", Formula["python@3.11"].libexec/"bin"
+=======
+    ENV.prepend_path "PATH", Formula["python@3.11"].libexec/"bin"
+    system "./configure", "--help"
+>>>>>>> 1ff58746503 (qt@5: WIP tshoot bld err)
     system "./configure", *args
     system "make"
     ENV.deparallelize
