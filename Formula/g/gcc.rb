@@ -143,12 +143,24 @@ class Gcc < Formula
       # NOTE: ipatch,
       ENV["LD_LIBRARY_PATH"] = "/lib64/" if Hardware::CPU.arm? && OS.linux?
 
+      # if OS.linux?
+      #   link = Pathname.new("#{prefix}/aarch64-unknown-linux-gnu/bin")
+      #   link.parent.mkpath
+      #   link.make_symlink("#{HOMEBREW_PREFIX}/lib")
+      # end
+
       if OS.linux?
-        @link = Pathname.new "#{prefix}/aarch64-unknown-linux-gnu/bin"
-        @link.parent.mkpath
-        @link.make_symlink "#{HOMEBREW_PREFIX}/lib"
+        link_path = "#{prefix}/aarch64-unknown-linux-gnu/bin"
+        link = Pathname.new(link_path)
+
+        if link.exist?
+          link.parent.mkpath
+          link.make_symlink("#{HOMEBREW_PREFIX}/lib")
+        else
+          odie "The path #{link_path} does not exist."
+        end
       end
-      
+
       system "../configure", *args
       system "gmake", *make_args
 
@@ -186,14 +198,33 @@ class Gcc < Formula
   end
 
   if OS.linux?
-    p = @link.parent
-    @link.delete
-    p.delete
-    crts = Pathname.new "#{lib}/gcc/x86_64-unknown-linux-gnu/#{version}"
-      Formula['glibc'].lib.children.select {|p| p.basename.to_s =~ /^crt.\.o$/ }.collect {|p| p.relative_path_from crts}.each do |p|
-        crts.install_symlink p 
+    link_path = "#{prefix}/aarch64-unknown-linux-gnu/bin"
+    link = Pathname.new(link_path)
+    parent = link.parent
+
+    # Remove the existing symlink and parent directory if necessary
+    if link.exist?
+      link.delete
+      parent.rmdir_if_possible
+    end
+
+    # Install new symlinks for the GCC runtime files
+    crts = Pathname.new("#{lib}/gcc/aarch64-unknown-linux-gnu/#{version}")
+
+      Formula['glibc'].lib.children.select { |p| p.basename.to_s =~ /^crt.*\.o$/ }.each do |p|
+        crts.install_symlink(p.relative_path_from(crts))
       end
   end
+
+  # if OS.linux?
+  #   p = @link.parent
+  #   @link.delete
+  #   p.delete
+  #   crts = Pathname.new "#{lib}/gcc/x86_64-unknown-linux-gnu/#{version}"
+  #     Formula['glibc'].lib.children.select {|p| p.basename.to_s =~ /^crt.\.o$/ }.collect {|p| p.relative_path_from crts}.each do |p|
+  #       crts.install_symlink p 
+  #     end
+  # end
 
   def add_suffix(file, suffix)
     dir = File.dirname(file)
