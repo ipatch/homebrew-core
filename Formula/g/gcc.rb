@@ -68,8 +68,19 @@ class Gcc < Formula
   end
 
   def install
+    # NOTE: ipatch, bld err
+    # ref: https://github.com/Linuxbrew/legacy-linuxbrew/pull/200
+    # ref: https://github.com/jbaum98/linuxbrew/blob/6043554e770c71cfbbcfa30b87e48098ff3d80be/Library/Formula/gcc.rb
+    #  "/* GNU ld script"; echo "   Use the shared library, but some functions are only in"; echo "   the static library.  */"; echo "GROUP ( libgcc_s.so.1 -lgcc )" ) > ./libgcc_s.so
+    # ld: cannot find crti.o: No such file or directory
+    # collect2: error: ld returned 1 exit status
+    # make[3]: *** [Makefile:1005: libgcc_s.so] Error 1
+
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
+    # ENV.append "LDFLAGS", "-L/usr/lib64"
+    # NOTE: ipatch, CXXABI error
+    ENV["LD_LIBRARY_PATH"] = "/lib64/" if Hardware::CPU.arm? && OS.linux?
 
     # We avoiding building:
     #  - Ada and D, which require a pre-existing GCC to bootstrap
@@ -129,6 +140,15 @@ class Gcc < Formula
     end
 
     mkdir "build" do
+      # NOTE: ipatch,
+      ENV["LD_LIBRARY_PATH"] = "/lib64/" if Hardware::CPU.arm? && OS.linux?
+
+      if OS.linux?
+        @link = Pathname.new "#{prefix}/aarch64-unknown-linux-gnu/bin"
+        @link.parent.mkpath
+        @link.make_symlink "#{HOMEBREW_PREFIX}/lib"
+      end
+      
       system "../configure", *args
       system "gmake", *make_args
 
@@ -163,6 +183,16 @@ class Gcc < Formula
     # Work around GCC install bug
     # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105664
     rm_r(bin.glob("*-gcc-tmp"))
+  end
+
+  if OS.linux?
+    p = @link.parent
+    @link.delete
+    p.delete
+    crts = Pathname.new "#{lib}/gcc/x86_64-unknown-linux-gnu/#{version}"
+      Formula['glibc'].lib.children.select {|p| p.basename.to_s =~ /^crt.\.o$/ }.collect {|p| p.relative_path_from crts}.each do |p|
+        crts.install_symlink p 
+      end
   end
 
   def add_suffix(file, suffix)
