@@ -149,15 +149,20 @@ class Gcc < Formula
       #   link.make_symlink("#{HOMEBREW_PREFIX}/lib")
       # end
 
+      # NOTE: ipatch,
+      # $bp/Cellar/gcc/14.2.0/lib/gcc/current/gcc/aarch64-unknown-linux-gnu/14/
+
+
       if OS.linux?
-        link_path = "#{prefix}/aarch64-unknown-linux-gnu/bin"
+        link_path = "#{prefix}/lib/gcc/current/gcc/aarch64-unknown-linux-gnu/14"
         link = Pathname.new(link_path)
 
         if link.exist?
           link.parent.mkpath
           link.make_symlink("#{HOMEBREW_PREFIX}/lib")
         else
-          odie "The path #{link_path} does not exist."
+          # odie "The path #{link_path} does not exist."
+          opoo "The path #{link_path} does not exist."
         end
       end
 
@@ -195,25 +200,25 @@ class Gcc < Formula
     # Work around GCC install bug
     # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105664
     rm_r(bin.glob("*-gcc-tmp"))
-  end
 
-  if OS.linux?
-    link_path = "#{prefix}/aarch64-unknown-linux-gnu/bin"
-    link = Pathname.new(link_path)
-    parent = link.parent
+    if OS.linux?
+      link_path = "#{prefix}/bin"
+      link = Pathname.new(link_path)
+      parent = link.parent
 
-    # Remove the existing symlink and parent directory if necessary
-    if link.exist?
-      link.delete
-      parent.rmdir_if_possible
-    end
-
-    # Install new symlinks for the GCC runtime files
-    crts = Pathname.new("#{lib}/gcc/aarch64-unknown-linux-gnu/#{version}")
-
-      Formula['glibc'].lib.children.select { |p| p.basename.to_s =~ /^crt.*\.o$/ }.each do |p|
-        crts.install_symlink(p.relative_path_from(crts))
+      # Remove the existing symlink and parent directory if necessary
+      if link.exist?
+        link.delete
+        parent.rmdir_if_possible
       end
+
+      # Install new symlinks for the GCC runtime files
+      crts = Pathname.new("#{lib}/gcc/aarch64-unknown-linux-gnu/#{version}")
+
+        Formula['glibc'].lib.children.select { |p| p.basename.to_s =~ /^crt.*\.o$/ }.each do |p|
+          crts.install_symlink(p.relative_path_from(crts))
+        end
+    end
   end
 
   # if OS.linux?
