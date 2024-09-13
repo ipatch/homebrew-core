@@ -11,6 +11,11 @@ class Rapidjson < Formula
     sha256 cellar: :any_skip_relocation, all: "b16b08efb12ae55a25ac840b757e8cb8cb6cdcdfca37004e1f864f753960e40a"
   end
 
+  patch do
+    url "https://github.com/Tencent/rapidjson/commit/3b2441b8.patch"
+    sha256 "a8b1fe3ac541792ef9173eb5d7ee0ce61b73c7212dfb79016df6e5d2b6bd5a93"
+  end
+
   depends_on "cmake" => :build
 
   def install
