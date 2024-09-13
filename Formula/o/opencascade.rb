@@ -51,6 +51,17 @@ class Opencascade < Formula
   end
 
   def install
+    # NOTE: ipatch, bld err asahi linux
+    # ref: https://github.com/cemu-project/Cemu/issues/1196
+    # In file included from /opt/tmp/homebrew/opencascade-20240913-2294342-f2ldvv/occt-V7_8_1/src/RWGltf/RWGltf_GltfJsonParser.hxx:43,
+    # from /opt/tmp/homebrew/opencascade-20240913-2294342-f2ldvv/occt-V7_8_1/src/RWGltf/RWGltf_CafReader.cxx:17:
+    # /home/capin/homebrew/opt/rapidjson/include/rapidjson/document.h: In member function 'rapidjson::GenericStringRef<CharType>& rapidjson::GenericStringRef<CharType>::operator=(const rapidjson::GenericStringRef<CharType>&)':
+    # /home/capin/homebrew/opt/rapidjson/include/rapidjson/document.h:319:82: error: assignment of read-only member 'rapidjson::GenericStringRef<CharType>::length'
+    #   319 |     GenericStringRef& operator=(const GenericStringRef& rhs) { s = rhs.s; length = rhs.length; }
+    #       |                                                                           ~~~~~~~^~~~~~~~~~~~
+    # make[2]: *** [src/TKDEGLTF/CMakeFiles/TKDEGLTF.dir/build.make:79: src/TKDEGLTF/CMakeFiles/TKDEGLTF.dir/__/RWGltf/RWGltf_CafReader.cxx.o] Error 1
+    #
+
     tcltk = Formula["tcl-tk"]
     libtcl = tcltk.opt_lib/shared_library("libtcl#{tcltk.version.major_minor}")
     libtk = tcltk.opt_lib/shared_library("libtk#{tcltk.version.major_minor}")
