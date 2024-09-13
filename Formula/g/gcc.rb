@@ -142,6 +142,7 @@ class Gcc < Formula
     mkdir "build" do
       # NOTE: ipatch,
       ENV["LD_LIBRARY_PATH"] = "/lib64/" if Hardware::CPU.arm? && OS.linux?
+      ENV["LIBRARY_PATH"] = "/lib64/" if Hardware::CPU.arm? && OS.linux?
 
       # if OS.linux?
       #   link = Pathname.new("#{prefix}/aarch64-unknown-linux-gnu/bin")
@@ -153,18 +154,18 @@ class Gcc < Formula
       # $bp/Cellar/gcc/14.2.0/lib/gcc/current/gcc/aarch64-unknown-linux-gnu/14/
 
 
-      if OS.linux?
-        link_path = "#{prefix}/lib/gcc/current/gcc/aarch64-unknown-linux-gnu/14"
-        link = Pathname.new(link_path)
-
-        if link.exist?
-          link.parent.mkpath
-          link.make_symlink("#{HOMEBREW_PREFIX}/lib")
-        else
-          # odie "The path #{link_path} does not exist."
-          opoo "The path #{link_path} does not exist."
-        end
-      end
+      # if OS.linux?
+      #   link_path = "#{prefix}/lib/gcc/current/gcc/aarch64-unknown-linux-gnu/14"
+      #   link = Pathname.new(link_path)
+      #
+      #   if link.exist?
+      #     link.parent.mkpath
+      #     link.make_symlink("#{HOMEBREW_PREFIX}/lib")
+      #   else
+      #     # odie "The path #{link_path} does not exist."
+      #     opoo "The path #{link_path} does not exist."
+      #   end
+      # end
 
       system "../configure", *args
       system "gmake", *make_args
@@ -201,25 +202,24 @@ class Gcc < Formula
     # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105664
     rm_r(bin.glob("*-gcc-tmp"))
 
-    if OS.linux?
-      link_path = "#{prefix}/bin"
-      link = Pathname.new(link_path)
-      parent = link.parent
-
-      # Remove the existing symlink and parent directory if necessary
-      if link.exist?
-        link.delete
-        parent.rmdir_if_possible
-      end
-
-      # Install new symlinks for the GCC runtime files
-      crts = Pathname.new("#{lib}/gcc/aarch64-unknown-linux-gnu/#{version}")
-
-        Formula['glibc'].lib.children.select { |p| p.basename.to_s =~ /^crt.*\.o$/ }.each do |p|
-          crts.install_symlink(p.relative_path_from(crts))
-        end
-    end
-  end
+    # if OS.linux?
+    #   link_path = "#{prefix}/bin"
+    #   link = Pathname.new(link_path)
+    #   parent = link.parent
+    #
+    #   # Remove the existing symlink and parent directory if necessary
+    #   if link.exist?
+    #     link.delete
+    #     parent.rmdir_if_possible
+    #   end
+    #
+    #   # Install new symlinks for the GCC runtime files
+    #   crts = Pathname.new("#{lib}/gcc/aarch64-unknown-linux-gnu/#{version}")
+    #
+    #     Formula['glibc'].lib.children.select { |p| p.basename.to_s =~ /^crt.*\.o$/ }.each do |p|
+    #       crts.install_symlink(p.relative_path_from(crts))
+    #     end
+    # end
 
   # if OS.linux?
   #   p = @link.parent
@@ -230,6 +230,7 @@ class Gcc < Formula
   #       crts.install_symlink p 
   #     end
   # end
+  end
 
   def add_suffix(file, suffix)
     dir = File.dirname(file)
