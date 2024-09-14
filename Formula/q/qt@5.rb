@@ -259,6 +259,12 @@ class QtAT5 < Formula
     directory "qtbase"
   end
 
+  # NOTE: ipatch, gcc compiler patch
+  patch do
+    url ""
+    sha256 ""
+  end
+
   def install
     # NOTE: ipatch, apparently qt5 needs patching inorder to build with gcc >= v13.x
     # TODO: include the gcc-v13 compile fix patch
