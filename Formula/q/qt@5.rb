@@ -261,16 +261,14 @@ class QtAT5 < Formula
 
   # NOTE: ipatch, gcc compiler patch
   patch do
-    url ""
+    url "file:///#{HOMEBREW_PREFIX}/Library/Taps/homebrew/homebrew-core/patches/qt5-gcc-13-compiler-fix.patch"
     sha256 ""
   end
 
   def install
     # NOTE: ipatch, apparently qt5 needs patching inorder to build with gcc >= v13.x
     # TODO: include the gcc-v13 compile fix patch
-
-
-
+    #----------------------
     # NOTE: ipatch, asahi bld err
     # ref: https://forums.gentoo.org/viewtopic-p-8763197.html?sid=ff50809372da984c37372be99939a6bf
     # ref: https://forums.gentoo.org/viewtopic-p-8762593.html?sid=b071ee5a217c8a04d0e7366f2294b8d1#8762593
@@ -318,10 +316,7 @@ class QtAT5 < Formula
     #    59 |     FeatureType operator()(const mapbox::geometry::geometry_collection<T> &) const { return FeatureType::Unknown; }
     #       |     ^~~~~~~~~~~
     #       |     ToFeatureType
-
-
-
-
+    #------------------------------------
     # NOTE: ipatch, getting same linker error as sdl2 related to libpthread
     # qwaitcondition_unix.cpp:(.text+0x350): undefined reference to `__pthread_cond_timedwait64'
     # /home/capin/homebrew/opt/binutils/bin/ld: .obj/qwaitcondition_unix.o: in function `QWaitCondition::wait(QReadWriteLock*, QDeadlineTimer)':
@@ -367,8 +362,8 @@ class QtAT5 < Formula
       -system-libpng
       -system-pcre
       -system-zlib
-      -linker lld
     ]
+    # -linker lld
 
     if OS.mac?
       args << "-no-rpath"
