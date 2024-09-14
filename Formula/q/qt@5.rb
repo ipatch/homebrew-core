@@ -198,6 +198,12 @@ class QtAT5 < Formula
     directory "qtbase"
   end
 
+  # NOTE: ipatch, gcc compiler patch
+  patch do
+    url ""
+    sha256 ""
+  end
+
   def install
     # Install python dependencies for QtWebEngine
     venv = virtualenv_create(buildpath/"venv", "python3.12")
