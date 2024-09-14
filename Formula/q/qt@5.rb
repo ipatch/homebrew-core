@@ -55,7 +55,7 @@ class QtAT5 < Formula
   end
 
   on_linux do
-    depends_on "llvm" => :build
+    # depends_on "llvm" => :build
     depends_on "alsa-lib"
     depends_on "at-spi2-core"
     depends_on "dbus"
@@ -204,6 +204,57 @@ class QtAT5 < Formula
     venv.pip_install resources.reject { |r| r.name == "qtwebengine" }
     ENV.prepend_path "PATH", venv.root/"bin"
 
+    # NOTE: ipatch, apparently qt5 needs patching inorder to build with gcc >= v13.x
+    # TODO: include the gcc-v13 compile fix patch
+
+    # NOTE: ipatch, asahi bld err
+    # ref: https://forums.gentoo.org/viewtopic-p-8763197.html?sid=ff50809372da984c37372be99939a6bf
+    # ref: https://forums.gentoo.org/viewtopic-p-8762593.html?sid=b071ee5a217c8a04d0e7366f2294b8d1#8762593
+    #----
+    # ref: https://bugzilla.altlinux.org/46360
+    # ref: https://bugzilla.altlinux.org/attachment.cgi?id=13362&action=diff#a/gcc13-compilefix.patch_sec1
+    #----
+    # In file included from include/mbgl/util/image.hpp:4,
+    #                  from platform/qt/src/qt_image.cpp:1:
+    # include/mbgl/util/geometry.hpp:9:24: error: found ':' in nested-name-specifier, expected '::'
+    #     9 | enum class FeatureType : uint8_t {
+    #       |                        ^
+    #       |                        ::
+    # include/mbgl/util/geometry.hpp:9:12: error: 'FeatureType' has not been declared
+    #     9 | enum class FeatureType : uint8_t {
+    #       |            ^~~~~~~~~~~
+    # include/mbgl/util/geometry.hpp:9:34: error: expected unqualified-id before '{' token
+    #     9 | enum class FeatureType : uint8_t {
+    #       |                                  ^
+    # include/mbgl/util/geometry.hpp:47:5: error: 'FeatureType' does not name a type; did you mean 'ToFeatureType'?
+    #    47 |     FeatureType operator()(const Point<T> &) const { return FeatureType::Point; }
+    #       |     ^~~~~~~~~~~
+    #       |     ToFeatureType
+    # include/mbgl/util/geometry.hpp:49:5: error: 'FeatureType' does not name a type; did you mean 'ToFeatureType'?
+    #    49 |     FeatureType operator()(const MultiPoint<T> &) const { return FeatureType::Point; }
+    #       |     ^~~~~~~~~~~
+    #       |     ToFeatureType
+    # include/mbgl/util/geometry.hpp:51:5: error: 'FeatureType' does not name a type; did you mean 'ToFeatureType'?
+    #    51 |     FeatureType operator()(const LineString<T> &) const { return FeatureType::LineString; }
+    #       |     ^~~~~~~~~~~
+    #       |     ToFeatureType
+    # include/mbgl/util/geometry.hpp:53:5: error: 'FeatureType' does not name a type; did you mean 'ToFeatureType'?
+    #    53 |     FeatureType operator()(const MultiLineString<T> &) const { return FeatureType::LineString; }
+    #       |     ^~~~~~~~~~~
+    #       |     ToFeatureType
+    # include/mbgl/util/geometry.hpp:55:5: error: 'FeatureType' does not name a type; did you mean 'ToFeatureType'?
+    #    55 |     FeatureType operator()(const Polygon<T> &) const { return FeatureType::Polygon; }
+    #       |     ^~~~~~~~~~~
+    #       |     ToFeatureType
+    # include/mbgl/util/geometry.hpp:57:5: error: 'FeatureType' does not name a type; did you mean 'ToFeatureType'?
+    #    57 |     FeatureType operator()(const MultiPolygon<T> &) const { return FeatureType::Polygon; }
+    #       |     ^~~~~~~~~~~
+    #       |     ToFeatureType
+    # include/mbgl/util/geometry.hpp:59:5: error: 'FeatureType' does not name a type; did you mean 'ToFeatureType'?
+    #    59 |     FeatureType operator()(const mapbox::geometry::geometry_collection<T> &) const { return FeatureType::Unknown; }
+    #       |     ^~~~~~~~~~~
+    #       |     ToFeatureType
+
     # NOTE: ipatch, getting same linker error as sdl2 related to libpthread
     # qwaitcondition_unix.cpp:(.text+0x350): undefined reference to `__pthread_cond_timedwait64'
     # /home/capin/homebrew/opt/binutils/bin/ld: .obj/qwaitcondition_unix.o: in function `QWaitCondition::wait(QReadWriteLock*, QDeadlineTimer)':
@@ -304,13 +355,8 @@ class QtAT5 < Formula
                 "\\0 \"-Wno-enum-constexpr-conversion\","
     end
 
-<<<<<<< HEAD
-||||||| parent of 1ff58746503 (qt@5: WIP tshoot bld err)
-    ENV.prepend_path "PATH", Formula["python@3.11"].libexec/"bin"
-=======
     ENV.prepend_path "PATH", Formula["python@3.11"].libexec/"bin"
     system "./configure", "--help"
->>>>>>> 1ff58746503 (qt@5: WIP tshoot bld err)
     system "./configure", *args
     system "make"
     ENV.deparallelize
