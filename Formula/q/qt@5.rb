@@ -201,7 +201,7 @@ class QtAT5 < Formula
   # NOTE: ipatch, a patch for the internal rapidjson dep v1.10.x is req
   # ./qtlocation/src/3rdparty/mapbox-gl-native/deps/
   patch do
-    url ""
+    url "file:///#{HOMEBREW_PREFIX}/Library/Taps/homebrew/homebrew-core/patches/rapidjson-document-h.patch"
     sha256 ""
   end
 
