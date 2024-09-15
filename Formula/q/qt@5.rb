@@ -218,6 +218,11 @@ class QtAT5 < Formula
     venv.pip_install resources.reject { |r| r.name == "qtwebengine" }
     ENV.prepend_path "PATH", venv.root/"bin"
 
+    # did not seem to have an error using the perl provided by homebrew
+    #---
+    # NOTE: ipatch, apparently using the system perl will generate the below error message,
+    # Project ERROR: Failed to run: perl -w /opt/tmp/homebrew/qtA5-20240915-14226-x2r7j/qt-everywhere-src-5.15.13/qtbase/bin/syncqt.pl -module QtWebEngineCore -version 5.15.16 -outdir /opt/tmp/homebrew/qtA5-20240915-14226-x2r7j/qt-everywhere-src-5.15.13/qtwebengine -builddir /opt/tmp/homebrew/qtA5-20240915-14226-x2r7j/qt-everywhere-src-5.15.13/qtwebengine /opt/tmp/homebrew/qtA5-20240915-14226-x2r7j/qt-everywhere-src-5.15.13/qtwebengine
+
     # NOTE: apparently, qt uses an interal rapidjson dep and it is effected by the same error that affected occ
     #----
     # NOTE: ipatch, apparently qt5 needs patching inorder to build with gcc >= v13.x
