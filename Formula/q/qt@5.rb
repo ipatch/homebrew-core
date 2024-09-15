@@ -199,8 +199,9 @@ class QtAT5 < Formula
   end
 
   # NOTE: ipatch, gcc compiler patch
+  # qt5-gcc-13-compiler-fix.patch
   patch do
-    url "file:///#{HOMEBREW_PREFIX}/Library/Taps/homebrew/homebrew-core/patches/qt5-gcc-13-compiler-fix.patch"
+    url "file:///#{HOMEBREW_PREFIX}/Library/Taps/homebrew/homebrew-core/patches/gcc-13-compiler-fix.patch"
     sha256 ""
   end
 
