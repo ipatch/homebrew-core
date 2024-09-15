@@ -259,6 +259,13 @@ class QtAT5 < Formula
     directory "qtbase"
   end
 
+  # NOTE: ipatch, a patch for the internal rapidjson dep v1.10.x is req
+  # ./qtlocation/src/3rdparty/mapbox-gl-native/deps/
+  patch do
+    url ""
+    sha256 ""
+  end
+
   # NOTE: ipatch, gcc compiler patch
   # qt5-gcc-13-compiler-fix.patch
   patch do
@@ -267,6 +274,8 @@ class QtAT5 < Formula
   end
 
   def install
+    # NOTE: apparently, qt uses an interal rapidjson dep and it is effected by the same error that affected occ
+    #----
     # NOTE: ipatch, apparently qt5 needs patching inorder to build with gcc >= v13.x
     # TODO: include the gcc-v13 compile fix patch
     #----------------------
