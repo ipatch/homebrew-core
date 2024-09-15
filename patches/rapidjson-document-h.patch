@@ -1,0 +1,19 @@
+commit 543d94ccdf2eb2d5f56ea31eefcadf4bae25b8bc
+Author: chris <chris.r.jones.1983@gmail.com>
+Date:   Sun Sep 15 16:28:42 2024 -0500
+
+    patch rapidjson
+
+diff --git a/qtlocation/src/3rdparty/mapbox-gl-native/deps/rapidjson/1.1.0/include/rapidjson/document.h b/qtlocation/src/3rdparty/mapbox-gl-native/deps/rapidjson/1.1.0/include/rapidjson/document.h
+index e3e20dfbdc..b0f1f70beb 100644
+--- a/qtlocation/src/3rdparty/mapbox-gl-native/deps/rapidjson/1.1.0/include/rapidjson/document.h
++++ b/qtlocation/src/3rdparty/mapbox-gl-native/deps/rapidjson/1.1.0/include/rapidjson/document.h
+@@ -316,8 +316,6 @@ struct GenericStringRef {
+ 
+     GenericStringRef(const GenericStringRef& rhs) : s(rhs.s), length(rhs.length) {}
+ 
+-    GenericStringRef& operator=(const GenericStringRef& rhs) { s = rhs.s; length = rhs.length; }
+-
+     //! implicit conversion to plain CharType pointer
+     operator const Ch *() const { return s; }
+ 
