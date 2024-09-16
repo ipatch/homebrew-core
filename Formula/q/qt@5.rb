@@ -274,6 +274,7 @@ class QtAT5 < Formula
   end
 
   def install
+    # NOTE: ipatch, it looks perl will required to complete the install
     # did not seem to have an error using the perl provided by homebrew
     #---
     # NOTE: ipatch, apparently using the system perl will generate the below error message,
