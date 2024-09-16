@@ -218,6 +218,7 @@ class QtAT5 < Formula
     venv.pip_install resources.reject { |r| r.name == "qtwebengine" }
     ENV.prepend_path "PATH", venv.root/"bin"
 
+    # NOTE: ipatch, it looks perl will required to complete the install
     # did not seem to have an error using the perl provided by homebrew
     #---
     # NOTE: ipatch, apparently using the system perl will generate the below error message,
