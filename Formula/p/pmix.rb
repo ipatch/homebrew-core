@@ -32,6 +32,11 @@ class Pmix < Formula
   # NOTE: ipatch, same configure err when using clang instead of gcc
   # depends_on "llvm" => :build if OS.linux? && Hardware::CPU.arm?
 
+  depends_on "libxml2"
+  depends_on "icu4c"
+  depends_on "libpciaccess"
+  depends_on "zlib"
+
   depends_on "hwloc"
   depends_on "libevent"
 
@@ -52,15 +57,24 @@ class Pmix < Formula
 
     # ENV.append_to_cflags "-I/path/to/hwloc/include"
 
+    ENV.append "CPPFLAGS", "-I#{Formula["hwloc"].opt_include}"
+    ENV.append "CPPFLAGS", "-I#{Formula["libxml2"].opt_include}/libxml2"
+    ENV.append "CPPFLAGS", "-I#{Formula["icu4c"].opt_include}"
+    ENV.append "CPPFLAGS", "-I#{Formula["libpciaccess"].opt_include}"
+    ENV.append "CPPFLAGS", "-I#{Formula["zlib"].opt_include}"
+
+    ENV.append "LDFLAGS", "-L#{Formula["hwloc"].opt_lib}"
+    ENV.append "LDFLAGS", "-lhwloc"
+
     args = %W[
       --disable-silent-rules
       --enable-ipv6
       --sysconfdir=#{etc}
       --with-libevent=#{Formula["libevent"].opt_prefix}
       --with-sge
-      --with-hwloc=/usr/include/hwloc
+      --with-hwloc=#{Formula["hwloc"].opt_prefix}
     ]
-      # --with-hwloc=#{Formula["hwloc"].opt_prefix}
+      # --with-hwloc=/usr/include/hwloc
       # --with-hwloc="/home/capin/homebrew/Cellar/hwloc/2.11.1/include"
 
     system "./autogen.pl", "--force" if build.head?
