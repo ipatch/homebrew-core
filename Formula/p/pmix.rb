@@ -58,6 +58,7 @@ class Pmix < Formula
       --sysconfdir=#{etc}
       --with-libevent=#{Formula["libevent"].opt_prefix}
       --with-sge
+      --with-hwloc=/usr/include/hwloc
     ]
       # --with-hwloc=#{Formula["hwloc"].opt_prefix}
       # --with-hwloc="/home/capin/homebrew/Cellar/hwloc/2.11.1/include"
