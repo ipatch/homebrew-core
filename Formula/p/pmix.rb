@@ -29,6 +29,9 @@ class Pmix < Formula
     depends_on "libtool" => :build
   end
 
+  # NOTE: ipatch, same configure err when using clang instead of gcc
+  # depends_on "llvm" => :build if OS.linux? && Hardware::CPU.arm?
+
   depends_on "hwloc"
   depends_on "libevent"
 
@@ -36,20 +39,31 @@ class Pmix < Formula
   uses_from_macos "zlib"
 
   def install
+    # NOTE: ipatch, asahi bld err
+    # An error occurred retrieving hwloc cppflags from pkg-config
+    # /home/capin/homebrew/lib/pkgconfig/hwloc.pc
+
     # Avoid references to the Homebrew shims directory
     cc = OS.linux? ? "gcc" : ENV.cc
     inreplace "src/tools/pmix_info/support.c", "PMIX_CC_ABSOLUTE", "\"#{cc}\""
+
+    # ENV["CC"] = Formula["llvm"].opt_bin/"clang"
+    # ENV["CXX"] = Formula["llvm"].opt_bin/"clang++"
+
+    # ENV.append_to_cflags "-I/path/to/hwloc/include"
 
     args = %W[
       --disable-silent-rules
       --enable-ipv6
       --sysconfdir=#{etc}
-      --with-hwloc=#{Formula["hwloc"].opt_prefix}
       --with-libevent=#{Formula["libevent"].opt_prefix}
       --with-sge
     ]
+      # --with-hwloc=#{Formula["hwloc"].opt_prefix}
+      # --with-hwloc="/home/capin/homebrew/Cellar/hwloc/2.11.1/include"
 
     system "./autogen.pl", "--force" if build.head?
+    system "./configure", "--help"
     system "./configure", *args, *std_configure_args
     system "make", "install"
   end
