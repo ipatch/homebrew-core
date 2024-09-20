@@ -32,14 +32,24 @@ class OpenMpi < Formula
   depends_on "libevent"
   depends_on "pmix"
 
+  depends_on "libxml2"
+  depends_on "icu4c"
+  depends_on "libpciaccess"
+  depends_on "zlib"
+
   conflicts_with "mpich", because: "both install MPI compiler wrappers"
 
   def install
+    # NOTE: ipatch, this formula will have the same issues as pmix, relating to hwloc
+
     # Backport https://github.com/open-mpi/ompi/commit/2d3ad2b2a777ffe70511426808a5c5ca5693c443
     # TODO: Remove on the next release (inreplace will fail)
     inreplace "configure", "$LDFLAGS_xcode_save", "$LDFLAGS_save_xcode" if build.stable?
 
     ENV.runtime_cpu_detection
+    # Otherwise libmpi_usempi_ignore_tkr gets built as a static library
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
+
     # Otherwise libmpi_usempi_ignore_tkr gets built as a static library
     ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version if OS.mac?
 
