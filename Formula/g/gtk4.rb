@@ -49,6 +49,9 @@ class Gtk4 < Formula
     depends_on "gettext"
   end
 
+  # NOTE: ipatch, configure err asahi linux
+  depends_on "cmake" => :build
+
   on_linux do
     depends_on "libx11"
     depends_on "libxcursor"
