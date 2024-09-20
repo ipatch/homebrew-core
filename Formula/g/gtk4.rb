@@ -68,6 +68,8 @@ class Gtk4 < Formula
   end
 
   def install
+    # NOTE: ipatch, bld err,
+    # gtkcellrendererspin.c:210:26: error: assignment to 'GtkAdjustment *' {aka 'struct _GtkAdjustment *'} from incompatible pointer type 'GObject *'
     args = %w[
       -Dbuild-examples=false
       -Dbuild-tests=false
