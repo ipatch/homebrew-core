@@ -75,6 +75,11 @@ class Gtkx < Formula
     sha256 "ce5adf1a019ac7ed2a999efb65cfadeae50f5de8663638c7f765f8764aa7d931"
   end
 
+  patch do
+    url "https://gitweb.gentoo.org/repo/gentoo.git/plain/x11-libs/gtk+/files/gtk+-2.24.33-Fix-casts.patch"
+    sha256 "8f5f611903fbacbf5f7cf0ad43fa384cfe08d9c0b6dc57acf4855932d7c00a84"
+  end
+
   def backend
     backend = "quartz"
     on_linux do
