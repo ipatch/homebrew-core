@@ -80,6 +80,9 @@ class Ffmpeg < Formula
     depends_on "libxv"
   end
 
+  # NOTE: ipatch, bld err missing drm.h
+  depends_on "libdrm"
+
   on_intel do
     depends_on "nasm" => :build
   end
