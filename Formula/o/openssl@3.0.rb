@@ -67,6 +67,20 @@ class OpensslAT30 < Formula
   end
 
   def install
+    # NOTE: ipatch, bld err specific to my homebrew setup 🤦‍♂️
+    # /home/capin/homebrew/opt/binutils/bin/ld: libcrypto.a(libcrypto-lib-thread_posix.o): in function `ossl_crypto_condvar_wait_timeout':
+    # thread_posix.c:(.text+0x31a): undefined reference to `__pthread_cond_timedwait64'
+    # /home/capin/homebrew/opt/binutils/bin/ld: libcrypto.a(libcrypto-lib-thread_posix.o): in function `ossl_crypto_condvar_wait_timeout':
+    # thread_posix.c:(.text+0x31a): undefined reference to `__pthread_cond_timedwait64'
+    # collect2: error: ld returned 1 exit status
+    # make[1]: *** [Makefile:21057: fuzz/cmp-test] Error 1
+    # make[1]: *** Waiting for unfinished jobs....
+    # collect2: error: ld returned 1 exit status
+    # make[1]: *** [Makefile:21270: fuzz/pem-test] Error 1
+    # /home/capin/homebrew/opt/binutils/bin/ld: libcrypto.a(libcrypto-lib-thread_posix.o): in function `ossl_crypto_condvar_wait_timeout':
+    # thread_posix.c:(.text+0x31a): undefined reference to `__pthread_cond_timedwait64'
+    # collect2: error: ld returned 1 exit status
+
     if OS.linux?
       ENV.prepend_create_path "PERL5LIB", buildpath/"lib/perl5"
       ENV.prepend_path "PATH", buildpath/"bin"
