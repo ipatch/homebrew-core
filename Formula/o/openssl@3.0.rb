@@ -81,6 +81,8 @@ class OpensslAT30 < Formula
     # thread_posix.c:(.text+0x31a): undefined reference to `__pthread_cond_timedwait64'
     # collect2: error: ld returned 1 exit status
 
+    ENV["LD"] = "/usr/bin/ld"
+
     if OS.linux?
       ENV.prepend_create_path "PERL5LIB", buildpath/"lib/perl5"
       ENV.prepend_path "PATH", buildpath/"bin"
