@@ -117,7 +117,8 @@ class OpensslAT30 < Formula
       arch_args << (Hardware::CPU.is_64_bit? ? "linux-aarch64" : "linux-armv4")
     end
 
-    # NOTE: ipatch, still getting linking errors using `/usr/bin/ld` instead of ld provided by hb binutils
+    # NOTE: ipatch, still getting linking errors,
+    # using either `/usr/bin/ld` or ld provided by hb binutils
 
     openssldir.mkpath
     system "perl", "./Configure", *(configure_args + arch_args)
