@@ -119,7 +119,11 @@ class OpensslAT30 < Formula
 
     openssldir.mkpath
     system "perl", "./Configure", *(configure_args + arch_args)
-    system "make"
+
+    # system "make"
+    # Find the line that runs 'make' and modify it:
+    system "make", "V=1", "LDFLAGS=-Wl,--verbose"
+
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
     system "make", "HARNESS_JOBS=#{ENV.make_jobs}", "test"
 
