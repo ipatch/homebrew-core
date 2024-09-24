@@ -81,7 +81,9 @@ class OpensslAT30 < Formula
     # thread_posix.c:(.text+0x31a): undefined reference to `__pthread_cond_timedwait64'
     # collect2: error: ld returned 1 exit status
 
+    ohai "--------------------------------------------------------"
     ohai "Current LD: #{ENV["LD"]}"
+    ohai "--------------------------------------------------------"
 
     ENV["LD"] = "/usr/bin/ld"
 
