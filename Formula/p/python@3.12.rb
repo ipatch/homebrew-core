@@ -42,7 +42,25 @@ class PythonAT312 < Formula
     depends_on "berkeley-db@5"
     depends_on "libnsl"
     depends_on "libtirpc"
+    # NOTE: ipatch,
+    depends_on "util-linux"
   end
+
+  link_overwrite "bin/2to3"
+  link_overwrite "bin/idle3"
+  link_overwrite "bin/pip3"
+  link_overwrite "bin/pydoc3"
+  link_overwrite "bin/python3"
+  link_overwrite "bin/python3-config"
+  link_overwrite "bin/wheel3"
+  link_overwrite "share/man/man1/python3.1"
+  link_overwrite "lib/libpython3.so"
+  link_overwrite "lib/pkgconfig/python3.pc"
+  link_overwrite "lib/pkgconfig/python3-embed.pc"
+  link_overwrite "Frameworks/Python.framework/Headers"
+  link_overwrite "Frameworks/Python.framework/Python"
+  link_overwrite "Frameworks/Python.framework/Resources"
+  link_overwrite "Frameworks/Python.framework/Versions/Current"
 
   # Always update to latest release
   resource "flit-core" do
@@ -96,6 +114,9 @@ class PythonAT312 < Formula
   end
 
   def install
+    # NOTE: ipatch, bld err
+    # ./python: symbol lookup error: ./python: undefined symbol: __gcov_indirect_call
+
     # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV["PYTHONHOME"] = nil
