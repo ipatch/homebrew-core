@@ -1,4 +1,6 @@
 class Libdrm < Formula
+  include Language::Python::Virtualenv
+
   desc "Library for accessing the direct rendering manager"
   homepage "https://dri.freedesktop.org"
   url "https://dri.freedesktop.org/libdrm/libdrm-2.4.123.tar.xz"
@@ -21,10 +23,21 @@ class Libdrm < Formula
   depends_on "libpciaccess"
   depends_on :linux
 
+  resource "meson-python" do
+    url "https://files.pythonhosted.org/packages/1a/3f/b19e9354c358f5acf322dd1f81ed9f0c633ba4bcccfd32e9c3740c43c9e5/meson_python-0.16.0.tar.gz"
+    sha256 ""
+  end
+
   def install
+    # NOTE: ipatch, bld err
+    # ModuleNotFoundError: No module named 'mesonbuild'
+
     system "meson", "setup", "build", "-Dcairo-tests=disabled", "-Dvalgrind=disabled", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
+
+    # NOTE: ipatch,
+    virtualenv_install_with_resources
   end
 
   test do
