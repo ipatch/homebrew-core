@@ -59,6 +59,10 @@ class Glib < Formula
   end
 
   def install
+    # NOTE: https://gitlab.gnome.org/GNOME/glib/-/issues/3134
+
+    # NOTE: it looks like setuptools was split out into its own hb formula file, ie. python-setuptools
+
     # NOTE: ipatch, all the fun python module err BS 😵
     # ModuleNotFoundError: No module named 'distutils'
 
