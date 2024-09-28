@@ -59,6 +59,23 @@ class Glib < Formula
   end
 
   def install
+    # NOTE: ipatch, all the fun python module err BS 😵
+    # ModuleNotFoundError: No module named 'distutils'
+
+    # NOTE: to resolve the above error with python@3.12 install setuptools
+    # but get the below err with pip3.12 install setuptools
+    # ERROR: Could not install packages due to an OSError: [Errno 13] Permission denied: '/home/capin/homebrew/lib/python3.12/site-packages/setuptools-75.1.0.dist-info/REQUESTED'
+    # Consider using the `--user` option or check the permissions.
+
+    # NOTE: use the below cmd to find the USER_SITE dir for python modules
+    # `import site; print(site.USER_SITE)`
+    # /home/capin/.local/lib/python3.12/site-packages
+
+    # NOTE: ipatch, fix bld err
+    # TODO: dont hardcode path entries
+    ENV.prepend_path "PYTHONPATH", "/home/capin/homebrew/lib/python3.12/site-packages"
+    ENV.prepend_path "PYTHONPATH", "/home/capin/.local/lib/python3.12/site-packages"
+
     python = "python3.12"
     inreplace %w[gio/xdgmime/xdgmime.c glib/gutils.c], "@@HOMEBREW_PREFIX@@", HOMEBREW_PREFIX
     # Avoid the sandbox violation when an empty directory is created outside of the formula prefix.
