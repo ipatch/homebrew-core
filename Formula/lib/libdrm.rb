@@ -20,24 +20,23 @@ class Libdrm < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+  depends_on "python@3.12" => :build
   depends_on "libpciaccess"
   depends_on :linux
 
-  resource "meson-python" do
-    url "https://files.pythonhosted.org/packages/1a/3f/b19e9354c358f5acf322dd1f81ed9f0c633ba4bcccfd32e9c3740c43c9e5/meson_python-0.16.0.tar.gz"
+  resource "meson" do
+    url "https://files.pythonhosted.org/packages/34/e8/bb0e264882a42f5d5acae869d5980f298ff9c298d844e18fd1ac009ce7e9/meson-1.5.2.tar.gz"
     sha256 ""
   end
 
   def install
     # NOTE: ipatch, bld err
     # ModuleNotFoundError: No module named 'mesonbuild'
+    # virtualenv_install_with_resources :using => "python@3.12"
 
     system "meson", "setup", "build", "-Dcairo-tests=disabled", "-Dvalgrind=disabled", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
-
-    # NOTE: ipatch,
-    virtualenv_install_with_resources
   end
 
   test do
