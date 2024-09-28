@@ -117,6 +117,8 @@ class PythonAT312 < Formula
     # NOTE: ipatch, bld err
     # ./python: symbol lookup error: ./python: undefined symbol: __gcov_indirect_call
 
+    # https://bugs.python.org/issue29712
+
     # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV["PYTHONHOME"] = nil
