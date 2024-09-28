@@ -144,11 +144,11 @@ class PythonAT312 < Formula
       --without-ensurepip
       --enable-loadable-sqlite-extensions
       --with-openssl=#{Formula["openssl@3"].opt_prefix}
-      --enable-optimizations
       --with-system-expat
       --with-system-libmpdec
       --with-readline=editline
     ]
+      # --enable-optimizations
 
     # Python re-uses flags when building native modules.
     # Since we don't want native modules prioritizing the brew
