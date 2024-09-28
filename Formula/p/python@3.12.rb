@@ -118,6 +118,7 @@ class PythonAT312 < Formula
     # ./python: symbol lookup error: ./python: undefined symbol: __gcov_indirect_call
 
     # https://bugs.python.org/issue29712
+    # NOTE: ipatch, disabling optimizations produces a working bld 😫
 
     # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
