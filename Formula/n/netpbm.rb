@@ -35,6 +35,8 @@ class Netpbm < Formula
 
   conflicts_with "jbigkit", because: "both install `pbm.5` and `pgm.5` files"
 
+  patch :DATA
+
   def install
     cp "config.mk.in", "config.mk"
 
@@ -118,3 +120,18 @@ class Netpbm < Formula
     refute_predicate ppmout, :empty?
   end
 end
+
+__END__
+diff --git a/converter/other/jpeg2000/libjasper_compat.c b/converter/other/jpeg2000/libjasper_compat.c
+index <old-index>..<new-index> 100644
+--- a/converter/other/jpeg2000/libjasper_compat.c
++++ b/converter/other/jpeg2000/libjasper_compat.c
+@@ -16,7 +16,7 @@
+
+     if (jasperP) {
+         *imagePP = jasperP;
+-        *errorP  = errorP;
++        *errorP  = NULL;  // Indicate no error if successful
+     } else {
+         pm_asprintf(errorP, "Failed.  Details may have been written to "
+                     "Standard Error");
