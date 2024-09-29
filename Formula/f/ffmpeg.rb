@@ -77,6 +77,7 @@ class Ffmpeg < Formula
 
   on_linux do
     depends_on "alsa-lib"
+    depends_on "libdrm"
     depends_on "libxext"
     depends_on "libxv"
   end
