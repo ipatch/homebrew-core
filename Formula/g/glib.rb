@@ -59,6 +59,8 @@ class Glib < Formula
   end
 
   def install
+    # NOTE: https://stackoverflow.com/questions/77876447/no-module-named-distutils-despite-setuptools-installed
+
     # NOTE: https://gitlab.gnome.org/GNOME/glib/-/issues/3134
 
     # NOTE: it looks like setuptools was split out into its own hb formula file, ie. python-setuptools
