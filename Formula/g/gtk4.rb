@@ -50,6 +50,7 @@ class Gtk4 < Formula
   end
 
   on_linux do
+    depends_on "librsvg"
     depends_on "libx11"
     depends_on "libxcursor"
     depends_on "libxdamage"
@@ -63,6 +64,11 @@ class Gtk4 < Formula
   end
 
   def install
+    # NOTE: ipatch, bld err
+    # .d -o demos/gtk-demo/gtk4-demo.p/paintable_svg.c.o -c ../demos/gtk-demo/paintable_svg.c
+    # ../demos/gtk-demo/paintable_svg.c:10:10: fatal error: librsvg/rsvg.h: No such file or directory
+    # 10 | #include <librsvg/rsvg.h>
+
     args = %w[
       -Dbuild-examples=false
       -Dbuild-tests=false
