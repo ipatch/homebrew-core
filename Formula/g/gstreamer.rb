@@ -149,6 +149,12 @@ class Gstreamer < Formula
   patch :DATA
 
   def install
+    # NOTE: ipatch, bld err
+    # qt6glrenderer.h:24:10: fatal error: QThread: No such file or directory
+
+    # NOTE: ipatch, can not make qt a dep, err
+    # Error: The following packages contain cyclic dependencies:
+
     odie "rs resource needs to be updated" if build.stable? && version != resource("rs").version
 
     (buildpath/"subprojects/gst-plugins-rs").install resource("rs")
