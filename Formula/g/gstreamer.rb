@@ -204,6 +204,8 @@ class Gstreamer < Formula
       -Dgst-plugins-rs:csound=disabled
       -Dgst-plugins-rs:gtk4=enabled
       -Dgst-plugins-rs:sodium-source=system
+      -Dqt6=disabled
+      -Dqt5=disabled
     ]
 
     # The apple media plug-in uses API that was added in Mojave
