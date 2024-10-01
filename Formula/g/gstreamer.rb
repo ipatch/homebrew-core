@@ -167,9 +167,12 @@ class Gstreamer < Formula
     # Limit Rust compilation to a single job
     ENV["CARGO_BUILD_JOBS"] = "1"
 
+    # NOTE: ipatch, the below did not limit the number of cores being used
     # Calculate half the number of CPU cores for GCC
     cpu_count = (Hardware::CPU.cores / 2).to_i
     ENV["MAKEFLAGS"] = "-j#{cpu_count}"
+
+    # NOTE: ipatch, setting HOMEBREW_MAKE_JOBS=2 working build on mbp 2015
 
     odie "rs resource needs to be updated" if build.stable? && version != resource("rs").version
 
