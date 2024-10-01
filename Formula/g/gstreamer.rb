@@ -163,6 +163,14 @@ class Gstreamer < Formula
     # NOTE: build err 3
     # building gstreamer will consume all RAM on my mbp 2015 w/ 16GB need to further tshoot to limit RAM usage
 
+    # NOTE: ipatch, attempt to limit the build jobs for the rust compiler
+    # Limit Rust compilation to a single job
+    ENV["CARGO_BUILD_JOBS"] = "1"
+
+    # Calculate half the number of CPU cores for GCC
+    cpu_count = (Hardware::CPU.cores / 2).to_i
+    ENV["MAKEFLAGS"] = "-j#{cpu_count}"
+
     odie "rs resource needs to be updated" if build.stable? && version != resource("rs").version
 
     (buildpath/"subprojects/gst-plugins-rs").install resource("rs")
