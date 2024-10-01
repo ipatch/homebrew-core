@@ -214,6 +214,8 @@ class Gstreamer < Formula
       -Dgst-plugins-rs:gtk4=enabled
       -Dgst-plugins-rs:webrtchttp=enabled
       -Dgst-plugins-rs:sodium-source=system
+      -Dqt6=disabled
+      -Dqt5=disabled
     ]
 
     # Ban trying to chown to root.
