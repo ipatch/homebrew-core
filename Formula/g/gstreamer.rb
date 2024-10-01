@@ -124,6 +124,7 @@ class Gstreamer < Formula
   on_linux do
     depends_on "alsa-lib"
     depends_on "libdrm"
+    depends_on "librsvg"
     depends_on "libva"
     depends_on "libxdamage"
     depends_on "libxv"
@@ -154,6 +155,11 @@ class Gstreamer < Formula
 
     # NOTE: ipatch, can not make qt a dep, err
     # Error: The following packages contain cyclic dependencies:
+
+    # NOTE: build err 2
+    # ../subprojects/gst-plugins-bad/ext/rsvg/gstrsvgdec.h:29:10: fatal error: librsvg/rsvg.h: No such file or directory
+    # 29 | #include <librsvg/rsvg.h>
+      |          ^~~~~~~~~~~~~~~~
 
     odie "rs resource needs to be updated" if build.stable? && version != resource("rs").version
 
