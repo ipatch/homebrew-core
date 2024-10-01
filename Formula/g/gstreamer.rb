@@ -160,6 +160,9 @@ class Gstreamer < Formula
     # ../subprojects/gst-plugins-bad/ext/rsvg/gstrsvgdec.h:29:10: fatal error: librsvg/rsvg.h: No such file or directory
     # 29 | #include <librsvg/rsvg.h>
 
+    # NOTE: build err 3
+    # building gstreamer will consume all RAM on my mbp 2015 w/ 16GB need to further tshoot to limit RAM usage
+
     odie "rs resource needs to be updated" if build.stable? && version != resource("rs").version
 
     (buildpath/"subprojects/gst-plugins-rs").install resource("rs")
