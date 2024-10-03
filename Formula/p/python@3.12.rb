@@ -114,6 +114,10 @@ class PythonAT312 < Formula
   end
 
   def install
+    # NOTE: ipatch, build time on my 2015 mbp
+    #   ==> Summary
+    # /home/capin/homebrew/Cellar/python@3.12/3.12.7: 7,967 files, 194.5MB, built in 19 minutes 9 seconds
+
     # NOTE: ipatch, bld err
     # ./python: symbol lookup error: ./python: undefined symbol: __gcov_indirect_call
 
@@ -149,7 +153,7 @@ class PythonAT312 < Formula
       --with-system-libmpdec
       --with-readline=editline
     ]
-      # --enable-optimizations
+    # --enable-optimizations
 
     # Python re-uses flags when building native modules.
     # Since we don't want native modules prioritizing the brew
