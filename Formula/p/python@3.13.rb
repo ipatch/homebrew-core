@@ -38,6 +38,7 @@ class PythonAT313 < Formula
     depends_on "berkeley-db@5"
     depends_on "libnsl"
     depends_on "libtirpc"
+    depends_on "util-linux"
   end
 
   link_overwrite "bin/2to3"
