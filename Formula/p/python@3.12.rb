@@ -43,6 +43,7 @@ class PythonAT312 < Formula
     depends_on "berkeley-db@5"
     depends_on "libnsl"
     depends_on "libtirpc"
+    depends_on "tcl-tk"
     depends_on "util-linux"
   end
 
@@ -98,6 +99,11 @@ class PythonAT312 < Formula
   end
 
   def install
+    # NOTE: ipatch, build error asahi linux,
+    # ./Modules/tkappinit.c:16:10: fatal error: tcl.h: No such file or directory
+    # #include <tcl.h>
+    #          ^~~~~~~
+
     # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV["PYTHONHOME"] = nil
@@ -155,6 +161,9 @@ class PythonAT312 < Formula
       args << "--enable-framework=#{frameworks}"
       args << "--with-dtrace"
       args << "--with-dbmliborder=ndbm"
+      # NOTE: ipatch, disable tcltk
+      # NO WORK!
+      # args << "--without-tcltk"
 
       # Avoid linking to libgcc https://mail.python.org/pipermail/python-dev/2012-February/116205.html
       args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
