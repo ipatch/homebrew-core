@@ -29,6 +29,7 @@ class Hdf5 < Formula
   depends_on "gcc" # for gfortran
   depends_on "libaec"
   depends_on "pkg-config"
+  depends_on "zlib" => :build
 
   uses_from_macos "zlib"
 
@@ -41,19 +42,44 @@ class Hdf5 < Formula
   end
 
   def install
+    # NOTE: ipatch,
+    # ZLIB_DIR:PATH=/usr/lib64/cmake/ZLIB
+    # ZLIB_USE_EXTERNAL:BOOL=OFF
+    # NO WORK!
+    # ENV["ZLIB_DIR"] = Formula["zlib"].opt_prefix.to_s
+    
+    # Prepend zlib path to the existing CMAKE_PREFIX_PATH
+    # NO WORK!
+    # if ENV["CMAKE_PREFIX_PATH"]
+    #   ENV["CMAKE_PREFIX_PATH"] = "#{Formula["zlib"].opt_prefix}:#{ENV["CMAKE_PREFIX_PATH"]}"
+    # else
+    #   ENV["CMAKE_PREFIX_PATH"] = Formula["zlib"].opt_prefix.to_s
+    # end
+
     ENV["libaec_DIR"] = Formula["libaec"].opt_prefix.to_s
-    args = %w[
+    cmake_ar = Formula["gcc"].opt_bin/"gcc-ar-14"
+
+    args = %W[
       -DHDF5_USE_GNU_DIRS:BOOL=ON
       -DHDF5_INSTALL_CMAKE_DIR=lib/cmake/hdf5
       -DHDF5_BUILD_FORTRAN:BOOL=ON
       -DHDF5_BUILD_CPP_LIB:BOOL=ON
       -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON
+
+      -DCMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH=FALSE
+      -DCMAKE_FIND_USE_CMAKE_SYSTEM_PATH=FALSE
+
+      -DCMAKE_IGNORE_PATH=/usr/lib64/cmake/ZLIB/
+      -DZLIB_DIR=/home/capin/homebrew/opt/zlib
+
+      -DCMAKE_AR=#{cmake_ar}
     ]
 
     # https://github.com/HDFGroup/hdf5/issues/4310
     args << "-DHDF5_ENABLE_NONSTANDARD_FEATURE_FLOAT16:BOOL=OFF"
 
-    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    # system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args, "-L"
 
     # Avoid c shims in settings files
     inreplace_c_files = %w[
