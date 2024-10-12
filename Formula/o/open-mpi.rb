@@ -29,12 +29,11 @@ class OpenMpi < Formula
 
   depends_on "gcc" # for gfortran
   depends_on "hwloc"
-  depends_on "libevent"
-  depends_on "pmix"
-
-  depends_on "libxml2"
   depends_on "icu4c"
+  depends_on "libevent"
   depends_on "libpciaccess"
+  depends_on "libxml2"
+  depends_on "pmix"
   depends_on "zlib"
 
   conflicts_with "mpich", because: "both install MPI compiler wrappers"
@@ -47,9 +46,6 @@ class OpenMpi < Formula
     inreplace "configure", "$LDFLAGS_xcode_save", "$LDFLAGS_save_xcode" if build.stable?
 
     ENV.runtime_cpu_detection
-    # Otherwise libmpi_usempi_ignore_tkr gets built as a static library
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
-
     # Otherwise libmpi_usempi_ignore_tkr gets built as a static library
     ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version if OS.mac?
 
