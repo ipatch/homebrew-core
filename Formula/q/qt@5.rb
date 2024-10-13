@@ -64,6 +64,7 @@ class QtAT5 < Formula
     depends_on "fontconfig"
     depends_on "harfbuzz"
     depends_on "icu4c@75"
+    depends_on "gtk+3"
     depends_on "libdrm"
     depends_on "libevent"
     depends_on "libice"
@@ -217,6 +218,72 @@ class QtAT5 < Formula
     venv = virtualenv_create(buildpath/"venv", "python3.12")
     venv.pip_install resources.reject { |r| r.name == "qtwebengine" }
     ENV.prepend_path "PATH", venv.root/"bin"
+
+    # NOTE: ipatch, asahi bld errs contd.
+    # > In file included from /home/capin/homebrew/Cellar/mesa/24.2.4/include/EGL/egl.h:20,
+    # >                  from main.cpp:7:
+    # > main.cpp: In function 'int main(int, char**)':
+    # > /home/capin/homebrew/Cellar/mesa/24.2.4/include/EGL/eglplatform.h:170:56: error: invalid conversion from 'EGLNativeDisplayType' {aka 'void*'} to 'Display*' {aka '_XDisplay*'} [-fpermissive]
+    # >   170 | #define EGL_CAST(type, value) (static_cast<type>(value))
+    # >       |                                                        ^
+    # >       |                                                        |
+    # >       |                                                        EGLNativeDisplayType {aka void*}
+    # > /home/capin/homebrew/Cellar/mesa/24.2.4/include/EGL/egl.h:251:43: note: in expansion of macro 'EGL_CAST'
+    # >   251 | #define EGL_DEFAULT_DISPLAY               EGL_CAST(EGLNativeDisplayType,0)
+    # >       |                                           ^~~~~~~~
+    # > main.cpp:13:20: note: in expansion of macro 'EGL_DEFAULT_DISPLAY'
+    # >    13 |     Display *dpy = EGL_DEFAULT_DISPLAY;
+    # >       |                    ^~~~~~~~~~~~~~~~~~~
+    # > main.cpp:15:11: error: invalid conversion from 'EGLNativeDisplayType' {aka 'void*'} to 'Display*' {aka '_XDisplay*'} [-fpermissive]
+    # >    15 |     dpy = egldpy;
+    # >       |           ^~~~~~
+    # >       |           |
+    # >       |           EGLNativeDisplayType {aka void*}
+    # > make: *** [Makefile:179: main.o] Error 1
+    # test config.qtbase_gui.tests.egl-x11 FAILED
+    # Trying source 0 (type pkgConfig) of library bcm_host ...
+    # + /home/capin/homebrew/opt/pkg-config/bin/pkg-config --exists --silence-errors bcm_host
+
+    # test config.qtmultimedia_multimedia.libraries.libresourceqt5 FAILED
+    # Checking for Flite...
+    # Trying source 0 (type inline) of library flite ...
+    # + cd /opt/tmp/homebrew/qtA5-20241012-222106-uzyd7n/qt-everywhere-src-5.15.15/config.tests/flite && /opt/tmp/homebrew/qtA5-20241012-222106-uzyd7n/qt-everywhere-src-5.15.15/qtbase/bin/qmake "CONFIG -= qt debug_and_release app_bundle lib_bundle" "CONFIG += shared warn_off console single_arch" 'QMAKE_USE += flite' 'QMAKE_LIBS_FLITE = -lflite_cmu_us_kal16 -lflite_usenglish -lflite_cmulex -lflite' /opt/tmp/homebrew/qtA5-20241012-222106-uzyd7n/qt-everywhere-src-5.15.15/config.tests/flite
+    # + cd /opt/tmp/homebrew/qtA5-20241012-222106-uzyd7n/qt-everywhere-src-5.15.15/config.tests/flite && MAKEFLAGS= /home/capin/homebrew/Library/Homebrew/shims/linux/super/gmake
+    # > g++ -c -pipe -O2 -w -fPIC  -I. -I/opt/tmp/homebrew/qtA5-20241012-222106-uzyd7n/qt-everywhere-src-5.15.15/qtbase/mkspecs/linux-g++ -o main.o main.cpp
+    # > main.cpp:2:10: fatal error: flite/flite.h: No such file or directory
+    # >     2 | #include <flite/flite.h>
+    # >       |          ^~~~~~~~~~~~~~~
+    # > compilation terminated.
+    # > make: *** [Makefile:169: main.o] Error 1
+    # => source failed verification.
+    # test config.qtspeech_tts.libraries.flite FAILED
+    # Checking for Speech Dispatcher...
+    # Trying source 0 (type pkgConfig) of library speechd ...
+    # + /home/capin/homebrew/opt/pkg-config/bin/pkg-config --exists --silence-errors speech-dispatcher
+    # pkg-config did not find package.
+    #   => source produced no result.
+    # Trying source 1 (type inline) of library speechd ...
+    # + cd /opt/tmp/homebrew/qtA5-20241012-222106-uzyd7n/qt-everywhere-src-5.15.15/config.tests/speechd && /opt/tmp/homebrew/qtA5-20241012-222106-uzyd7n/qt-everywhere-src-5.15.15/qtbase/bin/qmake "CONFIG -= qt debug_and_release app_bundle lib_bundle" "CONFIG += shared warn_off console single_arch" 'QMAKE_USE += speechd' 'QMAKE_LIBS_SPEECHD = -lspeechd' /opt/tmp/homebrew/qtA5-20241012-222106-uzyd7n/qt-everywhere-src-5.15.15/config.tests/speechd
+    # + cd /opt/tmp/homebrew/qtA5-20241012-222106-uzyd7n/qt-everywhere-src-5.15.15/config.tests/speechd && MAKEFLAGS= /home/capin/homebrew/Library/Homebrew/shims/linux/super/gmake
+    # > g++ -c -pipe -O2 -w -fPIC  -I. -I/opt/tmp/homebrew/qtA5-20241012-222106-uzyd7n/qt-everywhere-src-5.15.15/qtbase/mkspecs/linux-g++ -o main.o main.cpp
+    # > main.cpp:2:10: fatal error: libspeechd.h: No such file or directory
+    # >     2 | #include <libspeechd.h>
+    # >       |          ^~~~~~~~~~~~~~
+    # > compilation terminated.
+    # > make: *** [Makefile:169: main.o] Error 1
+    # => source failed verification.
+    # test config.qtspeech_tts.libraries.speechd FAILED
+    # Checking for libclang...
+    # QDoc:
+    # Using Clang installation found in /home/capin/homebrew/Cellar/llvm/19.1.1.
+    # Set the LLVM_INSTALL_DIR environment variable to override.
+
+
+    # NOTE: ipatch, current build err, apparently the chromium webegnine needs the gtk.h header file
+    # impl.o .moc/moc_qbearerengine_impl.cpp
+    # qgtk3theme.cpp:47:10: fatal error: gtk/gtk.h: No such file or directory
+    # 47 | #include <gtk/gtk.h>
+    # |          ^~~~~~~~~~~
 
     # NOTE: ipatch, it looks perl will required to complete the install
     # did not seem to have an error using the perl provided by homebrew
