@@ -323,8 +323,8 @@ class QtAT5 < Formula
       -system-sqlite
       -system-zlib
       -webengine-python-version python3
-      -linker lld
     ]
+    # -linker lld
     # -linker lld
 
     if OS.mac?
