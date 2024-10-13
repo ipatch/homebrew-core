@@ -63,6 +63,7 @@ class Mesa < Formula
     depends_on "libxshmfence"
     depends_on "libxv"
     depends_on "libxxf86vm"
+    depends_on "lua"
     depends_on "lm-sensors"
     depends_on "spirv-llvm-translator"
     depends_on "valgrind"
@@ -108,6 +109,8 @@ class Mesa < Formula
   end
 
   def install
+    # NOTE: ipatch, bld err, ../src/freedreno/decode/script.c:32:10: fatal error: lauxlib.h: No such file or directory
+
     # NOTE: ipatch, bld err
     # src/etnaviv/isa/meson.build:106:25: ERROR: Program 'bindgen' not found or not executable
     #...
