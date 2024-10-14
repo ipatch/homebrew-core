@@ -46,6 +46,8 @@ class Pulseaudio < Formula
     depends_on "alsa-lib"
     depends_on "dbus"
     depends_on "libcap"
+    # NOTE: ipatch, pulseaudio looks for gst.h header file
+    # depends_on "gstreamer"
   end
 
   def install
