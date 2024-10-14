@@ -51,6 +51,8 @@ class Libplacebo < Formula
   depends_on "shaderc"
   depends_on "vulkan-loader"
 
+  depends_on "sdl2"
+
   def install
     resources.each do |r|
       # Override resource name to use expected directory name
@@ -64,12 +66,13 @@ class Libplacebo < Formula
       r.stage(Pathname("3rdparty")/dir_name)
     end
 
-    system "meson", "setup", "build",
-                    "-Dvulkan-registry=#{Formula["vulkan-headers"].share}/vulkan/registry/vk.xml",
-                    "-Dshaderc=enabled", "-Dvulkan=enabled", "-Dlcms=enabled",
-                    *std_meson_args
-    system "meson", "compile", "-C", "build", "--verbose"
-    system "meson", "install", "-C", "build"
+    system "meson", "configure", "build"
+    # system "meson", "setup", "build",
+    #                 "-Dvulkan-registry=#{Formula["vulkan-headers"].share}/vulkan/registry/vk.xml",
+    #                 "-Dshaderc=enabled", "-Dvulkan=enabled", "-Dlcms=enabled",
+    #                 *std_meson_args
+    # system "meson", "compile", "-C", "build", "--verbose"
+    # system "meson", "install", "-C", "build"
   end
 
   test do
