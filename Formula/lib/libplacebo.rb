@@ -66,13 +66,14 @@ class Libplacebo < Formula
       r.stage(Pathname("3rdparty")/dir_name)
     end
 
+    # NOTE: build was failing due to missing header file to compile the demos
+    system "meson", "setup", "build",
+                    "-Dvulkan-registry=#{Formula["vulkan-headers"].share}/vulkan/registry/vk.xml",
+                    "-Dshaderc=enabled", "-Dvulkan=enabled", "-Dlcms=enabled", "-Ddemos=false",
+                    *std_meson_args
     system "meson", "configure", "build"
-    # system "meson", "setup", "build",
-    #                 "-Dvulkan-registry=#{Formula["vulkan-headers"].share}/vulkan/registry/vk.xml",
-    #                 "-Dshaderc=enabled", "-Dvulkan=enabled", "-Dlcms=enabled",
-    #                 *std_meson_args
-    # system "meson", "compile", "-C", "build", "--verbose"
-    # system "meson", "install", "-C", "build"
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   test do
