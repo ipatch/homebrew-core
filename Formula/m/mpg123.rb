@@ -20,7 +20,12 @@ class Mpg123 < Formula
     sha256 x86_64_linux:  "b36a86bf0efc22e7bff55c0a241014848c7eeda1b343a4479d8cadea62529409"
   end
 
+  depends_on "sdl2"
+
   def install
+    # NOTE: ipatch, current build err
+    # fatal error: SDL.h: No such file or directory  #include <SDL.h>
+
     args = %w[
       --with-module-suffix=.so
       --enable-static
@@ -34,6 +39,9 @@ class Mpg123 < Formula
       "--with-cpu=x86-64"
     end
 
+    args << "--with-sdl=NO" if OS.linux?
+
+    system "./configure", "--help"
     system "./configure", *args, *std_configure_args
     system "make", "install"
   end
