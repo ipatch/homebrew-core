@@ -13,11 +13,6 @@ class FfmpegAT6 < Formula
     regex(/href=.*?ffmpeg[._-]v?(6(?:\.\d+)+)\.t/i)
   end
 
-  patch do
-    url "https://git.videolan.org/?p=ffmpeg.git;a=patch;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc"
-    sha256 "15979d2e4b762946c4e4be2b0e72d31fc9c1dfc36f2827a8e609179d71f01257"
-  end
-
   bottle do
     sha256 arm64_sequoia: "e8a11eea09ec3800874c6db22f5b37270fce05fb7c1fca401a721f4e26aa74fa"
     sha256 arm64_sonoma:  "ad01c4945806c0c7f1aee4d87170b918a584cdab7f9ff0f66b61871dd747bdef"
@@ -98,12 +93,18 @@ class FfmpegAT6 < Formula
     sha256 "57e26caced5a1382cb639235f9555fc50e45e7bf8333f7c9ae3d49b3241d3f77"
   end
 
+  patch do
+    url "https://git.videolan.org/?p=ffmpeg.git;a=patch;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc"
+    sha256 "15979d2e4b762946c4e4be2b0e72d31fc9c1dfc36f2827a8e609179d71f01257"
+  end
+
   def install
     # NOTE: ipatch, bld err arch linux
     # https://git.videolan.org/?p=ffmpeg.git;a=commitdiff;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc
     #
     # libavcodec/libx265.c: In function 'libx265_encode_frame':
-    # libavcodec/libx265.c:708:59: error: passing argument 5 of 'ctx->api->encoder_encode' from incompatible pointer type [-Wincompatible-pointer-types]
+    # libavcodec/libx265.c:708:59: error: passing argument 5 of 'ctx->api->encoder_encode' from incompatible 
+    # pointer type [-Wincompatible-pointer-types]
     #   708 |                                    pic ? &x265pic : NULL, &x265pic_out);
     #       |                                                           ^~~~~~~~~~~~
     #       |                                                           |
