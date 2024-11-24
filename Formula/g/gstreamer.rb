@@ -150,6 +150,17 @@ class Gstreamer < Formula
   patch :DATA
 
   def install
+    # NOTE: ipatch, bld err nov 23 2024
+    #     FAILED: subprojects/gst-plugins-bad/ext/x265/libgstx265.so.p/gstx265enc.c.o
+    # gcc-14 -Isubprojects/gst-plugins-bad/ext/x265/libgstx265.so.p -Isubprojects/gst-plugins-bad/ext/x265 -I../subprojects/gst-plugins-bad/ext/x265 -Isubprojects/gst-plugins-bad -I../subprojects/gst-plugins-bad -Isubprojects/gst-plugins-base/gst-libs -I../subprojects/gst-plugins-base/gst-libs -Isubprojects/gstreamer/libs -I../subprojects/gstreamer/libs -Isubprojects/gstreamer -I../subprojects/gstreamer -Isubprojects/gst-plugins-base/gst-libs/gst/pbutils -Isubprojects/gst-plugins-base/gst-libs/gst/video -Isubprojects/gstreamer/libs/gst/base -Isubprojects/gstreamer/gst -Isubprojects/gst-plugins-base/gst-libs/gst/audio -Isubprojects/gst-plugins-base/gst-libs/gst/tag -I/home/capin/homebrew/Cellar/glib/2.82.2/include/glib-2.0 -I/home/capin/homebrew/Cellar/glib/2.82.2/lib/glib-2.0/include -I/home/capin/homebrew/Cellar/pcre2/10.44/include -I/home/capin/homebrew/Cellar/glib/2.82.2/include -I/home/capin/homebrew/Cellar/libffi/3.4.6/include -I/home/capin/homebrew/Cellar/orc/0.4.40/include/orc-0.4 -I/home/capin/homebrew/opt/zlib/include -I/home/capin/homebrew/Cellar/x265/4.0_1/include -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -O3 -fvisibility=hidden -fno-strict-aliasing -DG_DISABLE_CAST_CHECKS -Wmissing-prototypes -Wold-style-definition -Wmissing-declarations -Wredundant-decls -Wwrite-strings -Wformat -Wformat-security -Winit-self -Wmissing-include-dirs -Waddress -Wno-multichar -Wvla -Wpointer-arith -fPIC -pthread -DHAVE_CONFIG_H -MD -MQ subprojects/gst-plugins-bad/ext/x265/libgstx265.so.p/gstx265enc.c.o -MF subprojects/gst-plugins-bad/ext/x265/libgstx265.so.p/gstx265enc.c.o.d -o subprojects/gst-plugins-bad/ext/x265/libgstx265.so.p/gstx265enc.c.o -c ../subprojects/gst-plugins-bad/ext/x265/gstx265enc.c
+    # ../subprojects/gst-plugins-bad/ext/x265/gstx265enc.c: In function 'gst_x265_enc_encode_frame':
+    # ../subprojects/gst-plugins-bad/ext/x265/gstx265enc.c:1553:28: error: passing argument 5 of 'api->encoder_encode' from in  # compatible pointer type [-Wincompatible-pointer-types]
+    # 1553 |       &nal, i_nal, pic_in, &pic_out);
+    #       |                            ^~~~~~~~
+    #       |                            |
+    #       |                            x265_picture *
+    # ../subprojects/gst-plugins-bad/ext/x265/gstx265enc.c:1553:28: note: expected 'x265_picture **' but argument is of type '  # x265_picture *'
+
     # NOTE: ipatch, bld err
     # qt6glrenderer.h:24:10: fatal error: QThread: No such file or directory
 
