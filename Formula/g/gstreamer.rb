@@ -149,6 +149,11 @@ class Gstreamer < Formula
   # TODO: Migrate patch to gstreamer monorepo.
   patch :DATA
 
+  patch do
+    url "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/7679.patch"
+    sha256 "595e17a70f2195204885cbfd7ae5e1ea9f8e63ac6acc37d452675036efaf95d6"
+  end
+
   def install
     # NOTE: ipatch, bld err nov 23 2024
     #     FAILED: subprojects/gst-plugins-bad/ext/x265/libgstx265.so.p/gstx265enc.c.o
