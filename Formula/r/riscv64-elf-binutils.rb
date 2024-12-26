@@ -21,7 +21,7 @@ class Riscv64ElfBinutils < Formula
     sha256 x86_64_linux:   "2d20f3c9e5b38bd284237023d75cd87e34224390064af224929fd51cf740e0a2"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "zstd"
 
   uses_from_macos "zlib"
@@ -33,25 +33,25 @@ class Riscv64ElfBinutils < Formula
   def install
     target = "riscv64-elf"
     system "./configure", "--target=#{target}",
-           "--prefix=#{prefix}",
-           "--libdir=#{lib}/#{target}",
-           "--infodir=#{info}/#{target}",
-           "--with-system-zlib",
-           "--with-zstd",
-           "--disable-nls"
+                          "--prefix=#{prefix}",
+                          "--libdir=#{lib}/#{target}",
+                          "--infodir=#{info}/#{target}",
+                          "--with-system-zlib",
+                          "--with-zstd",
+                          "--disable-nls"
     system "make"
     system "make", "install"
   end
 
   test do
-    (testpath/"test-s.s").write <<~EOS
+    (testpath/"test-s.s").write <<~ASM
       .section .text
       .globl _start
       _start:
           li a7, 93
           li a0, 0
           ecall
-    EOS
+    ASM
 
     system bin/"riscv64-elf-as", "-o", "test-s.o", "test-s.s"
     assert_match "file format elf64-littleriscv",

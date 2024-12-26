@@ -1,10 +1,9 @@
 class Armadillo < Formula
   desc "C++ linear algebra library"
   homepage "https://arma.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/arma/armadillo-14.2.0.tar.xz"
-  sha256 "1b5f7e39b05e4651bedb57344d60b9b1f9aa17354f06c0e34eac94496badd884"
+  url "https://downloads.sourceforge.net/project/arma/armadillo-14.2.2.tar.xz"
+  sha256 "3054c8e63db3abdf1a5c8f9fdb7e6b4ad833f9bcfb58324c0ff86de0784c70e0"
   license "Apache-2.0"
-  revision 1
 
   livecheck do
     url :stable
@@ -12,12 +11,12 @@ class Armadillo < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "c3c5b32b9b1c89243d51a1382fcdd81aed6157aa5663da785e9bf8241bd074f6"
-    sha256 cellar: :any,                 arm64_sonoma:  "fd9181525797ffda355744dc64883580b731ff23ab9a3a941592ba10c4e5ce03"
-    sha256 cellar: :any,                 arm64_ventura: "ac1bbaa49be0842a30ce50becbb823a7ed6e8b4fc6e682efbca08787fe2ac81f"
-    sha256 cellar: :any,                 sonoma:        "0e1e23278d919306e5f7121897e55410ef7b40990dc448ed7dbabc9e5aef29ce"
-    sha256 cellar: :any,                 ventura:       "3a2b4f39a4bdc51950a3fa131280d8b6c3e075d480c5afb5087ae95160ca5b48"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ed01b0bce503d462a3ea3b8d8f40c04283274035fac52b1f35a7e1f6523db661"
+    sha256 cellar: :any,                 arm64_sequoia: "2efeccdffc1dccef21e2a5316a48213b8b3a0c03d2861670b4f7eec0967a7126"
+    sha256 cellar: :any,                 arm64_sonoma:  "2fd981a76e78e48c2543e556676f723d8b23ea2809605376d8857ef23637d404"
+    sha256 cellar: :any,                 arm64_ventura: "fed3300252c9dfb159037f22f01ee7f2c5348c5cf0f6af7b983c36e21ac0d717"
+    sha256 cellar: :any,                 sonoma:        "c861f22bfbde5203a5b61faf0770546809446c5fcd87e72831b5f09da3dd9e35"
+    sha256 cellar: :any,                 ventura:       "883a17694b505ce8d0c0609f614a29f4da9283f48f64ad8e50fb5cfaab0e570f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8518406c376b687264ea9e30bd3708e8994d9d5a9f73ee03b7b763eda8e0f52b"
   end
 
   depends_on "cmake" => :build
@@ -41,6 +40,6 @@ class Armadillo < Formula
       }
     CPP
     system ENV.cxx, "-std=c++11", "test.cpp", "-I#{include}", "-L#{lib}", "-larmadillo", "-o", "test"
-    assert_equal shell_output("./test").to_i, version.to_s.to_i
+    assert_equal version.to_s.to_i, shell_output("./test").to_i
   end
 end

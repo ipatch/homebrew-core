@@ -1,27 +1,26 @@
 class Weechat < Formula
   desc "Extensible IRC client"
-  homepage "https://www.weechat.org"
-  url "https://weechat.org/files/src/weechat-4.4.3.tar.xz"
-  sha256 "295612f8dc24af28c918257d3014eb53342a5d077d5e3d9a3eadf303bd8febfa"
+  homepage "https://weechat.org/"
+  url "https://weechat.org/files/src/weechat-4.5.1.tar.xz"
+  sha256 "67c143c7bc70e689b9ea86df674c9a9ff3cf44ccc9cdff21be6a561d5eafc528"
   license "GPL-3.0-or-later"
-  revision 1
   head "https://github.com/weechat/weechat.git", branch: "master"
 
   bottle do
-    sha256 arm64_sequoia: "9cacde305627d8658022b0313c9dd7d12033a6e6fc14a2d37190d15bf3e04d3b"
-    sha256 arm64_sonoma:  "9f3b5c57ba2d43bff0332b436d86a574b7293246c5a71c62f57e8183db7d8787"
-    sha256 arm64_ventura: "caa314956a5b9decc181db8c61265dfaf6ceec5fc3500170dfef2a7975e26d29"
-    sha256 sonoma:        "ca6d5340d259308d95e997d521ea5deb4d4311d0789ca7340b3f69e4c030b377"
-    sha256 ventura:       "296535cd4f2c21516459e1ccf736c668eb5d8eb04672e89629955bb596cbba0c"
-    sha256 x86_64_linux:  "ba6c3551dcc8fe598e511f7bf833caa8d6003de83d2c3c04639a53f60289fe58"
+    sha256 arm64_sequoia: "02873a614850f0a5977b7deb6ea92a7e784caf5c1a835f617043b3d1a25eda37"
+    sha256 arm64_sonoma:  "dbb1bcf87da4ed172a284fe568920605284ee9ea2bb89606c4c641a79f39f505"
+    sha256 arm64_ventura: "5fa611726ec3d10e9dcfe63699a940c73850a634b9d090cc1378bd7ab3132cb3"
+    sha256 sonoma:        "b01757a1f205e773768c2e56eb83f3c2d89f154cc2df8d41c77c6b6ca868ab18"
+    sha256 ventura:       "5f0809ff7e9f2008e6dcabf06c326b1f67f562315b91992d9b53e700f7a96699"
+    sha256 x86_64_linux:  "0fcaccb8f711c9401b2982e48bee2befbf5c0cd8e6405754e9ca41c9c50939ef"
   end
 
   depends_on "asciidoctor" => :build
   depends_on "cmake" => :build
+  depends_on "gettext" => :build # for xgettext
   depends_on "pkgconf" => :build
   depends_on "aspell"
   depends_on "cjson"
-  depends_on "gettext"
   depends_on "gnutls"
   depends_on "libgcrypt"
   depends_on "lua"
@@ -36,6 +35,7 @@ class Weechat < Formula
   uses_from_macos "zlib"
 
   on_macos do
+    depends_on "gettext"
     depends_on "libgpg-error"
   end
 

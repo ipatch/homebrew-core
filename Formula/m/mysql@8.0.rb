@@ -4,7 +4,7 @@ class MysqlAT80 < Formula
   url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.40.tar.gz"
   sha256 "eb34a23d324584688199b4222242f4623ea7bca457a3191cd7a106c63a7837d9"
   license "GPL-2.0-only" => { with: "Universal-FOSS-exception-1.0" }
-  revision 2
+  revision 5
 
   livecheck do
     url "https://dev.mysql.com/downloads/mysql/8.0.html?tpl=files&os=src&version=8.0"
@@ -12,12 +12,12 @@ class MysqlAT80 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "fe30827dfc0fee9443e5687bd2352f0eef65ea10e2f1d5ab1f5d9bca140cc25d"
-    sha256 arm64_sonoma:  "208ea81302be022ebaed62029b7a6a6b1405b4c91ab0c6f7ba1baeb5efa8d2a7"
-    sha256 arm64_ventura: "b2bc8b11bf8d78bb2447fe4f95126dd2ee906789506aafbc3bda5f75dd684d87"
-    sha256 sonoma:        "c061c785a53c2f008fb6b52e534ee186557c59b063a35ddb24749826d6e07c49"
-    sha256 ventura:       "b7dd4e44734a345538e4191460404bc8879bf4b5c78f04dde5ee879947a07caa"
-    sha256 x86_64_linux:  "682f90acc07696d7597bd2425afae03f72e4bdfc04ce46b2fe7bd713ef1f70f3"
+    sha256 arm64_sequoia: "4980f38fe6d4eb8bf4d93cd9444434752c9b68d360fb5e45fa3c0903c88e9edc"
+    sha256 arm64_sonoma:  "3a8526f2947d0c2b853325c13e422ab237510b4268650cbe81eec9653d12e1b9"
+    sha256 arm64_ventura: "d48a3f4215deafffd7f1572e04d898749c16d560a4d8f9e4692d55cefbdf2cbd"
+    sha256 sonoma:        "da7ece595ed801cdfb47d315e41114afea68d082242767c5479475e880986ae5"
+    sha256 ventura:       "2c1dbb52e9b460b3c3168472a427b045c5d3b8016009fef106bec6177f453ed0"
+    sha256 x86_64_linux:  "e36b64f2b8e492b1fb462701b5583427179e9c6611087b89e83bef7bd5903f58"
   end
 
   keg_only :versioned_formula
@@ -42,11 +42,6 @@ class MysqlAT80 < Formula
   on_linux do
     depends_on "patchelf" => :build
     depends_on "libtirpc"
-  end
-
-  fails_with :gcc do
-    version "6"
-    cause "Requires C++17"
   end
 
   # Patch out check for Homebrew `boost`.

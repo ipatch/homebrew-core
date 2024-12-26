@@ -3,8 +3,8 @@ class Systemd < Formula
 
   desc "System and service manager"
   homepage "https://systemd.io"
-  url "https://github.com/systemd/systemd/archive/refs/tags/v256.8.tar.gz"
-  sha256 "b3d003b4f6d1ab0bfae0cf7a37c4aa559923c49bc8e9d1331b7459e12ebc357a"
+  url "https://github.com/systemd/systemd/archive/refs/tags/v257.1.tar.gz"
+  sha256 "375365b9f3718ba5fc2a972445eefcd9e229cc18bffe95818220c2a52efe8ed9"
   license all_of: [
     # Main license is LGPL-2.1-or-later while systemd-udevd is GPL-2.0-or-later
     "LGPL-2.1-or-later",
@@ -27,10 +27,11 @@ class Systemd < Formula
     { any_of: ["MIT", "GPL-2.0-or-later" => { with: "Linux-syscall-note" }] },
     { any_of: ["GPL-2.0-only", "BSD-2-Clause"] },
   ]
+  revision 1
   head "https://github.com/systemd/systemd.git", branch: "main"
 
   bottle do
-    sha256 x86_64_linux: "e7af990380e1203731c37fd78c1b4c5561405e60e1b75b7f3111e030dd7f11fa"
+    sha256 x86_64_linux: "bd9ac3858baa447a60bf6f1eb8c2b9b0dfb4c23d91d0a049cb4a6d00630f8eab"
   end
 
   depends_on "coreutils" => :build
@@ -41,7 +42,7 @@ class Systemd < Formula
   depends_on "libxslt" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "python@3.12" => :build
   depends_on "glib"
   depends_on "libcap"
@@ -54,8 +55,8 @@ class Systemd < Formula
   depends_on "zstd"
 
   resource "jinja2" do
-    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
-    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
+    url "https://files.pythonhosted.org/packages/af/92/b3130cbbf5591acf9ade8708c365f3238046ac7cb8ccba6e81abccb0ccff/jinja2-3.1.5.tar.gz"
+    sha256 "8fefff8dc3034e27bb80d67c671eb8a9bc424c0ef4c0826edbff304cceff43bb"
   end
 
   resource "lxml" do
@@ -98,6 +99,7 @@ class Systemd < Formula
       -Dmicrohttpd=disabled
       -Dp11kit=disabled
       -Dpam=disabled
+      -Dshellprofiledir=no
     ]
 
     system "meson", "setup", "build", *args, *std_meson_args

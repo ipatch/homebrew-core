@@ -4,30 +4,55 @@ class GitDelta < Formula
   url "https://github.com/dandavison/delta/archive/refs/tags/0.18.2.tar.gz"
   sha256 "64717c3b3335b44a252b8e99713e080cbf7944308b96252bc175317b10004f02"
   license "MIT"
+  revision 1
   head "https://github.com/dandavison/delta.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3a1b1cbdf4f259177acc02665a5827c38320f5b804fa391e08a24c2be1ebb97c"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5f378ac5677c7f9ddf54b72005c06fb7cb86b73777aec514085499d82de7bc7b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f54682cb0774ae38169bc4352fef7633705824cf2803ea8a5d4c9a7c5543b83a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d60b437ccc71fe14bc47632bcb02c17454977a837bbf44352d7081cd8ad0e5fa"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a000e15fea6bf6df0b6f4dfb2b453083f78b4b0095eb7151d30031379b0b881c"
-    sha256 cellar: :any_skip_relocation, ventura:        "a22b94c2c7a3a384f9308ee31b3248b51d89081f31c3837d35ebb24893de723a"
-    sha256 cellar: :any_skip_relocation, monterey:       "2224845754676513a29dd5e2994cff7e92d2fa83089db6ccaa56d82ffe41ac85"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0b316e9346c30445375c522e5cceee0dc058c6168ff659257b02b3e893d6b997"
+    sha256 cellar: :any,                 arm64_sequoia: "7c6b8a8d5802e42770a3f5da3e276a3dcc2e8b7a6945c3f5e7e240e95274afe1"
+    sha256 cellar: :any,                 arm64_sonoma:  "aaaa87419f0ac6b1ca16345e9299b93a4c26646bdf7b27048b4789a68c38e785"
+    sha256 cellar: :any,                 arm64_ventura: "e1dd88715549906c8d75fda37aba45bebccc2feaa5152e8444739f80bf349fe6"
+    sha256 cellar: :any,                 sonoma:        "4800301c726f6b22a99a9f6f9294799e9ae2b7b4625c87fbb63890358c984aaa"
+    sha256 cellar: :any,                 ventura:       "ed18eb50a566ddbae43d7cfad0e090e8774a213ed3a6a7a7d3832c7e23a59469"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4ea94075ccecbdb82e38f3b57a2e08ec6c46958fd6f723c11c6515e359985b07"
   end
 
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
+  depends_on "libgit2"
+  depends_on "oniguruma"
+
   uses_from_macos "zlib"
 
+  # support libgit2 1.8, https://github.com/dandavison/delta/pull/1930
+  patch do
+    url "https://github.com/dandavison/delta/commit/b90f249f7186696bb104cd992d705108373d216a.patch?full_index=1"
+    sha256 "a3b2839fe70c8a2452e016dff663791d42ad650f9169e210a6a8fe1a519e2939"
+  end
+
   def install
+    ENV["LIBGIT2_NO_VENDOR"] = "1"
+    ENV["RUSTONIG_SYSTEM_LIBONIG"] = "1"
+
     system "cargo", "install", *std_cargo_args
-    bash_completion.install "etc/completion/completion.bash" => "delta"
-    fish_completion.install "etc/completion/completion.fish" => "delta.fish"
-    zsh_completion.install "etc/completion/completion.zsh" => "_delta"
+
+    generate_completions_from_executable(bin/"delta", "--generate-completion", base_name: "delta")
   end
 
   test do
-    assert_match "delta #{version}", `#{bin}/delta --version`.chomp
+    assert_match "delta #{version}", shell_output("#{bin}/delta --version")
+
+    # Create a test repo
+    system "git", "init"
+    (testpath/"test.txt").write("Hello, Homebrew!")
+    system "git", "add", "test.txt"
+    system "git", "commit", "-m", "Initial commit"
+    (testpath/"test.txt").append_lines("Hello, Delta!")
+    system "git", "add", "test.txt"
+    system "git", "commit", "-m", "Update test.txt"
+
+    # Test delta with git log using pipe_output
+    git_log_output = shell_output("git log -p --color=always")
+    output = pipe_output(bin/"delta", git_log_output)
+    assert_match "Hello, Delta!", output
   end
 end

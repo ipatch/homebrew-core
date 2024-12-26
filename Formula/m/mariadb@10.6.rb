@@ -34,7 +34,7 @@ class MariadbAT106 < Formula
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "openjdk" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "groonga"
   depends_on "lz4"
@@ -57,8 +57,6 @@ class MariadbAT106 < Formula
     depends_on "linux-pam"
     depends_on "readline" # uses libedit on macOS
   end
-
-  fails_with gcc: "5"
 
   def install
     # Set basedir and ldata so that mysql_install_db can find the server
@@ -97,10 +95,9 @@ class MariadbAT106 < Formula
     # Disable RocksDB on Apple Silicon (currently not supported)
     args << "-DPLUGIN_ROCKSDB=NO" if Hardware::CPU.arm?
 
-    system "cmake", ".", *std_cmake_args, *args
-
-    system "make"
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "_build", *std_cmake_args, *args
+    system "cmake", "--build", "_build"
+    system "cmake", "--install", "_build"
 
     # Fix my.cnf to point to #{etc} instead of /etc
     (etc/"my.cnf.d").mkpath

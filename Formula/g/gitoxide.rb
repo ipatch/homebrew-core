@@ -1,8 +1,8 @@
 class Gitoxide < Formula
   desc "Idiomatic, lean, fast & safe pure Rust implementation of Git"
   homepage "https://github.com/Byron/gitoxide"
-  url "https://github.com/Byron/gitoxide/archive/refs/tags/v0.38.0.tar.gz"
-  sha256 "650a9ecae3953505db59983d10583bb8eb69ce820f794735c0fa8c519ca902b4"
+  url "https://github.com/Byron/gitoxide/archive/refs/tags/v0.40.0.tar.gz"
+  sha256 "fe0ed165f3325176e7e7abff1d2a819a473a332ecf48921931756c3289405e86"
   license "Apache-2.0"
   head "https://github.com/Byron/gitoxide.git", branch: "main"
 
@@ -12,16 +12,15 @@ class Gitoxide < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b3cb0676fe41612dcb88ffca3f6bb3c9fa040524d307fc6e1a92b8dbb02e28e9"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ba6f975848ff1ae513e52b472a71d3e62de5773824763c1b519432ac99be6631"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f7d34119a5b78eed48b09b29470eea253b92ce1168e158c711d25f166528e8c7"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d553d6321b325321f2a1989ac1cfb40417df8b714cd4e94dbc02910df2f68032"
-    sha256 cellar: :any_skip_relocation, ventura:       "1212d146dc8c9bb8e8f40b85bf3986852b6e7c523f5d867538bf2063a0f4cbf3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4e0ac02af1e51d564be9abffff647c71f4b8d4f6060c1a9aadbfb9997a445f69"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "129ff38ba268b5cd8e80ac1969df204a9c2e10d4debfb9468e7d1ee22c3abc33"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "25be403a8907cda6fb5bac41b0ee5415c893a8523fb6bbbd2ff58cedb30cbd74"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "6f108003db5656bc82b63bdefd6933b8725334820b6da4a391a6d8e3718701bc"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c47b6e643d5195816e9eb61b670033f7aeb02d85380d7e6332c7eb8339e8d92f"
+    sha256 cellar: :any_skip_relocation, ventura:       "808fd03a3d94c30523d3ed1fbe5ad5a195be2a60bea8976f45af309cc87dc697"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ec57c1d83b956e9ca21f75deece3407f7de0310d531fe41aa5ef50d0af11e8bb"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   uses_from_macos "curl"
   uses_from_macos "zlib"

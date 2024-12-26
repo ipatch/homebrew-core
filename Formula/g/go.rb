@@ -1,9 +1,9 @@
 class Go < Formula
   desc "Open source programming language to build simple/reliable/efficient software"
   homepage "https://go.dev/"
-  url "https://go.dev/dl/go1.23.3.src.tar.gz"
-  mirror "https://fossies.org/linux/misc/go1.23.3.src.tar.gz"
-  sha256 "8d6a77332487557c6afa2421131b50f83db4ae3c579c3bc72e670ee1f6968599"
+  url "https://go.dev/dl/go1.23.4.src.tar.gz"
+  mirror "https://fossies.org/linux/misc/go1.23.4.src.tar.gz"
+  sha256 "ad345ac421e90814293a9699cca19dd5238251c3f687980bbcae28495b263531"
   license "BSD-3-Clause"
   head "https://go.googlesource.com/go.git", branch: "master"
 
@@ -21,12 +21,13 @@ class Go < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "1bbc1e16a0048f6d42a0522361eded589d4efeda3e2bc7527a3ca5bc65e8d7e7"
-    sha256 arm64_sonoma:  "1bbc1e16a0048f6d42a0522361eded589d4efeda3e2bc7527a3ca5bc65e8d7e7"
-    sha256 arm64_ventura: "1bbc1e16a0048f6d42a0522361eded589d4efeda3e2bc7527a3ca5bc65e8d7e7"
-    sha256 sonoma:        "958572c546b50d470c31869a39b067f667e716ee00c7eb1c84b79a16caf7a2fa"
-    sha256 ventura:       "958572c546b50d470c31869a39b067f667e716ee00c7eb1c84b79a16caf7a2fa"
-    sha256 x86_64_linux:  "5a0c729ae281c1dbba38ebb9258c9329a0028b6ce4b407b7eaf57538abc47f34"
+    rebuild 1
+    sha256 arm64_sequoia: "ce9aad234b15d873fcd727306ab7a361db924b449f527904b3614c3aa4773767"
+    sha256 arm64_sonoma:  "ce9aad234b15d873fcd727306ab7a361db924b449f527904b3614c3aa4773767"
+    sha256 arm64_ventura: "ce9aad234b15d873fcd727306ab7a361db924b449f527904b3614c3aa4773767"
+    sha256 sonoma:        "333dc0e36f21c81f8b07f8b0d9125a6cc0b16979de9d996979bf1eff6280b9bf"
+    sha256 ventura:       "333dc0e36f21c81f8b07f8b0d9125a6cc0b16979de9d996979bf1eff6280b9bf"
+    sha256 x86_64_linux:  "b18da6cb774e738cb65bd9840521a85c1eda42323e3264730794624a81dcfa64"
   end
 
   # Don't update this unless this version cannot bootstrap the new version.
@@ -63,7 +64,11 @@ class Go < Formula
   end
 
   def install
-    inreplace "go.env", /^GOTOOLCHAIN=.*$/, "GOTOOLCHAIN=local"
+    inreplace "go.env" do |s|
+      # Remove misleading comment about automatically downloading newer toolchains.
+      s.gsub!(/^# Automatically download.*$/, "")
+      s.gsub!(/^GOTOOLCHAIN=.*$/, "GOTOOLCHAIN=local")
+    end
 
     (buildpath/"gobootstrap").install resource("gobootstrap")
     ENV["GOROOT_BOOTSTRAP"] = buildpath/"gobootstrap"

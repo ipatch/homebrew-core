@@ -25,12 +25,13 @@ class WlaDx < Formula
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test-gb-asm.s").write <<~EOS
+    (testpath/"test-gb-asm.s").write <<~ASM
       .MEMORYMAP
        DEFAULTSLOT 1.01
        SLOT 0.001 $0000 $2000
@@ -58,7 +59,8 @@ class WlaDx < Formula
        jr -128
        jr 127
        jr nc, 127
-    EOS
+    ASM
+
     system bin/"wla-gb", "-o", testpath/"test-gb-asm.s"
   end
 end

@@ -1,6 +1,6 @@
 class Tinyxml < Formula
   desc "XML parser"
-  homepage "http://www.grinninglizard.com/tinyxml/"
+  homepage "https://sourceforge.net/projects/tinyxml/"
   url "https://downloads.sourceforge.net/project/tinyxml/tinyxml/2.6.2/tinyxml_2_6_2.tar.gz"
   sha256 "15bdfdcec58a7da30adc87ac2b078e4417dbe5392f3afb719f9ba6d062645593"
   license "Zlib"
@@ -22,6 +22,9 @@ class Tinyxml < Formula
     sha256 cellar: :any,                 el_capitan:     "16e6052892b43e68c45f5122b6802e9bc32001dc9478dfcd89511a24544660e5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ade5525899de7063ade79d1b0dec70ceef3d0acc08e1dc1b55e937cb539ad38d"
   end
+
+  # sourceforge recommends tinyxml2 as an alternative
+  disable! date: "2025-06-03", because: :deprecated_upstream
 
   depends_on "cmake" => :build
 
@@ -47,8 +50,10 @@ class Tinyxml < Formula
   end
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+
     (lib+"pkgconfig/tinyxml.pc").write pc_file
   end
 
@@ -72,6 +77,7 @@ class Tinyxml < Formula
       <?xml version="1.0" ?>
       <Hello>World</Hello>
     XML
+
     (testpath/"test.cpp").write <<~CPP
       #include <tinyxml.h>
 
@@ -82,6 +88,7 @@ class Tinyxml < Formula
         return 0;
       }
     CPP
+
     system ENV.cxx, "test.cpp", "-L#{lib}", "-ltinyxml", "-o", "test"
     system "./test"
   end

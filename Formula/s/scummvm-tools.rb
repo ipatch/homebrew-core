@@ -1,10 +1,9 @@
 class ScummvmTools < Formula
   desc "Collection of tools for ScummVM"
   homepage "https://www.scummvm.org/"
-  url "https://downloads.scummvm.org/frs/scummvm-tools/2.7.0/scummvm-tools-2.7.0.tar.xz"
-  sha256 "1d9f1faf8338a2fda64f0e6e14bc25a2dadced156cb28a9c60191b983d72db71"
+  url "https://downloads.scummvm.org/frs/scummvm-tools/2.9.0/scummvm-tools-2.9.0.tar.xz"
+  sha256 "1b4bbd7a7ccf4584bfc2c0142b7c1b4e5db97c39d8d214757c72d50e0905b71d"
   license "GPL-3.0-or-later"
-  revision 6
   head "https://github.com/scummvm/scummvm-tools.git", branch: "master"
 
   livecheck do
@@ -13,14 +12,12 @@ class ScummvmTools < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "a7a9b2ad9338b06651f10ad2df98a3f8c4632b3d3131473c3e5136d7a92b0c9d"
-    sha256 cellar: :any,                 arm64_sonoma:   "8b78826af926de9ec347542ec780fc66f159eb5f3b36660f6d40b35a832e9352"
-    sha256 cellar: :any,                 arm64_ventura:  "d6a3d97e6819c362dac3207848b99446363fbc4084056a7b5fe8bfa01de3a3cd"
-    sha256 cellar: :any,                 arm64_monterey: "51613aeb80f1f322075be0edfaf0e70dd0f16eb66946205db21f4acab942174d"
-    sha256 cellar: :any,                 sonoma:         "3c98ef75a43b652e83d64c071103f963966c5498bb07f578a5cc3c196dc861e2"
-    sha256 cellar: :any,                 ventura:        "492a9820bcfd434d53c783a7270d73e9c3d4ae851f869bdff678ed371a67821c"
-    sha256 cellar: :any,                 monterey:       "d0b67c7264294d61a499a6474339a65bb7dce29f5f8cded3fdb0f78a588a7063"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "95ece3329da2323817bd776851b93076fb3dd5997884a43122397f4dcc487dfc"
+    sha256 cellar: :any,                 arm64_sequoia: "9f8d04daac9c26a48ff80e3ce087d12cb3b5b8bdebab9884765c950de4d30bf4"
+    sha256 cellar: :any,                 arm64_sonoma:  "e07ba39dd7a18914540bc691a69386e9f0010a45449577e87d6ec85b69ac81c0"
+    sha256 cellar: :any,                 arm64_ventura: "7cc02f042e2857885a37a690963828b1d86299e971c0e6a7fe5b21dc4570c891"
+    sha256 cellar: :any,                 sonoma:        "0d76af780aac37fec4ddbe3839c0967e75c228888e0d5dd1ac1558f2971aa422"
+    sha256 cellar: :any,                 ventura:       "4af72525fa2059800f33b2ae392dcca1686bfb4f3275ca009b3180af353e74f8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "529873130d47d9b1d37b903881307e03f73c83d37125b40381307c40b105332d"
   end
 
   depends_on "boost"

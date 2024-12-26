@@ -4,7 +4,7 @@ class Netdata < Formula
   url "https://github.com/netdata/netdata/releases/download/v1.44.3/netdata-v1.44.3.tar.gz"
   sha256 "50df30a9aaf60d550eb8e607230d982827e04194f7df3eba0e83ff7919270ad2"
   license "GPL-3.0-or-later"
-  revision 11
+  revision 14
 
   livecheck do
     url :stable
@@ -13,18 +13,18 @@ class Netdata < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "0264f081824850fae9f84c45da923bcd0cb0fc40b9f9b95075bff6bfbdcae835"
-    sha256 arm64_sonoma:  "01cf0fadee729dd44b513f96d0595d9d60e64432e98fd229cfdf052e815555ee"
-    sha256 arm64_ventura: "f22e44cba420acae6b52cdbbbd72df25834ffc8d346af3f81571e16b4b454f68"
-    sha256 sonoma:        "48dadff024c77c53c6f1fa6f2e70854a94aa8bafb0b1c9f4ce074369adddc78e"
-    sha256 ventura:       "be3cdd3216ed48ecdc8609fb0d29856e06bb89d776ff826756f82b0434e710bc"
-    sha256 x86_64_linux:  "6acf29980f1adfe92789d2959fe66089c35711f3e61c78d371d6020976697886"
+    sha256 arm64_sequoia: "52c39b9c73fab1dfc4b68f933d975d03bf7e3121c26db5255f68a7fa9321e320"
+    sha256 arm64_sonoma:  "27f1eb97f0bcb411519a361183456f2a3f8d58c881fe8ebcec254f7193a9d81f"
+    sha256 arm64_ventura: "f066ec5b9eb3a147b7216a4aaba13aea0053cebb492c74d4f2d4dbfbf57c90e6"
+    sha256 sonoma:        "58787aa4e38cb9ddf2a662ea4cffed8457ec36b6f6d95e3389875d29beb877e5"
+    sha256 ventura:       "cbcac60e668ef967ed17b937e066c82c56dbccff83915198c8b8b0e741b03724"
+    sha256 x86_64_linux:  "6b5da1f088e77f428a0766678700d83d1a0eb0139bafdb7a5be85c73a8723e35"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "m4" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "abseil"
   depends_on "json-c"
   depends_on "libuv"
@@ -60,8 +60,7 @@ class Netdata < Formula
     judyprefix = "#{buildpath}/resources/judy"
 
     resource("judy").stage do
-      system "./configure", "--disable-debug", "--disable-dependency-tracking",
-          "--disable-shared", "--prefix=#{judyprefix}"
+      system "./configure", "--disable-shared", *std_configure_args(prefix: judyprefix)
 
       # Parallel build is broken
       ENV.deparallelize do
@@ -79,9 +78,7 @@ class Netdata < Formula
 
     system "autoreconf", "--force", "--install", "--verbose"
     args = %W[
-      --disable-dependency-tracking
       --disable-silent-rules
-      --prefix=#{prefix}
       --sysconfdir=#{etc}
       --localstatedir=#{var}
       --libexecdir=#{libexec}
@@ -97,7 +94,7 @@ class Netdata < Formula
       args << "UUID_LIBS=-luuid"
       args << "UUID_CFLAGS=-I#{Formula["util-linux"].opt_include}"
     end
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "clean"
     system "make", "install"
 
@@ -118,9 +115,9 @@ class Netdata < Formula
   end
 
   test do
-    system "#{sbin}/netdata", "-W", "set", "registry", "netdata unique id file",
-                              "#{testpath}/netdata.unittest.unique.id",
-                              "-W", "set", "registry", "netdata management api key file",
-                              "#{testpath}/netdata.api.key"
+    system sbin/"netdata", "-W", "set", "registry", "netdata unique id file",
+                           "#{testpath}/netdata.unittest.unique.id",
+                           "-W", "set", "registry", "netdata management api key file",
+                           "#{testpath}/netdata.api.key"
   end
 end

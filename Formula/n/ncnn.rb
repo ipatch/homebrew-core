@@ -1,19 +1,18 @@
 class Ncnn < Formula
   desc "High-performance neural network inference framework"
   homepage "https://github.com/Tencent/ncnn"
-  url "https://github.com/Tencent/ncnn/archive/refs/tags/20240820.tar.gz"
-  sha256 "21e7897c7a332894934800a15189915b5131dddc84b2c8d5669ff53de8c5efa4"
+  url "https://github.com/Tencent/ncnn/archive/refs/tags/20241226.tar.gz"
+  sha256 "2a9f224aab5f016ce790d0bb4f90c495ce4ed5620a9617e4ca522cbc5ca331d1"
   license "BSD-3-Clause"
-  revision 5
   head "https://github.com/Tencent/ncnn.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "0fc6f36f40ac00a3093b6257a150026398c5ae5304992f103bdc45cf74a253dd"
-    sha256 cellar: :any,                 arm64_sonoma:  "bc0120683ef6d55f797dd26f639e860681544d3588f9b28a8cfedf110b0998d2"
-    sha256 cellar: :any,                 arm64_ventura: "5bb3b572b66031afc1afa5fad37dbb408a2cf7139d94bb25233eceb3c9dbb18a"
-    sha256 cellar: :any,                 sonoma:        "b0ba0c2e85cd0ee075c6f856d7435217b15d6f84d2a24c0cb12c32abc454473b"
-    sha256 cellar: :any,                 ventura:       "3f465221ec5d7c109e3a966410e22aabf5e241325312f309d3e009b68d378ac7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3741ad723827b237a044ae3126c60be1c4a149c58c00ef016b792b6b1b87abc0"
+    sha256 cellar: :any,                 arm64_sequoia: "731c86cc2ae64a543ca8c4e50787aa67f8d6777abc5494e4b1d2a522e7426c9f"
+    sha256 cellar: :any,                 arm64_sonoma:  "004b65f6a28a2463abbe3c373a537621c74aa8188a4e2b66677ea11457c6a822"
+    sha256 cellar: :any,                 arm64_ventura: "ef6c36b31e7f177c535869e2113badc762dccb0d77d4ebd3f61476bad6204d15"
+    sha256 cellar: :any,                 sonoma:        "f64b4b7a1d015514f3737e7edc902c4abd882cf156185683630f5ed723831fe9"
+    sha256 cellar: :any,                 ventura:       "cb62c3375e3b2ce327e6a200cc8f7fca75e3af2ef74cf3a6b46011f0c628ed22"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4f5dafdb5b5d51e69997a683d79c35aa6481354ece1ceba8cf6bf138e29cb090"
   end
 
   depends_on "cmake" => :build

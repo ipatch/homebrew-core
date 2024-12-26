@@ -1,6 +1,6 @@
 class Pillow < Formula
   desc "Friendly PIL fork (Python Imaging Library)"
-  homepage "https://python-pillow.org"
+  homepage "https://python-pillow.github.io/"
   url "https://files.pythonhosted.org/packages/a5/26/0d95c04c868f6bdb0c447e3ee2de5564411845e36a858cfd63766bc7b563/pillow-11.0.0.tar.gz"
   sha256 "72bacbaf24ac003fea9bff9837d1eedb6088758d41e100c1552930151f677739"
   license "HPND"
@@ -15,7 +15,7 @@ class Pillow < Formula
     sha256               x86_64_linux:  "e7a618cba484da3cb05fcaec9d300cde908124f17d3d82c1a69dbe54b782fca0"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "python@3.12" => [:build, :test]
   depends_on "python@3.13" => [:build, :test]
   depends_on "freetype"

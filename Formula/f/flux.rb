@@ -27,7 +27,7 @@ class Flux < Formula
   depends_on "rust" => :build
 
   on_linux do
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
   end
 
   conflicts_with "fantom", because: "both install `flux` binaries"
@@ -42,6 +42,12 @@ class Flux < Formula
       url "https://raw.githubusercontent.com/influxdata/flux/v#{LATEST_VERSION}/go.mod"
       regex(/pkg-config\s+v?(\d+(?:\.\d+)+)/i)
     end
+  end
+
+  # rust 1.83.0 build patch, upstream pr ref, https://github.com/influxdata/flux/pull/5516
+  patch do
+    url "https://github.com/influxdata/flux/commit/08b6cb784759242fd1455f1d28e653194745c0c6.patch?full_index=1"
+    sha256 "3c40b88897c1bd34c70f277e13320148cbee44b8ac7b8029be6bf4f541965302"
   end
 
   def install

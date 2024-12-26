@@ -23,7 +23,7 @@ class Mosquitto < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "cjson"
   depends_on "libwebsockets"
   depends_on "openssl@3"
@@ -35,11 +35,15 @@ class Mosquitto < Formula
   end
 
   def install
-    system "cmake", ".", *std_cmake_args,
-                    "-DWITH_PLUGINS=OFF",
-                    "-DWITH_WEBSOCKETS=ON",
-                    "-DCMAKE_INSTALL_RPATH=#{rpath}"
-    system "make", "install"
+    args = %W[
+      -DWITH_PLUGINS=OFF
+      -DWITH_WEBSOCKETS=ON
+      -DCMAKE_INSTALL_RPATH=#{rpath}
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   def post_install

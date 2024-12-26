@@ -1,24 +1,27 @@
 class MagicWormholeRs < Formula
   desc "Rust implementation of Magic Wormhole, with new features and enhancements"
   homepage "https://github.com/magic-wormhole/magic-wormhole.rs"
-  url "https://github.com/magic-wormhole/magic-wormhole.rs/archive/refs/tags/0.7.3.tar.gz"
-  sha256 "f787a31113af560fcfea4ef2d6096f860253450ce2207d436edb83bf6be2b1e1"
+  url "https://github.com/magic-wormhole/magic-wormhole.rs/archive/refs/tags/0.7.4.tar.gz"
+  sha256 "3ddc40c82faa381e96ffdc54757625a4707c1bd111d67ab2ec733a5bb666a43c"
   license "EUPL-1.2"
   head "https://github.com/magic-wormhole/magic-wormhole.rs.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "11707cb0b64b1a5082f1dda75d2d499d18fe2e62efccc28b5e254245e983bd50"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bde29ea50cd93af504b2048425bd0f0adbd4968639c6b68d0e4349f5dab07614"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "9b50810f239eceb1401f4bbb1ca8268e013fd104f4d5140927b0bc33578e946b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "a0ef9ca867b85cad21f24c3bfe29c9c219c1b4ff1ff8f58dbe21c835676be887"
-    sha256 cellar: :any_skip_relocation, ventura:       "0a1519f2c3ab5b20b11c310584f731d973865856aa1ab512b1e3ded39c13f0bd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2b89af0f49d3d3059549eba8401ffb16342bff900aa8a8c1874d324c8bb3e0bd"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f46eb70c04e3a06978a0bb63cc5aafd2727467931d6ba11a106aae14270a3a1a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "65521995b87468603204f09ea6dea02dd3c60a9c1d906c21caa8e70d41706c20"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7f9823d71411bfd399a6af92c08afcd52dbb164d27cf8a1feaa43fdc3f654359"
+    sha256 cellar: :any_skip_relocation, sonoma:        "983692bbf7dd98cfcc733ee25928504c79a8f2e66d3dd723f9cd4ec5f19927cf"
+    sha256 cellar: :any_skip_relocation, ventura:       "219c8c34004646ae1d079ab541afb7904a7776644e8ebc014bdf28ac94159fb2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f273cd3da5ff6f41cd0178d4a926624b2f397402c807869bd112edfeee0a963e"
   end
 
   depends_on "rust" => :build
 
   def install
     system "cargo", "install", *std_cargo_args(path: "cli")
+
+    generate_completions_from_executable(bin/"wormhole-rs", "completion", base_name: "wormhole-rs")
   end
 
   test do

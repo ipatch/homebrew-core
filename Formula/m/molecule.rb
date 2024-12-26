@@ -3,19 +3,18 @@ class Molecule < Formula
 
   desc "Automated testing for Ansible roles"
   homepage "https://molecule.readthedocs.io"
-  url "https://files.pythonhosted.org/packages/dc/72/1c30d07b90b56c0521abaf999e14daf75ae493405d3ee91171fed15b75ae/molecule-24.9.0.tar.gz"
-  sha256 "8548eda13c31a1ea41ba0786b29dde466cfb812617c25792151335b17a410f63"
+  url "https://files.pythonhosted.org/packages/57/bc/a6dcfca6e4cae04fdb4fc385bda0bc637a338b6d72dea79ba93eaa68e1d3/molecule-24.12.0.tar.gz"
+  sha256 "7243ff58e0b8159aa2cf465ba9605d657f1d614617264307bef5b32518467afe"
   license "MIT"
-  revision 2
+  revision 1
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "874921042a8c0743c2412f9ff1f479e4fa5ac021703baf0319e13482d41df011"
-    sha256 cellar: :any,                 arm64_sonoma:  "5b4687a03ffa1335e56a94c051edea0f27309d55672223e3ffafff0d7153fdd6"
-    sha256 cellar: :any,                 arm64_ventura: "5164f3eadfc1ab58d880b014829940343f377c727bac43f245adea51bbf2775b"
-    sha256 cellar: :any,                 sonoma:        "0265b9667b9e9eaa6f30196b5430c9cc39c2677d39ff7f2512f53b5a437e5047"
-    sha256 cellar: :any,                 ventura:       "f18177cc0990b3c89ba5b4b7ffb1b7efeea1c4d2f5a5c658a4b4ede523359fdd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "74d04cfcfb3d429878c9c4696d81358da06f4e2bf1a87ced38e42d6e43792bb1"
+    sha256 cellar: :any,                 arm64_sequoia: "506ab38aa9b763883db8c672e1e4c12fcfe9433ec8986960e52322732e51426c"
+    sha256 cellar: :any,                 arm64_sonoma:  "86cf8aa2b1ef27e4d21ccdf6a3c16f5feff81b2646c0e75644f0d9bd61a7b997"
+    sha256 cellar: :any,                 arm64_ventura: "ea40af787e2acf56d89fe4e1c4d9bbe163bcba625e613c182ea018c2ed36de4e"
+    sha256 cellar: :any,                 sonoma:        "37cc9cf2215a6264d3ae9ca09aedcfac006581807e4b33e22d3fa0e940c32ac4"
+    sha256 cellar: :any,                 ventura:       "25dd451e32bca612be54269914565dff3b9a3833debfd5f85d2b8c67b7725e26"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "63975d6bd95f39ba3c378fc3a23ec915802bf54d8fcf42b2aa364e9e512e7dec"
   end
 
   depends_on "rust" => :build
@@ -32,18 +31,18 @@ class Molecule < Formula
   end
 
   resource "ansible-compat" do
-    url "https://files.pythonhosted.org/packages/30/07/f4632fc03a627b008cf6c6cd125640e332810a93a2a264c5f004979f498d/ansible_compat-24.9.1.tar.gz"
-    sha256 "9ff20245e1bd9de9b23a367902524ab0e11fbcfb741831996da5da5b60ab95df"
+    url "https://files.pythonhosted.org/packages/59/f9/c48f3a140e3afad144a720f5c29aa8b34087926b2e2fc8778d4d4b5b6323/ansible_compat-24.10.0.tar.gz"
+    sha256 "0ad873e0dae8b2de79bc33ced813d6c92c716c4d7b82f9a4693e1fd57f43776e"
   end
 
   resource "ansible-core" do
-    url "https://files.pythonhosted.org/packages/fd/5e/0d5a28caca8fc598b199f3710fffc010a6094dfabcf38f7f3c0abb50451a/ansible_core-2.18.0.tar.gz"
-    sha256 "87fbebbfe8d961e9b153e84b4438ba3a327dbfdcd4ad05a6065d9ff5d9d02e7b"
+    url "https://files.pythonhosted.org/packages/42/46/15836f1f48e2682bd5d04f7b3e2cb27e17626bec3cd7a4f2a7b0ccefbbd2/ansible_core-2.18.1.tar.gz"
+    sha256 "14cac1f92bbdae881cb0616eddeb17925e8cb507e486087975e724533d9de74f"
   end
 
   resource "attrs" do
-    url "https://files.pythonhosted.org/packages/fc/0f/aafca9af9315aee06a89ffde799a10a582fe8de76c563ee80bbcdc08b3fb/attrs-24.2.0.tar.gz"
-    sha256 "5cfb1b9148b5b086569baec03f20d7b6bf3bcacc9a42bebf87ffaaca362f6346"
+    url "https://files.pythonhosted.org/packages/48/c8/6260f8ccc11f0917360fc0da435c5c9c7504e3db174d5a12a1494887b045/attrs-24.3.0.tar.gz"
+    sha256 "8f5c07333d543103541ba7be0e2ce16eeee8130cb0b3f9238ab904ce1e85baff"
   end
 
   resource "bracex" do
@@ -57,8 +56,8 @@ class Molecule < Formula
   end
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
-    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
+    url "https://files.pythonhosted.org/packages/b9/2e/0090cbf739cee7d23781ad4b89a9894a41538e4fcf4c31dcdd705b78eb8b/click-8.1.8.tar.gz"
+    sha256 "ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a"
   end
 
   resource "click-help-colors" do
@@ -92,8 +91,8 @@ class Molecule < Formula
   end
 
   resource "jinja2" do
-    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
-    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
+    url "https://files.pythonhosted.org/packages/af/92/b3130cbbf5591acf9ade8708c365f3238046ac7cb8ccba6e81abccb0ccff/jinja2-3.1.5.tar.gz"
+    sha256 "8fefff8dc3034e27bb80d67c671eb8a9bc424c0ef4c0826edbff304cceff43bb"
   end
 
   resource "jsonschema" do
@@ -127,8 +126,8 @@ class Molecule < Formula
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
-    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
+    url "https://files.pythonhosted.org/packages/d0/63/68dbb6eb2de9cb10ee4c9c14a0148804425e13c4fb20d61cce69f53106da/packaging-24.2.tar.gz"
+    sha256 "c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f"
   end
 
   resource "pluggy" do
@@ -172,8 +171,8 @@ class Molecule < Formula
   end
 
   resource "rpds-py" do
-    url "https://files.pythonhosted.org/packages/23/80/afdf96daf9b27d61483ef05b38f282121db0e38f5fd4e89f40f5c86c2a4f/rpds_py-0.21.0.tar.gz"
-    sha256 "ed6378c9d66d0de903763e7706383d60c33829581f0adff47b6535f1802fa6db"
+    url "https://files.pythonhosted.org/packages/01/80/cce854d0921ff2f0a9fa831ba3ad3c65cee3a46711addf39a2af52df2cfd/rpds_py-0.22.3.tar.gz"
+    sha256 "e32fee8ab45d3c2db6da19a5323bc3362237c8b653c70194414b892fd06a080d"
   end
 
   resource "selinux" do
@@ -182,8 +181,8 @@ class Molecule < Formula
   end
 
   resource "six" do
-    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
-    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+    url "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz"
+    sha256 "ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"
   end
 
   resource "subprocess-tee" do
@@ -192,8 +191,8 @@ class Molecule < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
-    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
+    url "https://files.pythonhosted.org/packages/aa/63/e53da845320b757bf29ef6a9062f5c669fe997973f966045cb019c3f4b66/urllib3-2.3.0.tar.gz"
+    sha256 "f8c5449b3cf0861679ce7e0503c7b44b5ec981bec0d1d3795a07f1ba96f0204d"
   end
 
   resource "wcmatch" do

@@ -30,7 +30,7 @@ env:
 jobs:
   create_matrix:
     if: startsWith( github.repository, 'Homebrew/' )
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container:
       image: ghcr.io/homebrew/ubuntu22.04:master
     outputs:
@@ -123,6 +123,12 @@ jobs:
         run: |
           brew install curl
           echo "HOMEBREW_FORCE_BREWED_CURL=1" >>"${GITHUB_ENV}"
+
+      - name: Install and use Homebrew svn if needed
+        run: |
+          if brew ruby -e 'exit 1 if Formula[ARGV.first].deps.none? { |d| d.name == "subversion" && d.implicit? }' "$FORMULA"; then
+            brew install svn
+          fi
 
       - name: Check formula source is not archived.
         id: archived

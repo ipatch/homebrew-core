@@ -2,8 +2,8 @@ class Tanka < Formula
   desc "Flexible, reusable and concise configuration for Kubernetes using Jsonnet"
   homepage "https://tanka.dev"
   url "https://github.com/grafana/tanka.git",
-      tag:      "v0.30.0",
-      revision: "d712789d786f6d3892db26af549c37add4d05223"
+      tag:      "v0.31.0",
+      revision: "d79a53e056495892fc202d2123a698ecb5e8ecb7"
   license "Apache-2.0"
   head "https://github.com/grafana/tanka.git", branch: "main"
 
@@ -13,12 +13,12 @@ class Tanka < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "15bf18ad260cf49752a971819d94ddebe106b6d1443faf3206344b3e2be717f9"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "15bf18ad260cf49752a971819d94ddebe106b6d1443faf3206344b3e2be717f9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "15bf18ad260cf49752a971819d94ddebe106b6d1443faf3206344b3e2be717f9"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ea47c62501ae4e8eca354538f205440aaefa15a00100312c6a43968797de617c"
-    sha256 cellar: :any_skip_relocation, ventura:       "ea47c62501ae4e8eca354538f205440aaefa15a00100312c6a43968797de617c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0cdaff59b53f0c7529dcc532933b17c8bdfbac3d6283b5d965d1748c1156fc5a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2312c83ae68e7f566dd9c88fe8fde8f61d93d9dd048a6bd8f09db6e1bbb53c6f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2312c83ae68e7f566dd9c88fe8fde8f61d93d9dd048a6bd8f09db6e1bbb53c6f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2312c83ae68e7f566dd9c88fe8fde8f61d93d9dd048a6bd8f09db6e1bbb53c6f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e933ac02a61aa6f43af8e7837ebd442f8c57543b7960470e6440c777e4a41821"
+    sha256 cellar: :any_skip_relocation, ventura:       "e933ac02a61aa6f43af8e7837ebd442f8c57543b7960470e6440c777e4a41821"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5f623b0738da74a59e3db2037f89643ba9612adbfd30085d87e7a49cd57faa67"
   end
 
   depends_on "go" => :build

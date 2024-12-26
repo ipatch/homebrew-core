@@ -2,14 +2,14 @@ class AivenClient < Formula
   include Language::Python::Virtualenv
 
   desc "Official command-line client for Aiven"
-  homepage "https://docs.aiven.io/docs/tools/cli"
-  url "https://files.pythonhosted.org/packages/02/e8/687f8d55bce44b8bfa33a48c508f5a575624db4b9832dfa5843e92a7c8ee/aiven_client-4.4.0.tar.gz"
-  sha256 "2cb0542643ad575a7a3135078264783faf845227c89238b0b6346f824b9a08e3"
+  homepage "https://aiven.io/docs/tools/cli"
+  url "https://files.pythonhosted.org/packages/e1/2e/74c3b1cfcb4f444af4fe23214663d10972a5c8137f28278b6f8f1f498417/aiven_client-4.5.1.tar.gz"
+  sha256 "bcced1c0682a59dc6648aef9ddaaa8e4564fed539ea072efef994c4db311e71d"
   license "Apache-2.0"
   head "https://github.com/aiven/aiven-client.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "a1c37513bf39b103072c6b7475a8dc6bd34f6e886a7415d752c066a0c08338db"
+    sha256 cellar: :any_skip_relocation, all: "dad3ddcaff32cb602598c5569f1069b434cb95c820d7e73083867582e1688961"
   end
 
   depends_on "certifi"

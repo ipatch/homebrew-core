@@ -11,13 +11,13 @@ class FuseOverlayfs < Formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "libfuse"
   depends_on :linux
 
   def install
-    system "autoreconf", "-fis"
+    system "autoreconf", "--force", "--install", "--verbose"
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make", "install"

@@ -1,17 +1,17 @@
 class Stylelint < Formula
   desc "Modern CSS linter"
   homepage "https://stylelint.io/"
-  url "https://registry.npmjs.org/stylelint/-/stylelint-16.10.0.tgz"
-  sha256 "4540dd305b5a356826a7ff61c8470201615dc977284c3884b83121d1f0583ce7"
+  url "https://registry.npmjs.org/stylelint/-/stylelint-16.12.0.tgz"
+  sha256 "f5e2927ec467c5bb34c9015da45f3e0cd364af6e867673731a5cae96805fa4aa"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0b84871a3361d6ada56b407f36a2148adbc3e977f1c510c153e9db5649951596"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0b84871a3361d6ada56b407f36a2148adbc3e977f1c510c153e9db5649951596"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "0b84871a3361d6ada56b407f36a2148adbc3e977f1c510c153e9db5649951596"
-    sha256 cellar: :any_skip_relocation, sonoma:        "5b8f767d8faef8a6e56b8bdba3b25e2d598d300a626a1bed13cd9459c0f3dce7"
-    sha256 cellar: :any_skip_relocation, ventura:       "5b8f767d8faef8a6e56b8bdba3b25e2d598d300a626a1bed13cd9459c0f3dce7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0b84871a3361d6ada56b407f36a2148adbc3e977f1c510c153e9db5649951596"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c63ca56f29710d43a15820ac13c4674bafa6d43ac789bf4dc4020c5c65f30690"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c63ca56f29710d43a15820ac13c4674bafa6d43ac789bf4dc4020c5c65f30690"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c63ca56f29710d43a15820ac13c4674bafa6d43ac789bf4dc4020c5c65f30690"
+    sha256 cellar: :any_skip_relocation, sonoma:        "57a07be1c58a799210582e8cdfb08d117072860ad49d76c2075f1a4eaf6bdecc"
+    sha256 cellar: :any_skip_relocation, ventura:       "57a07be1c58a799210582e8cdfb08d117072860ad49d76c2075f1a4eaf6bdecc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c63ca56f29710d43a15820ac13c4674bafa6d43ac789bf4dc4020c5c65f30690"
   end
 
   depends_on "node"
@@ -22,18 +22,18 @@ class Stylelint < Formula
   end
 
   test do
-    (testpath/".stylelintrc").write <<~EOS
+    (testpath/".stylelintrc").write <<~JSON
       {
         "rules": {
           "block-no-empty": true
         }
       }
-    EOS
+    JSON
 
-    (testpath/"test.css").write <<~EOS
+    (testpath/"test.css").write <<~CSS
       a {
       }
-    EOS
+    CSS
 
     output = shell_output("#{bin}/stylelint test.css 2>&1", 2)
     assert_match "Unexpected empty block", output

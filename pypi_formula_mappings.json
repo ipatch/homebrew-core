@@ -1,4 +1,7 @@
 {
+  "acronym": {
+    "exclude_packages": ["numpy"]
+  },
   "aider": {
     "exclude_packages": ["certifi", "cffi", "numpy", "pillow", "scipy"]
   },
@@ -112,9 +115,6 @@
   "beancount": {
     "exclude_packages": ["certifi"]
   },
-  "beautysh": {
-    "extra_packages": ["setuptools"]
-  },
   "bilix": {
     "exclude_packages": ["certifi"]
   },
@@ -207,6 +207,9 @@
   "cloudsplaining": {
     "exclude_packages": ["certifi"]
   },
+  "cobo-cli": {
+    "exclude_packages": ["certifi"]
+  },
   "codelimit": {
     "exclude_packages": ["certifi"]
   },
@@ -224,6 +227,10 @@
   },
   "cookiecutter": {
     "exclude_packages": ["certifi"]
+  },
+  "core-lightning": {
+    "package_name": "",
+    "extra_packages": ["mako", "setuptools"]
   },
   "credstash": {
     "exclude_packages": ["cryptography"]
@@ -276,7 +283,7 @@
     "exclude_packages": ["certifi", "cryptography"]
   },
   "duplicity": {
-    "exclude_packages": ["certifi", "cryptography"],
+    "exclude_packages": ["certifi"],
     "extra_packages": ["python-novaclient>18", "stone==3.2.1"]
   },
   "dvc": {
@@ -317,8 +324,9 @@
     "exclude_packages": ["certifi"]
   },
   "fdroidserver": {
-    "exclude_packages": ["certifi", "cryptography", "numpy", "pillow"],
-    "extra_packages": ["androguard==3.3.5", "setuptools"]
+    "package_name": "fdroidserver[optional]",
+    "exclude_packages": ["certifi", "cryptography", "numpy", "pillow", "puremagic"],
+    "extra_packages": ["androguard<4", "python-magic"]
   },
   "flintrock": {
     "exclude_packages": ["cryptography"]
@@ -353,13 +361,17 @@
   "git-review": {
     "exclude_packages": ["certifi"]
   },
+  "glances": {
+    "package_name": "glances[web]",
+    "exclude_packages": ["certifi"]
+  },
   "glib": {
     "package_name": "",
     "extra_packages": ["packaging"]
   },
   "gnuradio": {
     "extra_packages": [
-      "click", "click-plugins", "jsonschema", "lxml", "mako",
+      "click", "jsonschema", "lxml", "mako",
       "packaging", "pygccxml", "pyyaml", "setuptools"
     ]
   },
@@ -393,12 +405,20 @@
   "grokmirror": {
     "exclude_packages": ["certifi"]
   },
+  "gsan": {
+    "exclude_packages": ["cryptography"]
+  },
   "gyb": {
     "package_name": "",
     "exclude_packages": ["certifi"],
     "extra_packages": [
       "google-api-python-client", "google-auth", "google-auth-httplib2", "google-auth-oauthlib", "httplib2"
     ]
+  },
+  "harlequin": {
+    "package_name": "harlequin[mysql,odbc,postgres]",
+    "exclude_packages": ["psycopg-binary", "tree-sitter-languages"],
+    "extra_packages": ["psycopg-c"]
   },
   "hatch": {
     "exclude_packages": ["certifi", "cryptography", "uv"]
@@ -682,6 +702,10 @@
     "package_name": "",
     "extra_packages": ["flit-core", "setuptools", "pip", "wheel"]
   },
+  "python-freethreading": {
+    "package_name": "",
+    "extra_packages": ["flit-core", "setuptools", "pip", "wheel"]
+  },
   "python-lsp-server": {
     "package_name": "python-lsp-server[websockets]",
     "extra_packages": ["python-lsp-black", "pylsp-mypy", "python-lsp-ruff", "pylsp-rope"]
@@ -820,6 +844,9 @@
   "theharvester": {
     "exclude_packages": ["certifi"]
   },
+  "tmt": {
+    "exclude_packages": ["certifi"]
+  },
   "toot": {
     "package_name": "toot[images,richtext]",
     "exclude_packages": ["certifi", "pillow"]
@@ -866,6 +893,7 @@
     "exclude_packages": ["certifi"]
   },
   "virt-manager": {
+    "package_name": "",
     "exclude_packages": ["certifi"],
     "extra_packages": ["requests"]
   },
@@ -880,6 +908,9 @@
   },
   "weasyprint": {
     "exclude_packages": ["pillow"]
+  },
+  "weaviate-cli": {
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "woob": {
     "exclude_packages": ["certifi", "pillow"]

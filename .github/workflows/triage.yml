@@ -24,7 +24,7 @@ jobs:
     if: always() && github.repository_owner == 'Homebrew'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b # v4.5.0
         with:
           name: event_payload
           path: ${{ github.event_path }}
@@ -91,7 +91,7 @@ jobs:
           close: true
 
   triage:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       issues: write
@@ -264,6 +264,7 @@ jobs:
                 node|\
                 octave|\
                 opencascade|\
+                openvino|\
                 pcl|\
                 ponyc|\
                 pytorch|\
@@ -301,6 +302,7 @@ jobs:
                 imath|\
                 jasper|\
                 jpeg-turbo|\
+                jpeg-xl|\
                 libcap|\
                 libgcrypt|\
                 libgpg-error|\
@@ -343,11 +345,17 @@ jobs:
               allow_any_match: true
 
             - label: CI-skip-recursive-dependents
-              path: Formula/.+/(ca-certificates|curl|gettext|openssl@3|sqlite).rb
+              path: Formula/.+/(ca-certificates|curl|gettext|openssl@3|sqlite|systemd).rb
               keep_if_no_match: true
 
             - label: CI-linux-self-hosted
-              path: Formula/.+/(dart-sdk|envoy|qt(@5)?|texlive).rb
+              path: "Formula/.+/(\
+                dart-sdk|\
+                envoy|\
+                qt(@5)?|\
+                teleport|\
+                texlive\
+                ).rb"
               keep_if_no_match: true
               allow_any_match: true
 
@@ -355,10 +363,10 @@ jobs:
               path: "Formula/.+/(\
                 alsa-lib|\
                 glib|\
+                libcap|\
                 libva|\
                 libxml2|\
                 python@3.12|\
-                systemd|\
                 wayland-protocols|\
                 zlib|\
                 ).rb"

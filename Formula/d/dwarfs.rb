@@ -1,10 +1,10 @@
 class Dwarfs < Formula
   desc "Fast high compression read-only file system for Linux, Windows, and macOS"
   homepage "https://github.com/mhx/dwarfs"
-  url "https://github.com/mhx/dwarfs/releases/download/v0.10.1/dwarfs-0.10.1.tar.xz"
-  sha256 "db785e0e0f257fa4363d90153db34127add4552791a72998b30ded787840d039"
+  url "https://github.com/mhx/dwarfs/releases/download/v0.10.2/dwarfs-0.10.2.tar.xz"
+  sha256 "36767290a39f92782e41daaa3eb45e39550ad1a4294a6d8365bc0f456f75f00c"
   license "GPL-3.0-or-later"
-  revision 1
+  revision 2
 
   livecheck do
     url :stable
@@ -12,20 +12,17 @@ class Dwarfs < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia:  "9dd27e093e3be256a48966cefa1508c915be989b2f3c2492737f3ba64f9987ae"
-    sha256 cellar: :any,                 arm64_sonoma:   "d53d68f0327d5a9c71b8484b5682766a02e8cdf97eba5fe7437843fb2d194d95"
-    sha256 cellar: :any,                 arm64_ventura:  "95d1670b7371b496c8260f46c8eaa98a54cee7a518b304bc426a87a67b0b5cbe"
-    sha256 cellar: :any,                 arm64_monterey: "b5fad708142683db1d5a39513b677bbf2e6cea8b90f02ba6cff392a80a7f1fc4"
-    sha256 cellar: :any,                 sonoma:         "4fe409da2fd580c13be321889468e499dcbac6cf865e74c8a697b38fe55f4249"
-    sha256 cellar: :any,                 ventura:        "69879b81f3cc8c873f32c9b28790c5b2c0cc25743ceed3ff03ad43cebec4b1b0"
-    sha256 cellar: :any,                 monterey:       "aa6f98be3314f0f6ff565824ac9c9f3663fdc29c5f49d6996b7726c90021abe6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d2f29359a64bc4f8746f712b6cd862427622dbb024f272379772835370886cbb"
+    sha256 cellar: :any,                 arm64_sequoia: "0127ed41fef6cd7891a69796991bc2787981396af298a7a36d1d03b7215981ba"
+    sha256 cellar: :any,                 arm64_sonoma:  "f89ab31df9f6fc3cc001f967a2ec2dfa4ea3dbfb085bca655f100e3609870ae1"
+    sha256 cellar: :any,                 arm64_ventura: "075281d2e741c898f5f1f9f3dda9a61afdc503f85ab8f7cd59494b1b14f2942e"
+    sha256 cellar: :any,                 sonoma:        "18855485cc060d03cab334ee1ca7de0d2741991ea30ecb79ddf1d5fda511a25f"
+    sha256 cellar: :any,                 ventura:       "46caaa93ea6a98c8fd61626634690d4a8637dbd3ae531e7b5a7b2bd879c75df2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b2b54763c76ab0f6052c01cc4b94fc3894ea45b1a0ae031537b369607db20e55"
   end
 
   depends_on "cmake" => :build
   depends_on "googletest" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "brotli"
   depends_on "double-conversion"
@@ -87,7 +84,7 @@ class Dwarfs < Formula
     end
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
-    system "cmake", "--build", "build", "--parallel"
+    system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 

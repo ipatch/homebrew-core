@@ -12,7 +12,7 @@ class Foot < Formula
   depends_on "cmake" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "scdoc" => :build
   depends_on "tllist" => :build
 
@@ -37,20 +37,21 @@ class Foot < Formula
 
     mkdir_p config_dir
 
-    File.write config_file, <<-EOF
+    config_file.write <<~INI
       [cursor]
       style=blok
-    EOF
+    INI
 
     assert_match(
       /blok: not one of 'block', 'underline', 'beam'/,
       shell_output("#{bin}/foot --check-config 2>&1", 230),
     )
 
-    File.write config_file, <<-EOF
+    rm(config_file)
+    config_file.write <<~INI
       [cursor]
       style=block
-    EOF
+    INI
 
     assert_empty shell_output("#{bin}/foot --check-config")
   end

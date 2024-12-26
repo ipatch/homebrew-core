@@ -3,26 +3,27 @@ class Commitizen < Formula
 
   desc "Defines a standard way of committing rules and communicating it"
   homepage "https://commitizen-tools.github.io/commitizen/"
-  url "https://files.pythonhosted.org/packages/bb/ab/71d7338d26c096042269119d93551812897a10378f91af586da2c6aab259/commitizen-3.31.0.tar.gz"
-  sha256 "6ab973e91d07c1e745c6c0efe6dd0708b1f6d8fd7e4ab5e7c773b5ceb3df4ff0"
+  url "https://files.pythonhosted.org/packages/7a/c5/66f1b977b48501a33f5fd33253aba14786483b08aba987718d272e99e732/commitizen-4.1.0.tar.gz"
+  sha256 "4f2d9400ec411aec1c738d4c63fc7fd5807cd6ddf6be970869e03e68b88ff718"
   license "MIT"
+  revision 2
   head "https://github.com/commitizen-tools/commitizen.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "71c7bed64cd00645cfa4c6e5f62d693080962da802e49aaf4160fe8fc9fd06af"
-    sha256 cellar: :any,                 arm64_sonoma:  "1d5761f4aef68aeeaaa20d5b57f5e4d0d5843c7cf07a1ce1dc676a1d02628a61"
-    sha256 cellar: :any,                 arm64_ventura: "004071907b3d170df5612821d35ca4d71da165fca5d44eda738a183bae0096dd"
-    sha256 cellar: :any,                 sonoma:        "87645c1f36e37aac262447c48c959dd76b1a51db72df7c6b3e26fd355389e67f"
-    sha256 cellar: :any,                 ventura:       "fc94ae2034d9bd68ae5b6aa6651c0b625d1f830a7e3b176c7c6199b2c9c45475"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "85a240ee554e830747902872de71c4e4462a7a199dbe7f042439ef50c0f470ab"
+    sha256 cellar: :any,                 arm64_sequoia: "0ad440d8d25dbb73c282761c264674c622f67d61f70ccfd963a4bbee38cc2140"
+    sha256 cellar: :any,                 arm64_sonoma:  "93d5a4ba987812e85411fa89afb26a560f2744861b34c9f9a1b03d68962ccc48"
+    sha256 cellar: :any,                 arm64_ventura: "91241e704e456eb0550fdc5d3b846d8f7cf4a45f4e7f6b9a9092995c845844c6"
+    sha256 cellar: :any,                 sonoma:        "06d4c0d04050a4a3048745765ad34275cb8605a6debe97513aa376686f67ff7b"
+    sha256 cellar: :any,                 ventura:       "f463d32c11d1fbc756b7e5e5db7b80626d7ae48574aee65c1791b84d56cf6874"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5c5131888eb5286342539db33ef40959fc44cd2943378f881c8c9cb943c7a4f1"
   end
 
   depends_on "libyaml"
   depends_on "python@3.13"
 
   resource "argcomplete" do
-    url "https://files.pythonhosted.org/packages/5f/39/27605e133e7f4bb0c8e48c9a6b87101515e3446003e0442761f6a02ac35e/argcomplete-3.5.1.tar.gz"
-    sha256 "eb1ee355aa2557bd3d0145de7b06b2a45b0ce461e1e7813f5d066039ab4177b4"
+    url "https://files.pythonhosted.org/packages/7f/03/581b1c29d88fffaa08abbced2e628c34dd92d32f1adaed7e42fc416938b0/argcomplete-3.5.2.tar.gz"
+    sha256 "23146ed7ac4403b70bd6026402468942ceba34a6732255b9edf5b7354f68a6bb"
   end
 
   resource "charset-normalizer" do
@@ -41,8 +42,8 @@ class Commitizen < Formula
   end
 
   resource "jinja2" do
-    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
-    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
+    url "https://files.pythonhosted.org/packages/af/92/b3130cbbf5591acf9ade8708c365f3238046ac7cb8ccba6e81abccb0ccff/jinja2-3.1.5.tar.gz"
+    sha256 "8fefff8dc3034e27bb80d67c671eb8a9bc424c0ef4c0826edbff304cceff43bb"
   end
 
   resource "markupsafe" do

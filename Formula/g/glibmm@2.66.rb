@@ -1,6 +1,6 @@
 class GlibmmAT266 < Formula
   desc "C++ interface to glib"
-  homepage "https://www.gtkmm.org/"
+  homepage "https://gtkmm.gnome.org/"
   url "https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.7.tar.xz"
   sha256 "fe02c1e5f5825940d82b56b6ec31a12c06c05c1583cfe62f934d0763e1e542b3"
   license "LGPL-2.1-or-later"
@@ -24,7 +24,7 @@ class GlibmmAT266 < Formula
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "glib"
   depends_on "libsigc++@2"
 
@@ -45,7 +45,7 @@ class GlibmmAT266 < Formula
       }
     CPP
 
-    flags = shell_output("pkg-config --cflags --libs glibmm-2.4").chomp.split
+    flags = shell_output("pkgconf --cflags --libs glibmm-2.4").chomp.split
     system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end

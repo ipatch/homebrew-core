@@ -18,45 +18,49 @@ class Minisign < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libsodium"
 
-  uses_from_macos "expect" => :test
-
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make"
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
+    require "expect"
+    require "pty"
+
     (testpath/"homebrew.txt").write "Hello World!"
-    (testpath/"keygen.exp").write <<~EOS
-      set timeout -1
-      spawn #{bin}/minisign -G
-      expect -exact "Please enter a password to protect the secret key."
-      expect -exact "\n"
-      expect -exact "Password: "
-      send -- "Homebrew\n"
-      expect -exact "\r
-      Password (one more time): "
-      send -- "Homebrew\n"
-      expect eof
-    EOS
+    timeout = 5
 
-    system "expect", "-f", "keygen.exp"
-    assert_predicate testpath/"minisign.pub", :exist?
-    assert_predicate testpath/".minisign/minisign.key", :exist?
+    PTY.spawn(bin/"minisign", "-G") do |r, w, pid|
+      refute_nil r.expect("Password: ", timeout), "Expected password input"
+      w.write "Homebrew\n"
+      refute_nil r.expect("Password (one more time): ", timeout), "Expected password confirmation input"
+      w.write "Homebrew\n"
+      r.read
+    rescue Errno::EIO
+      # GNU/Linux raises EIO when read is done on closed pty
+    ensure
+      r.close
+      w.close
+      Process.wait(pid)
+    end
+    assert_path_exists testpath/"minisign.pub"
+    assert_path_exists testpath/".minisign/minisign.key"
 
-    (testpath/"signing.exp").write <<~EOS
-      set timeout -1
-      spawn #{bin}/minisign -Sm homebrew.txt
-      expect -exact "Password: "
-      send -- "Homebrew\n"
-      expect eof
-    EOS
-
-    system "expect", "-f", "signing.exp"
-    assert_predicate testpath/"homebrew.txt.minisig", :exist?
+    PTY.spawn(bin/"minisign", "-Sm", "homebrew.txt") do |r, w, pid|
+      refute_nil r.expect("Password: ", timeout), "Expected password input"
+      w.write "Homebrew\n"
+      r.read
+    rescue Errno::EIO
+      # GNU/Linux raises EIO when read is done on closed pty
+    ensure
+      r.close
+      w.close
+      Process.wait(pid)
+    end
+    assert_path_exists testpath/"homebrew.txt.minisig"
   end
 end

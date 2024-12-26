@@ -25,28 +25,27 @@ class Scrypt < Formula
 
   depends_on "openssl@3"
 
-  uses_from_macos "expect" => :test
-
   def install
-    system "autoreconf", "-fvi" if build.head?
-    system "./configure", "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 
   test do
-    (testpath/"test.exp").write <<~EOS
-      set timeout -1
-      spawn #{bin}/scrypt enc homebrew.txt homebrew.txt.enc
-      expect -exact "Please enter passphrase: "
-      send -- "Testing\n"
-      expect -exact "\r
-      Please confirm passphrase: "
-      send -- "Testing\n"
-      expect eof
-    EOS
-    touch "homebrew.txt"
+    require "expect"
+    require "pty"
 
-    system "expect", "-f", "test.exp"
-    assert_predicate testpath/"homebrew.txt.enc", :exist?
+    touch "homebrew.txt"
+    PTY.spawn(bin/"scrypt", "enc", "homebrew.txt", "homebrew.txt.enc") do |r, w, _pid|
+      r.expect "Please enter passphrase: "
+      w.write "Testing\n"
+      r.expect "Please confirm passphrase: "
+      w.write "Testing\n"
+      r.read
+    rescue Errno::EIO
+      # GNU/Linux raises EIO when read is done on closed pty
+    end
+
+    assert_path_exists testpath/"homebrew.txt.enc"
   end
 end

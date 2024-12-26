@@ -57,8 +57,6 @@ class Cherrytree < Formula
     depends_on "harfbuzz"
   end
 
-  fails_with gcc: "5" # Needs std::optional
-
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
@@ -69,7 +67,7 @@ class Cherrytree < Formula
     # (cherrytree:46081): Gtk-WARNING **: 17:33:48.386: cannot open display
     return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    (testpath/"homebrew.ctd").write <<~EOS
+    (testpath/"homebrew.ctd").write <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
       <cherrytree>
         <bookmarks list=""/>
@@ -89,7 +87,8 @@ class Cherrytree < Formula
           <rich_text>print('hello world')</rich_text>
         </node>
       </cherrytree>
-    EOS
+    XML
+
     system bin/"cherrytree", testpath/"homebrew.ctd", "--export_to_txt_dir", testpath, "--export_single_file"
     assert_predicate testpath/"homebrew.ctd.txt", :exist?
     assert_match "rich text", (testpath/"homebrew.ctd.txt").read

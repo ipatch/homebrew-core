@@ -1,6 +1,6 @@
 class Blades < Formula
   desc "Blazing fast dead simple static site generator"
-  homepage "https://getblades.org/"
+  homepage "https://www.getblades.org/"
   url "https://github.com/grego/blades/archive/refs/tags/v0.5.0.tar.gz"
   sha256 "e9ee64ead54e1942397ea5d6fcfd6ba928a888c1f4c127b11dec9fbadd283cc2"
   license "GPL-3.0-or-later"
@@ -20,30 +20,25 @@ class Blades < Formula
   end
 
   depends_on "rust" => :build
-  uses_from_macos "expect" => :test
 
   def install
     system "cargo", "install", *std_cargo_args
   end
 
   test do
-    script = (testpath/"script.exp")
-    script.write <<~EOS
-      #!/usr/bin/expect -f
-      set timeout 2
-      spawn #{bin}/blades init
+    require "expect"
+    require "pty"
 
-      expect -exact "Name:"
-      send -- "brew\r"
+    timeout = 5
+    PTY.spawn(bin/"blades", "init") do |r, w, pid|
+      refute_nil r.expect("Name:", timeout), "Expected name input"
+      w.write "brew\r"
+      refute_nil r.expect("Author:", timeout), "Expected author input"
+      w.write "test\r"
+      Process.wait pid
+    end
 
-      expect -exact "Author:"
-      send -- "test\r"
-
-      expect eof
-    EOS
-
-    system "expect", "-f", "script.exp"
-    assert_predicate testpath/"content", :exist?
+    assert_path_exists testpath/"content"
     assert_match "title = \"brew\"", (testpath/"Blades.toml").read
 
     assert_match "blades #{version}", shell_output("#{bin}/blades --version")

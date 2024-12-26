@@ -58,11 +58,11 @@ class Yasm < Formula
   end
 
   test do
-    (testpath/"foo.s").write <<~EOS
+    (testpath/"foo.s").write <<~ASM
       mov eax, 0
       mov ebx, 0
       int 0x80
-    EOS
+    ASM
     system bin/"yasm", "foo.s"
     code = File.open("foo", "rb") { |f| f.read.unpack("C*") }
     expected = [0x66, 0xb8, 0x00, 0x00, 0x00, 0x00, 0x66, 0xbb,
@@ -70,7 +70,7 @@ class Yasm < Formula
     assert_equal expected, code
 
     if OS.mac?
-      (testpath/"test.asm").write <<~EOS
+      (testpath/"test.asm").write <<~ASM
         global start
         section .text
         start:
@@ -85,13 +85,13 @@ class Yasm < Formula
         section .data
         msg:    db      "Hello, world!", 10
         .len:   equ     $ - msg
-      EOS
+      ASM
       system bin/"yasm", "-f", "macho64", "test.asm"
       system "/usr/bin/ld", "-macosx_version_min", "10.8.0", "-static", "-o", "test", "test.o"
       assert_match "Mach-O 64-bit object x86_64", shell_output("file test.o")
       assert_match "Mach-O 64-bit executable x86_64", shell_output("file test")
     else
-      (testpath/"test.asm").write <<~EOS
+      (testpath/"test.asm").write <<~ASM
         global _start
         section .text
         _start:
@@ -106,7 +106,7 @@ class Yasm < Formula
         section .data
         msg:    db      "Hello, world!", 10
         .len:   equ     $ - msg
-      EOS
+      ASM
       system bin/"yasm", "-f", "elf64", "test.asm"
       system "/usr/bin/ld", "-static", "-o", "test", "test.o"
     end

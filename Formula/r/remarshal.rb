@@ -21,6 +21,7 @@ class Remarshal < Formula
   depends_on "python@3.13"
 
   conflicts_with "msgpack-tools", because: "both install 'json2msgpack' binary"
+  conflicts_with "toml2json", because: "both install `toml2json` binaries"
 
   resource "cbor2" do
     url "https://files.pythonhosted.org/packages/e4/aa/ba55b47d51d27911981a18743b4d3cebfabccbb0598c09801b734cec4184/cbor2-5.6.5.tar.gz"
@@ -78,16 +79,16 @@ class Remarshal < Formula
 
   test do
     json = "{\"foo.bar\":\"baz\",\"qux\":1}"
-    yaml = <<~EOS.chomp
+    yaml = <<~YAML.chomp
       foo.bar: baz
       qux: 1
 
-    EOS
-    toml = <<~EOS.chomp
+    YAML
+    toml = <<~TOML.chomp
       "foo.bar" = "baz"
       qux = 1
 
-    EOS
+    TOML
     assert_equal yaml, pipe_output("#{bin}/remarshal -if=json -of=yaml", json)
     assert_equal yaml, pipe_output("#{bin}/json2yaml", json)
     assert_equal toml, pipe_output("#{bin}/remarshal -if=yaml -of=toml", yaml)

@@ -3,12 +3,12 @@ class Litecli < Formula
 
   desc "CLI for SQLite Databases with auto-completion and syntax highlighting"
   homepage "https://github.com/dbcli/litecli"
-  url "https://files.pythonhosted.org/packages/97/9c/3a2ab329a5349aa41c01ff01f944309d3d43b9d77c422fee26466ffe2800/litecli-1.12.4.tar.gz"
-  sha256 "53f7fa067acdb2714dfaa2145ed27937b14d0751c781c2d09e80e5d848e05602"
+  url "https://files.pythonhosted.org/packages/ff/59/1e7ba81c715049b3eb299e65d29553fb64b3766dcc8669a1829faa0e6559/litecli-1.13.2.tar.gz"
+  sha256 "ac374929a5b3d914a9f47e0a7f4a838a7e1f6e963b4893cd7d67a1e2a3ac4762"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "fc7e8f11aa5df9089c0df61c002dca1431ef478bc4fa9c0c9c3a4a7261418a5a"
+    sha256 cellar: :any_skip_relocation, all: "d24810e066854f0738e9659e8c020f1b85a0ed2796178fa9a102413132857527"
   end
 
   depends_on "python@3.13"
@@ -41,8 +41,8 @@ class Litecli < Formula
   end
 
   resource "sqlparse" do
-    url "https://files.pythonhosted.org/packages/73/82/dfa23ec2cbed08a801deab02fe7c904bfb00765256b155941d789a338c68/sqlparse-0.5.1.tar.gz"
-    sha256 "bb6b4df465655ef332548e24f08e205afc81b9ab86cb1c45657a7ff173a3a00e"
+    url "https://files.pythonhosted.org/packages/57/61/5bc3aff85dc5bf98291b37cf469dab74b3d0aef2dd88eade9070a200af05/sqlparse-0.5.2.tar.gz"
+    sha256 "9e37b35e16d1cc652a2545f0997c1deb23ea28fa1f3eefe609eee3063c3b105f"
   end
 
   resource "tabulate" do
@@ -60,13 +60,13 @@ class Litecli < Formula
   end
 
   test do
-    (testpath/".config/litecli/config").write <<~EOS
+    (testpath/".config/litecli/config").write <<~INI
       [main]
       table_format = tsv
       less_chatty = True
-    EOS
+    INI
 
-    (testpath/"test.sql").write <<~EOS
+    (testpath/"test.sql").write <<~SQL
       CREATE TABLE IF NOT EXISTS package_manager (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name VARCHAR(256)
@@ -75,7 +75,7 @@ class Litecli < Formula
         package_manager (name)
       VALUES
         ('Homebrew');
-    EOS
+    SQL
     system "sqlite3 test.db < test.sql"
 
     require "pty"

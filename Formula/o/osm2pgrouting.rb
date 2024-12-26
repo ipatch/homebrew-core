@@ -4,17 +4,16 @@ class Osm2pgrouting < Formula
   url "https://github.com/pgRouting/osm2pgrouting/archive/refs/tags/v2.3.8.tar.gz"
   sha256 "e3a58bcacf0c8811e0dcf3cf3791a4a7cc5ea2a901276133eacf227b30fd8355"
   license "GPL-2.0-or-later"
-  revision 13
+  revision 15
   head "https://github.com/pgRouting/osm2pgrouting.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia:  "8d266eab6016b6da8563a322d14fc3ba50c16ac96bdf0731cd26ab93251b8263"
-    sha256 cellar: :any, arm64_sonoma:   "65d7687ba5f23d47d7ee737050706fcd2663cf185d6a8e35a6e8e6ff5cec2d87"
-    sha256 cellar: :any, arm64_ventura:  "88adc64e52319b44b1f3f0e73d9511a3e36db0040859d9b528aa76a02570666d"
-    sha256 cellar: :any, arm64_monterey: "81565a691a1f95000e45594e0f7c938d7960694c5e4722d013bc4fe4c54401ca"
-    sha256 cellar: :any, sonoma:         "1b1702478ac4b650960b2227dd605dc84a6e8d15c5da96d3973a700545425bfc"
-    sha256 cellar: :any, ventura:        "ed29492dadc022e58bb198e7ab20871d3c45272abacbd99d7c350c13d6ae0995"
-    sha256 cellar: :any, monterey:       "0f7cdcc3eb7ddbabf32a02836a733e709a0ebbcd0e4158316536daebf8b67246"
+    sha256 cellar: :any,                 arm64_sequoia: "53a7e3aba8bdfe9a4da235abc518b79792e53ddc141137e028388d598c58107b"
+    sha256 cellar: :any,                 arm64_sonoma:  "b7834fce5a1d857f102568aeff1bed0289f37fb0ddb43151d8724ee43e5f5a66"
+    sha256 cellar: :any,                 arm64_ventura: "8e9795f661e6a485111af835cd9a1564d4e1b489c708bd59bafb1d7f4fe698aa"
+    sha256 cellar: :any,                 sonoma:        "be10d1bf1fb865fd1057514a75c362636e93d5ada3b2efdf98d855aed6c76494"
+    sha256 cellar: :any,                 ventura:       "d2fb31aa53a17b15686bced89e3b3e30d573cf5537969612e1c5ff712638899a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "614b191dc5a642277df733a0d7c056b69f5c490ec10e44b78ed1983234e44500"
   end
 
   depends_on "cmake" => :build
@@ -24,8 +23,6 @@ class Osm2pgrouting < Formula
   depends_on "libpqxx"
   depends_on "pgrouting"
   depends_on "postgis"
-
-  fails_with gcc: "5"
 
   # Fix build failure due to missing include
   # src/osm_elements/osm_tag.cpp:34:18: error: 'transform' is not a member of 'std'

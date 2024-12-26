@@ -1,5 +1,5 @@
 class Root < Formula
-  desc "Object oriented framework for large scale data analysis"
+  desc "Analyzing petabytes of data, scientifically"
   homepage "https://root.cern"
   license "LGPL-2.1-or-later"
   head "https://github.com/root-project/root.git", branch: "master"
@@ -34,7 +34,7 @@ class Root < Formula
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "cfitsio"
   depends_on "davix"
   depends_on "fftw"
@@ -200,12 +200,12 @@ class Root < Formula
   end
 
   test do
-    (testpath/"test.C").write <<~C
+    (testpath/"test.C").write <<~CPP
       #include <iostream>
       void test() {
         std::cout << "Hello, world!" << std::endl;
       }
-    C
+    CPP
 
     # Test ROOT command line mode
     system bin/"root", "-b", "-l", "-q", "-e", "gSystem->LoadAllLibraries(); 0"

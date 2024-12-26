@@ -1,8 +1,8 @@
 class RattlerBuild < Formula
   desc "Universal conda package builder"
-  homepage "https://github.com/prefix-dev/rattler-build"
-  url "https://github.com/prefix-dev/rattler-build/archive/refs/tags/v0.31.1.tar.gz"
-  sha256 "844a399e4c1625456dd6900d49d0115c8da11c117f06d26d75cb104cc1edadce"
+  homepage "https://rattler.build"
+  url "https://github.com/prefix-dev/rattler-build/archive/refs/tags/v0.33.1.tar.gz"
+  sha256 "08f61d0e3998872881129913ac821914cfb9b470e571c5645409eaf7493cdf12"
   license "BSD-3-Clause"
   head "https://github.com/prefix-dev/rattler-build.git", branch: "main"
 
@@ -15,15 +15,15 @@ class RattlerBuild < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "71036e4ac28eb00145717d1db60a8c15a34a95421852ca997273cb1371a0f9d2"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d77210b32746492979e226c4917fa00b5d5022362bf6e47d47d9b47bb9294946"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6e73e10e87e704c3b16ccb0c0c2c4bbca5d415ba551615ad87b48df50678228a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "0242f8fdc46a0b447fc53324faf3b50e0120ce07f608b0443dc4fff3df8190e1"
-    sha256 cellar: :any_skip_relocation, ventura:       "d37f49210da594bed9ac870f4438774a04bab711d0c4177d866bc52957adfe79"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e30fa49f9291a7d3aa161e77e7a31eab390de8b2fbea90a985dfcea1f105c5ce"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "18637e5b5ede17586f4e0ed59a05aaaffb1db086bafa6bc3c7a43f39e21ec3d3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "08f30b07595b70dedf7abdc2e0eb8b8bd1a68c375248eb97b88ddb8b4d194c21"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f14823549b751fc26e999bbbf59f80aa53ec416145e544ae30281a417a94b4a4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2f7f60a6a514f751ebd5445b29a3228c5808e33aed00805672c8925fcb5e403c"
+    sha256 cellar: :any_skip_relocation, ventura:       "1ac0888adc549fd0c4052bb3a32409817d6e26263f52c0c56563706e10a52ece"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5f9c55eae473ee3e17844666c3198614230e1c6117f6f88a132ec19aeed68870"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "openssl@3"
   depends_on "xz"
@@ -61,7 +61,7 @@ class RattlerBuild < Formula
           - hello | grep "Hello World!"
     YAML
     system bin/"rattler-build", "build", "--recipe", "recipe/recipe.yaml"
-    assert_predicate testpath/"output/noarch/test-package-0.1.0-buildstring.conda", :exist?
+    assert_path_exists testpath/"output/noarch/test-package-0.1.0-buildstring.conda"
 
     assert_match version.to_s, shell_output(bin/"rattler-build --version")
   end

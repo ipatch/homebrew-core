@@ -19,16 +19,18 @@ class Xtensor < Formula
 
   def install
     resource("xtl").stage do
-      system "cmake", ".", *std_cmake_args
-      system "make", "install"
+      system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+      system "cmake", "--build", "build"
+      system "cmake", "--install", "build"
     end
 
-    system "cmake", ".", "-Dxtl_DIR=#{lib}/cmake/xtl", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", "-Dxtl_DIR=#{lib}/cmake/xtl", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.cc").write <<~EOS
+    (testpath/"test.cc").write <<~CPP
       #include <iostream>
       #include "xtensor/xarray.hpp"
       #include "xtensor/xio.hpp"
@@ -48,7 +50,8 @@ class Xtensor < Formula
         std::cout << res(2) << std::endl;
         return 0;
       }
-    EOS
+    CPP
+
     system ENV.cxx, "-std=c++14", "test.cc", "-o", "test", "-I#{include}"
     assert_equal "323", shell_output("./test").chomp
   end

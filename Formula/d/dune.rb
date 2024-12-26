@@ -1,18 +1,18 @@
 class Dune < Formula
   desc "Composable build system for OCaml"
   homepage "https://dune.build/"
-  url "https://github.com/ocaml/dune/releases/download/3.16.1/dune-3.16.1.tbz"
-  sha256 "b781ae20f87613c2a11bd0717809e00470c82d615e15264f9a64e033051ac3de"
+  url "https://github.com/ocaml/dune/releases/download/3.17.1/dune-3.17.1.tbz"
+  sha256 "6b9ee5ed051379a69ca45173ac6c5deb56b44a1c16e30b7c371343303d835ac6"
   license "MIT"
   head "https://github.com/ocaml/dune.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "988ba6399a7f512df3b1b7ba9a8b268fa86205613e21ffe626333e0b7fc70c81"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "38dca2bb0cb2e80f79093345c858cb2ffa90daa9276e23562ecf749cca038954"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "db440744d7d549ccc16697bb3742d6995c4e79981e72abd09bec6ce57ca0aac6"
-    sha256 cellar: :any_skip_relocation, sonoma:        "31131d9cce0b06cc62c44d9afae766e2ed847957b99ac79f022a4834bf4426f0"
-    sha256 cellar: :any_skip_relocation, ventura:       "bd7d4b100ea8479ca8d94edd09980cb92adeef8f1c0a1575151d0235c23bb17a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9396b7b3e9c99d94e76a7eeb0033b0cb069afee26502513267c1c4ae9688715c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cbe712230ebb0b40c9e8b1ef98b8dc71833486de4b45a4a7a85b96b96dde477e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5ca9c2522a72cea646d27a6bc31a6107b572ca25f51282eb67a48dc19d5782fe"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3b96067281833c3383f0fae1950e42ecd7d2f805bd688f9985c51e58452cf6dc"
+    sha256 cellar: :any_skip_relocation, sonoma:        "eea07e9f1a4c83eee7e6294f5956f90eb59b9a06a3595aae12cd8d3f7e53fa1c"
+    sha256 cellar: :any_skip_relocation, ventura:       "4b1bc4b25cf3c392df87a4fdffe2c85bd8edd4742ec55a8175d22173bf1f38a4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f5a6a2519c0a84ac69567bcfc5abeaad4e036831b510bf0ae6ead5e5fa6e722d"
   end
 
   depends_on "ocaml" => [:build, :test]

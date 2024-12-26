@@ -1,19 +1,19 @@
 class Recc < Formula
   desc "Remote Execution Caching Compiler"
   homepage "https://buildgrid.gitlab.io/recc"
-  url "https://gitlab.com/BuildGrid/buildbox/buildbox/-/archive/1.2.33/buildbox-1.2.33.tar.gz"
-  sha256 "26a06dd0e591e1b98d0c15763084872ff05a8c7a28e7c2a1824e31cb91312901"
+  url "https://gitlab.com/BuildGrid/buildbox/buildbox/-/archive/1.2.37/buildbox-1.2.37.tar.gz"
+  sha256 "582beadbf0f8216922d0085f6ebfa6d524f0aec34ee7fc076267230dc16a26e2"
   license "Apache-2.0"
   revision 1
   head "https://gitlab.com/BuildGrid/buildbox/buildbox.git", branch: "master"
 
   bottle do
-    sha256 arm64_sequoia: "954bf708a2494949d8c0445bcbeb7f7820aa6623636e2160715497c1cb2f15dd"
-    sha256 arm64_sonoma:  "e68d323c60be7b310467e3ae3bda059348051ac952dd36634bdee00bf844ca42"
-    sha256 arm64_ventura: "023046bf86fc593df51882d30e519dfddd5ec6cae2c1d24ff801e34215ff8525"
-    sha256 sonoma:        "ba02c3b73bcb4746b9708f0a5947c91ecdb3127cc95dc2665c40a34088572ba1"
-    sha256 ventura:       "cc22decfab077a21a9945eb6c82a6024646302445c68ae3b7b193eebed53b90f"
-    sha256 x86_64_linux:  "5bdcc658eea605a81b66d38d06c4f57c8f66bfcd6ef1c7c7ad8cf9abcfc846ea"
+    sha256 arm64_sequoia: "23972f29b24ffba4b23a0fdfebdb9c74cf549ac1bbe16a50e5501d105aea27de"
+    sha256 arm64_sonoma:  "27816f446b1ebfce27030e4a39b434ed59d698891b8ed8a6a7989f13ea72e8c4"
+    sha256 arm64_ventura: "affc198d53d88714e71eccfc2c71ec1409d22fc4b5fda97866de3923724c6393"
+    sha256 sonoma:        "896c5d3ce9859ade5f7bb2323a25b71608055d7f94acc2868456b894859fac7b"
+    sha256 ventura:       "ee28bb3d040bafbab2528cfad2e19750e135b293e092ec2e0328dcd98400b9d3"
+    sha256 x86_64_linux:  "6a975bc236519792313a8655f455cd5aba0d7c4c87da18e6158d646af430f48b"
   end
 
   depends_on "cmake" => :build
@@ -33,7 +33,7 @@ class Recc < Formula
   end
 
   on_linux do
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
     depends_on "util-linux"
   end
 
@@ -104,9 +104,9 @@ class Recc < Formula
 
     # Create a source file to test caching
     test_file = testpath/"test.c"
-    test_file.write <<~EOS
+    test_file.write <<~C
       int main() {}
-    EOS
+    C
 
     # Wait for the server to start
     sleep 2 unless (recc_cache_dir/"casd.sock").exist?

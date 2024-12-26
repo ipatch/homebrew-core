@@ -23,7 +23,7 @@ class Nghttp2 < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "c-ares"
   depends_on "jemalloc"
   depends_on "libev"
@@ -47,7 +47,10 @@ class Nghttp2 < Formula
     cause "Requires C++20 support"
   end
 
-  fails_with gcc: "11"
+  fails_with :gcc do
+    version "11"
+    cause "Requires C++20 support"
+  end
 
   def install
     ENV.llvm_clang if OS.mac? && DevelopmentTools.clang_build_version <= 1400
@@ -64,8 +67,7 @@ class Nghttp2 < Formula
       s.gsub!(%r{\$[({]top_builddir[)}]/lib/libnghttp2\.la}, "", audit_result: false)
     end
 
-    args = %W[
-      --prefix=#{prefix}
+    args = %w[
       --disable-silent-rules
       --enable-app
       --disable-examples
@@ -74,8 +76,8 @@ class Nghttp2 < Formula
       --without-systemd
     ]
 
-    system "autoreconf", "-ivf" if build.head?
-    system "./configure", *args
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

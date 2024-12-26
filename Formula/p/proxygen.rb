@@ -1,18 +1,19 @@
 class Proxygen < Formula
   desc "Collection of C++ HTTP libraries"
   homepage "https://github.com/facebook/proxygen"
-  url "https://github.com/facebook/proxygen/releases/download/v2024.11.18.00/proxygen-v2024.11.18.00.tar.gz"
-  sha256 "c344a522ed792e9d7ecfd866319bec3d8145ec774f652f508caccfd1871144de"
+  url "https://github.com/facebook/proxygen/releases/download/v2024.12.02.00/proxygen-v2024.12.02.00.tar.gz"
+  sha256 "536c5baaf372a590e848d1bf60b46195bec421e2f940034530e1c170d43c4947"
   license "BSD-3-Clause"
+  revision 1
   head "https://github.com/facebook/proxygen.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "89697830785db1bdb668677c253f33c28bf030bd8374283a8a2178022d80f606"
-    sha256 cellar: :any,                 arm64_sonoma:  "394503c4f13a04b08fd0a67ac371692a8638dda1db212e6b7ead41cbe58c2c3b"
-    sha256 cellar: :any,                 arm64_ventura: "8a823f77463dbe8bb87f1db1caf8a176a8cfcf078e3c394ef5817c56a6cd7ef3"
-    sha256 cellar: :any,                 sonoma:        "845f58372741845a9b0ec4be5dcf14db728cf5e09f65536107f001d9b6459d43"
-    sha256 cellar: :any,                 ventura:       "13aa5bd936ff0e424785000df474b22cc99800f7cd51a9c4a89a457fd8f9bb3b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c2a6538dceee4e650b0a1d0dfe14cfdbf23be2faddb266fbe8b5d809356db89f"
+    sha256 cellar: :any,                 arm64_sequoia: "ab0e64dd6b371856c7a8598b7f66ee5920e0c3c37d05ca4eda765207ad7c4047"
+    sha256 cellar: :any,                 arm64_sonoma:  "64ad913f51b4365cf771497c9c7b3115f5346eca6fa530a22d0db68624737da1"
+    sha256 cellar: :any,                 arm64_ventura: "7520450e26415df4ca957231748e8ead397c0147ecfb31b40caeb871e74c5a81"
+    sha256 cellar: :any,                 sonoma:        "5d650979226a82a089e3214c0820dbe2217f74139b30121deb2366e5a41c6d46"
+    sha256 cellar: :any,                 ventura:       "7379788150ae2770facc43e892d39444a65fe7239794d82b4f055c5006bda411"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6195400434334fc8652e881b28521c417afac224a1b49ffc7702fd5cf431914e"
   end
 
   depends_on "cmake" => :build
@@ -52,6 +53,7 @@ class Proxygen < Formula
     port = free_port
     pid = spawn(bin/"proxygen_echo", "--http_port", port.to_s)
     sleep 30
+    sleep 30 if OS.mac? && Hardware::CPU.intel?
     system "curl", "-v", "http://localhost:#{port}"
   ensure
     Process.kill "TERM", pid

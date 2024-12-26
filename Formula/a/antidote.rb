@@ -1,6 +1,6 @@
 class Antidote < Formula
   desc "Plugin manager for zsh, inspired by antigen and antibody"
-  homepage "https://getantidote.github.io/"
+  homepage "https://antidote.sh/"
   url "https://github.com/mattmc3/antidote/archive/refs/tags/v1.9.7.tar.gz"
   sha256 "67245a39d9719251e295cbeae7b050c99eccff5b978badd1e4b61e90575a6fac"
   license "MIT"
@@ -26,11 +26,12 @@ class Antidote < Formula
   end
 
   test do
-    (testpath/".zshrc").write <<~EOS
+    (testpath/".zshrc").write <<~SHELL
       export GIT_TERMINAL_PROMPT=0
       export ANTIDOTE_HOME=~/.zplugins
       source #{pkgshare}/antidote.zsh
-    EOS
+    SHELL
+
     system "zsh", "--login", "-i", "-c", "antidote install rupa/z"
     assert_equal (testpath/".zsh_plugins.txt").read, "rupa/z\n"
     assert_predicate testpath/".zplugins/https-COLON--SLASH--SLASH-github.com-SLASH-rupa-SLASH-z/z.sh", :exist?

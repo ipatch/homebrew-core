@@ -1,18 +1,26 @@
 class OhMyPosh < Formula
   desc "Prompt theme engine for any shell"
   homepage "https://ohmyposh.dev"
-  url "https://github.com/JanDeDobbeleer/oh-my-posh/archive/refs/tags/v24.6.5.tar.gz"
-  sha256 "667da8545a426a8744c0bfd1b8d00b996404d406bbd33babeb9d6a6a9dd43bb2"
+  url "https://github.com/JanDeDobbeleer/oh-my-posh/archive/refs/tags/v24.17.1.tar.gz"
+  sha256 "c53c8c62bdc116a9ff11a54f5a0a8f9e0ac1ba594adcfe7dbf4941d663154636"
   license "MIT"
   head "https://github.com/JanDeDobbeleer/oh-my-posh.git", branch: "main"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "46cc9bebcfaad4b9fd90098b36c345240f248bd777e1a3ac056113b22bd3f4ef"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "eb5386fe914e8a75171715b697b1a3dca1c143706e31e818aa1f092427e09013"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "8a70711a1d24aa807262c312b0d8870b322249e53245806b0c1518239c5d1a49"
-    sha256 cellar: :any_skip_relocation, sonoma:        "b06ed7b991d57e914ad42307e2348512df754f34f85c5adaa98de5cfee89c631"
-    sha256 cellar: :any_skip_relocation, ventura:       "38916903141cca8312be31ab6949c8888be44cb8f9036173e0c7b4d5bd552784"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "58ac2c47279a2055f9290881909ee67d5a0cfd0ce94744acf1de9f93b24c9311"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ab38444fb385875af8ae339d4302f8c38b1327f72c0c8aa5edd22fee771b8a50"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b994abc153bd4ef338bc6e446301b4bc562cd378001c2f1e60fc79f45c2d7502"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a2a7a04f3774b51dd3fb61a98f89e44f1dc522443b8f88b603b561124c3eaa8a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "178efe0be05dc9a4d37a67de57655a04895b106a94c46998a97b773afd32ca01"
+    sha256 cellar: :any_skip_relocation, ventura:       "619a44908baf72b0a129f29bf46763e924d3b29a7e17055beaf0b8a842990e27"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a9a1c67eb8f0f864851e0185f5528ca65c4b0b3b99beacc1306fd81a11aa46d1"
   end
 
   depends_on "go" => :build
@@ -23,10 +31,12 @@ class OhMyPosh < Formula
       -X github.com/jandedobbeleer/oh-my-posh/src/build.Version=#{version}
       -X github.com/jandedobbeleer/oh-my-posh/src/build.Date=#{time.iso8601}
     ]
+
     cd "src" do
       system "go", "build", *std_go_args(ldflags:)
     end
 
+    generate_completions_from_executable(bin/"oh-my-posh", "completion")
     prefix.install "themes"
     pkgshare.install_symlink prefix/"themes"
   end

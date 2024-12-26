@@ -2,25 +2,24 @@ class Lazydocker < Formula
   desc "Lazier way to manage everything docker"
   homepage "https://github.com/jesseduffield/lazydocker"
   url "https://github.com/jesseduffield/lazydocker.git",
-      tag:      "v0.23.3",
-      revision: "152b36577137fd95f288e12cee5fd6d857a2d101"
+      tag:      "v0.24.1",
+      revision: "be051153525b018a46f71a2b2ed42cde39a1110c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b280bb9358ad1d7d14820c5893febffd08dfcc30321d8b2160cd7d569f77a899"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0ac07f29a414a814b0e2a04a00f707693d40d18e8994865b89d99cc7070456af"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d85ea08089170411b0ffbf3da83abc5f70d54a389a7cdc58c74bed33175f0b35"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "96ba766778d35904eba6a4197d6258e74ab901a2474233012352ddab7e11af01"
-    sha256 cellar: :any_skip_relocation, sonoma:         "d4daf142e5877778b5018303438b33b69338b2ec5381dc8690e3ca884aea8d97"
-    sha256 cellar: :any_skip_relocation, ventura:        "2ce62481bbc32499d8f33fe76d0240c8b6171cf43156e68c8517ad897ddb3e1a"
-    sha256 cellar: :any_skip_relocation, monterey:       "0bb1743aae637e317ed37197bce584b49604fd88967403c4dcac083adb3efac2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d7670ea3478aef62147ec682af8df6ea24ee4fcd7b4e1dd26aad6bfe437f06bb"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d6f64993358c0dbf9148225c06d2d188f662792221602eda80b0c3b18460a774"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d6f64993358c0dbf9148225c06d2d188f662792221602eda80b0c3b18460a774"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d6f64993358c0dbf9148225c06d2d188f662792221602eda80b0c3b18460a774"
+    sha256 cellar: :any_skip_relocation, sonoma:        "da5a6148836db44d966471327fd0f7c6e99921c357540476ba84b004ee72c29a"
+    sha256 cellar: :any_skip_relocation, ventura:       "da5a6148836db44d966471327fd0f7c6e99921c357540476ba84b004ee72c29a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "388d54eea16a31e3e7230847a697f2e3ac93888c9869079ba30942c16dc7c8fd"
   end
 
   depends_on "go" => :build
 
   def install
-    ldflags = "-X main.version=#{version} -X main.buildSource=homebrew"
+    ldflags = "-s -w -X main.version=#{version} -X main.buildSource=homebrew"
     system "go", "build", "-mod=vendor", *std_go_args(ldflags:)
   end
 

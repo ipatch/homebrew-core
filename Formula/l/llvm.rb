@@ -6,15 +6,23 @@ class Llvm < Formula
   head "https://github.com/llvm/llvm-project.git", branch: "main"
 
   stable do
-    url "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.3/llvm-project-19.1.3.src.tar.xz"
-    sha256 "324d483ff0b714c8ce7819a1b679dd9e4706cf91c6caf7336dc4ac0c1d3bf636"
+    url "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.6/llvm-project-19.1.6.src.tar.xz"
+    sha256 "e3f79317adaa9196d2cfffe1c869d7c100b7540832bc44fe0d3f44a12861fa34"
+
+    # Remove the following patches in LLVM 20.
 
     # Backport relative `CLANG_CONFIG_FILE_SYSTEM_DIR` patch.
-    # Remove in LLVM 20.
     # https://github.com/llvm/llvm-project/pull/110962
     patch do
       url "https://github.com/llvm/llvm-project/commit/1682c99a8877364f1d847395cef501e813804caa.patch?full_index=1"
       sha256 "2d0a185e27ff2bc46531fc2c18c61ffab521ae8ece2db5b5bed498a15f3f3758"
+    end
+
+    # Support simplified triples in version config files.
+    # https://github.com/llvm/llvm-project/pull/111387
+    patch do
+      url "https://github.com/llvm/llvm-project/commit/88dd0d33147a7f46a3c9df4aed28ad4e47ef597c.patch?full_index=1"
+      sha256 "0acaa80042055ad194306abb9843a94da24f53ee2bb819583d624391a6329b90"
     end
   end
 
@@ -24,13 +32,12 @@ class Llvm < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "d54670a89c5beeb469091bd895d560e23820f1c3b8e3188685eed08a99c6f75d"
-    sha256 cellar: :any,                 arm64_sonoma:  "e563ec784c4232867374c900d6402197392dd139bf0bd520670193abad02d0c9"
-    sha256 cellar: :any,                 arm64_ventura: "232ce61ccf98ca57fc92f2b65337a0cb2f87f98cdf090e94f8816a6ce3f5547e"
-    sha256 cellar: :any,                 sonoma:        "36145cfee5c0398188d702bd8399207c6ee8c8c6ba3b3b3b1f22bd0641d113f8"
-    sha256 cellar: :any,                 ventura:       "707225be33b04c17fee25e02424a842c63306e8db056cfac208ba517e1c1c252"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2c51736b56dcf9714b31b0be4dc505382346f2880519b8059365b2e030183cea"
+    sha256 cellar: :any,                 arm64_sequoia: "b81a65c268f7f8b9c223f75e0bdb39146ceea67204bfdafe9ff4453d74f856ac"
+    sha256 cellar: :any,                 arm64_sonoma:  "4465517dd63f576de1290997d4836677bf66245055015e3f88bda8c2585c7a5b"
+    sha256 cellar: :any,                 arm64_ventura: "8f30b71bc89a334150dd4a6aecc7e88d239bcbe378a3dd81d933e592377b76a0"
+    sha256 cellar: :any,                 sonoma:        "ce4938afadc387d9a2a64619ce8ddd33449e0f78c4165d586542c82787208052"
+    sha256 cellar: :any,                 ventura:       "bb67bfc15ce74fc161855ddd62e374f5d7010cbd17b85952c723194567896f41"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d6b9e197731234ed6b460ec99c7d1be5c845fbb7cdb9d46dfa2da3fee538b59b"
   end
 
   keg_only :provided_by_macos
@@ -50,19 +57,9 @@ class Llvm < Formula
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
     depends_on "binutils" # needed for gold
     depends_on "elfutils" # openmp requires <gelf.h>
-  end
-
-  # Fails at building LLDB
-  fails_with gcc: "5"
-
-  # Support simplified triples in version config files.
-  # https://github.com/llvm/llvm-project/pull/111387
-  patch do
-    url "https://github.com/llvm/llvm-project/commit/88dd0d33147a7f46a3c9df4aed28ad4e47ef597c.patch?full_index=1"
-    sha256 "0acaa80042055ad194306abb9843a94da24f53ee2bb819583d624391a6329b90"
   end
 
   # Fix triple config loading for clang-cl
@@ -492,9 +489,12 @@ class Llvm < Formula
   def write_config_files(macos_version, kernel_version, arch)
     clang_config_file_dir.mkpath
 
-    arches = Set.new([:arm64, :x86_64])
+    arches = Set.new([:arm64, :x86_64, :aarch64])
     arches << arch
-    sysroot = if macos_version >= "10.14" || (macos_version.blank? && kernel_version.blank?)
+
+    sysroot = if macos_version.blank? || (MacOS.version > macos_version && MacOS::CLT.separate_header_package?)
+      "#{MacOS::CLT::PKG_PATH}/SDKs/MacOSX.sdk"
+    elsif macos_version >= "10.14"
       "#{MacOS::CLT::PKG_PATH}/SDKs/MacOSX#{macos_version}.sdk"
     else
       "/"
@@ -507,7 +507,7 @@ class Llvm < Formula
       arches.each do |target_arch|
         config_file = "#{target_arch}-apple-#{system}#{version}.cfg"
         (clang_config_file_dir/config_file).atomic_write <<~CONFIG
-          --sysroot=#{sysroot}
+          -isysroot #{sysroot}
         CONFIG
       end
     end
@@ -631,15 +631,27 @@ class Llvm < Formula
         system bin/"clang", "-v", "test.c", "-o", "testCLT"
         assert_equal "Hello World!", shell_output("./testCLT").chomp
 
-        target = "#{Hardware::CPU.arch}-apple-macosx#{MacOS.full_version}"
-        system bin/"clang-cpp", "-v", "--target=#{target}", "test.c"
-        system bin/"clang-cpp", "-v", "--target=#{target}", "test.cpp"
+        targets = ["#{Hardware::CPU.arch}-apple-macosx#{MacOS.full_version}"]
 
-        system bin/"clang", "-v", "--target=#{target}", "test.c", "-o", "test-macosx"
-        assert_equal "Hello World!", shell_output("./test-macosx").chomp
+        # The test tends to time out on Intel, so let's do these only for ARM macOS.
+        if Hardware::CPU.arm?
+          old_macos_version = HOMEBREW_MACOS_OLDEST_SUPPORTED.to_i - 1
+          targets << "#{Hardware::CPU.arch}-apple-macosx#{old_macos_version}"
 
-        system bin/"clang++", "-v", "--target=#{target}", "-std=c++11", "test.cpp", "-o", "test++-macosx"
-        assert_equal "Hello World!", shell_output("./test++-macosx").chomp
+          old_kernel_version = MacOSVersion.kernel_major_version(MacOSVersion.new(old_macos_version.to_s))
+          targets << "#{Hardware::CPU.arch}-apple-darwin#{old_kernel_version}"
+        end
+
+        targets.each do |target|
+          system bin/"clang-cpp", "-v", "--target=#{target}", "test.c"
+          system bin/"clang-cpp", "-v", "--target=#{target}", "test.cpp"
+
+          system bin/"clang", "-v", "--target=#{target}", "test.c", "-o", "test-macosx"
+          assert_equal "Hello World!", shell_output("./test-macosx").chomp
+
+          system bin/"clang++", "-v", "--target=#{target}", "-std=c++11", "test.cpp", "-o", "test++-macosx"
+          assert_equal "Hello World!", shell_output("./test++-macosx").chomp
+        end
       end
 
       # Testing Xcode
@@ -731,7 +743,7 @@ class Llvm < Formula
     end
 
     # Testing mlir
-    (testpath/"test.mlir").write <<~EOS
+    (testpath/"test.mlir").write <<~MLIR
       func.func @main() {return}
 
       // -----
@@ -743,7 +755,7 @@ class Llvm < Formula
 
       // expected-error @+1 {{redefinition of symbol named 'foo'}}
       func.func @foo() { return }
-    EOS
+    MLIR
     system bin/"mlir-opt", "--split-input-file", "--verify-diagnostics", "test.mlir"
 
     (testpath/"scanbuildtest.cpp").write <<~CPP
@@ -768,10 +780,10 @@ class Llvm < Formula
 
     # This will fail if the clang bindings cannot find `libclang`.
     with_env(PYTHONPATH: prefix/Language::Python.site_packages(python3)) do
-      system python3, "-c", <<~EOS
+      system python3, "-c", <<~PYTHON
         from clang import cindex
         cindex.Config().get_cindex_library()
-      EOS
+      PYTHON
     end
 
     unless versioned_formula?

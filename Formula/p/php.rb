@@ -2,9 +2,9 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.4.1.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.4.1.tar.xz"
-  sha256 "94c8a4fd419d45748951fa6d73bd55f6bdf0adaefb8814880a67baa66027311f"
+  url "https://www.php.net/distributions/php-8.4.2.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.2.tar.xz"
+  sha256 "92636453210f7f2174d6ee6df17a5811368f556a6c2c2cbcf019321e36456e01"
   license "PHP-3.01"
 
   livecheck do
@@ -13,12 +13,12 @@ class Php < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "3800e45d5cd63c32c2f7218d16f58582b7fa6cdef5b95ca455e31b3205fcac3f"
-    sha256 arm64_sonoma:  "d0d48b74cee979feaf61163f997171d4be88aee7bd05d34f7b79086fc9bfee07"
-    sha256 arm64_ventura: "8457b0bbe50e7a56a498594f09f66aa645403a870632a9a376d8041446d2558a"
-    sha256 sonoma:        "9c19cac2676029b1166c92ef06da10ff8fe8812a7a85f847e28a030f1050c77d"
-    sha256 ventura:       "67374319228f35a65d26cdd7220f78ec82135ef6c832597ac3d4e14b96b2b8b5"
-    sha256 x86_64_linux:  "5b4f182ecbf9f3fa0a455b3f7a22374b5af59ddb231927a0207b6a31c85b094d"
+    sha256 arm64_sequoia: "c110c708c31ad0d1b137637df611ade4f85c7700be7047b9cd784350db4a8aee"
+    sha256 arm64_sonoma:  "7366b239847965a83a19a3d35d45aeb004e27a0202d403a87fcf40dfb229d747"
+    sha256 arm64_ventura: "4c4597261c5c368342e5d1d30f154a04e0f96cd05127744d9353bc276d8b474d"
+    sha256 sonoma:        "cfa704f58a4013880868786bfdc0f53fcc13c4dd6e3b59e7f1639b85888a9b7d"
+    sha256 ventura:       "47b3a8fa200f23269f032fb9a2489ed062af563cf14c0253a672a160cfaae439"
+    sha256 x86_64_linux:  "3ec868c8effb40925d4f0b14ff7fbddeb0cfe08a3b568511c177522a5abc2c06"
   end
 
   head do
@@ -33,7 +33,6 @@ class Php < Formula
   depends_on "apr"
   depends_on "apr-util"
   depends_on "argon2"
-  depends_on "aspell"
   depends_on "autoconf"
   depends_on "curl"
   depends_on "freetds"
@@ -45,6 +44,7 @@ class Php < Formula
   depends_on "libpq"
   depends_on "libsodium"
   depends_on "libzip"
+  depends_on "net-snmp"
   depends_on "oniguruma"
   depends_on "openldap"
   depends_on "openssl@3"
@@ -157,7 +157,6 @@ class Php < Formula
       --with-gettext=#{Formula["gettext"].opt_prefix}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
-      --with-kerberos
       --with-layout=GNU
       --with-ldap=#{Formula["openldap"].opt_prefix}
       --with-libxml
@@ -175,7 +174,7 @@ class Php < Formula
       --with-pdo-sqlite
       --with-pgsql=#{Formula["libpq"].opt_prefix}
       --with-pic
-      --with-pspell=#{Formula["aspell"].opt_prefix}
+      --with-snmp=#{Formula["net-snmp"].opt_prefix}
       --with-sodium
       --with-sqlite3
       --with-tidy=#{Formula["tidy-html5"].opt_prefix}
@@ -338,9 +337,6 @@ class Php < Formula
     system "#{sbin}/php-fpm", "-t"
     system bin/"phpdbg", "-V"
     system bin/"php-cgi", "-m"
-    # Prevent SNMP extension to be added
-    refute_match(/^snmp$/, shell_output("#{bin}/php -m"),
-      "SNMP extension doesn't work reliably with Homebrew on High Sierra")
     begin
       port = free_port
       port_fpm = free_port
@@ -350,6 +346,8 @@ class Php < Formula
         <?php
         echo 'Hello world!' . PHP_EOL;
         var_dump(ldap_connect());
+        $session = new SNMP(SNMP::VERSION_1, '127.0.0.1', 'public');
+        var_dump(@$session->get('sysDescr.0'));
       PHP
       main_config = <<~EOS
         Listen #{port}

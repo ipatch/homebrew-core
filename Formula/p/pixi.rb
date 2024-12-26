@@ -1,8 +1,8 @@
 class Pixi < Formula
   desc "Package management made easy"
   homepage "https://pixi.sh"
-  url "https://github.com/prefix-dev/pixi/archive/refs/tags/v0.37.0.tar.gz"
-  sha256 "326f0326839672d84d4e5efe8ba56e743e84d88693686e5b9fdd64e5ca9dc876"
+  url "https://github.com/prefix-dev/pixi/archive/refs/tags/v0.39.4.tar.gz"
+  sha256 "df4e8659a31fda97e741cc391549d4e814562d06cb82ccc95fe22354cfdf8817"
   license "BSD-3-Clause"
   head "https://github.com/prefix-dev/pixi.git", branch: "main"
 
@@ -15,16 +15,16 @@ class Pixi < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a9bd38ff5d5fdc382392595cd7c48c4aca2ab4a687c50c42437a2bdc4d637db0"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2751c95228829d353ed579ab63b6fc240fa629566b366b07b1a8bdcac7a8ccb3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "279b6c1ef40b9f3cf8b461d3e47bf1a057cb78cbf6f864a953ebd36e27efcfae"
-    sha256 cellar: :any_skip_relocation, sonoma:        "cb7ce707c3377126bc770191522711a50221c7a09ab8ad173a5c76aedb7fbc48"
-    sha256 cellar: :any_skip_relocation, ventura:       "fd53563059e60cbb99d9dbd99bb9cae91914295713270fd76d2ca9e4b9bb4bf5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "87ae65d7df06f07ad8ea4e6a136c88119468f2c04a59d794bfaa70c18bc3c6ef"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "987bf205027ea8d8da035faab41c8065fa73865109ea4a415cc75831845871b4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a27be396d6ec3dffa2a106e60aa19a45e512b785912aeca3413d5788b1895212"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1908f027f3765a9576f6ccf956a11f22e11ec2695eb6f8ceecb779b469f61a86"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5b128cb14bf3df0c116ac836fe701957c4bb82d2bfd4bdb3e24f31caade3dd54"
+    sha256 cellar: :any_skip_relocation, ventura:       "08da6ca52ca6a7a313b40baff13d5fa36e07059f5e865e63d19a1668652d18e4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e58fb5c03dc3d46f8655024295669017ec4bd32e0aeb9c736929081acdc5b8de"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
 
   uses_from_macos "bzip2"

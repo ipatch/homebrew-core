@@ -6,12 +6,13 @@ class Decasify < Formula
   license "LGPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b8b5386f476925d6f20293218d68ea2cbcac1f3e980962dc03348fdac3f1683f"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "76960d71c309de0374ee48d16a4f524a698d11adc8426d1190a7255796a21116"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "e2fe6e8b7df76008f89c75af0e3a4058a405dc71dfa6fd5b7d3b52b1df6ea340"
-    sha256 cellar: :any_skip_relocation, sonoma:        "6ad9027b9152c5723ed5f51cb2b75bf1ec95fb9932c5dcffe3fb7fa03cffd799"
-    sha256 cellar: :any_skip_relocation, ventura:       "ee363def64c1cc08877ca2cb12353621e5ef6a2933c03dd9f677888709fdcc80"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ff678b34b40f353aafbb695fa48e93efa183818093cf7a460295a9d901ba7e50"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "67f3d8fe3d2b2075bd394ce73e74212d34dcb0ee895d47a8f7dad900713e57de"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "de0e5675ed1a3e5f9efce89db8c16fdd8786e196905ee844207d91648eed3648"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f48107a2056c18adf1ba70fde014d373465f7596d30d04126f0697f12e4c9a07"
+    sha256 cellar: :any_skip_relocation, sonoma:        "31cb66b6d9eca38f3b9b5910414193c0bed89c706c2abafbaf607aa2f465ccfc"
+    sha256 cellar: :any_skip_relocation, ventura:       "47646a4c162f98a43fb12b95e4f4584754ef66568b538c242c30087d8ffe76fa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "43c42908bc43fa322a6761703a4dbe5d364593c5d440f4e67e55c271018688c5"
   end
 
   head do

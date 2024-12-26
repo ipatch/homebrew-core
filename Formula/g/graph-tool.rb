@@ -3,9 +3,10 @@ class GraphTool < Formula
 
   desc "Efficient network analysis for Python 3"
   homepage "https://graph-tool.skewed.de/"
-  url "https://downloads.skewed.de/graph-tool/graph-tool-2.79.tar.bz2"
-  sha256 "52a254942e75ed3070dea70e692ae101877bbef1009e43ec62fe1806a8de0154"
+  url "https://downloads.skewed.de/graph-tool/graph-tool-2.80.tar.bz2"
+  sha256 "c1a70e075dbe728fad25dc3f5a9a9597880a6d6ff68435b91d21f0b44ef8dbe6"
   license "LGPL-3.0-or-later"
+  revision 2
 
   livecheck do
     url "https://downloads.skewed.de/graph-tool/"
@@ -13,31 +14,30 @@ class GraphTool < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256                               arm64_sequoia: "4b9ebfea60e076eccd963da33a8d3f1fc77cf92a126c38ac53cd6d6195fcf1bc"
-    sha256                               arm64_sonoma:  "c1cc89698b066ba392faac276c3594a9f912ec0aa33e4ee57672b7cbb9ec3ba8"
-    sha256                               arm64_ventura: "ac50c767078808217e6cd8ec58d090585851a7dc048db970853fabbe9443cd66"
-    sha256                               sonoma:        "7cd95c5ca3ad75b3765409764892577579f277b58619b6fa94df2b7d9755e248"
-    sha256                               ventura:       "ad558633c9fc556d3e979a9b89148b689afdcb40ff069bd115093afb58442e60"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9dd968dfe02c6d0f124652348ec33f4e42f3a7f1f4cd622751b4a4bcda28974b"
+    sha256                               arm64_sequoia: "223797f3bb7b9df4be1c5cd46fab929e98eaff52bb210833f588727670747974"
+    sha256                               arm64_sonoma:  "ab5b3725d89e8a02b6c324a36e258296ca730a577d4a2649d5f02e0b5162ae7c"
+    sha256                               arm64_ventura: "9b531f202c4f5aef5c5a32faba3bd76bf700e05624d50dff6f3746b41eb5449f"
+    sha256                               sonoma:        "5d2ffd171aa70ce70c09b2ffb52a882f5d2281b6c325d95b255db0e65de6cfce"
+    sha256                               ventura:       "f78849f7be967362e24878cb04e766fa24ec736fc9402dc6e8566e77dd02fac1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e9f0ce257237160f19f9c777a7fcb8b3224c538bb812673b9b21f637c730a7f8"
   end
 
+  depends_on "google-sparsehash" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
+
   depends_on "boost"
   depends_on "boost-python3"
   depends_on "cairomm@1.14"
   depends_on "cgal"
   depends_on "freetype"
   depends_on "gmp"
-  depends_on "google-sparsehash"
   depends_on "gtk+3"
-  depends_on macos: :mojave # for C++17
   depends_on "numpy"
   depends_on "pillow"
   depends_on "py3cairo"
   depends_on "pygobject3"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "qhull"
   depends_on "scipy"
   depends_on "zstd"
@@ -46,6 +46,7 @@ class GraphTool < Formula
 
   on_macos do
     depends_on "cairo"
+    depends_on "libomp"
     depends_on "libsigc++@2"
   end
 
@@ -109,7 +110,7 @@ class GraphTool < Formula
   end
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
@@ -134,12 +135,19 @@ class GraphTool < Formula
     # Linux build is not thread-safe.
     ENV.deparallelize unless OS.mac?
 
+    # Enable openmp
+    if OS.mac?
+      ENV.append_to_cflags "-Xpreprocessor -fopenmp"
+      ENV.append "LDFLAGS", "-L#{Formula["libomp"].opt_lib} -lomp"
+      ENV.append "CPPFLAGS", "-I#{Formula["libomp"].opt_include}"
+    end
+
     args = %W[
       PYTHON=#{python}
       --with-python-module-path=#{prefix/site_packages}
-      --with-boost-python=boost_python#{xy.to_s.delete(".")}-mt
+      --with-boost-python=boost_python#{xy.to_s.delete(".")}
       --with-boost-libdir=#{Formula["boost"].opt_lib}
-      --with-boost-coroutine=boost_coroutine-mt
+      --with-boost-coroutine=boost_coroutine
       --disable-silent-rules
     ]
     args << "PYTHON_LIBS=-undefined dynamic_lookup" if OS.mac?

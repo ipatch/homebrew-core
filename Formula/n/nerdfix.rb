@@ -1,28 +1,31 @@
 class Nerdfix < Formula
   desc "Find/fix obsolete Nerd Font icons"
   homepage "https://github.com/loichyan/nerdfix"
-  url "https://github.com/loichyan/nerdfix/archive/refs/tags/v0.4.1.tar.gz"
-  sha256 "37f13ccf0eb6567b31862bc46e694a60177cbf5b76667fe73f22cef8f7ea68df"
+  url "https://github.com/loichyan/nerdfix/archive/refs/tags/v0.4.2.tar.gz"
+  sha256 "e56f648db6bfa9a08d4b2adbf3862362ff66010f32c80dc076c0c674b36efd3c"
   license any_of: ["MIT", "Apache-2.0"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "548bbdbad743bb28524493de7787f61c17f5275a3213825364a197e7a6e8e001"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1d5798e7f09af5bb1fcb64a7e502ecfddb3fc4ead85c5611e3e2bd7210fe13cd"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "daef9dbadb1db61fefd923a3699b3a9edbf8d8e9ace06db181fdd4e150d181bc"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f757476796838ce2f18d9dc9e9b25f9e561f6c3fed81b85a2b91bcab03b4480f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "236056a7d51fcf434977df5b05aa8c29c93cec4db96c202bc2931737ad5de28a"
-    sha256 cellar: :any_skip_relocation, ventura:        "48758a489aacd7bdf98f3943ded3ee3f7a825ab56a0edbaf296e780ec59a108a"
-    sha256 cellar: :any_skip_relocation, monterey:       "e57e9613e67a27b46c6959483c24f72630c614c2cfd0a9108ead154a19dfcdb4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0e22edc2daee1185ccef621bb5ebcaaf5e8b2544194843cfbafc8e850f5683b5"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5acc95bc0c1314b40e2fb0555b97724538609e457d5574e1a5dcf61ac97942de"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "248d5d912540c309ba86f239eca1016f5cac27823a9e258f07be6aef79a39ce5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "746859b3faa37328b50b548711830edec81ecf0d1a874a7902cc2161bc961438"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0e2875debaaa6b165db6d0a3fbb92a9593ac4eca542dea253da61f99c1581051"
+    sha256 cellar: :any_skip_relocation, ventura:       "cc197b42aa7b59787c5a1cda9471bcc7ed1ec01557bc36500acb46ee3170fca8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c92886e7e4886f45c9d8f21a31389aff08e62bdf5b5bfda780b4e174c64f3656"
   end
 
   depends_on "rust" => :build
 
   def install
     system "cargo", "install", *std_cargo_args
+
+    generate_completions_from_executable(bin/"nerdfix", "completions")
   end
 
   test do
+    assert_match version.to_s, shell_output("#{bin}/nerdfix --version")
+
     touch "test.txt"
     system bin/"nerdfix", "check", "test.txt"
   end

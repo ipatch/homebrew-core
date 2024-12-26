@@ -6,6 +6,7 @@ class Pytorch < Formula
   url "https://github.com/pytorch/pytorch/releases/download/v2.5.1/pytorch-v2.5.1.tar.gz"
   sha256 "740eb5fff95e33cfe699bad43be83523f569c7cc7f9c285c2a255416443dd266"
   license "BSD-3-Clause"
+  revision 3
 
   livecheck do
     url :stable
@@ -13,12 +14,12 @@ class Pytorch < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "272e11ee6a9c46362440a85c7b03e1e43807a47a7ec684a1c49a2b4c2e958eb3"
-    sha256 cellar: :any,                 arm64_sonoma:  "93759fac4d15661def7ee9d2dc23238c6d5139bfd3cbee10f192d04851899b25"
-    sha256 cellar: :any,                 arm64_ventura: "b5a89f76c078d4cee8c0b0cca64b48c3ce65fb0085dccfb0378cda08ae3c9a71"
-    sha256 cellar: :any,                 sonoma:        "f4abb9fb35249fd6aa99ff4ae20b1afd1199992d93e12fc87e9a7ee25bab5b01"
-    sha256 cellar: :any,                 ventura:       "569d48ec2fdd91d3791ec8521ec7b746fb871564bb6c2dd956b63defed01b6d8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ba66f6a248b31ef624cdf631e97b05e8cd69bb2ca679657498d00278507c5db5"
+    sha256 cellar: :any,                 arm64_sequoia: "63fa9f32fdc1ad8ccf8df2a7dcde7e0abb67336b2f4c33cd613c4dfda736438f"
+    sha256 cellar: :any,                 arm64_sonoma:  "da20035d9a1813735459cb044ef541aa2c55078e50d948b919d550d68b8ca3e2"
+    sha256 cellar: :any,                 arm64_ventura: "0b10b0fe15b2352e3d02d82ca3fb97b1806da8485a3b5355d0dcea51b60fe7f3"
+    sha256 cellar: :any,                 sonoma:        "1132c68ecb8865a2b3865112f9e135e5d11ed2f12a2486d18c032ec2373292f5"
+    sha256 cellar: :any,                 ventura:       "f847674dfb721254cc4b7f41f243e02aea2ebe46808ed70b97296421dfac2107"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2e5e98938d7d124e2fce406b552f828f2fc1b3b052b5e4db96ae1144d36a3222"
   end
 
   depends_on "cmake" => :build

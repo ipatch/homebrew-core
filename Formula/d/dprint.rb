@@ -1,24 +1,26 @@
 class Dprint < Formula
   desc "Pluggable and configurable code formatting platform written in Rust"
   homepage "https://dprint.dev/"
-  url "https://github.com/dprint/dprint/archive/refs/tags/0.47.5.tar.gz"
-  sha256 "bea9f14c5576ee5aaefea14839ae1f89005b4681fbf539b31460837bfa2bf92d"
+  url "https://github.com/dprint/dprint/archive/refs/tags/0.48.0.tar.gz"
+  sha256 "ef4c150c31dc3da7cecb8a192722784778499fbfc297b620b636ce088d6a6d0e"
   license "MIT"
   head "https://github.com/dprint/dprint.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b003302224b4692aab0425bb7bed09123501ec1de139a19b31c42bcc9a0b8758"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c757138e6139c3dd8bff6e58aad8f775962e403ef2754c012eccc6fa582d21b2"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "8e4e38898a0571f7642c0978b390ff07b8546a47eadc4cd98e493c472c2cc65d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "78b64dc7c66f2c74880f8e6de322dc7db891458e1c9db817bc0f810acb763903"
-    sha256 cellar: :any_skip_relocation, ventura:       "ad520eb3d82e9ad951904a7d77d0619076cf726a32f00d421c440caa1371f145"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "81e7142153bb2cbc3217cc8f84663d8284f90e3f8a28a34dcce09c635e92ede7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4d7f537231482b8eeb8542ff46256cb44cbeb20cba18d33ec06dd4544bb3b125"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4fe9111aa55a00563a99857d14229ab2432e1a63140c02d66c8ade5ac5112c72"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "cb1b10dbea113351df8653ee40188a3bd87550540c5c99df4f0f00d73864c677"
+    sha256 cellar: :any_skip_relocation, sonoma:        "39f058f2d96f2635aa936db41f0a1bec6312dc5418040092b30e4d419341a542"
+    sha256 cellar: :any_skip_relocation, ventura:       "1c92708f4d31eaff09a622dbbce5f43a5a3848e259f8914eb8b2c30696e641b7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e5ab8cbdab295ac93d4b9f1d7a23b3400cc0de20233737493bda3aa89d3a764f"
   end
 
   depends_on "rust" => :build
 
   def install
     system "cargo", "install", *std_cargo_args(path: "crates/dprint")
+
+    generate_completions_from_executable(bin/"dprint", "completions")
   end
 
   test do

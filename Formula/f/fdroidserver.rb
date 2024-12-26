@@ -3,32 +3,34 @@ class Fdroidserver < Formula
 
   desc "Create and manage Android app repositories for F-Droid"
   homepage "https://f-droid.org"
-  url "https://files.pythonhosted.org/packages/37/0e/cd734dac6ed40a836db568895be0a898b03fd91c5c391a9e9dfdd03d7934/fdroidserver-2.3.0.tar.gz"
-  sha256 "5589d392636e114af1fef6412c6d38320a68c1a3b55e42c4f5bf2ae254aa0046"
+  url "https://files.pythonhosted.org/packages/93/7c/b46d343460d3bbc2b7555d7773490440cbc62d8d9e25cbf31fb1620106e4/fdroidserver-2.3.4.tar.gz"
+  sha256 "4874ac84cd59521ea18bce52d2f6f018250592bcbe95c202139872a0f9af857b"
   license "AGPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "4a45fca73a6b891df4948f25a5e92e02490fcdf56c1bd00a4db7052dea9ebfa1"
-    sha256 cellar: :any,                 arm64_sonoma:  "b85590112620b612793b2dc9ec7dd48710726e6e9e5c1ecbb6cf5356f8f37b38"
-    sha256 cellar: :any,                 arm64_ventura: "34008b256d12deb45c84c6b80b0442a4b17f9f790ba95c1eac0da881a021d44a"
-    sha256 cellar: :any,                 sonoma:        "4ca260563d1d994217a298dc0c6f3da55beeb4f02a82e60d2b0af2e5a3462cb7"
-    sha256 cellar: :any,                 ventura:       "445acfce45cf874c5c40da8275bde9dece1f98e6ac02c00ae67055772143a64f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "feb8080862617be10435166b43c71dc7ae32c766de2a4895291afcdbafcfc1be"
+    sha256 cellar: :any,                 arm64_sequoia: "3403c88d80768234cc75e853b61f45d410a773a5b1ca75fcfe48681116e37eb2"
+    sha256 cellar: :any,                 arm64_sonoma:  "ca32cb576d4bcaa1b0f15a0fd10af0817ada41e00689c7f93d2b113befe4c51c"
+    sha256 cellar: :any,                 arm64_ventura: "7a9761b70bcf54a88eb777c7c88078bb4d08072e3a3ba50afee082b04e400e5e"
+    sha256 cellar: :any,                 sonoma:        "3de097e13727e96a13d2eb1026fc87d9259a88f212c20293ac612282d35b7872"
+    sha256 cellar: :any,                 ventura:       "fec31e93e317eb9b090c4e215f903ead02fa9dc5053343bffbc700db0106cd02"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "04667608d15ce6441832e78e9e621fe20ef5e641129f01a6362d49244e6240b2"
   end
 
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "pybind11" => :build
   depends_on "rust" => :build
   depends_on "certifi"
   depends_on "cryptography"
   depends_on "freetype"
+  depends_on "libmagic"  # obviates the need for puremagic
   depends_on "libsodium" # for pynacl
   depends_on "libyaml"
   depends_on "numpy"
   depends_on "pillow"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "qhull"
+  depends_on "rclone"
   depends_on "s3cmd"
 
   uses_from_macos "libffi", since: :catalina
@@ -40,8 +42,8 @@ class Fdroidserver < Formula
   end
 
   resource "androguard" do
-    url "https://files.pythonhosted.org/packages/3d/00/f53ff1247c47a9edee6d8537e7092ad20a005665a9e9e007e1eca7825dc6/androguard-4.1.2.tar.gz"
-    sha256 "9d09390f85cd3af763ab34df565154b4e863b556347bf0b04c4b83bca21dece7"
+    url "https://files.pythonhosted.org/packages/83/78/0f44e8f0fd10493b3118d79d60599c93e5a2cd378d83054014600a620cba/androguard-3.3.5.tar.gz"
+    sha256 "f0655ca3a5add74c550951e79bd0bebbd1c5b239178393d30d8db0bd3202cda2"
   end
 
   resource "apache-libcloud" do
@@ -50,8 +52,8 @@ class Fdroidserver < Formula
   end
 
   resource "argcomplete" do
-    url "https://files.pythonhosted.org/packages/5f/39/27605e133e7f4bb0c8e48c9a6b87101515e3446003e0442761f6a02ac35e/argcomplete-3.5.1.tar.gz"
-    sha256 "eb1ee355aa2557bd3d0145de7b06b2a45b0ce461e1e7813f5d066039ab4177b4"
+    url "https://files.pythonhosted.org/packages/7f/03/581b1c29d88fffaa08abbced2e628c34dd92d32f1adaed7e42fc416938b0/argcomplete-3.5.2.tar.gz"
+    sha256 "23146ed7ac4403b70bd6026402468942ceba34a6732255b9edf5b7354f68a6bb"
   end
 
   resource "args" do
@@ -65,13 +67,18 @@ class Fdroidserver < Formula
   end
 
   resource "asttokens" do
-    url "https://files.pythonhosted.org/packages/45/1d/f03bcb60c4a3212e15f99a56085d93093a497718adf828d050b9d675da81/asttokens-2.4.1.tar.gz"
-    sha256 "b03869718ba9a6eb027e134bfdf69f38a236d681c83c160d510768af11254ba0"
+    url "https://files.pythonhosted.org/packages/4a/e7/82da0a03e7ba5141f05cce0d302e6eed121ae055e0456ca228bf693984bc/asttokens-3.0.0.tar.gz"
+    sha256 "0dcd8baa8d62b0c1d118b399b2ddba3c4aff271d0d7a9e0d4c1681c79035bbc7"
   end
 
   resource "bcrypt" do
     url "https://files.pythonhosted.org/packages/56/8c/dd696962612e4cd83c40a9e6b3db77bfe65a830f4b9af44098708584686c/bcrypt-4.2.1.tar.gz"
     sha256 "6765386e3ab87f569b276988742039baab087b2cdb01e809d74e74503c2faafe"
+  end
+
+  resource "biplist" do
+    url "https://files.pythonhosted.org/packages/3e/56/2db170a498c9c6545cda16e93c2f2ef9302da44802787b45a8a520d01bdb/biplist-1.0.3.tar.gz"
+    sha256 "4c0549764c5fe50b28042ec21aa2e14fe1a2224e239a1dae77d9e7f3932aa4c6"
   end
 
   resource "charset-normalizer" do
@@ -120,8 +127,8 @@ class Fdroidserver < Formula
   end
 
   resource "fonttools" do
-    url "https://files.pythonhosted.org/packages/d7/4e/053fe1b5c0ce346c0a9d0557492c654362bafb14f026eae0d3ee98009152/fonttools-4.55.0.tar.gz"
-    sha256 "7636acc6ab733572d5e7eec922b254ead611f1cdad17be3f0be7418e8bfaca71"
+    url "https://files.pythonhosted.org/packages/76/61/a300d1574dc381393424047c0396a0e213db212e28361123af9830d71a8d/fonttools-4.55.3.tar.gz"
+    sha256 "3983313c2a04d6cc1fe9251f8fc647754cf49a61dac6cb1e7249ae67afaafc45"
   end
 
   resource "future" do
@@ -145,8 +152,8 @@ class Fdroidserver < Formula
   end
 
   resource "ipython" do
-    url "https://files.pythonhosted.org/packages/85/e0/a3f36dde97e12121106807d80485423ae4c5b27ce60d40d4ab0bab18a9db/ipython-8.29.0.tar.gz"
-    sha256 "40b60e15b22591450eef73e40a027cf77bd652e757523eebc5bd7c7c498290eb"
+    url "https://files.pythonhosted.org/packages/d8/8b/710af065ab8ed05649afa5bd1e07401637c9ec9fb7cfda9eac7e91e9fbd4/ipython-8.30.0.tar.gz"
+    sha256 "cb0a405a306d2995a5cbb9901894d240784a9f341394c6ba3f4fe8c6eb89ff6e"
   end
 
   resource "jedi" do
@@ -170,8 +177,8 @@ class Fdroidserver < Formula
   end
 
   resource "matplotlib" do
-    url "https://files.pythonhosted.org/packages/9e/d8/3d7f706c69e024d4287c1110d74f7dabac91d9843b99eadc90de9efc8869/matplotlib-3.9.2.tar.gz"
-    sha256 "96ab43906269ca64a6366934106fa01534454a69e471b7bf3d79083981aaab92"
+    url "https://files.pythonhosted.org/packages/75/9f/562ed484b11ac9f4bb4f9d2d7546954ec106a8c0f06cc755d6f63e519274/matplotlib-3.9.3.tar.gz"
+    sha256 "cd5dbbc8e25cad5f706845c4d100e2c8b34691b412b93717ce38d8ae803bcfa5"
   end
 
   resource "matplotlib-inline" do
@@ -234,9 +241,14 @@ class Fdroidserver < Formula
     sha256 "5f4e983f40564c576c7c8635ae88db5956bb2229d7e9237d03b3c0b0190eaf42"
   end
 
+  resource "pycountry" do
+    url "https://files.pythonhosted.org/packages/76/57/c389fa68c50590881a75b7883eeb3dc15e9e73a0fdc001cdd45c13290c92/pycountry-24.6.1.tar.gz"
+    sha256 "b61b3faccea67f87d10c1f2b0fc0be714409e8fcdcc1315613174f6466c10221"
+  end
+
   resource "pydot" do
-    url "https://files.pythonhosted.org/packages/85/10/4e4da8c271540dc35914e927546cbb821397f0f9477f4079cd8732946699/pydot-3.0.2.tar.gz"
-    sha256 "9180da540b51b3aa09fbf81140b3edfbe2315d778e8589a7d0a4a69c41332bae"
+    url "https://files.pythonhosted.org/packages/bf/b8/500a772825c7ca87e4fd69c3bd6740e3375d6792a7065dd92759249f223d/pydot-3.0.3.tar.gz"
+    sha256 "5e009d97b2fff92b7a88f09ec1fd5b163f07f3b10469c927d362471d6faa0d50"
   end
 
   resource "pygments" do
@@ -257,6 +269,11 @@ class Fdroidserver < Formula
   resource "python-dateutil" do
     url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
     sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
+  end
+
+  resource "python-magic" do
+    url "https://files.pythonhosted.org/packages/da/db/0b3e28ac047452d079d375ec6798bf76a036a08182dbb39ed38116a49130/python-magic-0.4.27.tar.gz"
+    sha256 "c1ba14b08e4a5f5c31a302b7721239695b2f0f058d125bd5ce1ee36b9d9d3c3b"
   end
 
   resource "python-vagrant" do
@@ -289,14 +306,9 @@ class Fdroidserver < Formula
     sha256 "e08b402a4b8d19aa6c983c8cfc3328de5c5d2fdfaf96f55a2b67610e0297d599"
   end
 
-  resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/43/54/292f26c208734e9a7f067aea4a7e282c080750c4546559b58e2e45413ca0/setuptools-75.6.0.tar.gz"
-    sha256 "8199222558df7c86216af4f84c30e9b34a61d8ba19366cc914424cdbd28252f6"
-  end
-
   resource "six" do
-    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
-    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+    url "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz"
+    sha256 "ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"
   end
 
   resource "smmap" do
@@ -330,11 +342,6 @@ class Fdroidserver < Formula
   end
 
   def install
-    # Work around ruamel.yaml.clib not building on Xcode 15.3, remove after a new release
-    # has resolved: https://sourceforge.net/p/ruamel-yaml-clib/tickets/32/
-    ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
-
-    ENV["SODIUM_INSTALL"] = "system"
     venv = virtualenv_install_with_resources without: "matplotlib"
 
     # `matplotlib` needs extra inputs to use system libraries.
@@ -386,9 +393,14 @@ class Fdroidserver < Formula
       (testpath/"fdroid/config/categories.yml").write <<~YAML
         Development:
           name: Development
+          icon: category_development.png
         System:
           name: System
+          icon: category_system.png
       YAML
+
+      cp test_fixtures("test.png"), testpath/"fdroid/config/category_development.png"
+      cp test_fixtures("test.png"), testpath/"fdroid/config/category_system.png"
 
       (testpath/"fdroid/metadata/fake.yml").write <<~YAML
         Categories:
@@ -402,7 +414,7 @@ class Fdroidserver < Formula
         UpdateCheckMode: None
       YAML
 
-      system bin/"fdroid", "checkupdates", "--verbose", "--allow-dirty"
+      system bin/"fdroid", "install", "--verbose", "--yes"
       system bin/"fdroid", "lint", "--verbose"
       system bin/"fdroid", "rewritemeta", "fake", "--verbose"
       system bin/"fdroid", "scanner", "--verbose"

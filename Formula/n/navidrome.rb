@@ -1,42 +1,47 @@
 class Navidrome < Formula
   desc "Modern Music Server and Streamer compatible with Subsonic/Airsonic"
   homepage "https://www.navidrome.org"
-  url "https://github.com/navidrome/navidrome/archive/refs/tags/v0.53.3.tar.gz"
-  sha256 "e0d5b0280c302938177b2241a5f9868a4b40cd603ddf5acb2ff0f9c40e44c13a"
+  url "https://github.com/navidrome/navidrome/archive/refs/tags/v0.54.2.tar.gz"
+  sha256 "fd78e335599c611a9f0e3a43bcc81ef093e86b3b4cf148b27678b93da1a795c1"
   license "GPL-3.0-only"
   head "https://github.com/navidrome/navidrome.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "544d6d2a8308f121a8ed3b475dc28d4fdfc5fa0d0cf96af7d78a0578314206e3"
-    sha256 cellar: :any,                 arm64_sonoma:  "60131648342f76dda38a1815d9ec9bed3c6f9452c91d6f144d3e3191da16b257"
-    sha256 cellar: :any,                 arm64_ventura: "4368d6cc4a4cb0f6b5adb5ee75912b2277e7949c7335e6480d24d2ea4bd81913"
-    sha256 cellar: :any,                 sonoma:        "91ea632fa0a630154203bb4ee4a5fb503c72f3cc9e0f1359ad5f6846fd9b76bd"
-    sha256 cellar: :any,                 ventura:       "7ce4dc50dae686e0acc0c77e27c14a1203ab3f8dc1ada4ab2ebb01a5e13d12c7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cb76a5c3808cb67a7c170d9abe8a4da63020ee7dcfdea3a8d00cbf4a6b5eef8c"
+    sha256 cellar: :any,                 arm64_sequoia: "cda2f8231e02c160b3f7eaf5ae0447ad00da647d4e74e29c5f3cf4801832216a"
+    sha256 cellar: :any,                 arm64_sonoma:  "ed806551de8e9da91c8ebe5c10378fcca62f5156a26f2335a36c449f4f9ac553"
+    sha256 cellar: :any,                 arm64_ventura: "55702d367b503841eda2289ea7f045f843e5702cf0bd6d13b0cc8b65683a730f"
+    sha256 cellar: :any,                 sonoma:        "a6960bb7820cdf5d4d2ad85f780eab704fc04b4170acada5ad8130d66690328b"
+    sha256 cellar: :any,                 ventura:       "54c4131944d4fe95e161e8625d2799801327b8b7b7523d4b338f5ecd60519e12"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dea54b7606448a987b60327727f631650a2c99aa09b23cb6255348bdd739ad6f"
   end
 
   depends_on "go" => :build
   depends_on "node" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "ffmpeg"
   depends_on "taglib"
 
   def install
+    ldflags = %W[
+      -s -w
+      -X github.com/navidrome/navidrome/consts.gitTag=v#{version}
+      -X github.com/navidrome/navidrome/consts.gitSha=source_archive
+    ]
+
     system "make", "setup"
     system "make", "buildjs"
-    system "go", "build", *std_go_args(ldflags: "-X github.com/navidrome/navidrome/consts.gitTag=v#{version} -X github.com/navidrome/navidrome/consts.gitSha=source_archive"), "-buildvcs=false"
+    system "go", "build", *std_go_args(ldflags:), "-buildvcs=false", "-tags=netgo"
   end
 
   test do
     assert_equal "#{version} (source_archive)", shell_output("#{bin}/navidrome --version").chomp
     port = free_port
-    pid = fork do
-      exec bin/"navidrome", "--port", port.to_s
-    end
-    sleep 15
+    pid = spawn bin/"navidrome", "--port", port.to_s
+    sleep 20
+    sleep 60 if OS.mac? && Hardware::CPU.intel?
     assert_equal ".", shell_output("curl http://localhost:#{port}/ping")
   ensure
-    Process.kill "TERM", pid
+    Process.kill "KILL", pid
     Process.wait pid
   end
 end

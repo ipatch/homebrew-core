@@ -2,17 +2,18 @@ class Argo < Formula
   desc "Get stuff done with container-native workflows for Kubernetes"
   homepage "https://argoproj.io"
   url "https://github.com/argoproj/argo-workflows.git",
-      tag:      "v3.6.0",
-      revision: "b26ed4aa4dee395844531efa4a76a022183bec22"
+      tag:      "v3.6.2",
+      revision: "741ab0ef7b6432925e49882cb4294adccf5912ec"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0e91f7cee8189af64bc956f0bb72279c0faf55c84e8945db6b6061569cd5024b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5567cf7f7fe5259db124df9417c714f7432b21385f6a53996c4d81bc45baaaca"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "5ca0b4a7443ff7fbfb275ad1a0ac71272593ead6d55497ef10305fec0b757b03"
-    sha256 cellar: :any_skip_relocation, sonoma:        "eb7bfa175856a3c60540c59f15c3c22b8725440831cfd4564e4fa30bf3f8e35a"
-    sha256 cellar: :any_skip_relocation, ventura:       "dc54b4e180faedd8ba5535a19ea8299dffd1cb034d6c194570a2a48c6a4d786a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e8afe5fb8c3138edd03b7f87539aa557565d7f4d13bf646806339c9fcab898fb"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bc785afda51481f2174d7ae417d0f42ab9dc0e61b2cd5a660e785f7e5bf3c4dd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ac0a3c670c3e3248b8717561d81160dae8aa9c3ea9c321965092c9deee1ced37"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1ea83eff3f3a6f9234450a12c7c2ec0ab8357e96c0844c528dad98465ae946c2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b6838e9684cf6fcc43a01260ef3a1c1c89b67fec2c3032311a4db546a9aa1445"
+    sha256 cellar: :any_skip_relocation, ventura:       "1af8257d727cac30fca26fff098c296ef5d4deb406541f6aa826dad6883ed882"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d99221df86b8a57717a0e0eb49a9758f264e7229796cc3f531ac9036c870fc20"
   end
 
   depends_on "go" => :build
@@ -25,7 +26,7 @@ class Argo < Formula
     system "make", "dist/argo", "-j1"
     bin.install "dist/argo"
 
-    generate_completions_from_executable(bin/"argo", "completion", shells: [:bash, :zsh])
+    generate_completions_from_executable(bin/"argo", "completion")
   end
 
   test do

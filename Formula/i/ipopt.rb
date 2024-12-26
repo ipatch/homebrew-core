@@ -1,24 +1,23 @@
 class Ipopt < Formula
   desc "Interior point optimizer"
   homepage "https://coin-or.github.io/Ipopt/"
-  url "https://github.com/coin-or/Ipopt/archive/refs/tags/releases/3.14.16.tar.gz"
-  sha256 "cc8c217991240db7eb14189eee0dff88f20a89bac11958b48625fa512fe8d104"
+  url "https://github.com/coin-or/Ipopt/archive/refs/tags/releases/3.14.17.tar.gz"
+  sha256 "17ab8e9a6059ab11172c184e5947e7a7dda9fed0764764779c27e5b8e46f3d75"
   license "EPL-2.0"
   head "https://github.com/coin-or/Ipopt.git", branch: "stable/3.14"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "f27c151e814d4c9a0caeb33bb0a584c5d885121ec6a70a0586b330b8485779fa"
-    sha256 cellar: :any,                 arm64_sonoma:  "9a7c783b3ccd11860b615afc874ead0f60700a7f97dde4d5752a4444778aa86d"
-    sha256 cellar: :any,                 arm64_ventura: "5e623167a75d4f3516f6e2b50c61578bd3222f18c63abb7d5483c95dd2a0c53b"
-    sha256 cellar: :any,                 sonoma:        "fb86b1e3c17ed6cfb6b44bf1fcaca4a989a62335b364baa36490b4f0003675b8"
-    sha256 cellar: :any,                 ventura:       "467af1d0edd4ee1beb1ef2496bf277992988c8599b3082467f5be3d6891cd85b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6e2c7ebb501bd2b73e5c847f1f5e82dcedfd3a9528de22c6848e9393cedaede6"
+    sha256 cellar: :any,                 arm64_sequoia: "28f86d6ab4e46e32df53b0d84ea2bc8da41fe2493d8659f9f113e221587292e7"
+    sha256 cellar: :any,                 arm64_sonoma:  "e0da5c979f401e853212ee3318729532f8bcb29b289dc13027aeb91a10f1ccfe"
+    sha256 cellar: :any,                 arm64_ventura: "0430a197a189b0173c8a291595f5603a5732a465219113ae7600da3e704ecf78"
+    sha256 cellar: :any,                 sonoma:        "945bcc0d98610c8f333c8d67bbe38efe6f784fd072ea1912ae62767d3090b4b8"
+    sha256 cellar: :any,                 ventura:       "59158e254001660ae93cf61f6afb569cc5742617e590e9c8ce337c597d4caa28"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0cba5cbe25680d7bf7d4dbfdbcc7c730981aefef2104d8b4de2846d566094f33"
   end
 
   depends_on "openjdk" => :build
-  depends_on "pkg-config" => [:build, :test]
-  depends_on "ampl-mp"
+  depends_on "pkgconf" => [:build, :test]
+  depends_on "ampl-asl"
   depends_on "gcc" # for gfortran
   depends_on "openblas"
 
@@ -43,8 +42,8 @@ class Ipopt < Formula
   end
 
   resource "test" do
-    url "https://github.com/coin-or/Ipopt/archive/refs/tags/releases/3.14.16.tar.gz"
-    sha256 "cc8c217991240db7eb14189eee0dff88f20a89bac11958b48625fa512fe8d104"
+    url "https://github.com/coin-or/Ipopt/archive/refs/tags/releases/3.14.17.tar.gz"
+    sha256 "17ab8e9a6059ab11172c184e5947e7a7dda9fed0764764779c27e5b8e46f3d75"
   end
 
   resource "miniampl" do
@@ -76,19 +75,16 @@ class Ipopt < Formula
     end
 
     args = [
-      "--disable-debug",
-      "--disable-dependency-tracking",
       "--disable-silent-rules",
       "--enable-shared",
-      "--prefix=#{prefix}",
       "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas",
       "--with-mumps-cflags=-I#{buildpath}/mumps_include",
       "--with-mumps-lflags=-L#{lib} -ldmumps -lmpiseq -lmumps_common -lopenblas -lpord",
-      "--with-asl-cflags=-I#{Formula["ampl-mp"].opt_include}/asl",
-      "--with-asl-lflags=-L#{Formula["ampl-mp"].opt_lib} -lasl",
+      "--with-asl-cflags=-I#{Formula["ampl-asl"].opt_include}/asl",
+      "--with-asl-lflags=-L#{Formula["ampl-asl"].opt_lib} -lasl",
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
 
     ENV.deparallelize
@@ -97,8 +93,8 @@ class Ipopt < Formula
 
   test do
     testpath.install resource("test")
-    pkg_config_flags = shell_output("pkg-config --cflags --libs ipopt").chomp.split
-    system ENV.cxx, "examples/hs071_cpp/hs071_main.cpp", "examples/hs071_cpp/hs071_nlp.cpp", *pkg_config_flags
+    pkgconf_flags = shell_output("pkgconf --cflags --libs ipopt").chomp.split
+    system ENV.cxx, "examples/hs071_cpp/hs071_main.cpp", "examples/hs071_cpp/hs071_nlp.cpp", *pkgconf_flags
     system "./a.out"
 
     resource("miniampl").stage do

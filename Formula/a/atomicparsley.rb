@@ -23,12 +23,10 @@ class Atomicparsley < Formula
 
   uses_from_macos "zlib"
 
-  fails_with gcc: "5"
-
   def install
-    system "cmake", ".", *std_cmake_args
-    system "cmake", "--build", ".", "--config", "Release"
-    bin.install "AtomicParsley"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    bin.install "build/AtomicParsley"
   end
 
   test do

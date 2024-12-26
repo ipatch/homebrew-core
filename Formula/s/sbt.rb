@@ -1,9 +1,9 @@
 class Sbt < Formula
   desc "Build tool for Scala projects"
   homepage "https://www.scala-sbt.org/"
-  url "https://github.com/sbt/sbt/releases/download/v1.10.5/sbt-1.10.5.tgz"
-  mirror "https://sbt-downloads.cdnedge.bluemix.net/releases/v1.10.5/sbt-1.10.5.tgz"
-  sha256 "fb2232e051ff963e949d610077866d250cf8d18c312fcfd04f07fbffc3d5e92f"
+  url "https://github.com/sbt/sbt/releases/download/v1.10.7/sbt-1.10.7.tgz"
+  mirror "https://sbt-downloads.cdnedge.bluemix.net/releases/v1.10.7/sbt-1.10.7.tgz"
+  sha256 "32c15233c636c233ee25a2c31879049db7021cfef70807c187515c39b96b0fe6"
   license "Apache-2.0"
 
   livecheck do
@@ -12,7 +12,7 @@ class Sbt < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "fc5aaaa496277209f4a1f80ba9fba8aa426619b41c1d28f6237df27101d5d940"
+    sha256 cellar: :any_skip_relocation, all: "244f33ca77e6c34891b8e3bdb2af29a3b7d26d49f902331916858b27c34db15e"
   end
 
   depends_on "openjdk"
@@ -47,6 +47,6 @@ class Sbt < Formula
   test do
     ENV.append "_JAVA_OPTIONS", "-Dsbt.log.noformat=true"
     system bin/"sbt", "--sbt-create", "about"
-    assert_match version.to_s, shell_output("#{bin}/sbt sbtVersion")
+    assert_match version.to_s, shell_output("#{bin}/sbt sbtVersion --allow-empty")
   end
 end

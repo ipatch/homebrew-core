@@ -1,20 +1,20 @@
 class ApacheArrow < Formula
   desc "Columnar in-memory analytics layer designed to accelerate big data"
   homepage "https://arrow.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-18.0.0/apache-arrow-18.0.0.tar.gz"
-  mirror "https://archive.apache.org/dist/arrow/arrow-18.0.0/apache-arrow-18.0.0.tar.gz"
-  sha256 "abcf1934cd0cdddd33664e9f2d9a251d6c55239d1122ad0ed223b13a583c82a9"
+  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-18.1.0/apache-arrow-18.1.0.tar.gz"
+  mirror "https://archive.apache.org/dist/arrow/arrow-18.1.0/apache-arrow-18.1.0.tar.gz"
+  sha256 "2dc8da5f8796afe213ecc5e5aba85bb82d91520eff3cf315784a52d0fa61d7fc"
   license "Apache-2.0"
-  revision 1
+  revision 4
   head "https://github.com/apache/arrow.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "c2ae79cb2ea4afc9f882e657e38d5673bf5baa78f89c6bfa59bdf9bbbfd390e8"
-    sha256 cellar: :any,                 arm64_sonoma:  "7fae9946652f09c39dfa5ce5482b4cdac00dc51b9000dec86450cde842ef76ec"
-    sha256 cellar: :any,                 arm64_ventura: "b3a45e70c9affc7621a78f4af768a4e55da4297b96c1e9feba32788ff3f79f89"
-    sha256 cellar: :any,                 sonoma:        "f385ef70b1050f8f2f99f276ff1a62974bbb363123abb6d8d6b85f63910785f9"
-    sha256 cellar: :any,                 ventura:       "0513be261ef9aad86f512a7ea4e612fb520fda50096d5e96daa6d6b608f32503"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "171a5c23a9f1fdba9e8098dd9d367ffaf1fcf9403c9255417205487510ae39cb"
+    sha256 cellar: :any,                 arm64_sequoia: "365dbe9722456dbb3c41c13c8c939ae519008d60fd48a57d6e581290a540a83b"
+    sha256 cellar: :any,                 arm64_sonoma:  "37c4d21830e414964627268e60d558340bb4e84a236bd5559e00f742ecd4e170"
+    sha256 cellar: :any,                 arm64_ventura: "2ed61140c2acd7c800868228c7681403754cf3ce8b043feedc3bea8ff74ab433"
+    sha256 cellar: :any,                 sonoma:        "d5f91bce2a00954bcc433bcf2a63a46f77a62b454258e1fbabcaec3d3295a7fa"
+    sha256 cellar: :any,                 ventura:       "aa065ac9d32ada2f3017d8b0795a69d04fae9d3ca9a113442979089e290b6631"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a6d92852cdcbbdef86b35753634735d2d4c0abfd55628ad7b97dfe4d9c63cc2f"
   end
 
   depends_on "boost" => :build
@@ -26,6 +26,7 @@ class ApacheArrow < Formula
   depends_on "abseil"
   depends_on "aws-sdk-cpp"
   depends_on "brotli"
+  depends_on "c-ares"
   depends_on "grpc"
   depends_on "llvm"
   depends_on "lz4"
@@ -41,11 +42,15 @@ class ApacheArrow < Formula
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
 
-  on_macos do
-    depends_on "c-ares"
+  # Issue ref: https://github.com/protocolbuffers/protobuf/issues/19447
+  fails_with :gcc do
+    version "12"
+    cause "Protobuf 29+ generated code with visibility and deprecated attributes needs GCC 13+"
   end
 
   def install
+    ENV.llvm_clang if OS.linux?
+
     # We set `ARROW_ORC=OFF` because it fails to build with Protobuf 27.0
     args = %W[
       -DCMAKE_INSTALL_RPATH=#{rpath}
@@ -85,6 +90,8 @@ class ApacheArrow < Formula
   end
 
   test do
+    ENV.method(DevelopmentTools.default_compiler).call if OS.linux?
+
     (testpath/"test.cpp").write <<~CPP
       #include "arrow/api.h"
       int main(void) {

@@ -1,32 +1,33 @@
 class Jackett < Formula
   desc "API Support for your favorite torrent trackers"
   homepage "https://github.com/Jackett/Jackett"
-  url "https://github.com/Jackett/Jackett/archive/refs/tags/v0.22.994.tar.gz"
-  sha256 "eceefe837c02d914d303862575ef32e65d3f85ba102bccd9ee61b93f5444834c"
+  url "https://github.com/Jackett/Jackett/archive/refs/tags/v0.22.1128.tar.gz"
+  sha256 "b54ebc2880f96ca37f70f56b033b7a15cf001ae0150b1c1172bda54d07a1cfc5"
   license "GPL-2.0-only"
   head "https://github.com/Jackett/Jackett.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "8fa3524a95e7a74f02c507273f382c0bb4a849ff60314bc5971daeeab3db52d1"
-    sha256 cellar: :any,                 arm64_sonoma:  "87a021ee38d2ba7ec4b1da802ff97e836da4666daf132d344d79188d8ecbf9a9"
-    sha256 cellar: :any,                 arm64_ventura: "58665a8a50bdcc50a0d4c20b271132d2025b2fa674edc2b0c48ae8b3cef1a28b"
-    sha256 cellar: :any,                 ventura:       "bc5582714d6dd595455256039716e2a16630e567b5cb35c085b336e86e0f8c49"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "89945c503b6a7338775066cfb472b42af8974c64192bc229a87d586513a0dadf"
+    sha256 cellar: :any,                 arm64_sequoia: "35b4d410175aeffab0b519b6e037976bd7588510b030043e3264905d364469bf"
+    sha256 cellar: :any,                 arm64_sonoma:  "6d2a8fac4d7313dd8d362cf6ceadd6c195c0ad4076e34b5e6e39c5da51362db6"
+    sha256 cellar: :any,                 arm64_ventura: "a372272451c03f41ca2b15a9ebb8faca2e76656555e00b7273274fc20221a1f8"
+    sha256 cellar: :any,                 ventura:       "d72af13b331da8cfaa1f11c8d8b3edcd03e4674ad00e893e04c08d4607f94b32"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f29cb6813ba61ec02b1ff3c5d38b2ce200f96492c0d5364abb6f9d7cda9a9ac1"
   end
 
   depends_on "dotnet@8"
 
   def install
+    ENV["DOTNET_CLI_TELEMETRY_OPTOUT"] = "1"
+    ENV["DOTNET_SYSTEM_GLOBALIZATION_INVARIANT"] = "1"
+
     dotnet = Formula["dotnet@8"]
-    os = OS.mac? ? "osx" : OS.kernel_name.downcase
-    arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
 
     args = %W[
       --configuration Release
       --framework net#{dotnet.version.major_minor}
       --output #{libexec}
-      --runtime #{os}-#{arch}
       --no-self-contained
+      --use-current-runtime
     ]
     if build.stable?
       args += %W[

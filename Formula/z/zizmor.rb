@@ -1,25 +1,21 @@
 class Zizmor < Formula
   desc "Find security issues in GitHub Actions setups"
   homepage "https://github.com/woodruffw/zizmor"
-  url "https://github.com/woodruffw/zizmor/archive/refs/tags/v0.5.0.tar.gz"
-  sha256 "0263516f978fa871e77e99d8bfac4cd73e6915087cddfcc765e471d26b226166"
+  url "https://github.com/woodruffw/zizmor/archive/refs/tags/v0.10.0.tar.gz"
+  sha256 "ac188a66c496dc503707515b60bff0b9d61bd27c163ad98b1d16465bfe816980"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4fcb678b04bf14c4e627f8aef04485bea62537c85ca2b00f05f4e3e5b15b43de"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7418ba5a8bda2334f464a70e0b8a2575b93163f98e8f355aa8ee29a7e16f8673"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "38940ec601c21b51858723685c21a0f3a5ecc14d06df4162fe6ca5ce60bf45cf"
-    sha256 cellar: :any_skip_relocation, sonoma:        "305e6666e4f497f5bf8efd59446dba0ca05709d130dd58cf3a0378ff6153cad3"
-    sha256 cellar: :any_skip_relocation, ventura:       "cec7b0235a315c3507ef7d34d5a0f3e16d11584a4b3ef6cc0515fb8424f21458"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e91334faede683c2ab0af326322dc48280961ade5f46d9578e632f5816f67b77"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "19bf52fec33f2d225edee6da9148cd0967e7c2f72fba15c0c77c4f958d0f0c3e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1e5a720c4b80474c281a08fe8327edc86d2a182966b439b670f33f766f18f91a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "81f5ccebbad9bedd1e01e41feee931f616ab604484655a9b3bcf633df94a2253"
+    sha256 cellar: :any_skip_relocation, sonoma:        "482fcfc51b9316d13b18e3c5c0f1e4c92e35d38c227e0d109631974f7c43602c"
+    sha256 cellar: :any_skip_relocation, ventura:       "e6dbac52a5df9688893b5ead40bf27903460d3af3629d3a6b69122df8195acc3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f2a5b5a9222bc5cdc1890e467d3d472425c38a0fe1cf6e7db604e4e0621bf06a"
   end
 
   depends_on "pkgconf" => :build
   depends_on "rust" => :build
-
-  on_linux do
-    depends_on "openssl@3"
-  end
 
   def install
     system "cargo", "install", *std_cargo_args

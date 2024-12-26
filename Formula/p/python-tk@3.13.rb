@@ -1,22 +1,22 @@
 class PythonTkAT313 < Formula
   desc "Python interface to Tcl/Tk"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.13.0/Python-3.13.0.tgz"
-  sha256 "12445c7b3db3126c41190bfdc1c8239c39c719404e844babbd015a1bc3fafcd4"
+  url "https://www.python.org/ftp/python/3.13.1/Python-3.13.1.tgz"
+  sha256 "1513925a9f255ef0793dbf2f78bb4533c9f184bdd0ad19763fd7f47a400a7c55"
   license "Python-2.0"
-  revision 2
 
   livecheck do
     formula "python@3.13"
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "4ca64a597335059b4a83787e38642cc4084d8e38de8a193833bdeeca94a3596e"
-    sha256 cellar: :any,                 arm64_sonoma:  "7fa20baf816abfcaa3ba0db4000bd60a9f124927078dfdd0e963cc39a2d1df69"
-    sha256 cellar: :any,                 arm64_ventura: "e7eefc1e865bea88ea576d81c23829d3e384ec1cf5061562b9f64abff16b970c"
-    sha256 cellar: :any,                 sonoma:        "30cefbee4731c7915a6c15991f3780bba00cee457ae578cd822e1b94b93492fb"
-    sha256 cellar: :any,                 ventura:       "7e0ca107831a97ef3caf4c174565be03679d397c6f3324e7994dac9502d8a11f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8a39924b5d12c86b0e91a271da52f4df1c4c5ad27238cf00a622976f124b29b4"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "f41ef35a57bfa83b74bad81837510e1efebd079ff3192e23a3cb161fc19d5c9d"
+    sha256 cellar: :any,                 arm64_sonoma:  "4b8daf098be87f34b73083eaf03e30c258457a06635e0c41ba439f2b5b2c7693"
+    sha256 cellar: :any,                 arm64_ventura: "4b13b238ccb530cf20fbd92047b11da5858a7afd1edbb54d8234d1327c3be43b"
+    sha256 cellar: :any,                 sonoma:        "aa7a3dfe8280101017bd0b854a824573332399994441243709a0885fba8cf572"
+    sha256 cellar: :any,                 ventura:       "4216a3022ec3e201a9a9a8d5754a3deb0e5303394f2333b21bfb22e34b2a20b5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2c0eaf843c3d5c9fee27adfe2f3335e9b550944a2f384b705c48eace8c4fa462"
   end
 
   depends_on "python@3.13"
@@ -25,6 +25,17 @@ class PythonTkAT313 < Formula
   def python3
     "python3.13"
   end
+
+  # Apply commit from open PR to fix TCL 9 threaded detection
+  # PR ref: https://github.com/python/cpython/pull/128103
+  patch do
+    url "https://github.com/python/cpython/commit/a2019e226e4650cef35ebfde7ecd7ce044a4a670.patch?full_index=1"
+    sha256 "03c4b6a293d4a51f534858657717bdc1465c42acb3b78e64c41f9011f966e449"
+  end
+
+  # Backport of https://github.com/python/cpython/commit/47cbf038850852cdcbe7a404ed7c64542340d58a
+  # TODO: Remove if https://github.com/python/cpython/pull/127364 is merged and released
+  patch :DATA
 
   def install
     xy = Language::Python.major_minor_version python3
@@ -65,3 +76,48 @@ class PythonTkAT313 < Formula
     system python3, "-c", "import tkinter; root = tkinter.Tk()"
   end
 end
+
+__END__
+diff --git a/Lib/tkinter/ttk.py b/Lib/tkinter/ttk.py
+index 073b3ae20797c3..8ddb7f97e3b233 100644
+--- a/Lib/tkinter/ttk.py
++++ b/Lib/tkinter/ttk.py
+@@ -321,6 +321,8 @@ def _tclobj_to_py(val):
+     elif hasattr(val, 'typename'): # some other (single) Tcl object
+         val = _convert_stringval(val)
+ 
++    if isinstance(val, tuple) and len(val) == 0:
++        return ''
+     return val
+ 
+ def tclobjs_to_py(adict):
+diff --git a/Modules/_tkinter.c b/Modules/_tkinter.c
+index b0b70ccb8cc3d3..45897817a56051 100644
+--- a/Modules/_tkinter.c
++++ b/Modules/_tkinter.c
+@@ -325,6 +325,7 @@ typedef struct {
+     const Tcl_ObjType *ListType;
+     const Tcl_ObjType *StringType;
+     const Tcl_ObjType *UTF32StringType;
++    const Tcl_ObjType *PixelType;
+ } TkappObject;
+ 
+ #define Tkapp_Interp(v) (((TkappObject *) (v))->interp)
+@@ -637,6 +638,7 @@ Tkapp_New(const char *screenName, const char *className,
+     v->ListType = Tcl_GetObjType("list");
+     v->StringType = Tcl_GetObjType("string");
+     v->UTF32StringType = Tcl_GetObjType("utf32string");
++    v->PixelType = Tcl_GetObjType("pixel");
+ 
+     /* Delete the 'exit' command, which can screw things up */
+     Tcl_DeleteCommand(v->interp, "exit");
+@@ -1236,7 +1238,8 @@ FromObj(TkappObject *tkapp, Tcl_Obj *value)
+     }
+ 
+     if (value->typePtr == tkapp->StringType ||
+-        value->typePtr == tkapp->UTF32StringType)
++        value->typePtr == tkapp->UTF32StringType ||
++        value->typePtr == tkapp->PixelType)
+     {
+         return unicodeFromTclObj(tkapp, value);
+     }

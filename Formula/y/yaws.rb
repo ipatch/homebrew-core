@@ -48,8 +48,8 @@ class Yaws < Formula
         --with-extrainclude=#{Formula["linux-pam"].opt_include}/security
       ]
     end
-    system "autoreconf", "-fvi"
-    system "./configure", "--prefix=#{prefix}", *extra_args
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *extra_args, *std_configure_args
     system "make", "install", "WARNINGS_AS_ERRORS="
 
     cd "applications/yapp" do
@@ -95,9 +95,7 @@ class Yaws < Formula
         </auth>
       </server>
     EOS
-    fork do
-      exec bin/"yaws", "-c", testpath/"yaws.conf", "--erlarg", "-noshell"
-    end
+    spawn bin/"yaws", "-c", testpath/"yaws.conf", "--erlarg", "-noshell"
     sleep 6
 
     output = shell_output("curl --silent localhost:#{port}/example.txt")

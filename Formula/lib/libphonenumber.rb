@@ -1,9 +1,10 @@
 class Libphonenumber < Formula
   desc "C++ Phone Number library by Google"
   homepage "https://github.com/google/libphonenumber"
-  url "https://github.com/google/libphonenumber/archive/refs/tags/v8.13.50.tar.gz"
-  sha256 "a46b2b5195b85197212ca9d9c0d8dc37af57d2f38b38b8c15dd56a0ec3a2cdc0"
+  url "https://github.com/google/libphonenumber/archive/refs/tags/v8.13.52.tar.gz"
+  sha256 "672758f48fdffcf0be48894824c72c729c07b914a04626e24fa01945bb09ca53"
   license "Apache-2.0"
+  revision 2
 
   livecheck do
     url :stable
@@ -11,22 +12,20 @@ class Libphonenumber < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "4d8beabc380c2b656a47375d28c090bef3890ca841a3cc49c7eeba76bcf72e09"
-    sha256 cellar: :any,                 arm64_sonoma:  "ce771636e0e3f83db9ea18386b20bdbdead9bbea118bba20cc2727fb7f516601"
-    sha256 cellar: :any,                 arm64_ventura: "86f6557390ee7f8099834f353fb5b98b57a2f02bd096d1d00eb0d84fa0e01a77"
-    sha256 cellar: :any,                 sonoma:        "e6c8020b56218a0685ab9b3dde8153b985656ad5639c83e1b7cd5ee0603092ca"
-    sha256 cellar: :any,                 ventura:       "f959c41fc5a98a0adae5ab7212f9af1a4797238d734383d857cf74ea2e6c387a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "372a38d5ddb6a5977b2affc2cf8a2c953256bb23562c58bde8f2779c358c49f9"
+    sha256 cellar: :any,                 arm64_sequoia: "8f9d906ac50082edaa863e023e790a8059f71362068b6b87083c2749e709020e"
+    sha256 cellar: :any,                 arm64_sonoma:  "834dc66ce128813dede8c7b73844965ca90485697d0728c24cfc09e4baef8c35"
+    sha256 cellar: :any,                 arm64_ventura: "47d6b974debd630cc154af7c2598191fd853434c0ef11fdfc82862c6e860d9aa"
+    sha256 cellar: :any,                 sonoma:        "c8b4b905e7eb1ee7235f313bf0f32cd9186c747079a371db125021d79afc0296"
+    sha256 cellar: :any,                 ventura:       "32c5e5649cf10423c78309e38ce8250d6747ff7d1fb558d67fb20d338b2301c6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0d89328a35661597724a9689bb982611d34da7779754e320e1ef05ea4f1a988e"
   end
 
-  depends_on "cmake" => :build
+  depends_on "cmake" => [:build, :test]
   depends_on "openjdk" => :build
   depends_on "abseil"
   depends_on "boost"
   depends_on "icu4c@76"
   depends_on "protobuf"
-
-  fails_with gcc: "5" # For abseil and C++17
 
   def install
     ENV.append_to_cflags "-Wno-sign-compare" # Avoid build failure on Linux.
@@ -60,9 +59,18 @@ class Libphonenumber < Formula
         }
       }
     CPP
-    system ENV.cxx, "-std=c++17", "test.cpp",
-                                "-I#{Formula["protobuf"].opt_include}",
-                                "-L#{lib}", "-lphonenumber", "-o", "test"
-    system "./test"
+
+    (testpath/"CMakeLists.txt").write <<~CMAKE
+      cmake_minimum_required(VERSION 3.14)
+      project(test LANGUAGES CXX)
+      find_package(Boost COMPONENTS date_time system thread)
+      find_package(libphonenumber CONFIG REQUIRED)
+      add_executable(test test.cpp)
+      target_link_libraries(test libphonenumber::phonenumber-shared)
+    CMAKE
+
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "./build/test"
   end
 end

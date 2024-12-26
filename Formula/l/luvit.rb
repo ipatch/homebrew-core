@@ -18,7 +18,7 @@ class Luvit < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libuv"
   depends_on "luajit"
   depends_on "luv"
@@ -119,7 +119,7 @@ class Luvit < Formula
         -DLUAJIT_LIBRARIES=#{luajit.opt_lib/shared_library("libluajit")}
       ]
 
-      system "cmake", ".", "-B", "build", *luvi_args, *std_cmake_args
+      system "cmake", "-S", ".", "-B", "build", *luvi_args, *std_cmake_args
       system "cmake", "--build", "build"
       buildpath.install "build/luvi"
     end

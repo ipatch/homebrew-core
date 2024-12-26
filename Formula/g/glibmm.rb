@@ -1,6 +1,6 @@
 class Glibmm < Formula
   desc "C++ interface to glib"
-  homepage "https://www.gtkmm.org/"
+  homepage "https://gtkmm.gnome.org/"
   url "https://download.gnome.org/sources/glibmm/2.82/glibmm-2.82.0.tar.xz"
   sha256 "38684cff317273615c67b8fa9806f16299d51e5506d9b909bae15b589fa99cb6"
   license "LGPL-2.1-or-later"
@@ -18,22 +18,14 @@ class Glibmm < Formula
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "glib"
   depends_on "libsigc++"
-
-  fails_with gcc: "5"
 
   def install
     system "meson", "setup", "build", "-Dbuild-examples=false", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
-
-    return unless OS.mac?
-
-    inreplace lib/"glibmm-2.68/proc/gmmproc",
-              "#{HOMEBREW_LIBRARY}/Homebrew/shims/mac/super/m4",
-              "#{HOMEBREW_PREFIX}/bin/m4"
   end
 
   test do
@@ -46,7 +38,7 @@ class Glibmm < Formula
          return 0;
       }
     CPP
-    flags = shell_output("pkg-config --cflags --libs glibmm-2.68").chomp.split
+    flags = shell_output("pkgconf --cflags --libs glibmm-2.68").chomp.split
     system ENV.cxx, "-std=c++17", "test.cpp", "-o", "test", *flags
     system "./test"
   end

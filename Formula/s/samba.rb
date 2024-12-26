@@ -4,8 +4,8 @@ class Samba < Formula
   # option. The shared folder appears in the guest as "\\10.0.2.4\qemu".
   desc "SMB/CIFS file, print, and login server for UNIX"
   homepage "https://www.samba.org/"
-  url "https://download.samba.org/pub/samba/stable/samba-4.21.1.tar.gz"
-  sha256 "bd02f55da538358c929505b21fdd8aeba53027eab14c849432a53ed0bae1c7c2"
+  url "https://download.samba.org/pub/samba/stable/samba-4.21.2.tar.gz"
+  sha256 "bde66be3d2025cb949de38518ad2652f3795f824c7fa89d4e443ede1ae828ea6"
   license "GPL-3.0-or-later"
   revision 1
 
@@ -15,12 +15,12 @@ class Samba < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "1021749f660ecbc998b2b06cb0ad640028154b283c97e1fa3a013f11b8f638f8"
-    sha256 arm64_sonoma:  "4b4d7e94785fa300fe6dbd3b3e204c5b7983e33287e1a10bb647cb97fbea011d"
-    sha256 arm64_ventura: "f12753e6e2f29e358a1fe948548c8df5ee9d80d9a587d10301f1d5e2f33a465a"
-    sha256 sonoma:        "e9a36a1dac8c28277187f24335c41f4f21cbdb36507696c7a84b33c7aedd195a"
-    sha256 ventura:       "e634c9346a0a8dadf34054cdf8d49493a6c80f9fe3b135c99f328e3a48da57b5"
-    sha256 x86_64_linux:  "20441a7172a0268c230a62c927c50b20e3b677ccc8c83fb4dcf39dfb54362ed6"
+    sha256 arm64_sequoia: "7619dec787d24ae50195ccc8232da940eb9b3ee8c13743e380f01f9934f76266"
+    sha256 arm64_sonoma:  "a02b6c78c34f97eadb09445bd1029b722eb32965991e6f79c2c17e3fc725052d"
+    sha256 arm64_ventura: "6255f04c3845e3399a20b32f6735bde06359283fcf77c6ee8567b07987fda19d"
+    sha256 sonoma:        "2690ee2dfe0c0b1dc410059f4df97d088027e53f65d446fa6b352cb5de86a794"
+    sha256 ventura:       "1a34ca730dc121b9ef1a876375cfd427523584bd1079a44cd7a388d7475795f5"
+    sha256 x86_64_linux:  "af8bd2b780d28fe08107d4a081cecc97762ed95a7af2915a766dfd11f1993c72"
   end
 
   depends_on "bison" => :build
@@ -60,6 +60,15 @@ class Samba < Formula
   resource "Parse::Yapp" do
     url "https://cpan.metacpan.org/authors/id/W/WB/WBRASWELL/Parse-Yapp-1.21.tar.gz"
     sha256 "3810e998308fba2e0f4f26043035032b027ce51ce5c8a52a8b8e340ca65f13e5"
+  end
+
+  # upstream bug report, https://bugzilla.samba.org/show_bug.cgi?id=10791
+  # https://bugzilla.samba.org/show_bug.cgi?id=10626
+  # https://bugzilla.samba.org/show_bug.cgi?id=9665
+  # upstream pr ref, https://gitlab.com/samba-team/samba/-/merge_requests/3902
+  patch do
+    url "https://gitlab.com/samba-team/samba/-/commit/a2736fe78a4e75e71b9bc53dc24c36d71b911d2a.diff"
+    sha256 "7d1bf9eb26211e2ab9e3e67ae32308a3704ff9904ab2369e5d863e079ea8a03f"
   end
 
   def install

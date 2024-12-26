@@ -15,7 +15,7 @@ class Hyperkit < Formula
 
   depends_on "ocaml" => :build
   depends_on "opam" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on xcode: ["9.0", :build]
   depends_on arch: :x86_64
   depends_on "libev"
@@ -59,7 +59,7 @@ class Hyperkit < Formula
         cp(File.join(path_resource_versioned, "initrd.gz"), testpath)
       end
 
-      (testpath / "test_hyperkit.exp").write <<-EOS
+      (testpath/"test_hyperkit.exp").write <<~EXPECT
         #!/usr/bin/env expect -d
         set KERNEL "./vmlinuz"
         set KERNEL_INITRD "./initrd.gz"
@@ -83,7 +83,7 @@ class Hyperkit < Formula
         }
         expect eof
         puts "\\nPASS"
-      EOS
+      EXPECT
       system "expect", "test_hyperkit.exp"
     end
   end

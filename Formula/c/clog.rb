@@ -32,8 +32,9 @@ class Clog < Formula
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   def caveats
@@ -51,6 +52,6 @@ class Clog < Formula
     assert_equal "do not suppress", pipe_output("#{bin}/clog --file #{testpath}/.clogrc", "do not suppress").chomp
 
     # Test to ensure that a line that matches the above rule is suppressed
-    assert_equal "", pipe_output("#{bin}/clog --file #{testpath}/.clogrc", "ignore this line").chomp
+    assert_empty pipe_output("#{bin}/clog --file #{testpath}/.clogrc", "ignore this line").chomp
   end
 end

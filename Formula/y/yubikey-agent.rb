@@ -1,6 +1,6 @@
 class YubikeyAgent < Formula
   desc "Seamless ssh-agent for YubiKeys and other PIV tokens"
-  homepage "https://filippo.io/yubikey-agent"
+  homepage "https://github.com/FiloSottile/yubikey-agent"
   url "https://github.com/FiloSottile/yubikey-agent/archive/refs/tags/v0.1.6.tar.gz"
   sha256 "f156d089376772a34d2995f8261d821369a96a248ab586d27e3be0d9b72d7426"
   license "BSD-3-Clause"
@@ -53,8 +53,8 @@ class YubikeyAgent < Formula
 
   test do
     socket = testpath/"yubikey-agent.sock"
-    fork { exec bin/"yubikey-agent", "-l", socket }
+    spawn bin/"yubikey-agent", "-l", socket
     sleep 1
-    assert_predicate socket, :exist?
+    assert_path_exists socket
   end
 end

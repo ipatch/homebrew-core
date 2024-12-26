@@ -1,20 +1,19 @@
 class Nzbget < Formula
   desc "Binary newsgrabber for nzb files"
   homepage "https://nzbget.com"
-  url "https://github.com/nzbgetcom/nzbget/archive/refs/tags/v24.3.tar.gz"
-  sha256 "b20ff0da1367825fbf00337a48196e81514195748d3d96f620f28ab2cc0b7cc0"
+  url "https://github.com/nzbgetcom/nzbget/archive/refs/tags/v24.5.tar.gz"
+  sha256 "d8a26fef9f92d63258251c69af01f39073a479e48c14114dc96d285470312c83"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://github.com/nzbgetcom/nzbget.git", branch: "develop"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "6c68cbbdab136141537374b155de26b72e32e2f0cde6139a2480d97a3cbdb5e0"
-    sha256 cellar: :any,                 arm64_sonoma:   "5c8c7d15f27dc7b650f42e049c29111af248e35dfb41916939869c9d63f1f986"
-    sha256 cellar: :any,                 arm64_ventura:  "5d1ca334ae08f0aaf99c474b3d6ca01d7a24ce6e34a25ef84426bd829e2bae0d"
-    sha256 cellar: :any,                 arm64_monterey: "fe3f2f00177bb08ab060af9524068489e3fde33fcd1262d2099eca47234ae8a8"
-    sha256                               sonoma:         "8735a21091a5d22fd9faf0571b02c003825022a4bccb17b25d361314961bb24a"
-    sha256                               ventura:        "648677c0bd4dd2b93e3737c4ebb11fe9e5f6f6dc591da8f3df75a5e4d055f23a"
-    sha256                               monterey:       "cc815d9546026e20294ac1690eba95d1329db0cc74ecc4015cc48484d3371b63"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b5658154d9bdc1496d74858305c9c72284efe6639c1252e827519c147d5b0dc3"
+    sha256 cellar: :any,                 arm64_sequoia: "cfb625c14570f9ad326f3f92b01383473c94fadedb324f6b51d5f8e58a573558"
+    sha256 cellar: :any,                 arm64_sonoma:  "9a79e5a56c6e0e176711be00a643789561d3422b91adc6f62c013785bb0f54e7"
+    sha256 cellar: :any,                 arm64_ventura: "13ef54d1cb4b17fb7cb91e0fdfa82297c455cd1dd01c63d03fdf385347aaf732"
+    sha256                               sonoma:        "54cf30d56515995e3b417af8927f889b8f8406352ee4c8e302d2e1bfbcb7d73d"
+    sha256                               ventura:       "d6c9ffebed9e93a4b14480f0ed02fee96da6a6ccdd6df7892d3ccdcbbe1afe96"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0038ebe43a06bf603373d93f7d83fcf43504fa81682cad9b63e370935f993fc7"
   end
 
   depends_on "cmake" => :build
@@ -27,19 +26,8 @@ class Nzbget < Formula
   uses_from_macos "zlib"
 
   def install
-    # Workaround to fix build on Xcode 16. This was just ignored on older Xcode so no functional impact
-    # Issue ref: https://github.com/nzbgetcom/nzbget/issues/421
-    if DevelopmentTools.clang_build_version >= 1600
-      inreplace "lib/sources.cmake", 'set(NEON_CXXFLAGS "-mfpu=neon")', ""
-    end
-
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
-
-    # nzbget CMake build does not strip binary
-    # must be removed in v25, tracking issue https://github.com/nzbgetcom/nzbget/issues/257
-    system "strip", "build/nzbget"
-
     system "cmake", "--install", "build"
 
     if OS.mac?

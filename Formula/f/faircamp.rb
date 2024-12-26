@@ -1,20 +1,20 @@
 class Faircamp < Formula
   desc "Static site generator for audio producers"
   homepage "https://codeberg.org/simonrepp/faircamp"
-  url "https://codeberg.org/simonrepp/faircamp/archive/0.21.0.tar.gz"
-  sha256 "59bafff5cabc0a9bd2a2d3d6b89f2b32f4fa68dbd3abd4c8baba369e1f60cc13"
+  url "https://codeberg.org/simonrepp/faircamp/archive/1.0.0.tar.gz"
+  sha256 "bc26a17aba006b7d2988038ec3bb32e9d4741b384ec74810d0f8be93c4dcdee3"
   license "AGPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "b3c6dee91f55edf8ab0bc494878c2c66b923ae60ddfd509102f45cf604180ccd"
-    sha256 cellar: :any, arm64_sonoma:  "7060be80237dd093bec0dd28d7ec2120894854861d4f34f1e920b4948946bc41"
-    sha256 cellar: :any, arm64_ventura: "68f5e0c198340e8c268ff351ccfe9efe7336e620275e51fb95d579944ca13189"
-    sha256 cellar: :any, sonoma:        "fd65df40159dfbe861fb78f7080636aa5df52c19f072def388302865b35985f3"
-    sha256 cellar: :any, ventura:       "d3e655bc2be57c987a73b87df3a8b0894c7bb5a79f4b8626f65cd236c1f5d6e3"
+    sha256 cellar: :any, arm64_sequoia: "d26281f10e29298a54c6d2b2ad55538e32f9877829324ccdcfbcfa9a2fe221c2"
+    sha256 cellar: :any, arm64_sonoma:  "cf44be726136de7be80b3bca020b6a069b1144709212ce063d0c25bc68e5dfc8"
+    sha256 cellar: :any, arm64_ventura: "e51aab26d7cf96de3e363c786306549c90fbf10787f115b638e42ba88cd7167c"
+    sha256 cellar: :any, sonoma:        "34603ece2f7bb2347a48cee298f8904c210cc3e49be62d9eab7d883341cfae85"
+    sha256 cellar: :any, ventura:       "220533b5a1769f142a17f3d3e14b7cf8eb7bf720089b3641a2fe10308bc22e45"
   end
 
   depends_on "opus" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "ffmpeg"
   depends_on "gettext"
@@ -32,7 +32,7 @@ class Faircamp < Formula
     # libvips is a runtime dependency, the brew install location is
     # not discovered by default by Cargo. Upstream issue:
     #   https://codeberg.org/simonrepp/faircamp/issues/45
-    ENV["RUSTFLAGS"] = `pkg-config --libs vips`.chomp
+    ENV["RUSTFLAGS"] = Utils.safe_popen_read("pkgconf", "--libs", "vips").chomp
     system "cargo", "install", *std_cargo_args, "--features", "libvips"
   end
 
@@ -43,7 +43,7 @@ class Faircamp < Formula
 
     # Check site generation
     catalog_dir = testpath/"Catalog"
-    album_dir = catalog_dir/"Artist"/"Album"
+    album_dir = catalog_dir/"Artist/Album"
     mkdir_p album_dir
     cp test_fixtures("test.wav"), album_dir/"Track01.wav"
     cp test_fixtures("test.wav"), album_dir/"Track02.wav"

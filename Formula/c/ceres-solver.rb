@@ -32,8 +32,6 @@ class CeresSolver < Formula
   depends_on "suite-sparse"
   depends_on "tbb"
 
-  fails_with gcc: "5" # C++17
-
   def install
     system "cmake", "-S", ".", "-B", "homebrew-build",
                     "-DBUILD_SHARED_LIBS=ON",
@@ -55,8 +53,8 @@ class CeresSolver < Formula
       target_link_libraries(helloworld Ceres::ceres)
     CMAKE
 
-    system "cmake", "."
-    system "make"
-    assert_match "CONVERGENCE", shell_output("./helloworld")
+    system "cmake", "-S", ".", "-B", "build"
+    system "cmake", "--build", "build"
+    assert_match "CONVERGENCE", shell_output("./build/helloworld")
   end
 end
