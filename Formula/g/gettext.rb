@@ -25,7 +25,15 @@ class Gettext < Formula
     depends_on "acl"
   end
 
+  patch do
+    url "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-devel/gettext/files/gettext-0.23-libxml2-2.12.0.patch"
+    sha256 ""
+  end
+
   def install
+    # NOTE: ipatch, build error on arch linux dec 25 2025
+    # similiar build error, https://bugs.gentoo.org/918973
+
     # macOS iconv implementation is slightly broken since Sonoma.
     # This is also why we skip `make check`.
     # upstream bug report, https://savannah.gnu.org/bugs/index.php?66541
