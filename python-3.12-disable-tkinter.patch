@@ -1,0 +1,21 @@
+commit 74b556e6ae1454f502e2ffc0376ca072b963e5cd
+Author: chris <chris.r.jones.1983@gmail.com>
+Date:   Fri Dec 27 16:44:05 2024 +0000
+
+    python@3.12: patch configure script to disable tkinter
+
+diff --git a/configure b/configure
+index 241cf8f..c899bca 100755
+--- a/configure
++++ b/configure
+@@ -30600,7 +30600,9 @@ printf %s "checking for stdlib extension module _tkinter... " >&6; }
+         if test "$py_cv_module__tkinter" != "n/a"
+ then :
+ 
+-    if true
++    # https://raw.githubusercontent.com/macports/macports-ports/refs/heads/master/lang/python312/files/configure-disable-tkinter.patch
++    # if true
++    if false
+ then :
+   if test "$have_tcltk" = "yes"
+ then :
