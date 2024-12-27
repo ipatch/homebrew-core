@@ -114,6 +114,14 @@ class PythonAT312 < Formula
   end
 
   def install
+    # NOTE: ipatch, bld err dec 27 2024
+    # [ERROR] _tkinter failed to import: /opt/tmp/homebrew/pythonA3.12-20241227-1520141-kdvflk/Python-3.12.8/build/lib.linux-x86_64-3.12/_tkinter.cpython-312-x86_64-linux-gnu.so: undefined symbol: Tcl_AddErrorInfo
+    # The following modules are *disabled* in configure script:
+    # _gdbm
+
+    # Following modules built successfully but were removed because they could not be imported:
+    #   _tkinter
+
     # NOTE: ipatch, build time on my 2015 mbp
     #   ==> Summary
     # /home/capin/homebrew/Cellar/python@3.12/3.12.7: 7,967 files, 194.5MB, built in 19 minutes 9 seconds
@@ -152,6 +160,7 @@ class PythonAT312 < Formula
       --with-system-expat
       --with-system-libmpdec
       --with-readline=editline
+      --without-tk
     ]
     # --enable-optimizations
 
