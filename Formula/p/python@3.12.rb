@@ -91,6 +91,12 @@ class PythonAT312 < Formula
     sha256 "8bfe417c815da4ca2c0a2457ce7ef81bc9dae310e20e4fb36235901ea4be1658"
   end
 
+  # NOTE: ipatch, use macports patch for disabling tcl-tk aka tkinter
+  patch do
+    url ""
+    sha256 ""
+  end
+
   def lib_cellar
     on_macos do
       return frameworks/"Python.framework/Versions"/version.major_minor/"lib/python#{version.major_minor}"
@@ -160,9 +166,9 @@ class PythonAT312 < Formula
       --with-system-expat
       --with-system-libmpdec
       --with-readline=editline
-      --without-tk
     ]
     # --enable-optimizations
+    # --without-tk
 
     # Python re-uses flags when building native modules.
     # Since we don't want native modules prioritizing the brew
@@ -223,127 +229,134 @@ class PythonAT312 < Formula
     args << "LDFLAGS_NODIST=#{ldflags_nodist.join(" ")}" unless ldflags_nodist.empty?
     args << "CPPFLAGS=#{cppflags.join(" ")}" unless cppflags.empty?
 
+    system "echo Applying tkinter disable patch"
+
+    # NO WORK!
+    # inreplace "Modules/Setup" do |s|
+    #   s.gsub!(/^# _sqlite3 _tkinter _curses pyexpat/, "# _sqlite3 _tkinter _curses pyexpat\n*disabled*\n\n_tkinter")
+    # end
+
     # Disabled modules - provided in separate formulae
     args += %w[
       py_cv_module__tkinter=disabled
     ]
 
     system "./configure", *args
-    system "make"
+    # system "make"
 
-    ENV.deparallelize do
-      # The `altinstall` target prevents the installation of files with only Python's major
-      # version in its name. This allows us to link multiple versioned Python formulae.
-      #   https://github.com/python/cpython#installing-multiple-versions
-      #
-      # Tell Python not to install into /Applications (default for framework builds)
-      system "make", "altinstall", "PYTHONAPPSDIR=#{prefix}"
-      system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{pkgshare}" if OS.mac?
-    end
+  #   ENV.deparallelize do
+  #     # The `altinstall` target prevents the installation of files with only Python's major
+  #     # version in its name. This allows us to link multiple versioned Python formulae.
+  #     #   https://github.com/python/cpython#installing-multiple-versions
+  #     #
+  #     # Tell Python not to install into /Applications (default for framework builds)
+  #     system "make", "altinstall", "PYTHONAPPSDIR=#{prefix}"
+  #     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{pkgshare}" if OS.mac?
+  #   end
 
-    if OS.mac?
-      # Any .app get a " 3" attached, so it does not conflict with python 2.x.
-      prefix.glob("*.app") { |app| mv app, app.to_s.sub(/\.app$/, " 3.app") }
+  #   if OS.mac?
+  #     # Any .app get a " 3" attached, so it does not conflict with python 2.x.
+  #     prefix.glob("*.app") { |app| mv app, app.to_s.sub(/\.app$/, " 3.app") }
 
-      pc_dir = frameworks/"Python.framework/Versions"/version.major_minor/"lib/pkgconfig"
-      # Symlink the pkgconfig files into HOMEBREW_PREFIX so they're accessible.
-      (lib/"pkgconfig").install_symlink pc_dir.children
+  #     pc_dir = frameworks/"Python.framework/Versions"/version.major_minor/"lib/pkgconfig"
+  #     # Symlink the pkgconfig files into HOMEBREW_PREFIX so they're accessible.
+  #     (lib/"pkgconfig").install_symlink pc_dir.children
 
-      # Prevent third-party packages from building against fragile Cellar paths
-      bad_cellar_path_files = [
-        lib_cellar/"_sysconfigdata__darwin_darwin.py",
-        lib_cellar/"config-#{version.major_minor}-darwin/Makefile",
-        pc_dir/"python-#{version.major_minor}.pc",
-        pc_dir/"python-#{version.major_minor}-embed.pc",
-      ]
-      inreplace bad_cellar_path_files, prefix, opt_prefix
+  #     # Prevent third-party packages from building against fragile Cellar paths
+  #     bad_cellar_path_files = [
+  #       lib_cellar/"_sysconfigdata__darwin_darwin.py",
+  #       lib_cellar/"config-#{version.major_minor}-darwin/Makefile",
+  #       pc_dir/"python-#{version.major_minor}.pc",
+  #       pc_dir/"python-#{version.major_minor}-embed.pc",
+  #     ]
+  #     inreplace bad_cellar_path_files, prefix, opt_prefix
 
-      # Help third-party packages find the Python framework
-      inreplace lib_cellar/"config-#{version.major_minor}-darwin/Makefile",
-                /^LINKFORSHARED=(.*)PYTHONFRAMEWORKDIR(.*)/,
-                "LINKFORSHARED=\\1PYTHONFRAMEWORKINSTALLDIR\\2"
+  #     # Help third-party packages find the Python framework
+  #     inreplace lib_cellar/"config-#{version.major_minor}-darwin/Makefile",
+  #               /^LINKFORSHARED=(.*)PYTHONFRAMEWORKDIR(.*)/,
+  #               "LINKFORSHARED=\\1PYTHONFRAMEWORKINSTALLDIR\\2"
 
-      # Symlink the pkgconfig files into HOMEBREW_PREFIX so they're accessible.
-      (lib/"pkgconfig").install_symlink pc_dir.children
+  #     # Symlink the pkgconfig files into HOMEBREW_PREFIX so they're accessible.
+  #     (lib/"pkgconfig").install_symlink pc_dir.children
 
-      # Fix for https://github.com/Homebrew/homebrew-core/issues/21212
-      inreplace lib_cellar/"_sysconfigdata__darwin_darwin.py",
-                %r{('LINKFORSHARED': .*?)'(Python.framework/Versions/3.\d+/Python)'}m,
-                "\\1'#{opt_prefix}/Frameworks/\\2'"
+  #     # Fix for https://github.com/Homebrew/homebrew-core/issues/21212
+  #     inreplace lib_cellar/"_sysconfigdata__darwin_darwin.py",
+  #               %r{('LINKFORSHARED': .*?)'(Python.framework/Versions/3.\d+/Python)'}m,
+  #               "\\1'#{opt_prefix}/Frameworks/\\2'"
 
-      # Remove symlinks that conflict with the main Python formula.
-      rm %w[Headers Python Resources Versions/Current].map { |subdir| frameworks/"Python.framework"/subdir }
-    else
-      # Prevent third-party packages from building against fragile Cellar paths
-      inreplace Dir[lib_cellar/"**/_sysconfigdata_*linux_x86_64-*.py",
-                    lib_cellar/"config*/Makefile",
-                    bin/"python#{version.major_minor}-config",
-                    lib/"pkgconfig/python-3*.pc"],
-                prefix, opt_prefix
+  #     # Remove symlinks that conflict with the main Python formula.
+  #     rm %w[Headers Python Resources Versions/Current].map { |subdir| frameworks/"Python.framework"/subdir }
+  #   else
+  #     # Prevent third-party packages from building against fragile Cellar paths
+  #     inreplace Dir[lib_cellar/"**/_sysconfigdata_*linux_x86_64-*.py",
+  #                   lib_cellar/"config*/Makefile",
+  #                   bin/"python#{version.major_minor}-config",
+  #                   lib/"pkgconfig/python-3*.pc"],
+  #               prefix, opt_prefix
 
-      inreplace bin/"python#{version.major_minor}-config",
-                'prefix_real=$(installed_prefix "$0")',
-                "prefix_real=#{opt_prefix}"
+  #     inreplace bin/"python#{version.major_minor}-config",
+  #               'prefix_real=$(installed_prefix "$0")',
+  #               "prefix_real=#{opt_prefix}"
 
-      # Remove symlinks that conflict with the main Python formula.
-      rm lib/"libpython3.so"
-    end
+  #     # Remove symlinks that conflict with the main Python formula.
+  #     rm lib/"libpython3.so"
+  #   end
 
-    # Remove the site-packages that Python created in its Cellar.
-    rm_r(site_packages_cellar)
+  #   # Remove the site-packages that Python created in its Cellar.
+  #   rm_r(site_packages_cellar)
 
-    # Prepare a wheel of wheel to install later.
-    common_pip_args = %w[
-      -v
-      --no-deps
-      --no-binary :all:
-      --no-index
-      --no-build-isolation
-    ]
-    whl_build = buildpath/"whl_build"
-    system python3, "-m", "venv", whl_build
-    %w[flit-core wheel setuptools].each do |r|
-      resource(r).stage do
-        system whl_build/"bin/pip3", "install", *common_pip_args, "."
-      end
-    end
-    resource("wheel").stage do
-      system whl_build/"bin/pip3", "wheel", *common_pip_args,
-                                            "--wheel-dir=#{libexec}",
-                                            "."
-    end
+  #   # Prepare a wheel of wheel to install later.
+  #   common_pip_args = %w[
+  #     -v
+  #     --no-deps
+  #     --no-binary :all:
+  #     --no-index
+  #     --no-build-isolation
+  #   ]
+  #   whl_build = buildpath/"whl_build"
+  #   system python3, "-m", "venv", whl_build
+  #   %w[flit-core wheel setuptools].each do |r|
+  #     resource(r).stage do
+  #       system whl_build/"bin/pip3", "install", *common_pip_args, "."
+  #     end
+  #   end
+  #   resource("wheel").stage do
+  #     system whl_build/"bin/pip3", "wheel", *common_pip_args,
+  #                                           "--wheel-dir=#{libexec}",
+  #                                           "."
+  #   end
 
-    # Replace bundled pip with our own.
-    rm lib_cellar.glob("ensurepip/_bundled/pip-*.whl")
-    %w[pip].each do |r|
-      resource(r).stage do
-        system whl_build/"bin/pip3", "wheel", *common_pip_args,
-                                              "--wheel-dir=#{lib_cellar}/ensurepip/_bundled",
-                                              "."
-      end
-    end
+  #   # Replace bundled pip with our own.
+  #   rm lib_cellar.glob("ensurepip/_bundled/pip-*.whl")
+  #   %w[pip].each do |r|
+  #     resource(r).stage do
+  #       system whl_build/"bin/pip3", "wheel", *common_pip_args,
+  #                                             "--wheel-dir=#{lib_cellar}/ensurepip/_bundled",
+  #                                             "."
+  #     end
+  #   end
 
-    # Patch ensurepip to bootstrap our updated version of pip
-    inreplace lib_cellar/"ensurepip/__init__.py" do |s|
-      s.gsub!(/_PIP_VERSION = .*/, "_PIP_VERSION = \"#{resource("pip").version}\"")
-    end
+  #   # Patch ensurepip to bootstrap our updated version of pip
+  #   inreplace lib_cellar/"ensurepip/__init__.py" do |s|
+  #     s.gsub!(/_PIP_VERSION = .*/, "_PIP_VERSION = \"#{resource("pip").version}\"")
+  #   end
 
-    # Write out sitecustomize.py
-    (lib_cellar/"sitecustomize.py").atomic_write(sitecustomize)
+  #   # Write out sitecustomize.py
+  #   (lib_cellar/"sitecustomize.py").atomic_write(sitecustomize)
 
-    # Install unversioned and major-versioned symlinks in libexec/bin.
-    {
-      "idle"           => "idle#{version.major_minor}",
-      "idle3"          => "idle#{version.major_minor}",
-      "pydoc"          => "pydoc#{version.major_minor}",
-      "pydoc3"         => "pydoc#{version.major_minor}",
-      "python"         => "python#{version.major_minor}",
-      "python3"        => "python#{version.major_minor}",
-      "python-config"  => "python#{version.major_minor}-config",
-      "python3-config" => "python#{version.major_minor}-config",
-    }.each do |short_name, long_name|
-      (libexec/"bin").install_symlink (bin/long_name).realpath => short_name
-    end
+  #   # Install unversioned and major-versioned symlinks in libexec/bin.
+  #   {
+  #     "idle"           => "idle#{version.major_minor}",
+  #     "idle3"          => "idle#{version.major_minor}",
+  #     "pydoc"          => "pydoc#{version.major_minor}",
+  #     "pydoc3"         => "pydoc#{version.major_minor}",
+  #     "python"         => "python#{version.major_minor}",
+  #     "python3"        => "python#{version.major_minor}",
+  #     "python-config"  => "python#{version.major_minor}-config",
+  #     "python3-config" => "python#{version.major_minor}-config",
+  #   }.each do |short_name, long_name|
+  #     (libexec/"bin").install_symlink (bin/long_name).realpath => short_name
+  #   end
   end
 
   def post_install
