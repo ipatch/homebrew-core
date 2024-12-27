@@ -93,12 +93,14 @@ class FfmpegAT6 < Formula
     sha256 "57e26caced5a1382cb639235f9555fc50e45e7bf8333f7c9ae3d49b3241d3f77"
   end
 
-  patch do
-    url "https://git.videolan.org/?p=ffmpeg.git;a=patch;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc"
-    sha256 "15979d2e4b762946c4e4be2b0e72d31fc9c1dfc36f2827a8e609179d71f01257"
-  end
+  # patch do
+  #   url "https://git.videolan.org/?p=ffmpeg.git;a=patch;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc"
+  #   sha256 "15979d2e4b762946c4e4be2b0e72d31fc9c1dfc36f2827a8e609179d71f01257"
+  # end
 
   def install
+    # NOTE: ipatch, bld broke again dec 27, ref: https://bugs.gentoo.org/938897#c5
+
     # NOTE: ipatch, bld err arch linux
     # https://git.videolan.org/?p=ffmpeg.git;a=commitdiff;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc
     #
