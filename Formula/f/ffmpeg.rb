@@ -88,6 +88,7 @@ class Ffmpeg < Formula
   on_linux do
     depends_on "alsa-lib"
     depends_on "libdrm"
+    depends_on "libdrm"
     depends_on "libxext"
     depends_on "libxv"
   end
@@ -106,6 +107,17 @@ class Ffmpeg < Formula
   def install
     # NOTE: ipatch,
     # libavdevice/kmsgrab.c:24:10: fatal error: drm.h: No such file or directory
+
+    # NOTE: ipatch, bld error dec 27 2025
+    # libavcodec/libx265.c: In function 'libx265_encode_frame':
+    # libavcodec/libx265.c:813:59: error: passing argument 5 of 'ctx->api->encoder_encode' from incompatible pointer type [-Wincompatible-pointer-types]
+    #   813 |                                    pic ? &x265pic : NULL, x265pic_lyrptr_out);
+    #       |                                                           ^~~~~~~~~~~~~~~~~~
+    #       |                                                           |
+    #       |                                                           x265_picture **
+    # libavcodec/libx265.c:813:59: note: expected 'x265_picture *' but argument is of type 'x265_picture **'
+    # make: *** [ffbuild/common.mak:81: libavcodec/libx265.o] Error 1
+    # make: *** Waiting for unfinished jobs....
 
     # The new linker leads to duplicate symbol issue https://github.com/homebrew-ffmpeg/homebrew-ffmpeg/issues/140
     ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
