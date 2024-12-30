@@ -97,6 +97,12 @@ class Ffmpeg < Formula
     depends_on "nasm" => :build
   end
 
+  patch do
+    # url "https://github.com/FFmpeg/FFmpeg/commit/099f88b8641dfc299f3896d17d9addc5b9ae7799.patch"
+    # url "https://github.com/FFmpeg/FFmpeg/commit/1f801dfdb5066aadf0ade9cb5e94d620f33eacdc.patch"
+    # url "https://git.ffmpeg.org/gitweb/ffmpeg.git/patch/1f801dfdb5066aadf0ade9cb5e94d620f33eacdc"
+  end
+
   # Fix for QtWebEngine, do not remove
   # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=270209
   patch do
