@@ -38,6 +38,56 @@ class GlibNetworking < Formula
   link_overwrite "lib/gio/modules"
 
   def install
+    # NOTE: ipatch, TODO: fix post install step with conflicting linking of files
+    # /home/capin/homebrew/Library/Homebrew/brew.rb (Cask::CaskLoader::NullLoader): loading glib-networking
+    # /home/capin/homebrew/Library/Homebrew/brew.rb (Formulary::FromTapLoader): loading homebrew/core/glib-networking
+    # Error: The `brew link` step did not complete successfully
+    # The formula built, but is not symlinked into /home/capin/homebrew
+    # Could not symlink bin/gapplication
+    # Target /home/capin/homebrew/bin/gapplication
+    # already exists. You may want to remove it:
+    #   rm '/home/capin/homebrew/bin/gapplication'
+
+    # To force the link and overwrite all conflicting files:
+    #   brew link --overwrite glib-networking
+
+    # To list all files that would be deleted:
+    #   brew link --overwrite glib-networking --dry-run
+
+    # Possible conflicting files are:
+    # /home/capin/homebrew/bin/gapplication
+    # /home/capin/homebrew/bin/gdbus
+    # /home/capin/homebrew/bin/gdbus-codegen
+    # /home/capin/homebrew/bin/gio
+    # /home/capin/homebrew/bin/gio-querymodules
+    # /home/capin/homebrew/bin/glib-compile-resources
+    # /home/capin/homebrew/bin/glib-compile-schemas
+    # /home/capin/homebrew/bin/glib-genmarshal
+    # /home/capin/homebrew/bin/glib-gettextize
+    # /home/capin/homebrew/bin/glib-mkenums
+    # /home/capin/homebrew/bin/gobject-query
+    # /home/capin/homebrew/bin/gresource
+    # /home/capin/homebrew/bin/gsettings
+    # /home/capin/homebrew/bin/gtester
+    # /home/capin/homebrew/bin/gtester-report
+    # /home/capin/homebrew/bin/pcre2grep
+    # /home/capin/homebrew/include/ffi-x86_64.h
+    # /home/capin/homebrew/include/ffi.h
+    # /home/capin/homebrew/include/ffitarget-x86_64.h
+    # /home/capin/homebrew/include/ffitarget.h
+    # /home/capin/homebrew/Library/Homebrew/brew.rb (Formulary::FromTapLoader): loading homebrew/core/glib-networking
+    # Error: Could not symlink include/gio-unix-2.0/gio/gdesktopappinfo.h
+    # Target /home/capin/homebrew/include/gio-unix-2.0/gio/gdesktopappinfo.h
+    # is a symlink belonging to glib. You can unlink it:
+    #   brew unlink glib
+
+    # To force the link and overwrite all conflicting files:
+    #   brew link --overwrite glib
+
+    # To list all files that would be deleted:
+    #   brew link --overwrite glib --dry-run
+
+    
     # stop gnome.post_install from doing what needs to be done in the post_install step
     # ENV["DESTDIR"] = "/"
 
@@ -62,6 +112,9 @@ class GlibNetworking < Formula
       -Dlibproxy=disabled
       -Dopenssl=disabled
       -Dgnome_proxy=disabled
+      --prefix=#{prefix}
+      --libdir=#{lib}
+      --buildtype=release
     ]
 
     # NO WORK!
