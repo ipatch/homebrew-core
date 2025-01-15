@@ -21,6 +21,13 @@ class GlibNetworking < Formula
   depends_on "ninja" => :build
   depends_on "pkgconf" => :build
 
+  depends_on "nettle"
+  depends_on "libtasn"
+  depends_on "p11-kit"
+  depends_on "zlib"
+  depends_on "brotli"
+  depends_on "zstd"
+
   depends_on "gnutls"
   depends_on "gsettings-desktop-schemas"
 
@@ -32,21 +39,22 @@ class GlibNetworking < Formula
 
   def install
     # stop gnome.post_install from doing what needs to be done in the post_install step
-    ENV["DESTDIR"] = "/"
+    # ENV["DESTDIR"] = "/"
 
 
     # :/bin:/usr/sbin:/sbin:
     # ENV.remove "PATH", "/usr/bin"
-    paths_to_remove = ["/bin", "/usr/bin", "/usr/sbin", "/sbin"]
-    paths_to_remove.each { |path| ENV.remove "PATH", path }
+    # paths_to_remove = ["/bin", "/usr/bin", "/usr/sbin", "/sbin"]
+    # paths_to_remove.each { |path| ENV.remove "PATH", path }
 
-    puts "-----------------------------------------------------------------------"
-    puts "PATH=#{ENV["PATH"]}"
-    puts "-----------------------------------------------------------------------"
+    # puts "-----------------------------------------------------------------------"
+    # puts "PATH=#{ENV["PATH"]}"
+    # puts "-----------------------------------------------------------------------"
 
     cmake_prefix_path = []
     cmake_prefix_path << Formula["gnutls"].opt_prefix
     cmake_prefix_path << Formula["glib"].opt_prefix
+    cmake_prefix_path << Formula["gsettings-desktop-schemas"].opt_prefix
     cmake_prefix_path_string = cmake_prefix_path.join(";")
     ENV["CMAKE_PREFIX_PATH"] = "#{cmake_prefix_path_string}"
 
@@ -56,17 +64,37 @@ class GlibNetworking < Formula
       -Dgnome_proxy=disabled
     ]
 
-    # WORK!
-    ENV["PKG_CONFIG_PATH"] = [
-      Formula["gnutls"].opt_prefix + "/lib/pkgconfig",
-      Formula["glib"].opt_prefix + "/lib/pkgconfig"
-    ].join(":")
+    # NO WORK!
+    # ENV["PKG_CONFIG_PATH"] = [
+    #   Formula["gnutls"].opt_prefix + "/lib/pkgconfig",
+    #   Formula["glib"].opt_prefix + "/lib/pkgconfig"
+    # ].join(":")
 
+    # ENV["PKG_CONFIG_PATH"] = Formula["gnutls"].opt_prefix
+
+    pkg_config_path = []
+    pkg_config_path << Formula["gnutls"].opt_prefix/"lib/pkgconfig"
+    pkg_config_path << Formula["glib"].opt_prefix/"lib/pkgconfig"
+    pkg_config_path << Formula["gsettings-desktop-schemas"].opt_prefix/"share/pkgconfig"
+    pkg_config_path << Formula["nettle"].opt_prefix/"lib/pkgconfig"
+    pkg_config_path << Formula["libtasn"].opt_prefix/"lib/pkgconfig"
+    pkg_config_path << Formula["libidn2"].opt_prefix/"lib/pkgconfig"
+    pkg_config_path << Formula["p11-kit"].opt_prefix/"lib/pkgconfig"
+    pkg_config_path << Formula["zlib"].opt_prefix/"lib/pkgconfig"
+    pkg_config_path << Formula["brotli"].opt_prefix/"lib/pkgconfig"
+    pkg_config_path << Formula["zstd"].opt_prefix/"lib/pkgconfig"
+    pkg_config_path_string = pkg_config_path.join(":")
+    ENV["PKG_CONFIG_PATH"] = "#{pkg_config_path_string}"
+
+    puts "-----------------------------------------------------------------------"
     puts "PATH=#{ENV["PATH"]}"
+    puts "PKG_CONFIG_PATH=#{ENV["PKG_CONFIG_PATH"]}"
+    puts "-----------------------------------------------------------------------"
 
     ENV["GIO_QUERYMODULES"] = Formula["glib"].opt_bin/"gio-querymodules"
 
-    system "meson", "setup", "build", *args, *std_meson_args
+    # system "meson", "setup", "build", *args, *std_meson_args
+    system "meson", "setup", "build", *args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
   end
