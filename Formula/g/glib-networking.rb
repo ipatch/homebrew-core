@@ -91,7 +91,7 @@ class GlibNetworking < Formula
     puts "PKG_CONFIG_PATH=#{ENV["PKG_CONFIG_PATH"]}"
     puts "-----------------------------------------------------------------------"
 
-    ENV["GIO_QUERYMODULES"] = Formula["glib"].opt_bin/"gio-querymodules"
+    # ENV["GIO_QUERYMODULES"] = Formula["glib"].opt_bin/"gio-querymodules"
 
     # system "meson", "setup", "build", *args, *std_meson_args
     system "meson", "setup", "build", *args
