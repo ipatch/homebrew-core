@@ -14,11 +14,13 @@ class GlibNetworking < Formula
     sha256               x86_64_linux:  "c20490896cab94dc36f83a54bb58ccefea822fb311c03de4a5624e34b09c68ed"
   end
 
+  depends_on "cmake" => :build
+  depends_on "gettext" => :build
+  depends_on "glib" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => :build
 
-  depends_on "glib"
   depends_on "gnutls"
   depends_on "gsettings-desktop-schemas"
 
@@ -32,11 +34,38 @@ class GlibNetworking < Formula
     # stop gnome.post_install from doing what needs to be done in the post_install step
     ENV["DESTDIR"] = "/"
 
-    args = %w[
+
+    # :/bin:/usr/sbin:/sbin:
+    # ENV.remove "PATH", "/usr/bin"
+    paths_to_remove = ["/bin", "/usr/bin", "/usr/sbin", "/sbin"]
+    paths_to_remove.each { |path| ENV.remove "PATH", path }
+
+    puts "-----------------------------------------------------------------------"
+    puts "PATH=#{ENV["PATH"]}"
+    puts "-----------------------------------------------------------------------"
+
+    cmake_prefix_path = []
+    cmake_prefix_path << Formula["gnutls"].opt_prefix
+    cmake_prefix_path << Formula["glib"].opt_prefix
+    cmake_prefix_path_string = cmake_prefix_path.join(";")
+    ENV["CMAKE_PREFIX_PATH"] = "#{cmake_prefix_path_string}"
+
+    args = %W[
       -Dlibproxy=disabled
       -Dopenssl=disabled
       -Dgnome_proxy=disabled
     ]
+
+    # WORK!
+    ENV["PKG_CONFIG_PATH"] = [
+      Formula["gnutls"].opt_prefix + "/lib/pkgconfig",
+      Formula["glib"].opt_prefix + "/lib/pkgconfig"
+    ].join(":")
+
+    puts "PATH=#{ENV["PATH"]}"
+
+    ENV["GIO_QUERYMODULES"] = Formula["glib"].opt_bin/"gio-querymodules"
+
     system "meson", "setup", "build", *args, *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
