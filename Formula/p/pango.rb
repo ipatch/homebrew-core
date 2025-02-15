@@ -39,6 +39,25 @@ class Pango < Formula
     # Program /home/capin/homebrew/Cellar/glib/2.82.4/bin/glib-mkenums found: YES (/home/capin/homebrew/Cellar/glib/2.82.4/bin/glib-mkenums)
     # Dependency glib-2.0 found: YES 2.82.4 (cached)
     # Program /home/capin/homebrew/Cellar/glib/2.82.4/bin/glib-mkenums found: YES (/home/capin/homebrew/Cellar/glib/2.82.4/bin/glib-mkenums)
+    # ----
+    # CKS '-DG_LOG_DOMAIN="Pango"' -DG_LOG_USE_STRUCTURED=1 -DPANGO_COMPILATION '-DSYSCONFDIR="/home/capin/homebrew/Cellar/pango/1.56.1/etc"' '-DLIBDIR="/home/capin/homebrew/Cellar/pango/1.56.1/lib"' -MD -MQ pango/libpango-1.0.so.0.5600.1.p/fonts.c.o -MF pango/libpango-1.0.so.0.5600.1.p/fonts.c.o.d -o pango/libpango-1.0.so.0.5600.1.p/fonts.c.o -c ../pango/fonts.c
+    # In file included from /home/capin/homebrew/Cellar/glib/2.82.4/include/glib-2.0/glib/gtypes.h:36,
+    #                 from /home/capin/homebrew/Cellar/glib/2.82.4/include/glib-2.0/glib/galloca.h:34,
+    #                 from /home/capin/homebrew/Cellar/glib/2.82.4/include/glib-2.0/glib.h:32,
+    #                 from /home/capin/homebrew/Cellar/glib/2.82.4/include/glib-2.0/gobject/gbinding.h:30,
+    #                 from /home/capin/homebrew/Cellar/glib/2.82.4/include/glib-2.0/glib-object.h:24,
+    #                 from /home/capin/homebrew/Cellar/glib/2.82.4/include/glib-2.0/gio/gioenums.h:30,
+    #                 from /home/capin/homebrew/Cellar/glib/2.82.4/include/glib-2.0/gio/giotypes.h:30,
+    #                 from /home/capin/homebrew/Cellar/glib/2.82.4/include/glib-2.0/gio/gio.h:28,
+    #                 from ../pango/fonts.c:28:
+    # /home/capin/homebrew/Cellar/glib/2.82.4/include/glib-2.0/glib/gversionmacros.h:381:2: error: #error "GLIB_VERSION_MIN_REQUIRED must be <= GLIB_VERSION_CUR_STABLE"
+    #   381 | #error "GLIB_VERSION_MIN_REQUIRED must be <= GLIB_VERSION_CUR_STABLE"
+    #       |  ^~~~~
+    # /home/capin/homebrew/Cellar/glib/2.82.4/include/glib-2.0/glib/gversionmacros.h:384:2: error: #error "GLIB_VERSION_MAX_ALLOWED must be >= GLIB_VERSION_MIN_REQUIRED"
+    #   384 | #error "GLIB_VERSION_MAX_ALLOWED must be >= GLIB_VERSION_MIN_REQUIRED"
+    #       |  ^~~~~
+    # ninja: build stopped: subcommand failed.
+    # INFO: autodetecting backend as ninja
 
     args = %w[
       -Ddefault_library=both
