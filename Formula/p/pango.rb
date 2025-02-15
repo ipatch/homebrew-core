@@ -35,6 +35,11 @@ class Pango < Formula
   depends_on "harfbuzz"
 
   def install
+    # NOTE: ipatch, bld err, Dependency glib-2.0 found: YES 2.82.4 (cached)
+    # Program /home/capin/homebrew/Cellar/glib/2.82.4/bin/glib-mkenums found: YES (/home/capin/homebrew/Cellar/glib/2.82.4/bin/glib-mkenums)
+    # Dependency glib-2.0 found: YES 2.82.4 (cached)
+    # Program /home/capin/homebrew/Cellar/glib/2.82.4/bin/glib-mkenums found: YES (/home/capin/homebrew/Cellar/glib/2.82.4/bin/glib-mkenums)
+
     args = %w[
       -Ddefault_library=both
       -Dintrospection=enabled
