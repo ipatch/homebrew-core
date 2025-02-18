@@ -66,6 +66,12 @@ class Pango < Formula
       -Dcairo=enabled
       -Dfreetype=enabled
     ]
+    # NO WORK!
+      # -Dglib=2.82.4
+
+    # NOTE: tshoot
+    # system "meson", "setup", "build"
+    # system "meson", "configure", "build"
 
     system "meson", "setup", "build", *args, *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
