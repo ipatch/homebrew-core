@@ -27,12 +27,20 @@ class OpenMpi < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "gcc" # for gfortran
+  depends_on "gcc"
   depends_on "hwloc"
   depends_on "libevent"
   depends_on "pmix"
 
   conflicts_with "mpich", because: "both install MPI compiler wrappers"
+
+  # NOTE: ipatch, https://github.com/Homebrew/homebrew-core/issues/209847
+  patch do
+    on_linux do
+      url "https://sources.debian.org/data/main/o/openmpi/5.0.7-1/debian/patches/sshmem.patch"
+      sha256 "c3b55808b9bf3dbac9b130eda6ff5f43ee2ca5d5df8773487a6e9eb7a9e9122c"
+    end
+  end
 
   def install
     ENV.runtime_cpu_detection
@@ -89,9 +97,19 @@ class OpenMpi < Formula
     #
     # [^1]: https://github.com/openpmix/prrte/issues/1836#issuecomment-2564882033
     # [^2]: https://github.com/openpmix/prrte/blob/master/config/prte_configure_options.m4#L390-L393
-    odie "Update configure for PRRTE or split to separate formula as prte-term exists" if (bin/"prte-term").exist?
-    bin.install bin/"pterm" => "prte-term"
-    man1.install man1/"pterm.1" => "prte-term.1"
+
+    # NOTE: ipatch, default NO WORK!
+    # odie "Update configure for PRRTE or split to separate formula as prte-term exists" if (bin/"prte-term").exist?
+    # bin.install bin/"pterm" => "prte-term"
+    # man1.install man1/"pterm.1" => "prte-term.1"
+
+    #---
+    if (bin/"pterm").exist?
+      bin.install bin/"pterm" => "prte-term"
+      man1.install man1/"pterm.1" => "prte-term.1"
+    else
+      opoo "pterm not found! Check Open MPI build options."
+    end
   end
 
   test do
