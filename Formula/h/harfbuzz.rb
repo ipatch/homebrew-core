@@ -34,6 +34,11 @@ class Harfbuzz < Formula
     sha256 "9535d35dab9e002963eef56757c46881f6b3d3b27db24eefcc80929781856c77"
   end
 
+  # NOTE: ipatch,
+  # concurrence.h:252:32: error: cannot convert '<brace-enclosed initializer list>' to 'unsigned int' in initialization
+  # 252 |     __gthread_cond_t _M_cond = __GTHREAD_COND_INIT;
+  #   # |                                ^~~~~~~~~~~~~~~~~~~
+
   def install
     args = %w[
       --default-library=both
@@ -47,8 +52,12 @@ class Harfbuzz < Formula
       -Dintrospection=enabled
       -Dtests=disabled
     ]
+    # -D cpp_std=c++11
 
-    system "meson", "setup", "build", *args, *std_meson_args
+    puts "--------------------- Current CXXFLAGS: #{ENV["CXXFLAGS"]}"
+
+    system "meson", "setup", "build", *args
+    # system "meson", "setup", "build", *args, *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
   end
