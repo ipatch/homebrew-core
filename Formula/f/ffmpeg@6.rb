@@ -93,6 +93,7 @@ class FfmpegAT6 < Formula
     sha256 "57e26caced5a1382cb639235f9555fc50e45e7bf8333f7c9ae3d49b3241d3f77"
   end
 
+<<<<<<< HEAD
   # Backport support for recent svt-av1 (3.0.0)
   patch do
     url "https://github.com/FFmpeg/FFmpeg/commit/d1ed5c06e3edc5f2b5f3664c80121fa55b0baa95.patch?full_index=1"
@@ -103,8 +104,21 @@ class FfmpegAT6 < Formula
     url "https://git.videolan.org/?p=ffmpeg.git;a=patch;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc"
     sha256 "15979d2e4b762946c4e4be2b0e72d31fc9c1dfc36f2827a8e609179d71f01257"
   end
+||||||| parent of d01d423e0fc (ffmpeg@6: fix bld error)
+  patch do
+    url "https://git.videolan.org/?p=ffmpeg.git;a=patch;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc"
+    sha256 "15979d2e4b762946c4e4be2b0e72d31fc9c1dfc36f2827a8e609179d71f01257"
+  end
+=======
+  # patch do
+  #   url "https://git.videolan.org/?p=ffmpeg.git;a=patch;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc"
+  #   sha256 "15979d2e4b762946c4e4be2b0e72d31fc9c1dfc36f2827a8e609179d71f01257"
+  # end
+>>>>>>> d01d423e0fc (ffmpeg@6: fix bld error)
 
   def install
+    # NOTE: ipatch, bld broke again dec 27, ref: https://bugs.gentoo.org/938897#c5
+
     # NOTE: ipatch, bld err arch linux
     # https://git.videolan.org/?p=ffmpeg.git;a=commitdiff;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc
     #
