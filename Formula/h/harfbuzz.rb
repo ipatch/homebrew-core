@@ -18,6 +18,7 @@ class Harfbuzz < Formula
   end
 
   depends_on "gobject-introspection" => :build
+  depends_on "llvm" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => :build
@@ -34,12 +35,18 @@ class Harfbuzz < Formula
     sha256 "9535d35dab9e002963eef56757c46881f6b3d3b27db24eefcc80929781856c77"
   end
 
-  # NOTE: ipatch,
+  # NOTE: ipatch, could not get build working with GCC switched clang / llvm provided by homebrew
   # concurrence.h:252:32: error: cannot convert '<brace-enclosed initializer list>' to 'unsigned int' in initialization
   # 252 |     __gthread_cond_t _M_cond = __GTHREAD_COND_INIT;
   #   # |                                ^~~~~~~~~~~~~~~~~~~
 
   def install
+    llvm = deps.find { |dep| dep.name.match?(/^llvm(@\d+)?$/) }
+      .to_formula
+
+    ENV["CC"] = llvm.opt_bin/"clang"
+    ENV["CXX"] = llvm.opt_bin/"clang++"
+
     args = %w[
       --default-library=both
       -Dcairo=enabled
