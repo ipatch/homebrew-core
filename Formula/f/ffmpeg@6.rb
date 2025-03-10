@@ -99,9 +99,17 @@ class FfmpegAT6 < Formula
     sha256 "0eb23ab90c0e5904590731dd3b81c86a4127785bc2b367267d77723990fb94a2"
   end
 
+  # patch do
+  #   url "http://git.ffmpeg.org/gitweb/ffmpeg.git/patch/f749aaf108696fcfc2be6a9f6c1059415474caf3"
+  #   sha256 ""
+  # end
+
+  # NOTE: ipatch, https://trac.ffmpeg.org/ticket/11130
   patch do
-    url "https://git.videolan.org/?p=ffmpeg.git;a=patch;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc"
-    sha256 "15979d2e4b762946c4e4be2b0e72d31fc9c1dfc36f2827a8e609179d71f01257"
+    #   url "https://git.videolan.org/?p=ffmpeg.git;a=patch;h=1f801dfdb5066aadf0ade9cb5e94d620f33eacdc"
+    #   sha256 "15979d2e4b762946c4e4be2b0e72d31fc9c1dfc36f2827a8e609179d71f01257"
+    url "https://git.ffmpeg.org/gitweb/ffmpeg.git/patch/1f801dfdb5066aadf0ade9cb5e94d620f33eacdc"
+    sha256 ""
   end
 
   def install
