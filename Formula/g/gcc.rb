@@ -105,6 +105,13 @@ class Gcc < Formula
       --with-system-zlib
     ]
 
+    # NOTE: ipatch, disable fix includes
+    # see: https://bugs.gentoo.org/933282
+    # see: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=118009#c4
+    if OS.linux?
+      args << "--disable-fixincludes"
+    end
+
     if OS.mac?
       cpu = Hardware::CPU.arm? ? "aarch64" : "x86_64"
       args << "--build=#{cpu}-apple-darwin#{OS.kernel_version.major}"
