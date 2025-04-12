@@ -46,7 +46,6 @@ class Gcc < Formula
   depends_on "libmpc"
   depends_on "mpfr"
   depends_on "zstd"
-
   uses_from_macos "flex" => :build
   uses_from_macos "m4" => :build
   uses_from_macos "zlib"
@@ -58,6 +57,8 @@ class Gcc < Formula
 
   on_linux do
     depends_on "binutils"
+    # NOTE: ipatch, attempt to fix gcc build error
+    depends_on "z3"
   end
 
   def version_suffix
