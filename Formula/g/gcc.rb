@@ -81,6 +81,10 @@ class Gcc < Formula
   end
 
   def install
+    # NOTE: ipatch, build error,
+    # ld: cannot find crti.o: No such file or directory
+    # /home/capin/homebrew/bin/clang: error while loading shared libraries: libz3.so.4.13: cannot open shared object file: No such file or directory
+
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
 
