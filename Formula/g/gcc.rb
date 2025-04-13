@@ -83,7 +83,9 @@ class Gcc < Formula
   def install
     # NOTE: ipatch, build error,
     # ld: cannot find crti.o: No such file or directory
-    # /home/capin/homebrew/bin/clang: error while loading shared libraries: libz3.so.4.13: cannot open shared object file: No such file or directory
+    # /home/capin/homebrew/bin/clang:
+    # ...error while loading shared libraries:
+    # ...libz3.so.4.13: cannot open shared object file: No such file or directory
 
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
@@ -146,6 +148,10 @@ class Gcc < Formula
     end
 
     mkdir "build" do
+      # NOTE: ipatch, fix for asahi linux
+      ENV["LD_LIBRARY_PATH"] = "/lib64/" if Hardware::CPU.arm? && OS.linux?
+      ENV["LIBRARY_PATH"] = "/lib64/" if Hardware::CPU.arm? && OS.linux?
+
       system "../configure", *args
       system "gmake", *make_args
 
