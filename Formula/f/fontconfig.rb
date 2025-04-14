@@ -30,7 +30,7 @@ class Fontconfig < Formula
   end
 
   depends_on "pkgconf" => :build
-  depends_on "freetype"
+  # depends_on "freetype"
 
   uses_from_macos "gperf" => :build
   uses_from_macos "python" => :build, since: :catalina
@@ -38,8 +38,11 @@ class Fontconfig < Formula
   uses_from_macos "expat"
 
   on_linux do
+    depends_on "brotli" => :build
     depends_on "gettext" => :build
+    depends_on "freetype" => :build
     depends_on "json-c" => :build
+    depends_on "libpng" => :build
     depends_on "util-linux"
   end
 
