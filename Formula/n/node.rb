@@ -64,6 +64,9 @@ class Node < Formula
   end
 
   def install
+    # NOTE: ipatch, bld err april 13 2025
+    # g++-14: fatal error: Killed signal terminated program cc1plus compilation terminated.
+
     ENV.llvm_clang if OS.mac? && DevelopmentTools.clang_build_version <= 1500
 
     # The new linker crashed during LTO due to high memory usage.
