@@ -49,22 +49,22 @@ class Cairo < Formula
     # ENV.prepend_path "PKG_CONFIG_PATH", Formula["libarchive"].opt_lib/"pkgconfig"
     # ENV.prepend_path "CMAKE_PREFIX_PATH", Formula["fontconfig"].opt_prefix
 
-    fontconfig = Formula[fontconfig]
-    freetype = Formula[freetype]
-    glib = Formula[glib]
-    libpng = Formula[libpng]
+    fontconfig = Formula["fontconfig"]
+    freetype = Formula["freetype"]
+    glib = Formula["glib"]
+    libpng = Formula["libpng"]
 
     # Ensure Meson can find pkg-config data
-    ENV.prepend_path PKG_CONFIG_PATH, fontconfig.opt_lib/pkgconfig
-    ENV.prepend_path PKG_CONFIG_PATH, freetype.opt_lib/pkgconfig
-    ENV.prepend_path PKG_CONFIG_PATH, glib.opt_lib/pkgconfig
-    ENV.prepend_path PKG_CONFIG_PATH, libpng.opt_lib/pkgconfig
+    ENV.prepend_path "PKG_CONFIG_PATH", fontconfig.opt_lib/"pkgconfig"
+    ENV.prepend_path "PKG_CONFIG_PATH", freetype.opt_lib/"pkgconfig"
+    ENV.prepend_path  "PKG_CONFIG_PATH",  glib.opt_lib/"pkgconfig"
+    ENV.prepend_path  "PKG_CONFIG_PATH", libpng.opt_lib/"pkgconfig"
 
     # Just in case Meson uses CMake internally for fallback detection
-    ENV.prepend_path CMAKE_PREFIX_PATH, fontconfig.opt_prefix
-    ENV.prepend_path CMAKE_PREFIX_PATH, freetype.opt_prefix
-    ENV.prepend_path CMAKE_PREFIX_PATH, glib.opt_prefix
-    ENV.prepend_path CMAKE_PREFIX_PATH, libpng.opt_prefix
+    ENV.prepend_path "CMAKE_PREFIX_PATH", fontconfig.opt_prefix
+    ENV.prepend_path "CMAKE_PREFIX_PATH", freetype.opt_prefix
+    ENV.prepend_path "CMAKE_PREFIX_PATH", glib.opt_prefix
+    ENV.prepend_path "CMAKE_PREFIX_PATH", libpng.opt_prefix
 
     args = %w[
       -Dfontconfig=enabled
