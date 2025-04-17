@@ -45,28 +45,6 @@ class Cairo < Formula
   end
 
   def install
-    # NOTE: ipatch, attempt fix meson configure error related to fontconfig
-    # ENV.prepend_path "PKG_CONFIG_PATH", Formula["fontconfig"].opt_lib/"pkgconfig"
-    # ENV.prepend_path "PKG_CONFIG_PATH", Formula["libarchive"].opt_lib/"pkgconfig"
-    # ENV.prepend_path "CMAKE_PREFIX_PATH", Formula["fontconfig"].opt_prefix
-
-    fontconfig = Formula["fontconfig"]
-    freetype = Formula["freetype"]
-    glib = Formula["glib"]
-    libpng = Formula["libpng"]
-
-    # Ensure Meson can find pkg-config data
-    ENV.prepend_path "PKG_CONFIG_PATH", fontconfig.opt_lib/"pkgconfig"
-    ENV.prepend_path "PKG_CONFIG_PATH", freetype.opt_lib/"pkgconfig"
-    ENV.prepend_path  "PKG_CONFIG_PATH",  glib.opt_lib/"pkgconfig"
-    ENV.prepend_path  "PKG_CONFIG_PATH", libpng.opt_lib/"pkgconfig"
-
-    # Just in case Meson uses CMake internally for fallback detection
-    # ENV.prepend_path "CMAKE_PREFIX_PATH", fontconfig.opt_prefix
-    # ENV.prepend_path "CMAKE_PREFIX_PATH", freetype.opt_prefix
-    # ENV.prepend_path "CMAKE_PREFIX_PATH", glib.opt_prefix
-    # ENV.prepend_path "CMAKE_PREFIX_PATH", libpng.opt_prefix
-
     # Save the original PATH
     original_path = ENV["PATH"]
 
@@ -77,12 +55,6 @@ class Cairo < Formula
 
     # Set the new PATH
     ENV["PATH"] = new_path
-
-    # Get the path where fontconfig is installed
-    fontconfig_prefix = Formula["fontconfig"].opt_prefix
-
-    # Set environment variables for the build
-    ENV["CMAKE_PREFIX_PATH"] = "#{fontconfig_prefix}:#{ENV["CMAKE_PREFIX_PATH"]}"
 
     args = %w[
       -Dfontconfig=enabled
