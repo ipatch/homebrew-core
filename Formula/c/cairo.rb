@@ -78,6 +78,9 @@ class Cairo < Formula
     ]
     args << "-Dquartz=enabled" if OS.mac?
 
+    # NOTE: ipatch, not valid
+    # --disable-dependency-tracking
+
     system "meson", "setup", "build", *args, *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
