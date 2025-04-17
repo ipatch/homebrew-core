@@ -21,11 +21,12 @@ class Cairo < Formula
     sha256               x86_64_linux:  "ad2f527ee5910160b725637d97e64bea8cbfebebf6ffa8720a49c2de73763a48"
   end
 
-  # depends_on "cmake" => :build
+  depends_on "cmake" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => [:build, :test]
 
+  depends_on "brotli"
   depends_on "fontconfig"
   depends_on "freetype"
   depends_on "glib"
@@ -61,10 +62,27 @@ class Cairo < Formula
     ENV.prepend_path  "PKG_CONFIG_PATH", libpng.opt_lib/"pkgconfig"
 
     # Just in case Meson uses CMake internally for fallback detection
-    ENV.prepend_path "CMAKE_PREFIX_PATH", fontconfig.opt_prefix
-    ENV.prepend_path "CMAKE_PREFIX_PATH", freetype.opt_prefix
-    ENV.prepend_path "CMAKE_PREFIX_PATH", glib.opt_prefix
-    ENV.prepend_path "CMAKE_PREFIX_PATH", libpng.opt_prefix
+    # ENV.prepend_path "CMAKE_PREFIX_PATH", fontconfig.opt_prefix
+    # ENV.prepend_path "CMAKE_PREFIX_PATH", freetype.opt_prefix
+    # ENV.prepend_path "CMAKE_PREFIX_PATH", glib.opt_prefix
+    # ENV.prepend_path "CMAKE_PREFIX_PATH", libpng.opt_prefix
+
+    # Save the original PATH
+    original_path = ENV["PATH"]
+
+    # Remove the specified directories from PATH
+    paths_to_remove = ["/bin", "/usr/sbin", "/sbin"]
+    # paths_to_remove = ["/usr/bin", "/bin", "/usr/sbin", "/sbin"]
+    new_path = original_path.split(":").reject { |path| paths_to_remove.include?(path) }.join(":")
+
+    # Set the new PATH
+    ENV["PATH"] = new_path
+
+    # Get the path where fontconfig is installed
+    fontconfig_prefix = Formula["fontconfig"].opt_prefix
+
+    # Set environment variables for the build
+    ENV["CMAKE_PREFIX_PATH"] = "#{fontconfig_prefix}:#{ENV["CMAKE_PREFIX_PATH"]}"
 
     args = %w[
       -Dfontconfig=enabled
