@@ -22,6 +22,7 @@ class Harfbuzz < Formula
   depends_on "pkgconf" => :build
   depends_on "python@3.13" => [:build, :test]
   depends_on "pygobject3" => :test
+  depends_on "brotli"
   depends_on "cairo"
   depends_on "freetype"
   depends_on "glib"
