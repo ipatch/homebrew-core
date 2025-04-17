@@ -48,6 +48,7 @@ class XorgServer < Formula
   end
 
   on_linux do
+    depends_on "brotli"
     depends_on "dbus"
     depends_on "libdrm"
     depends_on "libepoxy"
