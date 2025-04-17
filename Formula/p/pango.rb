@@ -28,6 +28,7 @@ class Pango < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => [:build, :test]
+  depends_on "brotli"
   depends_on "cairo"
   depends_on "fontconfig"
   depends_on "freetype"
