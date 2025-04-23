@@ -55,6 +55,7 @@ class Gtk4 < Formula
 
   on_linux do
     depends_on "wayland-protocols" => :build
+    depends_on "brotli"
     depends_on "libx11"
     depends_on "libxcursor"
     depends_on "libxdamage"
