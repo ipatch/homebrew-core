@@ -259,7 +259,7 @@ class Qt < Formula
     end
 
     system "cmake", "-S", ".", "-B", "build", "-G", "Ninja", *cmake_args
-    system "cmake", "--build", "build"
+    system "cmake", "--build", "build", "-j4"
     system "cmake", "--install", "build"
 
     inreplace lib/"cmake/Qt6/qt.toolchain.cmake", "#{Superenv.shims_path}/", ""
