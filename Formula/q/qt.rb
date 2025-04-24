@@ -139,7 +139,7 @@ class Qt < Formula
 
   def install
     # NOTE: ipatch, bld error on ashai linux
-    #
+    # the current bld err i'm getting may be due to lack of memory aka 8gb mac mini m1
 
     python3 = "python3.13"
 
