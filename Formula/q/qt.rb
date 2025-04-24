@@ -138,6 +138,9 @@ class Qt < Formula
   end
 
   def install
+    # NOTE: ipatch, bld error on ashai linux
+    #
+
     python3 = "python3.13"
 
     # Install python dependencies for QtWebEngine
