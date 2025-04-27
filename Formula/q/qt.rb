@@ -262,11 +262,15 @@ class Qt < Formula
     # apparently ninja will ignore the below cmake arg 🤦‍♂️
     # cmake_args << "-DCMAKE_BUILD_PARALLEL_LEVEL=4"
     # cmake_args << "-DCMAKE_AUTOGEN_PARALLEL=1"
-    # '-DCMAKE_JOB_POOLS:STRING=compile=5;link=2'
+
+    # NOTE: ipatch, useful link, https://discourse.slicer.org/t/ninja-build-using-too-many-cores/2304/8
     # NOTE: ipatch, below cmake vars NOWORK!
+    # cmake_args << "-DCMAKE_JOB_POOLS:STRING=compile=4;link=2"
     # cmake_args << "-DCMAKE_JOB_POOL_COMPILE:STRING=compile"
     # cmake_args << "-DCMAKE_JOB_POOL_LINK:STRING=link"
-    # cmake_args << "-DCMAKE_JOB_POOLS:STRING=compile=4;link=2"
+
+    # NOTE: ipatch, possbile hacky workaround only for linux
+    # `taskset -c 0-3 brew install qt -v --display-times;`
 
     system "cmake", "-S", ".", "-B", "build", "-G", "Ninja", *cmake_args
     # system "cmake", "--build", "build", "--", "-j4"
