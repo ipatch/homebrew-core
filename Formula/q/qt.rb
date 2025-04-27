@@ -258,8 +258,19 @@ class Qt < Formula
       ]
     end
 
+    # NOTE: ipatch, limited resources on gen1 mac mini m1
+    # apparently ninja will ignore the below cmake arg 🤦‍♂️
+    # cmake_args << "-DCMAKE_BUILD_PARALLEL_LEVEL=4"
+    # cmake_args << "-DCMAKE_AUTOGEN_PARALLEL=1"
+    # '-DCMAKE_JOB_POOLS:STRING=compile=5;link=2'
+    # NOTE: ipatch, below cmake vars NOWORK!
+    # cmake_args << "-DCMAKE_JOB_POOL_COMPILE:STRING=compile"
+    # cmake_args << "-DCMAKE_JOB_POOL_LINK:STRING=link"
+    # cmake_args << "-DCMAKE_JOB_POOLS:STRING=compile=4;link=2"
+
     system "cmake", "-S", ".", "-B", "build", "-G", "Ninja", *cmake_args
-    system "cmake", "--build", "build", "-j4"
+    # system "cmake", "--build", "build", "--", "-j4"
+    system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
     inreplace lib/"cmake/Qt6/qt.toolchain.cmake", "#{Superenv.shims_path}/", ""
