@@ -272,6 +272,13 @@ class Qt < Formula
     # NOTE: ipatch, possbile hacky workaround only for linux
     # `taskset -c 0-3 brew install qt -v --display-times;`
 
+    # NOTE: ipatch, current build error,
+    # [6733/20502] CXX obj/third_party/webrtc/video/adaptation/video_adaptation/bandwidth_quality_scaler_resource.o
+    # [6734/20502] CXX obj/third_party/webrtc/video/adaptation/video_adaptation/encode_usage_resource.o
+    # FAILED: obj/third_party/webrtc/video/adaptation/video_adaptation/encode_usage_resource.o
+    # Error: An exception occurred within a child process:
+    # Errno::ENOSPC: No space left on device @ rb_sys_fail_on_write - /home/capin/.cache/Homebrew/Logs/qt/06.cmake
+
     system "cmake", "-S", ".", "-B", "build", "-G", "Ninja", *cmake_args
     # system "cmake", "--build", "build", "--", "-j4"
     system "cmake", "--build", "build"
