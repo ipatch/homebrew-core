@@ -103,7 +103,7 @@ class FfmpegAT6 < Formula
 
   # NOTE: ipatch https://bugs.gentoo.org/947707
   patch do
-    url "https://gitlab.archlinux.org/archlinux/packaging/packages/ffmpeg/-/raw/main/fix_build_with_texinfo-7.2.patch"
+    url "https://gitlab.archlinux.org/archlinux/packaging/packages/ffmpeg/-/raw/f522a9917a094a42edfd3541695adf1bd191b4fc/fix_build_with_texinfo-7.2.patch"
   end
 
   def install
