@@ -169,7 +169,8 @@ class Gstreamer < Formula
     # subprojects/gst-python/meson.build:1:0: ERROR: Unknown options: "gst-python:python-exe" not found.
 
     # A full log can be found at /opt/tmp/homebrew/gstreamer-20250517-1884331-bhtbrp/gstreamer-1.26.1/build/meson-logs/meson-log.txt
-
+    #-----------
+    # -Dgst-python:python=#{python3}
 
     # NOTE: ipatch, bld err mar 26 2025
     # meson.build:49:2: ERROR: Command `/usr/bin/pre-commit install -f` failed with status 1.
@@ -247,7 +248,6 @@ class Gstreamer < Formula
       -Dgst-devtools:cairo=enabled
       -Dgst-editing-services:pygi-overrides-dir=#{site_packages}/gi/overrides
       -Dgst-python:pygi-overrides-dir=#{site_packages}/gi/overrides
-      -Dgst-python:python=#{python3}
       -Dgst-plugins-bad:opencv=disabled
       -Dgst-plugins-bad:sctp=enabled
       -Dgst-plugins-bad:sctp-internal-usrsctp=disabled
