@@ -155,6 +155,22 @@ class Gstreamer < Formula
   end
 
   def install
+    # NOTE: ipatch, bld err may 17 2025
+    #     gst-editing-services| Subproject gst-editing-services finished.
+
+    # Subproject gstreamer-vaapi : skipped: feature vaapi disabled
+    # Subproject gstreamer-sharp : skipped: feature sharp disabled
+    # Run-time dependency pygobject-3.0 found: YES 3.52.3
+
+    # Executing subproject gst-python
+
+    # gst-python| DEPRECATION: Option 'python' is replaced by 'python-exe'
+
+    # subprojects/gst-python/meson.build:1:0: ERROR: Unknown options: "gst-python:python-exe" not found.
+
+    # A full log can be found at /opt/tmp/homebrew/gstreamer-20250517-1884331-bhtbrp/gstreamer-1.26.1/build/meson-logs/meson-log.txt
+
+
     # NOTE: ipatch, bld err mar 26 2025
     # meson.build:49:2: ERROR: Command `/usr/bin/pre-commit install -f` failed with status 1.
     # Program gitlint found: NO
