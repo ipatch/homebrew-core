@@ -25,6 +25,7 @@ class Tesseract < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkgconf" => :build
+  depends_on "brotli"
   depends_on "cairo"
   depends_on "fontconfig"
   depends_on "glib"
@@ -32,8 +33,8 @@ class Tesseract < Formula
   depends_on "icu4c@77"
   depends_on "leptonica"
   depends_on "libarchive"
-  depends_on "libffi"
-  depends_on "libpng"
+  # depends_on "libffi"
+  # depends_on "libpng"
   depends_on "pango"
 
   on_macos do
@@ -69,10 +70,10 @@ class Tesseract < Formula
     # NOTE: ipatch, jun 04, 2025, build from src fails
     # BuildError: Failed executing: make install training-install datarootdir=/home/capin/homebrew/Cellar/tesseract/5.5.1/share
 
-    ENV.append "CPPFLAGS", "-I#{Formula["pango"].opt_include} -I#{Formula["cairo"].opt_include}"
-    ENV.append "LDFLAGS", "-L#{Formula["pango"].opt_lib} -L#{Formula["cairo"].opt_lib}"
-    ENV.prepend_path "PKG_CONFIG_PATH", Formula["pango"].opt_lib/"pkgconfig"
-    ENV.prepend_path "PKG_CONFIG_PATH", Formula["cairo"].opt_lib/"pkgconfig"
+    # ENV.append "CPPFLAGS", "-I#{Formula["pango"].opt_include} -I#{Formula["cairo"].opt_include}"
+    # ENV.append "LDFLAGS", "-L#{Formula["pango"].opt_lib} -L#{Formula["cairo"].opt_lib}"
+    # ENV.prepend_path "PKG_CONFIG_PATH", Formula["pango"].opt_lib/"pkgconfig"
+    # ENV.prepend_path "PKG_CONFIG_PATH", Formula["cairo"].opt_lib/"pkgconfig"
 
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
     # which doesn't work for non-default homebrew location
@@ -80,8 +81,11 @@ class Tesseract < Formula
 
     ENV.cxx11
 
+    system "pkg-config", "--cflags", "pango"
+    system "pkg-config", "--libs", "cairo"
+
     system "./autogen.sh"
-    system "./configure", "--datarootdir=#{share}",
+    system "./configure", "--datarootdir=#{HOMEBREW_PREFIX}/share",
                           "--disable-silent-rules",
                           *std_configure_args
 
