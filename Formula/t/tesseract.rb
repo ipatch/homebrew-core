@@ -56,6 +56,7 @@ class Tesseract < Formula
 
   def install
     # NOTE: ipatch, jun 04, 2025, build from src fails
+    # BuildError: Failed executing: make install training-install datarootdir=/home/capin/homebrew/Cellar/tesseract/5.5.1/share
 
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
     # which doesn't work for non-default homebrew location
