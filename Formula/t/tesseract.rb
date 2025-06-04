@@ -65,7 +65,7 @@ class Tesseract < Formula
     ENV.cxx11
 
     system "./autogen.sh"
-    system "./configure", "--datarootdir=#{HOMEBREW_PREFIX}/share",
+    system "./configure", "--datarootdir=#{share}",
                           "--disable-silent-rules",
                           *std_configure_args
 
@@ -73,6 +73,7 @@ class Tesseract < Formula
 
     # make install in the local share folder to avoid permission errors
     system "make", "install", "training-install", "datarootdir=#{share}"
+    # system "make", "install", "training-install"
 
     resource("snum").stage { mv "snum.traineddata", share/"tessdata" }
     resource("eng").stage { mv "eng.traineddata", share/"tessdata" }
