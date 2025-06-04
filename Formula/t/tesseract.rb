@@ -55,6 +55,14 @@ class Tesseract < Formula
   end
 
   def install
+    # NOTE: ipatch, configure errors / warnings
+    # configure: WARNING: pango 1.38.0 or higher is required, but was not found.
+    # configure: WARNING: Training tools WILL NOT be built.
+    # configure: WARNING: Try to install libpango1.0-dev package.
+    # checking for cairo... no
+    # configure: WARNING: Training tools WILL NOT be built because of missing cairo library.
+    # configure: WARNING: Try to install libcairo-dev?? package.
+
     # NOTE: ipatch, jun 04, 2025, build from src fails
     # BuildError: Failed executing: make install training-install datarootdir=/home/capin/homebrew/Cellar/tesseract/5.5.1/share
 
