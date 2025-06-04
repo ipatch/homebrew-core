@@ -55,6 +55,8 @@ class Tesseract < Formula
   end
 
   def install
+    # NOTE: ipatch, jun 04, 2025, build from src fails
+
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
     # which doesn't work for non-default homebrew location
     ENV["LIBLEPT_HEADERSDIR"] = HOMEBREW_PREFIX/"include"
