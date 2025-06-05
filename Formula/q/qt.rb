@@ -145,6 +145,9 @@ class Qt < Formula
 
     # NOTE: ipatch, bld error on ashai linux
     # the current bld err i'm getting may be due to lack of memory aka 8gb mac mini m1
+    #
+    # CMake Error at qtbase/cmake/QtTargetHelpers.cmake:187
+    # Target "AssimpImporterPlugin" links to:      WrapQuick3DAssimp::WrapQuick3DAssimp    but the target was not found.
 
     python3 = "python3.13"
 
