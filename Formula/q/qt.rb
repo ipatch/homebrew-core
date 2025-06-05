@@ -110,6 +110,7 @@ class Qt < Formula
     depends_on "openjpeg"
     depends_on "opus"
     depends_on "pango"
+    depends_on "protobuf"
     depends_on "pulseaudio"
     depends_on "snappy"
     depends_on "systemd"
@@ -138,6 +139,10 @@ class Qt < Formula
   end
 
   def install
+    # NOTE: ipatch, cmake configure err jun 5 2025
+    # -- Could NOT find protobuf (missing: protobuf_DIR)
+    # -- Could NOT find protobuf (missing: protobuf_DIR)
+
     # NOTE: ipatch, bld error on ashai linux
     # the current bld err i'm getting may be due to lack of memory aka 8gb mac mini m1
 
