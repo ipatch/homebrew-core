@@ -53,6 +53,8 @@ class Netpbm < Formula
   patch :DATA
 
   def install
+    # NOTE: ipatch, bld err related to cpp v23, on asahi linux m1
+
     cp "config.mk.in", "config.mk"
 
     inreplace "config.mk" do |s|
