@@ -52,8 +52,14 @@ class Netpbm < Formula
   end
   patch :DATA
 
+  patch do
+    url "https://gitweb.gentoo.org/repo/gentoo.git/plain/media-libs/netpbm/files/netpbm-11.2.11-fix-C23.patch"
+    sha256 "5cb967d5a70581942aeb71ffc0442d84e5178d4cfbc7fcffe6dcd18374bdd1f9"
+  end
+
   def install
     # NOTE: ipatch, bld err related to cpp v23, on asahi linux m1
+    # libopt.c:92:23: error: 'bool' cannot be defined via 'typedef'
 
     cp "config.mk.in", "config.mk"
 
