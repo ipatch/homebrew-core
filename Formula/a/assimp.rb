@@ -30,6 +30,12 @@ class Assimp < Formula
   uses_from_macos "zlib"
 
   def install
+    # NOTE: ipatch, bld error, https://github.com/assimp/assimp/issues/6144
+
+    inreplace "code/AssetLib/X3D/X3DGeoHelper.cpp",
+          "if (f_data.back() != (-1)) {",
+          "if (!f_data.empty() && f_data.back() != (-1)) {"
+
     args = %W[
       -DASSIMP_BUILD_TESTS=OFF
       -DASSIMP_BUILD_ASSIMP_TOOLS=ON
