@@ -144,7 +144,7 @@ class Wxwidgets < Formula
 
         -DCMAKE_MAKE_PROGRAM=#{Formula["ninja"].opt_bin}/ninja
         -DCMAKE_C_COMPILER=#{Formula["llvm"].opt_bin}/clang
-        -DCMAKE_CXX_COMPILER=#{Formula["llvm"].opt_bin}clang++
+        -DCMAKE_CXX_COMPILER=#{Formula["llvm"].opt_bin}/clang++
 
         -DGTK3_INCLUDE_DIRS=#{gtk3_inc_dirs}
         -DX11_X11_INCLUDE_PATH=#{libx11_inc_dirs}
@@ -154,7 +154,7 @@ class Wxwidgets < Formula
 
         -DCMAKE_PREFIX_PATH=#{cmake_prefix_paths}
 
-         -DwxBUILD_SHARED=ON
+        -DwxBUILD_SHARED=ON
         -DwxBUILD_TESTS=OFF
         -DwxBUILD_SAMPLES=OFF
         -DwxBUILD_PRECOMP=OFF
