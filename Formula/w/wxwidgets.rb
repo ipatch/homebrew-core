@@ -103,12 +103,12 @@ class Wxwidgets < Formula
       #{Formula["gtk+3"].opt_include}/gtk-3.0
       #{Formula["glib"].opt_include}/glib-2.0
       #{Formula["glib"].opt_lib}/glib-2.0/include
-      #{Formula["pango"].opt_include}/pang-1.0
-      #{Formula["harfbuzz"].opt_include}harfbuzz
-      #{Formula["cairo"].opt_include}/cario
+      #{Formula["pango"].opt_include}/pango-1.0
+      #{Formula["harfbuzz"].opt_include}/harfbuzz
+      #{Formula["cairo"].opt_include}/cairo
       #{Formula["gdk-pixbuf"].opt_include}/gdk-pixbuf-2.0
       #{Formula["at-spi2-core"].opt_include}/atk-1.0
-    ]
+    ].join(";")
 
     gtk3_lib_dir =%W[
       #{Formula["gtk+3"].opt_lib}
@@ -218,6 +218,14 @@ class Wxwidgets < Formula
     using deps provided by homebrew so i could debug an issue with orca-slicer.
 
     https://docs.wxwidgets.org/3.2/overview_cmake.html
+    https://wxwidgets.org/develop/
+
+    this one is a pickel (rick), as wxwidgets relies on several packages ie.
+    homebrew formula that use cmake, a lot ie. gtk+3 that aren't built with
+    cmake, and thus do not have a lib/cmake dir for allowing this cmake
+    build to find the packages. pkg-config is suppose to aid with this, but
+    i have not had any luck thus why i manually had to specify all the include
+    dirs for gtk+3 above. 😭
     EOS
   end
 
