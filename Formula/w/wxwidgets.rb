@@ -110,6 +110,10 @@ class Wxwidgets < Formula
       #{Formula["at-spi2-core"].opt_include}/atk-1.0
     ]
 
+    gtk3_lib_dir =%W[
+      #{Formula["gtk+3"].opt_lib}
+    ]
+
     libx11_inc_dirs = %W[
       #{Formula["libx11"].opt_include}
     ]
@@ -147,6 +151,8 @@ class Wxwidgets < Formula
         -DCMAKE_CXX_COMPILER=#{Formula["llvm"].opt_bin}/clang++
 
         -DGTK3_INCLUDE_DIRS=#{gtk3_inc_dirs}
+        -DGTK3_LIBRARIES=#{gtk3_lib_dir}
+
         -DX11_X11_INCLUDE_PATH=#{libx11_inc_dirs}
         -DX11_X11_LIB=#{libx11_lib_dir}
 
@@ -206,6 +212,16 @@ class Wxwidgets < Formula
     # For consistency with the versioned wxwidgets formulae
     bin.install_symlink bin/"wx-config" => "wx-config-#{version.major_minor}"
     (share/"wx"/version.major_minor).install share/"aclocal", share/"bakefile"
+  end
+
+  def caveats
+    <<-EOS
+    NOTE: ipatch, this is my super hacky version of wxwidgets built with cmake.
+    I decided to build wxwidgets with cmake in hopes of building orca-slicer
+    using deps provided by homebrew so i could debug an issue with orca-slicer.
+
+    https://docs.wxwidgets.org/3.2/overview_cmake.html
+    EOS
   end
 
   test do
