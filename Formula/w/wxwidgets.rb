@@ -150,7 +150,7 @@ class Wxwidgets < Formula
         -DCMAKE_MAKE_PROGRAM=#{Formula["ninja"].opt_bin}/ninja
         -DCMAKE_C_COMPILER=#{Formula["llvm"].opt_bin}/clang
         -DCMAKE_CXX_COMPILER=#{Formula["llvm"].opt_bin}/clang++
-        -DCMAKE_LINKER=#{Formula["lld"].opt_bin}lld
+        -DCMAKE_LINKER=#{Formula["lld"].opt_bin}/lld
 
 
         -DGTK3_INCLUDE_DIRS=#{gtk3_inc_dirs}
