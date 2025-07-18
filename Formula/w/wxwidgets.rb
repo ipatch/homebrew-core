@@ -2,7 +2,7 @@ class Wxwidgets < Formula
   desc "Cross-platform C++ GUI toolkit"
   homepage "https://www.wxwidgets.org"
   url "https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.8/wxWidgets-3.2.8.tar.bz2"
-  sha256 "c74784904109d7229e6894c85cfa068f1106a4a07c144afd78af41f373ee0fe6"
+  sha256 ""
   license "LGPL-2.0-or-later" => { with: "WxWindows-exception-3.1" }
   head "https://github.com/wxWidgets/wxWidgets.git", branch: "master"
 
@@ -100,6 +100,8 @@ class Wxwidgets < Formula
     #     -L \
     #     ../../tarball-release/wxWidgets-3.2.8
 
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["gtk+3"].opt_lib/"pkgconfig"
+
     gtk3_inc_dirs = %W[
       #{Formula["gtk+3"].opt_include}/gtk-3.0
       #{Formula["glib"].opt_include}/glib-2.0
@@ -165,6 +167,7 @@ class Wxwidgets < Formula
 
         -DwxBUILD_PRECOMP:STRING=OFF
         -DwxBUILD_TOOLKIT=gtk3
+        -DwxBUILD_MONOLITHIC:BOOL=OFF
         -L
       ]
       # -DwxBUILD_SHARED=ON
@@ -189,8 +192,8 @@ class Wxwidgets < Formula
       end
 
       system "cmake", "..", *args, *std_cmake_args
-      system "ninja"
-      system "ninja", "install"
+      # system "ninja"
+      # system "ninja", "install"
     end
 
     if OS.mac? && (MacOS.version >= :sequoia)
@@ -223,6 +226,8 @@ class Wxwidgets < Formula
 
     https://docs.wxwidgets.org/3.2/overview_cmake.html
     https://wxwidgets.org/develop/
+    https://repology.org/project/wxwidgets/versions
+    https://gitlab.archlinux.org/archlinux/packaging/packages/wxwidgets/-/blob/main/PKGBUILD
 
     this one is a pickel (rick), as wxwidgets relies on several packages ie.
     homebrew formula that use cmake, a lot ie. gtk+3 that aren't built with
