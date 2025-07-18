@@ -22,6 +22,7 @@ class Wxwidgets < Formula
   end
 
   depends_on "cmake" => :build
+  depends_on "lld" => :build
   depends_on "llvm" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => :build
@@ -149,6 +150,8 @@ class Wxwidgets < Formula
         -DCMAKE_MAKE_PROGRAM=#{Formula["ninja"].opt_bin}/ninja
         -DCMAKE_C_COMPILER=#{Formula["llvm"].opt_bin}/clang
         -DCMAKE_CXX_COMPILER=#{Formula["llvm"].opt_bin}/clang++
+        -DCMAKE_LINKER=#{Formula["lld"].opt_bin}lld
+
 
         -DGTK3_INCLUDE_DIRS=#{gtk3_inc_dirs}
         -DGTK3_LIBRARIES=#{gtk3_lib_dir}
@@ -160,6 +163,7 @@ class Wxwidgets < Formula
 
         -DCMAKE_PREFIX_PATH=#{cmake_prefix_paths}
 
+        -DwxBUILD_PRECOMP:STRING=OFF
         -L
       ]
       # -DwxBUILD_SHARED=ON
