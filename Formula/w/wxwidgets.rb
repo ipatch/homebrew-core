@@ -22,8 +22,8 @@ class Wxwidgets < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "ninja" => :build
   depends_on "llvm" => :build
+  depends_on "ninja" => :build
   depends_on "pkgconf" => :build
   depends_on "jpeg-turbo"
   depends_on "libpng"
@@ -162,20 +162,19 @@ class Wxwidgets < Formula
 
         -L
       ]
-        # -DwxBUILD_SHARED=ON
-        # -DwxBUILD_TESTS=OFF
-        # -DwxBUILD_SAMPLES=OFF
-        # -DwxBUILD_PRECOMP=OFF
-        # -DwxBUILD_MONOLITHIC=OFF
-        # -DwxBUILD_TOOLKIT=gtk3
-        # -DwxBUILD_WEBVIEW=ON
-        # -DwxUSE_LIBJPEG=sys
-        # -DwxUSE_LIBPNG=sys
-        # -DwxUSE_LIBTIFF=sys
-        # -DwxUSE_EXPAT=sys
-        # -DwxUSE_ZLIB=sys
-        # -DwxUSE_REGEX=sys
-
+      # -DwxBUILD_SHARED=ON
+      # -DwxBUILD_TESTS=OFF
+      # -DwxBUILD_SAMPLES=OFF
+      # -DwxBUILD_PRECOMP=OFF
+      # -DwxBUILD_MONOLITHIC=OFF
+      # -DwxBUILD_TOOLKIT=gtk3
+      # -DwxBUILD_WEBVIEW=ON
+      # -DwxUSE_LIBJPEG=sys
+      # -DwxUSE_LIBPNG=sys
+      # -DwxUSE_LIBTIFF=sys
+      # -DwxUSE_EXPAT=sys
+      # -DwxUSE_ZLIB=sys
+      # -DwxUSE_REGEX=sys
 
       # macOS-specific options
       if OS.mac?
@@ -189,7 +188,7 @@ class Wxwidgets < Formula
       system "ninja", "install"
     end
 
-    if OS.mac?
+    if OS.mac? && (MacOS.version >= :sequoia)
       # Set with-macosx-version-min to avoid configure defaulting to 10.5
       # args << "--with-macosx-version-min=#{MacOS.version}"
       # args << "--with-osx_cocoa"
@@ -197,7 +196,7 @@ class Wxwidgets < Formula
 
       # Work around deprecated Carbon API, see
       # https://github.com/wxWidgets/wxWidgets/issues/24724
-      inreplace "src/osx/carbon/dcscreen.cpp", "#if !wxOSX_USE_IPHONE", "#if 0" if MacOS.version >= :sequoia
+      inreplace "src/osx/carbon/dcscreen.cpp", "#if !wxOSX_USE_IPHONE", "#if 0"
     end
 
     # wx-config should reference the public prefix, not wxwidgets's keg
