@@ -104,9 +104,9 @@ class Wxwidgets < Formula
       #{Formula["glib"].opt_include}/glib-2.0
       #{Formula["glib"].opt_lib}/glib-2.0/include
       #{Formula["pango"].opt_include}/pang-1.0
+      #{Formula["harfbuzz"].opt_include}harfbuzz
       #{Formula["cairo"].opt_include}/cario
       #{Formula["gdk-pixbuf"].opt_include}/gdk-pixbuf-2.0
-      #{Formula["harfbuzz"].opt_include}harfbuzz
       #{Formula["at-spi2-core"].opt_include}/atk-1.0
     ]
 
@@ -160,22 +160,22 @@ class Wxwidgets < Formula
 
         -DCMAKE_PREFIX_PATH=#{cmake_prefix_paths}
 
-        -DwxBUILD_SHARED=ON
-        -DwxBUILD_TESTS=OFF
-        -DwxBUILD_SAMPLES=OFF
-        -DwxBUILD_PRECOMP=OFF
-        -DwxBUILD_MONOLITHIC=OFF
-        -DwxBUILD_TOOLKIT=gtk3
-        -DwxBUILD_WEBVIEW=ON
-        -DwxUSE_LIBJPEG=sys
-        -DwxUSE_LIBPNG=sys
-        -DwxUSE_LIBTIFF=sys
-        -DwxUSE_EXPAT=sys
-        -DwxUSE_ZLIB=sys
-        -DwxUSE_REGEX=sys
-
         -L
       ]
+        # -DwxBUILD_SHARED=ON
+        # -DwxBUILD_TESTS=OFF
+        # -DwxBUILD_SAMPLES=OFF
+        # -DwxBUILD_PRECOMP=OFF
+        # -DwxBUILD_MONOLITHIC=OFF
+        # -DwxBUILD_TOOLKIT=gtk3
+        # -DwxBUILD_WEBVIEW=ON
+        # -DwxUSE_LIBJPEG=sys
+        # -DwxUSE_LIBPNG=sys
+        # -DwxUSE_LIBTIFF=sys
+        # -DwxUSE_EXPAT=sys
+        # -DwxUSE_ZLIB=sys
+        # -DwxUSE_REGEX=sys
+
 
       # macOS-specific options
       if OS.mac?
@@ -199,9 +199,6 @@ class Wxwidgets < Formula
       # https://github.com/wxWidgets/wxWidgets/issues/24724
       inreplace "src/osx/carbon/dcscreen.cpp", "#if !wxOSX_USE_IPHONE", "#if 0" if MacOS.version >= :sequoia
     end
-
-    # system "./configure", *args, *std_configure_args
-    # system "make", "install"
 
     # wx-config should reference the public prefix, not wxwidgets's keg
     # this ensures that Python software trying to locate wxpython headers
