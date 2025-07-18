@@ -164,6 +164,7 @@ class Wxwidgets < Formula
         -DCMAKE_PREFIX_PATH=#{cmake_prefix_paths}
 
         -DwxBUILD_PRECOMP:STRING=OFF
+        -DwxBUILD_TOOLKIT=gtk3
         -L
       ]
       # -DwxBUILD_SHARED=ON
