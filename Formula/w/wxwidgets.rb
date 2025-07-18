@@ -112,15 +112,15 @@ class Wxwidgets < Formula
 
     gtk3_lib_dir =%W[
       #{Formula["gtk+3"].opt_lib}
-    ]
+    ].join(";")
 
     libx11_inc_dirs = %W[
       #{Formula["libx11"].opt_include}
-    ]
+    ].join(";")
 
     libx11_lib_dir =%W[
       #{Formula["libx11"].opt_lib}
-    ]
+    ].join(";")
 
     cmake_prefix_paths = %W[
       #{Formula["libxkbcommon"].opt_prefix}
