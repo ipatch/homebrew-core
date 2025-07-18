@@ -134,7 +134,7 @@ class Wxwidgets < Formula
       #{Formula["glib"].opt_prefix}
       #{Formula["libxcb"].opt_prefix}
       #{Formula["mesa"].opt_prefix}
-    ]
+    ].join(";")
 
     mkdir "build" do
       args = %W[
