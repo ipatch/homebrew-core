@@ -191,9 +191,9 @@ class Wxwidgets < Formula
         args << "-DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}"
       end
 
-      system "cmake", "..", *args, *std_cmake_args
-      # system "ninja"
-      # system "ninja", "install"
+      system "cmake", "..", *args
+      system "ninja"
+      system "ninja", "install"
     end
 
     if OS.mac? && (MacOS.version >= :sequoia)
