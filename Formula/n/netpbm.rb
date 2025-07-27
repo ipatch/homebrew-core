@@ -39,6 +39,11 @@ class Netpbm < Formula
 
   conflicts_with "jbigkit", because: "both install `pbm.5` and `pgm.5` files"
 
+  patch do
+    url "https://gitweb.gentoo.org/repo/gentoo.git/plain/media-libs/netpbm/files/netpbm-11.2.11-fix-C23.patch"
+    sha256 "5cb967d5a70581942aeb71ffc0442d84e5178d4cfbc7fcffe6dcd18374bdd1f9"
+  end
+
   resource "html" do
     # Rolling release, latest revision also documents previous software versions
     # NOTE: Keep "revision" and "version" in sync
