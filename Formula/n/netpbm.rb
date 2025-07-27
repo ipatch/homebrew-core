@@ -55,6 +55,13 @@ class Netpbm < Formula
   patch :DATA
 
   def install
+    # NOTE: ipatch, bld error jul 27 2025
+    #   libopt.c
+    # libopt.c:92:23: error: 'bool' cannot be defined via 'typedef'
+    #    92 | typedef unsigned char bool;
+    #       |                       ^~~~
+    # libopt.c:92:23: note: 'bool' is a keyword with '-std=c23' onwards
+
     cp "config.mk.in", "config.mk"
 
     inreplace "config.mk" do |s|
