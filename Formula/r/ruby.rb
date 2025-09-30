@@ -41,6 +41,7 @@ class Ruby < Formula
   keg_only :provided_by_macos
 
   depends_on "autoconf" => :build
+  depends_on "gcc" => :build
   depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "libyaml"
