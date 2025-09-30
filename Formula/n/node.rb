@@ -65,14 +65,6 @@ class Node < Formula
   end
 
   def install
-<<<<<<< HEAD
-||||||| parent of ff5aab1bc1d (node: tshoot bld err)
-    ENV.llvm_clang if OS.mac? && DevelopmentTools.clang_build_version <= 1500
-
-    # The new linker crashed during LTO due to high memory usage.
-    ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
-
-=======
     # NOTE: ipatch, bld err april 13 2025
     # g++-14: fatal error: Killed signal terminated program cc1plus compilation terminated.
     # it seems my system gen1 mac mini with 8gb and 256gb nvme may be running out of memory
@@ -83,7 +75,6 @@ class Node < Formula
     # The new linker crashed during LTO due to high memory usage.
     ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
 
->>>>>>> ff5aab1bc1d (node: tshoot bld err)
     # make sure subprocesses spawned by make are using our Python 3
     ENV["PYTHON"] = which("python3.13")
 
@@ -167,6 +158,8 @@ class Node < Formula
     # LTO is unpleasant if you have to build from source.
     # FIXME: re-enable me, currently crashes sequoia runner after 6 hours
     # args << "--enable-lto" if OS.mac? && DevelopmentTools.clang_build_version > 1699 && build.bottle?
+
+    ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64"
 
     ENV["LD_LIBRARY_PATH"] = "#{HOMEBREW_PREFIX}/opt/gcc/lib/gcc/lib64"
 
