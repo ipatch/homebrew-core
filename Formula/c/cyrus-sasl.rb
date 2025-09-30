@@ -28,11 +28,22 @@ class CyrusSasl < Formula
 
   uses_from_macos "libxcrypt"
 
+  patch do
+    url "https://www.linuxfromscratch.org/patches/blfs/svn/cyrus-sasl-2.1.28-gcc15_fixes-1.patch"
+  end
+
   def install
+    system "autoreconf", "-fi"
+
+    # Fix missing time.h includes
+    inreplace "lib/saslutil.c", /^(.*saslint.*)$/, "\\1\n#include <time.h>"
+    inreplace "plugins/cram.c", /^(.*plugin_common.*)$/, "\\1\n#include <time.h>"
+
     system "./configure",
       "--disable-macos-framework",
       "--disable-dependency-tracking",
       "--disable-silent-rules",
+      "--with-openssl",
       "--prefix=#{prefix}"
     system "make", "install"
   end
