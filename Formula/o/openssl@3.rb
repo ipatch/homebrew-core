@@ -23,6 +23,7 @@ class OpensslAT3 < Formula
   end
 
   depends_on "ca-certificates"
+  depends_on "perl"
 
   on_linux do
     resource "Test::Harness" do
@@ -41,11 +42,6 @@ class OpensslAT3 < Formula
       url "https://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-7.76.tar.gz"
       mirror "http://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-7.76.tar.gz"
       sha256 "30bcfd75fec4d512e9081c792f7cb590009d9de2fe285ffa8eec1be35a5ae7ca"
-    end
-
-    resource "Time::Piece" do
-      url "https://cpan.metacpan.org/authors/id/E/ES/ESAYM/Time-Piece-1.3701.tar.gz"
-      sha256 "857721f77f6180160282c68defbd138ef4091bbe3a1d2532c712890a3d092fdf"
     end
 
     resource "Time::Piece" do
@@ -83,6 +79,9 @@ class OpensslAT3 < Formula
   def install
     # NOTE: ipatch, bld error sep 30 2025,
     # Can't locate Time/Piece.pm in @INC (you may need to install the Time::Piece module)
+
+    # NOTE: ipatch, bld err #2 sep 30 2025
+    # cc1: fatal error: inaccessible plugin file /home/capin/homebrew/Cellar/gcc/15.1.0/bin/../lib/gcc/current/gcc/aarch64-unknown-linux-gnu/15/plugin/gcc-annobin.so expanded from short plugin name gcc-annobin: No such file or directory
 
     if OS.linux?
       ENV.prepend_create_path "PERL5LIB", buildpath/"lib/perl5"
