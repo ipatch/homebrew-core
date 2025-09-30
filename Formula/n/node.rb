@@ -70,6 +70,8 @@ class Node < Formula
     # it seems my system gen1 mac mini with 8gb and 256gb nvme may be running out of memory
     # setting HOMEBREW_MAKE_JOBS=4 allows the bld to succed ☑️
 
+    # TODO: ipatch, look into conditionally setting above env var based on OS and system ie. my m1
+
     ENV.llvm_clang if OS.mac? && DevelopmentTools.clang_build_version <= 1500
 
     # The new linker crashed during LTO due to high memory usage.
