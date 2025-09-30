@@ -47,6 +47,11 @@ class OpensslAT3 < Formula
       url "https://cpan.metacpan.org/authors/id/E/ES/ESAYM/Time-Piece-1.3701.tar.gz"
       sha256 "857721f77f6180160282c68defbd138ef4091bbe3a1d2532c712890a3d092fdf"
     end
+
+    resource "Time::Piece" do
+      url "https://cpan.metacpan.org/authors/id/E/ES/ESAYM/Time-Piece-1.3701.tar.gz"
+      sha256 "857721f77f6180160282c68defbd138ef4091bbe3a1d2532c712890a3d092fdf"
+    end
   end
 
   link_overwrite "bin/c_rehash", "bin/openssl", "include/openssl/*"
