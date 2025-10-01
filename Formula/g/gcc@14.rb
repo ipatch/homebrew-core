@@ -46,6 +46,7 @@ class GccAT14 < Formula
 
   on_linux do
     depends_on "binutils"
+    depends_on "z3"
   end
 
   # Branch from the Darwin maintainer of GCC, with a few generic fixes and
@@ -120,6 +121,10 @@ class GccAT14 < Formula
     end
 
     mkdir "build" do
+      # NOTE: ipatch, fix for asahi linux
+      ENV["LD_LIBRARY_PATH"] = "/lib64/" if Hardware::CPU.arm? && OS.linux?
+      ENV["LIBRARY_PATH"] = "/lib64/" if Hardware::CPU.arm? && OS.linux?
+
       system "../configure", *args
       system "gmake", *make_args
 
