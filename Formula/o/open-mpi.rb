@@ -35,12 +35,12 @@ class OpenMpi < Formula
   conflicts_with "mpich", because: "both install MPI compiler wrappers"
 
   # NOTE: ipatch, https://github.com/Homebrew/homebrew-core/issues/209847
-  patch do
-    on_linux do
-      url "https://sources.debian.org/data/main/o/openmpi/5.0.7-1/debian/patches/sshmem.patch"
-      sha256 "c3b55808b9bf3dbac9b130eda6ff5f43ee2ca5d5df8773487a6e9eb7a9e9122c"
-    end
-  end
+  # patch do
+  #   on_linux do
+  #     url "https://sources.debian.org/data/main/o/openmpi/5.0.7-1/debian/patches/sshmem.patch"
+  #     sha256 "c3b55808b9bf3dbac9b130eda6ff5f43ee2ca5d5df8773487a6e9eb7a9e9122c"
+  #   end
+  # end
 
   def install
     ENV.runtime_cpu_detection
