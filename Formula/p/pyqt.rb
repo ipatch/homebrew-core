@@ -89,6 +89,7 @@ class Pyqt < Formula
       --target-dir #{site_packages}
       --scripts-dir #{bin}
       --confirm-license
+      --verbose
     ]
     system sip_install, *args
 
