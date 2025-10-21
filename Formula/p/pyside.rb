@@ -54,6 +54,8 @@ class Pyside < Formula
   end
 
   def install
+    python_exe = Formula["python@3.13"].opt_bin/"python3.13"
+
     ENV.append_path "PYTHONPATH", buildpath/"build/sources"
     if OS.mac?
       # Avoid detection of unwanted formulae. Should be handled in brew instead
@@ -79,7 +81,7 @@ class Pyside < Formula
     system "cmake", "-S", ".", "-B", "build",
                     "-DCMAKE_INSTALL_RPATH=#{lib}",
                     "-DCMAKE_PREFIX_PATH=#{Formula["qt"].opt_lib}",
-                    "-DPYTHON_EXECUTABLE=#{which(python3)}",
+                    "-DPYTHON_EXECUTABLE=#{python_exe}",
                     "-DBUILD_TESTS=OFF",
                     "-DNO_QT_TOOLS=yes",
                     # Limited API (maybe combined with keg relocation) breaks the Linux bottle
