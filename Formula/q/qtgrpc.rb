@@ -33,10 +33,38 @@ class Qtgrpc < Formula
   depends_on "protobuf"
   depends_on "qtbase"
   depends_on "qtdeclarative"
+  depends_on "qtquick3d"
+
+  depends_on "zlib" if OS.linux?
 
   def install
     args = ["-DCMAKE_STAGING_PREFIX=#{prefix}"]
     args << "-DQT_NO_APPLE_SDK_AND_XCODE_CHECK=ON" if OS.mac?
+    args << "-DCMAKE_IGNORE_PATH=/usr/lib64;/usr/lib;/usr/lib64/cmake;/usr/share/cmake" if OS.linux?
+    args << "-DCMAKE_PREFIX_PATH=#{HOMEBREW_PREFIX}/opt/zlib"
+    # args << "-DZLIB_DIR=#{HOMEBREW_PREFIX}/opt/zlib"
+    args << "-L"
+    args << "-DZLIB_ROOT=#{HOMEBREW_PREFIX}/opt/zlib"
+    args << "-DCMAKE_PREFIX_PATH=#{HOMEBREW_PREFIX}/opt/zlib;#{HOMEBREW_PREFIX}/opt/protobuf;#{HOMEBREW_PREFIX}/opt/qtbase;#{HOMEBREW_PREFIX}/opt/qtdeclarative;#{HOMEBREW_PREFIX}"
+
+    # TODO: ipatch, check for linux, arm64, and possible asahi
+    if OS.linux?
+      # TODO: ipatch, use formula prefix instead HOMEBREW_PREFIX
+      args << "-DCMAKE_IGNORE_PATH=/usr/lib64;/usr/lib;/usr/lib64/cmake;/usr/share/cmake;/usr/local"
+      args << "-DCMAKE_FIND_USE_CMAKE_SYSTEM_PATH=OFF"
+      args << "-DCMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH=OFF"
+      args << "-DQt6Quick_DIR=#{HOMEBREW_PREFIX}/opt/qtdeclarative/lib/cmake/Qt6Quick"
+      args << "-DQt6QmlNetwork_DIR=#{HOMEBREW_PREFIX}/opt/qtdeclarative/lib/cmake/Qt6QmlNetwork"
+      args << "-DQt6QuickControls2_DIR=#{HOMEBREW_PREFIX}/opt/qtdeclarative/lib/cmake/Qt6QuickControls2"
+      args << "-DQt6QuickTest_DIR=#{HOMEBREW_PREFIX}/opt/qtdeclarative/lib/cmake/Qt6QuickTest"
+      args << "-DCMAKE_AR=#{HOMEBREW_PREFIX}/opt/gcc/bin/gcc-ar-15"
+      args << "-DQT_GENERATE_SBOM=ON"
+      args << "-DQT_ADDITIONAL_PACKAGES_PREFIX_PATH=#{HOMEBREW_PREFIX}/opt/qtdeclarative;#{HOMEBREW_PREFIX}/opt/qtsvg;#{HOMEBREW_PREFIX}/opt/qtbase"
+    end
+
+    puts "------------------------------------------------------------------"
+    puts "homebrew prefix: #{HOMEBREW_PREFIX}"
+    puts "------------------------------------------------------------------"
 
     system "cmake", "-S", ".", "-B", "build", "-G", "Ninja",
                     *args, *std_cmake_args(install_prefix: HOMEBREW_PREFIX, find_framework: "FIRST")
