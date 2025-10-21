@@ -59,6 +59,7 @@ class Coin3d < Formula
                     "-DCOIN_BUILD_DOCUMENTATION=ON",
                     "-DCOIN_BUILD_TESTS=OFF",
                     "-DUSE_EXTERNAL_EXPAT=ON",
+                    "-DCMAKE_INSTALL_LIBDIR=lib",
                     *std_cmake_args(find_framework: "FIRST")
     system "cmake", "--build", "_build"
     system "cmake", "--install", "_build"
