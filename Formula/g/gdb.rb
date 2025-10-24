@@ -76,6 +76,9 @@ class Gdb < Formula
       args << "--program-prefix="
     end
 
+    # Force a POSIX shell even if user shell is fish
+    ENV["SHELL"] = "/bin/bash"
+
     mkdir "build" do
       system "../configure", *args, *std_configure_args
       system "make"
