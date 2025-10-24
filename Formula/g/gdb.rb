@@ -48,6 +48,11 @@ class Gdb < Formula
     depends_on "guile"
   end
 
+  patch do
+    url "https://gitlab.alpinelinux.org/alpine/aports/-/raw/master/main/gdb/gcc15.patch"
+    sha256 "279630ebffa1996238c584ef3a26940262a4412541d790ce716d884f94ed4809"
+  end
+
   def install
     # Fix `error: use of undeclared identifier 'command_style'`
     inreplace "gdb/darwin-nat.c", "#include \"cli/cli-cmds.h\"",
