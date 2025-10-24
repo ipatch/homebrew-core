@@ -96,19 +96,7 @@ class Gtkx < Formula
     # defaultvalue.c: In function 'test_type':
     # defaultvalue.c:94:14: error: assignment to 'GObject *' {aka 'struct _GObject *'} from incompatible pointer type 'GtkSettings *' {aka 'struct _GtkSettings *'} [-Wincompatible-pointer-types]
     #   94 |     instance = g_object_ref (gtk_settings_get_default ());
-    #       |              ^
-    # defaultvalue.c:96:14: error: assignment to 'GObject *' {aka 'struct _GObject *'} from incompatible pointer type 'PangoRenderer *' {aka 'struct _PangoRenderer *'} [-Wincompatible-pointer-types]
-    #   96 |     instance = g_object_ref (gdk_pango_renderer_get_default (gdk_screen_get_default ()));
-    #       |              ^
-    # defaultvalue.c:98:14: error: assignment to 'GObject *' {aka 'struct _GObject *'} from incompatible pointer type 'GdkPixmap *' {aka 'struct _GdkDrawable *'} [-Wincompatible-pointer-types]
-    #   98 |     instance = g_object_ref (gdk_pixmap_new (NULL, 1, 1, 1));
-    #       |              ^
-    # defaultvalue.c:100:14: error: assignment to 'GObject *' {aka 'struct _GObject *'} from incompatible pointer type 'GdkColormap *' {aka 'struct _GdkColormap *'} [-Wincompatible-pointer-types]
-    #   100 |     instance = g_object_ref (gdk_colormap_new (gdk_visual_get_best (), TRUE));
-    #       |              ^
-    # defaultvalue.c:108:16: error: assignment to 'GObject *' {aka 'struct _GObject *'} from incompatible pointer type 'GdkWindow *' {aka 'struct _GdkDrawable *'} [-Wincompatible-pointer-types]
-    #   108 |       instance = g_object_ref (gdk_window_new (NULL, &attributes, 0));
-    #       |                ^
+
 
     # Work-around for build issue with Xcode 15.3
     if DevelopmentTools.clang_build_version >= 1500
@@ -116,6 +104,8 @@ class Gtkx < Formula
     end
 
     # ENV.append_to_cflags "-Wno-incompatible-function-pointer-types -Wno-implicit-int"
+    # NOTE: ipatch, https://bugs.launchpad.net/ubuntu/+source/gtk+2.0/+bug/2124953
+    ENV.append_to_cflags "-std=gnu17"
 
     system "./configure", "--disable-silent-rules",
                           "--enable-static",
