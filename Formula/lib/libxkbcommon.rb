@@ -15,18 +15,32 @@ class Libxkbcommon < Formula
     sha256 x86_64_linux:  "f57e780a55d512773318d422adabf4d01e3b312d61c6c8437b50eec034e2b787"
   end
 
+  depends_on "cmake" => :build
   depends_on "bison" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => :build
 
   depends_on "libxcb"
+  depends_on "libxml2"
   depends_on "xkeyboard-config"
   depends_on "xorg-server"
 
   uses_from_macos "libxml2"
 
   def install
+
+    if OS.linux?
+      begin
+        icu4c_formula = Formula["icu4c@78"]
+        ENV.append_path "PKG_CONFIG_PATH", icu4c_formula.opt_lib/"pkgconfig"
+      rescue FormulaUnavailableError
+        # Fallback to finding any installed icu4c
+        icu4c_candidates = Formula.installed.select { |f| f.name.match?(/^icu4c(@\d+)?$/) }
+        ENV.append_path "PKG_CONFIG_PATH", icu4c_candidates.first.opt_lib/"pkgconfig" if icu4c_candidates.any?
+      end
+    end
+
     args = %W[
       -Denable-wayland=false
       -Denable-x11=true
