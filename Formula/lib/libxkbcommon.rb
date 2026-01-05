@@ -16,6 +16,8 @@ class Libxkbcommon < Formula
   end
 
   depends_on "bison" => :build
+  depends_on "icu4c" => :build
+  depends_on "libxml2" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => :build
