@@ -14,6 +14,7 @@ class AtSpi2Core < Formula
     sha256 x86_64_linux:  "7a979c2a1cea42f1025c3ccf4c089d6ba50c0ab16d84cb7ed5f0fc2658196418"
   end
 
+  depends_on "cmake" => :build
   depends_on "gettext" => :build
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
@@ -25,6 +26,7 @@ class AtSpi2Core < Formula
   depends_on "glib"
   depends_on "libx11"
   depends_on "libxi"
+  depends_on "libxml2"
   depends_on "libxtst"
 
   uses_from_macos "libxml2" => :build
@@ -34,6 +36,27 @@ class AtSpi2Core < Formula
   end
 
   def install
+    if OS.linux?
+      # Work around brew not adding dependencies of build dependencies to PKG_CONFIG_PATH
+      # libxml2 needs icu4c but doesn't declare it as a dependency
+      icu4c_dep = Formula["libxml2"].deps.find { |dep| dep.name.match?(/^icu4c(@\d+)?$/) }
+      if icu4c_dep
+        ENV.append_path "PKG_CONFIG_PATH", icu4c_dep.to_formula.opt_lib/"pkgconfig"
+      else
+        # Fallback: try to find any installed icu4c version
+      begin
+        # Try versioned icu4c formulas first (most common on Linux)
+        icu4c_formula = Formula.installed.find { |f| f.name =~ /^icu4c(@\d+)?$/ }
+        if icu4c_formula
+          ENV.append_path "PKG_CONFIG_PATH", icu4c_formula.opt_lib/"pkgconfig"
+        end
+      rescue
+        # Last resort: try unversioned icu4c
+        ENV.append_path "PKG_CONFIG_PATH", Formula["icu4c"].opt_lib/"pkgconfig"
+      end
+      end
+    end
+
     system "meson", "setup", "build", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
