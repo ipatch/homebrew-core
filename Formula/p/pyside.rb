@@ -119,33 +119,33 @@ class Pyside < Formula
 
       # Add Qt module cmake paths
       qt_formula_to_cmake = {
-        "qtpositioning" => ["Qt6Positioning"],
-        "qtdeclarative" => ["Qt6Qml", "Qt6Quick", "Qt6QuickWidgets", "Qt6QuickControls2", "Qt6QuickTest"],
-        "qtmultimedia" => ["Qt6Multimedia", "Qt6MultimediaWidgets", "Qt6SpatialAudio"],
-        "qtsvg" => ["Qt6Svg", "Qt6SvgWidgets"],
-        "qtserialport" => ["Qt6SerialPort"],
-        "qtsensors" => ["Qt6Sensors"],
-        "qtwebchannel" => ["Qt6WebChannel"],
-        "qtwebsockets" => ["Qt6WebSockets"],
-        "qt3d" => ["Qt63DCore", "Qt63DRender", "Qt63DInput", "Qt63DLogic", "Qt63DAnimation", "Qt63DExtras"],
-        "qtcharts" => ["Qt6Charts"],
-        "qtdatavis3d" => ["Qt6DataVisualization"],
-        "qtscxml" => ["Qt6Scxml", "Qt6StateMachine"],
+        "qtpositioning"   => ["Qt6Positioning"],
+        "qtdeclarative"   => %w[Qt6Qml Qt6Quick Qt6QuickWidgets Qt6QuickControls2 Qt6QuickTest],
+        "qtmultimedia"    => ["Qt6Multimedia", "Qt6MultimediaWidgets", "Qt6SpatialAudio"],
+        "qtsvg"           => ["Qt6Svg", "Qt6SvgWidgets"],
+        "qtserialport"    => ["Qt6SerialPort"],
+        "qtsensors"       => ["Qt6Sensors"],
+        "qtwebchannel"    => ["Qt6WebChannel"],
+        "qtwebsockets"    => ["Qt6WebSockets"],
+        "qt3d"            => %w[Qt63DCore Qt63DRender Qt63DInput Qt63DLogic Qt63DAnimation Qt63DExtras],
+        "qtcharts"        => ["Qt6Charts"],
+        "qtdatavis3d"     => ["Qt6DataVisualization"],
+        "qtscxml"         => ["Qt6Scxml", "Qt6StateMachine"],
         "qtremoteobjects" => ["Qt6RemoteObjects"],
-        "qtspeech" => ["Qt6TextToSpeech"],
-        "qtconnectivity" => ["Qt6Bluetooth", "Qt6Nfc"],
-        "qtlocation" => ["Qt6Location"],
-        "qthttpserver" => ["Qt6HttpServer"],
-        "qtserialbus" => ["Qt6SerialBus"],
-        "qtnetworkauth" => ["Qt6NetworkAuth"],
-        "qtquick3d" => ["Qt6Quick3D"],
-        "qtgraphs" => ["Qt6Graphs", "Qt6GraphsWidgets"],
-        "qttools" => ["Qt6Designer", "Qt6Help", "Qt6UiTools"],
+        "qtspeech"        => ["Qt6TextToSpeech"],
+        "qtconnectivity"  => ["Qt6Bluetooth", "Qt6Nfc"],
+        "qtlocation"      => ["Qt6Location"],
+        "qthttpserver"    => ["Qt6HttpServer"],
+        "qtserialbus"     => ["Qt6SerialBus"],
+        "qtnetworkauth"   => ["Qt6NetworkAuth"],
+        "qtquick3d"       => ["Qt6Quick3D"],
+        "qtgraphs"        => ["Qt6Graphs", "Qt6GraphsWidgets"],
+        "qttools"         => ["Qt6Designer", "Qt6Help", "Qt6UiTools"],
       }
 
       qt_formula_to_cmake.each do |formula_name, cmake_modules|
         cmake_modules.each do |mod|
-          cmake_dir = Formula[formula_name].opt_lib/"cmake"/mod
+          Formula[formula_name].opt_lib/"cmake"/mod
           # args << "-D#{mod}_DIR=#{cmake_dir}" if cmake_dir.exist?
         end
       end
