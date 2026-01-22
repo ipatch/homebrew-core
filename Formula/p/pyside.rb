@@ -197,6 +197,7 @@ class Pyside < Formula
       end
     end
 
+    # TODO: ipatch, make symlink relative!!!
     # Create symlink for pkgconfig compatibility (expects shiboken6/include/)
     ln_sf prefix/"include"/"shiboken6", prefix/"shiboken6" unless (prefix/"shiboken6").exist?
   end
