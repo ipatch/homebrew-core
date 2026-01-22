@@ -174,8 +174,13 @@ class Pyside < Formula
   end
 
   def post_install
+    # NOTE: ipatch, ...
+    # `grep -n "set_and_check" $bp/Cellar/pyside/6.10.1/lib/cmake/PySide6/*.cmake`
+
     # Fix install layout for 6.10+ (shiboken6/PySide6 should be under include/)
-    if (prefix/"shiboken6").exist?
+
+    # Only process if shiboken6 is a real directory (not a symlink) and include/shiboken6 doesn't exist yet
+    if (prefix/"shiboken6").exist? && !(prefix/"shiboken6").symlink? && !(prefix/"include"/"shiboken6").exist?
       mkdir_p prefix/"include"
       if (prefix/"shiboken6"/"include").exist?
         # shiboken6/include/* -> include/shiboken6/
@@ -186,7 +191,7 @@ class Pyside < Formula
       end
     end
 
-    if (prefix/"PySide6").exist?
+    if (prefix/"PySide6").exist? && !(prefix/"PySide6").symlink? && !(prefix/"include"/"PySide6").exist?
       mkdir_p prefix/"include"
       if (prefix/"PySide6"/"include").exist?
         # PySide6/include/* -> include/PySide6/
@@ -199,7 +204,13 @@ class Pyside < Formula
 
     # TODO: ipatch, make symlink relative!!!
     # Create symlink for pkgconfig compatibility (expects shiboken6/include/)
-    ln_sf prefix/"include"/"shiboken6", prefix/"shiboken6" unless (prefix/"shiboken6").exist?
+    # Create relative symlinks for 6.10+ cmake compatibility
+    cd prefix do
+      ln_s Pathname.new("include/shiboken6"), "shiboken6" unless File.exist?("shiboken6")
+      ln_s Pathname.new("share/PySide6/typesystems"), "typesystems" unless File.exist?("typesystems")
+      ln_s Pathname.new("share/PySide6/glue"), "glue" unless File.exist?("glue")
+      ln_s Pathname.new("include/PySide6"), "PySide6" unless File.exist?("PySide6")
+    end
   end
 
   test do
