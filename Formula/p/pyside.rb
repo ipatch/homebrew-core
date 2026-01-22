@@ -202,7 +202,6 @@ class Pyside < Formula
       end
     end
 
-    # TODO: ipatch, make symlink relative!!!
     # Create symlink for pkgconfig compatibility (expects shiboken6/include/)
     # Create relative symlinks for 6.10+ cmake compatibility
     cd prefix do
