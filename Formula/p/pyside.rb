@@ -105,16 +105,100 @@ class Pyside < Formula
 
     shiboken6_module = prefix/Language::Python.site_packages(python3)/"shiboken6"
 
-    system "cmake", "-S", ".", "-B", "build",
-                    "-DCMAKE_MODULE_LINKER_FLAGS=-Wl,-rpath,#{rpath(source: shiboken6_module)}",
-                    "-DPython_EXECUTABLE=#{which(python3)}",
-                    "-DBUILD_TESTS=OFF",
-                    "-DNO_QT_TOOLS=yes",
-                    # Limited API (maybe combined with keg relocation) breaks the Linux bottle
-                    "-DFORCE_LIMITED_API=#{OS.mac? ? "yes" : "no"}",
-                    *std_cmake_args
+    args = [
+      "-DCMAKE_MODULE_LINKER_FLAGS=-Wl,-rpath,#{rpath(source: shiboken6_module)}",
+      "-DPython_EXECUTABLE=#{which(python3)}",
+      "-DBUILD_TESTS=OFF",
+      "-DNO_QT_TOOLS=yes",
+      "-DFORCE_LIMITED_API=#{OS.mac? ? "yes" : "no"}",
+    ]
+
+    if OS.linux? && Hardware::CPU.arm?
+      ENV.prepend_path "CPLUS_INCLUDE_PATH", Formula["mesa"].opt_include
+      ENV.prepend_path "C_INCLUDE_PATH", Formula["mesa"].opt_include
+
+      # Add Qt module cmake paths
+      qt_formula_to_cmake = {
+        "qtpositioning" => ["Qt6Positioning"],
+        "qtdeclarative" => ["Qt6Qml", "Qt6Quick", "Qt6QuickWidgets", "Qt6QuickControls2", "Qt6QuickTest"],
+        "qtmultimedia" => ["Qt6Multimedia", "Qt6MultimediaWidgets", "Qt6SpatialAudio"],
+        "qtsvg" => ["Qt6Svg", "Qt6SvgWidgets"],
+        "qtserialport" => ["Qt6SerialPort"],
+        "qtsensors" => ["Qt6Sensors"],
+        "qtwebchannel" => ["Qt6WebChannel"],
+        "qtwebsockets" => ["Qt6WebSockets"],
+        "qt3d" => ["Qt63DCore", "Qt63DRender", "Qt63DInput", "Qt63DLogic", "Qt63DAnimation", "Qt63DExtras"],
+        "qtcharts" => ["Qt6Charts"],
+        "qtdatavis3d" => ["Qt6DataVisualization"],
+        "qtscxml" => ["Qt6Scxml", "Qt6StateMachine"],
+        "qtremoteobjects" => ["Qt6RemoteObjects"],
+        "qtspeech" => ["Qt6TextToSpeech"],
+        "qtconnectivity" => ["Qt6Bluetooth", "Qt6Nfc"],
+        "qtlocation" => ["Qt6Location"],
+        "qthttpserver" => ["Qt6HttpServer"],
+        "qtserialbus" => ["Qt6SerialBus"],
+        "qtnetworkauth" => ["Qt6NetworkAuth"],
+        "qtquick3d" => ["Qt6Quick3D"],
+        "qtgraphs" => ["Qt6Graphs", "Qt6GraphsWidgets"],
+        "qttools" => ["Qt6Designer", "Qt6Help", "Qt6UiTools"],
+      }
+
+      qt_formula_to_cmake.each do |formula_name, cmake_modules|
+        cmake_modules.each do |mod|
+          cmake_dir = Formula[formula_name].opt_lib/"cmake"/mod
+          # args << "-D#{mod}_DIR=#{cmake_dir}" if cmake_dir.exist?
+        end
+      end
+
+      qt_modules = %w[
+        qtpositioning qtdeclarative qtmultimedia qtsvg qtserialport
+        qtsensors qtwebchannel qtwebsockets qt3d qtcharts qtdatavis3d
+        qtscxml qtremoteobjects qtspeech qtconnectivity qtlocation
+        qthttpserver qtserialbus qtnetworkauth qtquick3d qtgraphs qttools
+      ]
+
+      # Add Qt module include paths for shiboken/clang
+      qt_modules.each do |m|
+        ENV.prepend_path "CPLUS_INCLUDE_PATH", Formula[m].opt_include
+        ENV.prepend_path "C_INCLUDE_PATH", Formula[m].opt_include
+      end
+
+      cmake_prefix = qt_modules.map { |m| Formula[m].opt_prefix }.join(";")
+      args << "-DCMAKE_PREFIX_PATH:PATH=#{cmake_prefix}"
+      args << "-DQT_ADDITIONAL_PACKAGES_PREFIX_PATH=#{cmake_prefix}"
+    end
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+  end
+
+  def post_install
+    # Fix install layout for 6.10+ (shiboken6/PySide6 should be under include/)
+    if (prefix/"shiboken6").exist?
+      mkdir_p prefix/"include"
+      if (prefix/"shiboken6"/"include").exist?
+        # shiboken6/include/* -> include/shiboken6/
+        mv prefix/"shiboken6"/"include", prefix/"include"/"shiboken6"
+        rmdir prefix/"shiboken6" if (prefix/"shiboken6").children.empty?
+      else
+        mv prefix/"shiboken6", prefix/"include"/"shiboken6"
+      end
+    end
+
+    if (prefix/"PySide6").exist?
+      mkdir_p prefix/"include"
+      if (prefix/"PySide6"/"include").exist?
+        # PySide6/include/* -> include/PySide6/
+        mv prefix/"PySide6"/"include", prefix/"include"/"PySide6"
+        rmdir prefix/"PySide6" if (prefix/"PySide6").children.empty?
+      else
+        mv prefix/"PySide6", prefix/"include"/"PySide6"
+      end
+    end
+
+    # Create symlink for pkgconfig compatibility (expects shiboken6/include/)
+    ln_sf prefix/"include"/"shiboken6", prefix/"shiboken6" unless (prefix/"shiboken6").exist?
   end
 
   test do
