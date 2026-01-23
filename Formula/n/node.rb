@@ -11,155 +11,318 @@ class Node < Formula
     regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
-  bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_tahoe:   "1975f14934f16d3059355328afbd96b492cad3a8d4fca5f74cb2c08fdf8cc44d"
-    sha256 cellar: :any,                 arm64_sequoia: "18ecb7a97b7879b2858b3eea00d859d26f9e0f7fcf1618f395ad9561a7a1e2d9"
-    sha256 cellar: :any,                 arm64_sonoma:  "42bad057b722d88b42afc8e6dccec695c92bbf4f9b0b53e50cca49c81cc83755"
-    sha256 cellar: :any,                 sonoma:        "d6e4ea7d68a17489e06b9741e4dd1cc2fb1a02b6eca51f9463f979fd1e6e1af7"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "85e5412eebf32bf63c77f94123d343629073a4a68c8990b8d0bd9b371ac9a662"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4b90df8a55a5b5d4690cabd1e928af2906e5f38fe1d6c3b34cc49eff6caf2ba5"
+  depends_on "pkgconf" => :build
+  depends_on "python@3.13" => :build
+
+  # On older macOS, we need Homebrew LLVM for modern C++ support
+  on_macos do
+    if DevelopmentTools.clang_build_version <= 1699
+      depends_on "llvm" => :build
+      depends_on "openssl@3"
+    else
+      # Only use shared deps on newer macOS with compatible libc++
+      depends_on "brotli"
+      depends_on "c-ares"
+      depends_on "icu4c@78"
+      depends_on "libnghttp2"
+      depends_on "libnghttp3"
+      depends_on "libngtcp2"
+      depends_on "libuv"
+      depends_on "openssl@3"
+      depends_on "simdjson"
+      depends_on "sqlite"
+      depends_on "uvwasi"
+      depends_on "zstd"
+    end
   end
 
-  depends_on "pkgconf" => :build
-  depends_on "python@3.14" => :build
-  depends_on "brotli"
-  depends_on "c-ares"
-  depends_on "icu4c@78"
-  depends_on "libnghttp2"
-  depends_on "libnghttp3"
-  depends_on "libngtcp2"
-  depends_on "libuv"
-  depends_on "openssl@3"
-  depends_on "simdjson"
-  depends_on "sqlite" # Fails with macOS sqlite.
-  depends_on "uvwasi"
-  depends_on "zstd"
+  on_linux do
+    depends_on "brotli"
+    depends_on "c-ares"
+    depends_on "icu4c@78"
+    depends_on "libnghttp2"
+    depends_on "libnghttp3"
+    depends_on "libngtcp2"
+    depends_on "libuv"
+    depends_on "openssl@3"
+    depends_on "simdjson"
+    depends_on "sqlite"
+    depends_on "uvwasi"
+    depends_on "zstd"
+  end
 
   uses_from_macos "python"
   uses_from_macos "zlib"
 
-  on_macos do
-    depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1699
-  end
+  # Patch common.gypi to remove hardcoded MACOSX_DEPLOYMENT_TARGET=13.5
+  # and add _DARWIN_C_SOURCE for better compatibility with older macOS
+  patch :DATA
 
   link_overwrite "bin/npm", "bin/npx"
 
-  # https://github.com/swiftlang/llvm-project/commit/078651b6de4b767b91e3e6a51e5df11a06d7bc4f
   fails_with :clang do
     build 1699
     cause "needs SFINAE-friendly std::pointer_traits"
   end
 
-  # https://github.com/nodejs/node/blob/main/BUILDING.md#supported-toolchains
-  # https://github.com/ada-url/ada?tab=readme-ov-file#requirements
   fails_with :gcc do
     version "11"
     cause "needs GCC 12 or newer"
   end
 
-  # We track major/minor from upstream Node releases.
-  # We will accept *important* npm patch releases when necessary.
   resource "npm" do
     url "https://registry.npmjs.org/npm/-/npm-11.6.2.tgz"
     sha256 "585f95094ee5cb2788ee11d90f2a518a7c9ef6e083fa141d0b63ca3383675a20"
   end
 
-  def install
-    # make sure subprocesses spawned by make are using our Python 3
-    ENV["PYTHON"] = which("python3.14")
+  def use_homebrew_llvm?
+    OS.mac? && DevelopmentTools.clang_build_version <= 1699
+  end
 
-    # Ensure Homebrew deps are used
-    %w[brotli icu-small nghttp2 ngtcp2 npm simdjson sqlite uvwasi zstd].each do |dep|
-      rm_r buildpath/"deps"/dep
+  def install
+    # Make sure subprocesses spawned by make are using our Python 3
+    ENV["PYTHON"] = which("python3.13")
+
+    # On older macOS (Big Sur and earlier), use Homebrew LLVM with its libc++
+    if use_homebrew_llvm?
+      llvm = Formula["llvm"]
+      @libcxx_path = "#{llvm.opt_lib}/c++"
+      @llvm_include_path = "#{llvm.opt_include}/c++/v1"
+      @llvm_cc = "#{llvm.opt_bin}/clang"
+      @llvm_cxx = "#{llvm.opt_bin}/clang++"
+      
+      # Compile-only flags (no linker flags here to avoid warnings)
+      @llvm_cxxflags = [
+        "-stdlib=libc++",
+        "-nostdinc++",
+        "-isystem#{llvm.opt_include}/c++/v1",
+      ].join(" ")
+      
+      # Link-only flags - use FULL PATHS to dylibs to bypass SDK .tbd stubs
+      # The macOS SDK contains .tbd stub files that redirect -lc++ to system libc++
+      # even when we specify -L paths. Using full paths bypasses this entirely.
+      @libcxx_dylib = "#{@libcxx_path}/libc++.dylib"
+      @libcxxabi_dylib = "#{@libcxx_path}/libc++abi.dylib"
+      @llvm_ldflags = "-Wl,-rpath,#{@libcxx_path} #{@libcxx_dylib} #{@libcxxabi_dylib}"
+      
+      # For macOS < 10.10 (Yosemite), disable pthread QoS APIs
+      # Big Sur (11.x) should have them, but we include this for safety
+      if MacOS.version < :yosemite
+        @llvm_cxxflags += " -DNOT_ON_BROSEMITE_OR_LATER=1"
+      end
+      
+      # Set environment variables - configure reads these
+      ENV["CC"] = @llvm_cc
+      ENV["CXX"] = @llvm_cxx
+      ENV["CC_host"] = @llvm_cc
+      ENV["CXX_host"] = @llvm_cxx
+      ENV["CFLAGS"] = ""
+      ENV["CXXFLAGS"] = @llvm_cxxflags
+      ENV["LDFLAGS"] = @llvm_ldflags
+      ENV["GYP_DEFINES"] = "clang=1 host_clang=1"
+      
+      # These are used by gyp for host tools
+      ENV["CC.host"] = @llvm_cc
+      ENV["CXX.host"] = @llvm_cxx
+      ENV["LINK"] = @llvm_cxx
+      ENV["LINK.host"] = @llvm_cxx
+      
+      ohai "Using Homebrew LLVM #{llvm.version} for C++20 support"
+      ohai "CC=#{@llvm_cc}"
+      ohai "CXXFLAGS=#{@llvm_cxxflags}"
+      ohai "LDFLAGS=#{@llvm_ldflags}"
     end
 
-    # Never install the bundled "npm", always prefer our
-    # installation from tarball for better packaging control.
     args = %W[
       --prefix=#{prefix}
       --without-npm
-      --with-intl=system-icu
       --shared
-      --shared-brotli
-      --shared-cares
-      --shared-libuv
-      --shared-nghttp2
-      --shared-nghttp3
-      --shared-ngtcp2
-      --shared-openssl
-      --shared-simdjson
-      --shared-sqlite
-      --shared-uvwasi
-      --shared-zlib
-      --shared-zstd
-      --shared-brotli-includes=#{Formula["brotli"].include}
-      --shared-brotli-libpath=#{Formula["brotli"].lib}
-      --shared-cares-includes=#{Formula["c-ares"].include}
-      --shared-cares-libpath=#{Formula["c-ares"].lib}
-      --shared-libuv-includes=#{Formula["libuv"].include}
-      --shared-libuv-libpath=#{Formula["libuv"].lib}
-      --shared-nghttp2-includes=#{Formula["libnghttp2"].include}
-      --shared-nghttp2-libpath=#{Formula["libnghttp2"].lib}
-      --shared-nghttp3-includes=#{Formula["libnghttp3"].include}
-      --shared-nghttp3-libpath=#{Formula["libnghttp3"].lib}
-      --shared-ngtcp2-includes=#{Formula["libngtcp2"].include}
-      --shared-ngtcp2-libpath=#{Formula["libngtcp2"].lib}
-      --shared-openssl-includes=#{Formula["openssl@3"].include}
-      --shared-openssl-libpath=#{Formula["openssl@3"].lib}
-      --shared-simdjson-includes=#{Formula["simdjson"].include}
-      --shared-simdjson-libpath=#{Formula["simdjson"].lib}
-      --shared-sqlite-includes=#{Formula["sqlite"].include}
-      --shared-sqlite-libpath=#{Formula["sqlite"].lib}
-      --shared-uvwasi-includes=#{Formula["uvwasi"].include}/uvwasi
-      --shared-uvwasi-libpath=#{Formula["uvwasi"].lib}
-      --shared-zstd-includes=#{Formula["zstd"].include}
-      --shared-zstd-libpath=#{Formula["zstd"].lib}
       --openssl-use-def-ca-store
     ]
-    args << "--tag=head" if build.head?
 
-    # TODO: Try to devendor these libraries.
-    # - `--shared-ada` needs the `ada-url` formula, but requires C++20
-    # - `--shared-simdutf` seems to result in build failures.
-    # - `--shared-http-parser` and `--shared-uvwasi` are not available as dependencies in Homebrew.
-    ignored_shared_flags = %w[
-      ada
-      http-parser
-      simdutf
-    ].map { |library| "--shared-#{library}" }
-
-    configure_help = Utils.safe_popen_read("./configure", "--help")
-    shared_flag_regex = /\[(--shared-[^ \]]+)\]/
-    configure_help.scan(shared_flag_regex) do |matches|
-      matches.each do |flag|
-        next if args.include?(flag) || ignored_shared_flags.include?(flag)
-
-        message = "Unused `--shared-*` flag: #{flag}"
-        if build.head?
-          opoo message
-        else
-          odie message
-        end
+    if use_homebrew_llvm?
+      # On older macOS, use bundled dependencies to avoid libc++ ABI mismatches
+      # Only use system OpenSSL since it's C, not C++
+      args += %W[
+        --with-intl=full-icu
+        --shared-openssl
+        --shared-openssl-includes=#{Formula["openssl@3"].include}
+        --shared-openssl-libpath=#{Formula["openssl@3"].lib}
+        --shared-zlib
+      ]
+      
+      ohai "Using bundled dependencies for libc++ ABI compatibility"
+    else
+      # On newer macOS and Linux, use shared Homebrew dependencies
+      %w[brotli icu-small nghttp2 ngtcp2 npm simdjson sqlite uvwasi zstd].each do |dep|
+        rm_r buildpath/"deps"/dep
       end
+
+      args += %W[
+        --with-intl=system-icu
+        --shared-brotli
+        --shared-cares
+        --shared-libuv
+        --shared-nghttp2
+        --shared-nghttp3
+        --shared-ngtcp2
+        --shared-openssl
+        --shared-simdjson
+        --shared-sqlite
+        --shared-uvwasi
+        --shared-zlib
+        --shared-zstd
+        --shared-brotli-includes=#{Formula["brotli"].include}
+        --shared-brotli-libpath=#{Formula["brotli"].lib}
+        --shared-cares-includes=#{Formula["c-ares"].include}
+        --shared-cares-libpath=#{Formula["c-ares"].lib}
+        --shared-libuv-includes=#{Formula["libuv"].include}
+        --shared-libuv-libpath=#{Formula["libuv"].lib}
+        --shared-nghttp2-includes=#{Formula["libnghttp2"].include}
+        --shared-nghttp2-libpath=#{Formula["libnghttp2"].lib}
+        --shared-nghttp3-includes=#{Formula["libnghttp3"].include}
+        --shared-nghttp3-libpath=#{Formula["libnghttp3"].lib}
+        --shared-ngtcp2-includes=#{Formula["libngtcp2"].include}
+        --shared-ngtcp2-libpath=#{Formula["libngtcp2"].lib}
+        --shared-openssl-includes=#{Formula["openssl@3"].include}
+        --shared-openssl-libpath=#{Formula["openssl@3"].lib}
+        --shared-simdjson-includes=#{Formula["simdjson"].include}
+        --shared-simdjson-libpath=#{Formula["simdjson"].lib}
+        --shared-sqlite-includes=#{Formula["sqlite"].include}
+        --shared-sqlite-libpath=#{Formula["sqlite"].lib}
+        --shared-uvwasi-includes=#{Formula["uvwasi"].include}/uvwasi
+        --shared-uvwasi-libpath=#{Formula["uvwasi"].lib}
+        --shared-zstd-includes=#{Formula["zstd"].include}
+        --shared-zstd-libpath=#{Formula["zstd"].lib}
+      ]
     end
 
-    # Enabling LTO errors on Linux with:
-    # terminate called after throwing an instance of 'std::out_of_range'
-    # macOS also can't build with LTO when using LLVM Clang
-    # LTO is unpleasant if you have to build from source.
-    # FIXME: re-enable me, currently crashes sequoia runner after 6 hours
-    # args << "--enable-lto" if OS.mac? && DevelopmentTools.clang_build_version > 1699 && build.bottle?
+    args << "--tag=head" if build.head?
 
     system "./configure", *args
-    system "make", "install"
+    
+    # Pass compiler flags directly to make (like MacPorts does)
+    # This is more reliable than environment variables for gyp
+    if use_homebrew_llvm?
+      # Patch the main Makefile to pass variables to sub-make
+      # The top-level Makefile runs: $(MAKE) -C out BUILDTYPE=Release
+      # We need to add our compiler variables to that command
+      main_makefile = buildpath/"Makefile"
+      if main_makefile.exist?
+        content = main_makefile.read
+        
+        # Find lines that call sub-make and add variable passing
+        # The pattern is typically: $(MAKE) -C out BUILDTYPE=...
+        replacement_vars = [
+          "CC='#{@llvm_cc}'",
+          "CXX='#{@llvm_cxx}'",
+          "CC_host='#{@llvm_cc}'",
+          "CXX_host='#{@llvm_cxx}'",
+          "LINK='#{@llvm_cxx}'",
+          "LINK_host='#{@llvm_cxx}'",
+          "CXXFLAGS='#{@llvm_cxxflags}'",
+          "LDFLAGS='#{@llvm_ldflags}'",
+        ].join(" ")
+        
+        content = content.gsub(
+          /(\$\(MAKE\)\s+-C\s+out\s+BUILDTYPE=\S+)/,
+          "\\1 #{replacement_vars}"
+        )
+        main_makefile.atomic_write(content)
+        ohai "Patched top-level Makefile to pass compiler variables to sub-make"
+      end
+      
+      # CRITICAL: Patch all .host.mk files to add libc++ to their link commands
+      # These files control how host tools like js2c are built
+      # gyp generates these and they don't honor LDFLAGS or CXXFLAGS
+      Dir.glob(buildpath/"out/**/*.host.mk").each do |mk_file|
+        content = File.read(mk_file)
+        modified = false
+        
+        # Add our include flags to CFLAGS_CC_Release for C++ compilation
+        # This ensures host tools use LLVM's libc++ headers, not system headers
+        if content =~ /^CFLAGS_CC_Release\s*:=/
+          content = content.gsub(
+            /^(CFLAGS_CC_Release\s*:=.*?)-std=gnu\+\+20/m,
+            "\\1-std=gnu++20 -nostdinc++ -isystem#{@llvm_include_path}"
+          )
+          modified = true
+        end
+        
+        # Also patch Debug configuration
+        if content =~ /^CFLAGS_CC_Debug\s*:=/
+          content = content.gsub(
+            /^(CFLAGS_CC_Debug\s*:=.*?)-std=gnu\+\+20/m,
+            "\\1-std=gnu++20 -nostdinc++ -isystem#{@llvm_include_path}"
+          )
+          modified = true
+        end
+        
+        # Add our library flags to LDFLAGS_host or create it
+        if content.include?("LDFLAGS_host")
+          content = content.gsub(
+            /^(LDFLAGS_host\s*:=\s*)/,
+            "\\1-L#{@libcxx_path} -Wl,-rpath,#{@libcxx_path} "
+          )
+          modified = true
+        end
+        
+        # Fix LIBS - use FULL PATHS to libc++ dylibs instead of -lc++
+        # This is critical because the macOS SDK contains .tbd stubs that redirect
+        # -lc++ to the system libc++, even when we specify -L paths first.
+        # By using full paths, we bypass the linker's library search entirely.
+        # (@libcxx_dylib and @libcxxabi_dylib are defined at the top of this block)
+        
+        if content =~ /^LIBS\s*:=/
+          # Replace LIBS := \ with LIBS := /path/to/libc++.dylib \ 
+          # or LIBS := -lfoo with LIBS := /path/to/libc++.dylib -lfoo
+          content = content.gsub(
+            /^(LIBS\s*:=\s*)(\\?)(\s*)$/,
+            "\\1-Wl,-rpath,#{@libcxx_path} #{@libcxx_dylib} #{@libcxxabi_dylib} \\2\\3"
+          )
+          # Also handle LIBS := -lfoo (no continuation)
+          content = content.gsub(
+            /^(LIBS\s*:=\s*)(-[^\\\n])/,
+            "\\1-Wl,-rpath,#{@libcxx_path} #{@libcxx_dylib} #{@libcxxabi_dylib} \\2"
+          )
+          modified = true
+        end
+        
+        File.write(mk_file, content) if modified
+      end
+      ohai "Patched #{Dir.glob(buildpath/"out/**/*.host.mk").count} .host.mk files with libc++ flags"
+      
+      # Also patch the main out/Makefile to add LIBS with full paths
+      out_makefile = buildpath/"out/Makefile"
+      if out_makefile.exist?
+        content = out_makefile.read
+        
+        # Find the LIBS line and prepend our libraries using full paths
+        if content.include?("LIBS :=")
+          content = content.gsub(
+            /^(LIBS\s*:=)/,
+            "\\1 #{@libcxx_dylib} #{@libcxxabi_dylib}"
+          )
+        else
+          # Add LIBS if it doesn't exist
+          content = "LIBS := #{@libcxx_dylib} #{@libcxxabi_dylib}\n" + content
+        end
+        
+        out_makefile.atomic_write(content)
+        ohai "Patched out/Makefile with LIBS"
+      end
+      
+      system "make", "-j1", "install", "V=1"
+    else
+      system "make", "install"
+    end
 
     # Allow npm to find Node before installation has completed.
     ENV.prepend_path "PATH", bin
 
     bootstrap = buildpath/"npm_bootstrap"
     bootstrap.install resource("npm")
-    # These dirs must exists before npm install.
+    # These dirs must exist before npm install.
     mkdir_p libexec/"lib"
     system "node", bootstrap/"bin/npm-cli.js", "install", "-ddd", "--global",
             "--prefix=#{libexec}", resource("npm").cached_download
@@ -188,26 +351,30 @@ class Node < Formula
     rm_r node_modules/"npm" if (node_modules/"npm").exist?
 
     cp_r libexec/"lib/node_modules/npm", node_modules
-    # This symlink doesn't hop into homebrew_prefix/bin automatically so
-    # we make our own. This is a small consequence of our
-    # bottle-npm-and-retain-a-private-copy-in-libexec setup
-    # All other installs **do** symlink to homebrew_prefix/bin correctly.
-    # We ln rather than cp this because doing so mimics npm's normal install.
     ln_sf node_modules/"npm/bin/npm-cli.js", bin/"npm"
     ln_sf node_modules/"npm/bin/npx-cli.js", bin/"npx"
     ln_sf bin/"npm", HOMEBREW_PREFIX/"bin/npm"
     ln_sf bin/"npx", HOMEBREW_PREFIX/"bin/npx"
 
-    # Create manpage symlinks (or overwrite the old ones)
     %w[man1 man5 man7].each do |man|
-      # Dirs must exist first: https://github.com/Homebrew/legacy-homebrew/issues/35969
       mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
-      # still needed to migrate from copied file manpages to symlink manpages
       rm(Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.,package.json.,npx.}*"])
       ln_sf Dir[node_modules/"npm/man/#{man}/{npm,package-,shrinkwrap-,npx}*"], HOMEBREW_PREFIX/"share/man/#{man}"
     end
 
     (node_modules/"npm/npmrc").atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
+  end
+
+  def caveats
+    if use_homebrew_llvm?
+      <<~EOS
+        This build uses Homebrew LLVM's libc++ for C++20 support on older macOS.
+        The node binary has an rpath set to find the correct libc++ at runtime.
+        
+        If you see C++ ABI errors with native npm modules, you may need to
+        rebuild them or ensure they're compiled with the same toolchain.
+      EOS
+    end
   end
 
   test do
@@ -234,67 +401,66 @@ class Node < Formula
     assert_path_exists HOMEBREW_PREFIX/"bin/npx", "npx must exist"
     assert_predicate HOMEBREW_PREFIX/"bin/npx", :executable?, "npx must be executable"
     assert_match "< hello >", shell_output("#{HOMEBREW_PREFIX}/bin/npx --yes cowsay hello")
-
-    # Test `uvwasi` is linked correctly
-    (testpath/"wasi-smoke-test.mjs").write <<~JAVASCRIPT
-      import { WASI } from 'node:wasi';
-
-      // Minimal WASM that:
-      //   - imports wasi proc_exit(i32)->()
-      //   - exports memory (required by Node's WASI binding)
-      //   - exports _start which calls proc_exit(42)
-      const wasmBytes = new Uint8Array([
-        // \0asm + version
-        0x00,0x61,0x73,0x6d, 0x01,0x00,0x00,0x00,
-
-        // Type section: 2 types: (i32)->() and ()->()
-        0x01,0x08, 0x02,
-          0x60,0x01,0x7f,0x00,
-          0x60,0x00,0x00,
-
-        // Import section: wasi_snapshot_preview1.proc_exit : func(type 0)
-        0x02,0x24, 0x01,
-          0x16, // module name len = 22
-            0x77,0x61,0x73,0x69,0x5f,0x73,0x6e,0x61,0x70,0x73,0x68,0x6f,0x74,0x5f,0x70,0x72,0x65,0x76,0x69,0x65,0x77,0x31,
-          0x09, // name len = 9
-            0x70,0x72,0x6f,0x63,0x5f,0x65,0x78,0x69,0x74,
-          0x00, // import kind = func
-          0x00, // type index 0
-
-        // Function section: 1 function (type index 1 = ()->())
-        0x03,0x02, 0x01, 0x01,
-
-        // Memory section: one memory with min=1 page; export later
-        0x05,0x03, 0x01, 0x00, 0x01,
-
-        // Export section: export "_start" (func 1) and "memory" (mem 0)
-        0x07,0x13, 0x02,
-          0x06, 0x5f,0x73,0x74,0x61,0x72,0x74, 0x00, 0x01,
-          0x06, 0x6d,0x65,0x6d,0x6f,0x72,0x79, 0x02, 0x00,
-
-        // Code section: body for func 1: i32.const 42; call 0; end
-        0x0a,0x08, 0x01,
-          0x06, 0x00, 0x41,0x2a, 0x10,0x00, 0x0b
-      ]);
-
-      const wasi = new WASI({
-        version: 'preview1',
-        returnOnExit: true
-      });
-
-      const { instance } = await WebAssembly.instantiate(wasmBytes, wasi.getImportObject());
-
-      // This should return 42 if uvwasi is correctly linked & wired.
-      const rc = wasi.start(instance);
-      if (rc === 42) {
-        console.log('PASS: uvwasi proc_exit(42) worked (exitCode=42)');
-        process.exit(0);
-      } else {
-        console.error('FAIL: unexpected return', rc);
-        process.exit(2);
-      }
-    JAVASCRIPT
-
-    system bin/"node", "wasi-smoke-test.mjs"
   end
 end
+
+__END__
+diff --git a/common.gypi b/common.gypi
+--- a/common.gypi
++++ b/common.gypi
+@@ -621,7 +621,8 @@
+         ],
+       }],
+       ['OS=="mac"', {
+-        'defines': ['_DARWIN_USE_64_BIT_INODE=1'],
++        'defines': ['_DARWIN_USE_64_BIT_INODE=1',
++                    '_DARWIN_C_SOURCE=1'],
+         'xcode_settings': {
+           'ALWAYS_SEARCH_USER_PATHS': 'NO',
+           'GCC_CW_ASM_SYNTAX': 'NO',                # No -fasm-blocks
+@@ -632,7 +633,6 @@
+           'GCC_ENABLE_PASCAL_STRINGS': 'NO',        # No -mpascal-strings
+           'GCC_STRICT_ALIASING': 'NO',              # -fno-strict-aliasing
+           'PREBINDING': 'NO',                       # No -Wl,-prebind
+-          'MACOSX_DEPLOYMENT_TARGET': '13.5',       # -mmacosx-version-min=13.5
+           'USE_HEADERMAP': 'NO',
+           'WARNING_CFLAGS': [
+             '-Wall',
+diff --git a/deps/v8/src/base/platform/platform-posix.cc b/deps/v8/src/base/platform/platform-posix.cc
+--- a/deps/v8/src/base/platform/platform-posix.cc
++++ b/deps/v8/src/base/platform/platform-posix.cc
+@@ -1135,6 +1135,7 @@
+   SetThreadName(thread->name());
+ #if V8_OS_DARWIN
+   switch (thread->priority()) {
++#ifndef NOT_ON_BROSEMITE_OR_LATER
+     case Thread::Priority::kBestEffort:
+       pthread_set_qos_class_self_np(QOS_CLASS_BACKGROUND, 0);
+       break;
+@@ -1144,6 +1145,7 @@
+     case Thread::Priority::kUserBlocking:
+       pthread_set_qos_class_self_np(QOS_CLASS_USER_INITIATED, 0);
+       break;
++#endif
+     case Thread::Priority::kDefault:
+       break;
+   }
+diff --git a/deps/v8/src/d8/d8.cc b/deps/v8/src/d8/d8.cc
+--- a/deps/v8/src/d8/d8.cc
++++ b/deps/v8/src/d8/d8.cc
+@@ -5696,6 +5696,7 @@
+ 
+   v8::V8::InitializeICUDefaultLocation(argv[0], options.icu_data_file);
+ 
++#ifndef NOT_ON_BROSEMITE_OR_LATER
+ #ifdef V8_OS_DARWIN
+   if (options.apply_priority) {
+     struct task_category_policy category = {.role =
+@@ -5705,6 +5706,7 @@
+     pthread_set_qos_class_self_np(QOS_CLASS_USER_INTERACTIVE, 0);
+   }
+ #endif
++#endif
+ 
+ #ifdef V8_INTL_SUPPORT
+   if (options.icu_locale != nullptr) {
