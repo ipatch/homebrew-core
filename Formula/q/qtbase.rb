@@ -102,6 +102,10 @@ class Qtbase < Formula
     ENV["CC"] = Formula["llvm"].opt_bin/"clang"
     ENV["CXX"] = Formula["llvm"].opt_bin/"clang++"
 
+    # Ensure we link against LLVM's libc++ instead of the system one
+    ENV.append "LDFLAGS", "-L#{llvm.opt_lib}/c++ -Wl,-rpath,#{llvm.opt_lib}/c++"
+    ENV.append "CXXFLAGS", "-stdlib=libc++"
+
     # Remove bundled libraries
     rm_r(%w[
       src/3rdparty/double-conversion
