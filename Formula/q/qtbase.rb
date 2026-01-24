@@ -32,6 +32,7 @@ class Qtbase < Formula
   end
 
   depends_on "cmake" => [:build, :test]
+  depends_on "llvm" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => [:build, :test]
   depends_on "vulkan-headers" => [:build, :test]
@@ -96,6 +97,10 @@ class Qtbase < Formula
     # arch-specific code with runtime detection of capabilities:
     # https://bugreports.qt.io/browse/QTBUG-113391
     ENV.runtime_cpu_detection
+
+    # Use Homebrew LLVM to avoid C++11 narrowing errors with older Apple Clang
+    ENV["CC"] = Formula["llvm"].opt_bin/"clang"
+    ENV["CXX"] = Formula["llvm"].opt_bin/"clang++"
 
     # Remove bundled libraries
     rm_r(%w[
