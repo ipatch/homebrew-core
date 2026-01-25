@@ -27,6 +27,7 @@ class Qtdeclarative < Formula
   end
 
   depends_on "cmake" => :build
+  depends_on "llvm" => :build
   depends_on "ninja" => :build
   depends_on "qtlanguageserver" => :build
   depends_on "qtshadertools" => :build
@@ -38,8 +39,18 @@ class Qtdeclarative < Formula
   uses_from_macos "python" => :build
 
   def install
+    llvm = Formula["llvm"]
+    ENV["CC"] = llvm.opt_bin/"clang"
+    ENV["CXX"] = llvm.opt_bin/"clang++"
+    ENV.append "LDFLAGS", "-L#{llvm.opt_lib}/c++ -Wl,-rpath,#{llvm.opt_lib}/c++"
+    ENV.append "CXXFLAGS", "-stdlib=libc++ -Wno-c++11-narrowing"
+    ENV.append "OBJCXXFLAGS", "-stdlib=libc++ -Wno-c++11-narrowing"
+
     args = ["-DCMAKE_STAGING_PREFIX=#{prefix}"]
     args << "-DQT_NO_APPLE_SDK_AND_XCODE_CHECK=ON" if OS.mac?
+    
+    args << "-DCMAKE_C_COMPILER=#{llvm.opt_bin}/clang"
+    args << "-DCMAKE_CXX_COMPILER=#{llvm.opt_bin}/clang++"
 
     system "cmake", "-S", ".", "-B", "build", "-G", "Ninja",
                     *args, *std_cmake_args(install_prefix: HOMEBREW_PREFIX, find_framework: "FIRST")
