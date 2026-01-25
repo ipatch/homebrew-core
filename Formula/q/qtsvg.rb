@@ -33,6 +33,12 @@ class Qtsvg < Formula
   uses_from_macos "zlib"
 
   def install
+    llvm = Formula["llvm"]
+    ENV["CC"] = llvm.opt_bin/"clang"
+    ENV["CXX"] = llvm.opt_bin/"clang++"
+    ENV.append "LDFLAGS", "-L#{llvm.opt_lib}/c++ -Wl,-rpath,#{llvm.opt_lib}/c++"
+    ENV.append "CXXFLAGS", "-stdlib=libc++ -Wno-c++11-narrowing"
+
     args = ["-DCMAKE_STAGING_PREFIX=#{prefix}"]
     args << "-DQT_NO_APPLE_SDK_AND_XCODE_CHECK=ON" if OS.mac?
 
