@@ -92,7 +92,14 @@ class Qtbase < Formula
     sha256 "41fc97843c891cc8c5fe513acfc5779bb42a2ac417e6c931efee08ed5eb62201"
   end
 
+  # Fix constexpr QFlags issue on older macOS
+  # patch :DATA
+
   def install
+    # Disable Homebrew's compiler shims to ensure we use LLVM directly
+    ENV.delete("HOMEBREW_CC")
+    ENV.delete("HOMEBREW_CXX")
+
     # Allow -march options to be passed through, as Qt builds
     # arch-specific code with runtime detection of capabilities:
     # https://bugreports.qt.io/browse/QTBUG-113391
@@ -102,9 +109,12 @@ class Qtbase < Formula
     ENV["CC"] = Formula["llvm"].opt_bin/"clang"
     ENV["CXX"] = Formula["llvm"].opt_bin/"clang++"
 
+    llvm = Formula["llvm"]
+
     # Ensure we link against LLVM's libc++ instead of the system one
     ENV.append "LDFLAGS", "-L#{llvm.opt_lib}/c++ -Wl,-rpath,#{llvm.opt_lib}/c++"
-    ENV.append "CXXFLAGS", "-stdlib=libc++"
+    ENV.append "CXXFLAGS", "-stdlib=libc++ -Wno-c++11-narrowing"
+    ENV.append "OBJCXXFLAGS", "-stdlib=libc++ -Wno-c++11-narrowing"
 
     # Remove bundled libraries
     rm_r(%w[
@@ -122,6 +132,10 @@ class Qtbase < Formula
 
     # The install prefix is HOMEBREW_PREFIX so that modules can be installed in separate formulae
     cmake_args = std_cmake_args(install_prefix: HOMEBREW_PREFIX, find_framework: "FIRST") + %W[
+
+      -DCMAKE_C_COMPILER=#{llvm.opt_bin}/clang
+      -DCMAKE_CXX_COMPILER=#{llvm.opt_bin}/clang++
+
       -DCMAKE_STAGING_PREFIX=#{prefix}
       -DINSTALL_ARCHDATADIR=share/qt
       -DINSTALL_DATADIR=share/qt
@@ -145,7 +159,21 @@ class Qtbase < Formula
       -DFEATURE_system_sqlite=ON
       -DFEATURE_system_zlib=ON
       -DQT_ALLOW_SYMLINK_IN_PATHS=ON
+
+      -DCMAKE_CXX_FLAGS=-Wno-c++11-narrowing
     ]
+
+    # Fix constexpr QFlags initialization issues on older macOS toolchains
+    # The default QFlags() constructor isn't treated as constexpr in all contexts
+    inreplace "src/corelib/kernel/qmetacontainer.h" do |s|
+      # Line ~219: in capabilitiesForIterator()
+      s.gsub! "IteratorCapabilities caps {};",
+        "IteratorCapabilities caps = IteratorCapabilities(0);"
+
+      # Line ~448: in getAddRemoveCapabilities() 
+      s.gsub! "AddRemoveCapabilities caps;",
+        "AddRemoveCapabilities caps = AddRemoveCapabilities(0);"
+    end
 
     cmake_args += if OS.mac?
       # Workaround to support relocatable installs in Homebrew's symlink directory structure.
@@ -180,7 +208,11 @@ class Qtbase < Formula
     # Some config scripts will only find Qt in a "Frameworks" folder
     frameworks.install_symlink lib.glob("*.framework") if OS.mac?
 
-    inreplace lib/"cmake/Qt6/qt.toolchain.cmake", "#{Superenv.shims_path}/", ""
+    # Remove shims path if present (may not exist when using custom compiler)
+    toolchain_file = lib/"cmake/Qt6/qt.toolchain.cmake"
+    if toolchain_file.exist?
+      inreplace toolchain_file, "#{Superenv.shims_path}/", "", audit_result: false
+    end
 
     # Install a qtversion.xml to ease integration with QtCreator
     # As far as we can tell, there is no ability to make the Qt buildsystem
@@ -214,6 +246,27 @@ class Qtbase < Formula
     XML
   end
 
+  def post_install
+    if OS.mac?
+      # Fix constexpr QFlags default constructor for older macOS toolchains
+      # qflags_header = lib/"QtCore.framework/Headers/qflags.h"
+      # if qflags_header.exist?
+      #   inreplace qflags_header,
+      #     "constexpr inline QFlags() noexcept = default;",
+      #     "constexpr inline QFlags() noexcept : i(0) {}",
+      #     audit_result: false
+      # end
+
+      header = lib/"QtGui.framework/Headers/6.9.3/QtGui/private/qlayoutpolicy_p.h"
+      if header.exist?
+        inreplace header,
+          "static constexpr inline Policy Fixed = {};",
+          "static constexpr inline Policy Fixed = Policy(0);",
+          audit_result: false
+      end
+    end
+  end
+ 
   def caveats
     s = <<~CAVEATS
       You can add Homebrew's Qt to QtCreator's "Qt Versions" in:
@@ -280,6 +333,9 @@ class Qtbase < Formula
 
     ENV["LC_ALL"] = "en_US.UTF-8"
     ENV["QT_QPA_PLATFORM"] = "minimal" if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
+
+    # Set plugin path so Qt can find SQL drivers and other plugins
+    ENV["QT_PLUGIN_PATH"] = "#{HOMEBREW_PREFIX}/share/qt/plugins"
 
     system "cmake", "-S", ".", "-B", "cmake"
     system "cmake", "--build", "cmake"
