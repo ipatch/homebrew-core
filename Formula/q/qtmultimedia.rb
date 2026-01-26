@@ -29,12 +29,13 @@ class Qtmultimedia < Formula
   end
 
   depends_on "cmake" => [:build, :test]
+  depends_on "llvm" => :build
   depends_on "ninja" => :build
   depends_on "qtshadertools" => :build
   depends_on "vulkan-headers" => :build
   depends_on "pkgconf" => :test
 
-  depends_on macos: :ventura
+  # depends_on macos: :ventura
   depends_on "qtbase"
   depends_on "qtdeclarative"
   depends_on "qtquick3d"
@@ -59,6 +60,48 @@ class Qtmultimedia < Formula
   end
 
   def install
+
+    llvm = Formula["llvm"]
+    ENV["CC"] = llvm.opt_bin/"clang"
+    ENV["CXX"] = llvm.opt_bin/"clang++"
+    ENV.append "LDFLAGS", "-L#{llvm.opt_lib}/c++ -Wl,-rpath,#{llvm.opt_lib}/c++"
+    ENV.append "CXXFLAGS", "-stdlib=libc++ -Wno-c++11-narrowing"
+    ENV.append "OBJCXXFLAGS", "-stdlib=libc++ -Wno-c++11-narrowing"
+
+    # Fix for macOS Big Sur - kAudioObjectPropertyElementMain was added in macOS 12
+    # Use the older kAudioObjectPropertyElementMaster on macOS < 12
+    if OS.mac? && MacOS.version < :monterey
+      
+      # Fix AVCaptureDeviceType constants added in macOS 12+
+      inreplace "src/multimedia/darwin/qavfvideodevices.mm" do |s|
+        # Only replace AVCaptureDeviceTypeExternal when it's not already "ExternalUnknown"
+        s.gsub! /AVCaptureDeviceTypeExternal(?!Unknown)/, "AVCaptureDeviceTypeExternalUnknown"
+        # Remove the ContinuityCamera line entirely since it has no equivalent
+        s.gsub! /.*AVCaptureDeviceTypeContinuityCamera.*\n/, ""
+      end
+
+      inreplace "src/multimedia/darwin/qdarwinaudiodevices.mm",
+        "kAudioObjectPropertyElementMain",
+        "kAudioObjectPropertyElementMaster"
+
+      inreplace "src/multimedia/darwin/qcoreaudioutils.cpp",
+        "kAudioObjectPropertyElementMain",
+        "kAudioObjectPropertyElementMaster"
+
+      inreplace "src/multimedia/darwin/qmacosaudiodatautils_p.h",
+        "kAudioObjectPropertyElementMain",
+        "kAudioObjectPropertyElementMaster"
+
+      inreplace "src/multimedia/darwin/qmacosaudiodatautils.cpp",
+        "kAudioObjectPropertyElementMain",
+        "kAudioObjectPropertyElementMaster"
+
+      # Fix for macOS Big Sur - CVBufferCopyAttachment was added in macOS 12
+      inreplace "src/multimedia/darwin/qavfhelpers.mm",
+        "CVBufferCopyAttachment",
+        "CVBufferGetAttachment"
+    end
+
     args = ["-DCMAKE_STAGING_PREFIX=#{prefix}"]
     if OS.mac?
       args << "-DQT_FEATURE_ffmpeg=OFF"
