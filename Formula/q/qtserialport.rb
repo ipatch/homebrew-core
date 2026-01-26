@@ -36,6 +36,14 @@ class Qtserialport < Formula
   end
 
   def install
+    # Fix for macOS Big Sur - kIOMainPortDefault was added in macOS 12
+    # Use the older kIOMasterPortDefault on macOS < 12
+    if OS.mac? && MacOS.version < :monterey
+      inreplace "src/serialport/qserialportinfo_osx.cpp",
+        "kIOMainPortDefault",
+        "kIOMasterPortDefault"
+    end
+
     args = ["-DCMAKE_STAGING_PREFIX=#{prefix}"]
     args << "-DQT_NO_APPLE_SDK_AND_XCODE_CHECK=ON" if OS.mac?
 
