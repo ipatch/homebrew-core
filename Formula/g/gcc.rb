@@ -41,6 +41,7 @@ class Gcc < Formula
   # out of the box on Xcode-only systems due to an incorrect sysroot.
   pour_bottle? only_if: :clt_installed
 
+  depends_on "texinfo" => :build
   depends_on "gmp"
   depends_on "isl"
   depends_on "libmpc"
