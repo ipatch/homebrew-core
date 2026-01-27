@@ -17,6 +17,7 @@ class Vtk < Formula
   end
 
   depends_on "cmake" => [:build, :test]
+  depends_on "expat" => :build
   depends_on "pyqt" => :test
   depends_on "boost"
   depends_on "cgns"
@@ -44,7 +45,7 @@ class Vtk < Formula
   depends_on "utf8cpp"
   depends_on "xz"
 
-  uses_from_macos "expat"
+  # uses_from_macos "expat" => :build
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
@@ -59,11 +60,11 @@ class Vtk < Formula
     # Work around superenv to avoid mixing `expat` usage in libraries across dependency tree.
     # Brew `expat` usage in Python has low impact as it isn't loaded unless pyexpat is used.
     # TODO: Consider adding a DSL for this or change how we handle Python's `expat` dependency
-    if OS.mac? && MacOS.version < :sequoia
-      env_vars = %w[CMAKE_PREFIX_PATH HOMEBREW_INCLUDE_PATHS HOMEBREW_LIBRARY_PATHS PATH PKG_CONFIG_PATH]
-      ENV.remove env_vars, /(^|:)#{Regexp.escape(Formula["expat"].opt_prefix)}[^:]*/
-      ENV.remove "HOMEBREW_DEPENDENCIES", "expat"
-    end
+    # if OS.mac? && MacOS.version < :sequoia
+    #   env_vars = %w[CMAKE_PREFIX_PATH HOMEBREW_INCLUDE_PATHS HOMEBREW_LIBRARY_PATHS PATH PKG_CONFIG_PATH]
+    #   ENV.remove env_vars, /(^|:)#{Regexp.escape(Formula["expat"].opt_prefix)}[^:]*/
+    #   ENV.remove "HOMEBREW_DEPENDENCIES", "expat"
+    # end
 
     python = "python3.14"
     qml_plugin_dir = lib/"qml/VTK.#{version.major_minor}"
