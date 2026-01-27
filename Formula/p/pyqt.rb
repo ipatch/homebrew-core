@@ -129,6 +129,7 @@ class Pyqt < Formula
 
     resources.each do |r|
       next if r.name == "pyqt6-sip"
+      next if r.name == "pyqt6-3d"  # Skip - incompatible with Qt 6.9.x and not needed for FreeCAD
       # Don't build WebEngineCore bindings on macOS if the SDK is too old to have built qtwebengine in qt.
       next if r.name == "pyqt6-webengine" && !webengine_supported?
 
