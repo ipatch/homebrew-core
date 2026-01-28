@@ -118,6 +118,16 @@ class Pyside < Formula
                     # Limited API (maybe combined with keg relocation) breaks the Linux bottle
                     "-DFORCE_LIMITED_API=#{OS.mac? ? "yes" : "no"}",
                     *std_cmake_args
+
+                    # Fix shiboken wrapper to avoid jpeg-turbo/ImageIO conflict on macOS
+                    # The generated wrapper sets DYLD_LIBRARY_PATH=/usr/local/lib which causes
+                    # system ImageIO to load Homebrew's libJPEG.dylib and crash
+                    if OS.mac?
+                      inreplace "build/.qfp/bin/shiboken_wrapper.sh",
+                        "export DYLD_LIBRARY_PATH=/usr/local/lib:$DYLD_LIBRARY_PATH",
+                        "# DYLD_LIBRARY_PATH removed to avoid jpeg-turbo conflict"
+                    end
+
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
