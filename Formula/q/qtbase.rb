@@ -95,6 +95,10 @@ class Qtbase < Formula
   # Fix constexpr QFlags issue on older macOS
   # patch :DATA
 
+  # Fix safeAreaInsets crash on macOS < 12 (Big Sur)
+  # The API is only available on macOS 12.0+
+  # patch :DATA
+
   def install
     # Disable Homebrew's compiler shims to ensure we use LLVM directly
     ENV.delete("HOMEBREW_CC")
@@ -174,6 +178,29 @@ class Qtbase < Formula
       s.gsub! "AddRemoveCapabilities caps;",
         "AddRemoveCapabilities caps = AddRemoveCapabilities(0);"
     end
+
+    # Fix safeAreaInsets crash on macOS < 12 (Big Sur)
+    inreplace "src/plugins/platforms/cocoa/qcocoawindow.mm" do |s|
+      # Wrap the KVO observer setup (around line 133)
+      s.gsub! "        m_safeAreaInsetsObserver = QMacKeyValueObserver(\n            m_view, @\"safeAreaInsets\", [this] {\n                // Defer to next runloop pass, so that any changes to the\n                // margins during resizing have settled down.\n                QMetaObject::invokeMethod(this, [this]{\n                    updateSafeAreaMarginsIfNeeded();\n                }, Qt::QueuedConnection);\n            }, NSKeyValueObservingOptionNew);",
+        "        if (@available(macOS 12.0, *)) {\n            m_safeAreaInsetsObserver = QMacKeyValueObserver(\n                m_view, @\"safeAreaInsets\", [this] {\n                    // Defer to next runloop pass, so that any changes to the\n                    // margins during resizing have settled down.\n                    QMetaObject::invokeMethod(this, [this]{\n                        updateSafeAreaMarginsIfNeeded();\n                    }, Qt::QueuedConnection);\n                }, NSKeyValueObservingOptionNew);\n        }"
+
+      # Wrap the safeAreaMargins function body
+      s.gsub! "    QMarginsF viewSafeAreaMargins = {\n        m_view.safeAreaInsets.left,\n        m_view.safeAreaInsets.top,\n        m_view.safeAreaInsets.right,\n        m_view.safeAreaInsets.bottom\n    };",
+        "    if (@available(macOS 12.0, *)) {\n    QMarginsF viewSafeAreaMargins = {\n        m_view.safeAreaInsets.left,\n        m_view.safeAreaInsets.top,\n        m_view.safeAreaInsets.right,\n        m_view.safeAreaInsets.bottom\n    };"
+
+      s.gsub! "    return (screenSafeAreaMargins | viewSafeAreaMargins).toMargins();\n}",
+        "    return (screenSafeAreaMargins | viewSafeAreaMargins).toMargins();\n    }\n    return QMargins();\n}"
+    end
+
+    # Fix kIOMainPortDefault for macOS < 12 (Big Sur uses kIOMasterPortDefault)
+    inreplace "src/corelib/global/qsysinfo.cpp",
+      "kIOMainPortDefault",
+      "kIOMasterPortDefault"
+
+    inreplace "src/corelib/kernel/qcore_mac.mm",
+      "kIOMainPortDefault",
+      "kIOMasterPortDefault"
 
     cmake_args += if OS.mac?
       # Workaround to support relocatable installs in Homebrew's symlink directory structure.
@@ -356,3 +383,114 @@ class Qtbase < Formula
     assert_equal HOMEBREW_PREFIX.to_s, shell_output("#{bin}/qmake -query QT_INSTALL_PREFIX").chomp
   end
 end
+
+__END__
+diff --git a/src/plugins/platforms/cocoa/qcocoawindow.mm b/src/plugins/platforms/cocoa/qcocoawindow.mm
+--- a/src/plugins/platforms/cocoa/qcocoawindow.mm
++++ b/src/plugins/platforms/cocoa/qcocoawindow.mm
+@@ -131,14 +131,16 @@ QCocoaWindow::QCocoaWindow(QWindow *tlw, WId nativeHandle)
+         QPlatformWindow::d_ptr->rect = QRect();
+         setGeometry(initialGeometry);
+         setMask(QHighDpi::toNativeLocalRegion(window()->mask(), window()));
+-        m_safeAreaInsetsObserver = QMacKeyValueObserver(
+-            m_view, @"safeAreaInsets", [this] {
+-                // Defer to next runloop pass, so that any changes to the
+-                // margins during resizing have settled down.
+-                QMetaObject::invokeMethod(this, [this]{
+-                    updateSafeAreaMarginsIfNeeded();
+-                }, Qt::QueuedConnection);
+-            }, NSKeyValueObservingOptionNew);
++        if (@available(macOS 12.0, *)) {
++            m_safeAreaInsetsObserver = QMacKeyValueObserver(
++                m_view, @"safeAreaInsets", [this] {
++                    // Defer to next runloop pass, so that any changes to the
++                    // margins during resizing have settled down.
++                    QMetaObject::invokeMethod(this, [this]{
++                        updateSafeAreaMarginsIfNeeded();
++                    }, Qt::QueuedConnection);
++                }, NSKeyValueObservingOptionNew);
++        }
+     } else {
+         // Pick up essential foreign window state
+         QPlatformWindow::d_ptr->rect = QRect();
+@@ -312,32 +314,35 @@ QMargins QCocoaWindow::safeAreaMargins() const
+     // bars, tab bars, toolbars, and other ancestor views that might obscure
+     // the current view (by setting additionalSafeAreaInsets). If the window
+     // uses NSWindowStyleMaskFullSizeContentView this also includes the area
+     // of the view covered by the title bar.
+-    QMarginsF viewSafeAreaMargins = {
+-        m_view.safeAreaInsets.left,
+-        m_view.safeAreaInsets.top,
+-        m_view.safeAreaInsets.right,
+-        m_view.safeAreaInsets.bottom
+-    };
+-    // The screen's safe area insets represent the distances from the screen's
+-    // edges at which content isn't obscured. The view's safe area margins do
+-    // not include the screen's insets automatically, so we need to manually
+-    // merge them.
+-    auto screenRect = m_view.window.screen.frame;
+-    auto screenInsets = m_view.window.screen.safeAreaInsets;
+-    auto screenRelativeViewBounds = QCocoaScreen::mapFromNative(
+-        [m_view.window convertRectToScreen:
+-            [m_view convertRect:m_view.bounds toView:nil]]
+-    );
+-    // The margins are relative to the screen the window is on.
+-    // Note that we do not want represent the area outside of the
+-    // screen as being outside of the safe area.
+-    QMarginsF screenSafeAreaMargins = {
+-        screenInsets.left ?
+-            qMax(0.0f, screenInsets.left - screenRelativeViewBounds.left())
+-            : 0.0f,
+-        screenInsets.top ?
+-            qMax(0.0f, screenInsets.top - screenRelativeViewBounds.top())
+-            : 0.0f,
+-        screenInsets.right ?
+-            qMax(0.0f, screenInsets.right
+-                - (screenRect.size.width - screenRelativeViewBounds.right()))
+-            : 0.0f,
+-        screenInsets.bottom ?
+-            qMax(0.0f, screenInsets.bottom
+-                - (screenRect.size.height - screenRelativeViewBounds.bottom()))
+-            : 0.0f
+-    };
+-    return (screenSafeAreaMargins | viewSafeAreaMargins).toMargins();
++    if (@available(macOS 12.0, *)) {
++        QMarginsF viewSafeAreaMargins = {
++            m_view.safeAreaInsets.left,
++            m_view.safeAreaInsets.top,
++            m_view.safeAreaInsets.right,
++            m_view.safeAreaInsets.bottom
++        };
++        // The screen's safe area insets represent the distances from the screen's
++        // edges at which content isn't obscured. The view's safe area margins do
++        // not include the screen's insets automatically, so we need to manually
++        // merge them.
++        auto screenRect = m_view.window.screen.frame;
++        auto screenInsets = m_view.window.screen.safeAreaInsets;
++        auto screenRelativeViewBounds = QCocoaScreen::mapFromNative(
++            [m_view.window convertRectToScreen:
++                [m_view convertRect:m_view.bounds toView:nil]]
++        );
++        // The margins are relative to the screen the window is on.
++        // Note that we do not want represent the area outside of the
++        // screen as being outside of the safe area.
++        QMarginsF screenSafeAreaMargins = {
++            screenInsets.left ?
++                qMax(0.0f, screenInsets.left - screenRelativeViewBounds.left())
++                : 0.0f,
++            screenInsets.top ?
++                qMax(0.0f, screenInsets.top - screenRelativeViewBounds.top())
++                : 0.0f,
++            screenInsets.right ?
++                qMax(0.0f, screenInsets.right
++                    - (screenRect.size.width - screenRelativeViewBounds.right()))
++                : 0.0f,
++            screenInsets.bottom ?
++                qMax(0.0f, screenInsets.bottom
++                    - (screenRect.size.height - screenRelativeViewBounds.bottom()))
++                : 0.0f
++        };
++        return (screenSafeAreaMargins | viewSafeAreaMargins).toMargins();
++    }
++    return QMargins();
+ }
