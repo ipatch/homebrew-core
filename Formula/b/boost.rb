@@ -23,6 +23,7 @@ class Boost < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "b1e65c2f173ce34d451025547d72db68956d69123c94b636c48901a36a83a0c6"
   end
 
+  depends_on "llvm" => :build
   depends_on "icu4c@78"
   depends_on "xz"
   depends_on "zstd"
@@ -38,14 +39,40 @@ class Boost < Formula
   end
 
   def install
-    # Force boost to compile with the desired compiler
-    open("user-config.jam", "a") do |file|
-      if OS.mac?
-        file.write "using darwin : : #{ENV.cxx} ;\n"
-      else
-        file.write "using gcc : : #{ENV.cxx} ;\n"
-      end
-    end
+    # NOTE: ipatch use homebrew provided llvm
+
+    # Disable Homebrew's compiler shims to ensure we use LLVM directly
+    ENV.delete("HOMEBREW_CC")
+    ENV.delete("HOMEBREW_CXX")
+
+    # Use Homebrew LLVM to avoid C++11 narrowing errors with older Apple Clang
+    ENV["CC"] = Formula["llvm"].opt_bin/"clang"
+    ENV["CXX"] = Formula["llvm"].opt_bin/"clang++"
+
+    llvm = Formula["llvm"]
+
+    # Ensure we link against LLVM's libc++ instead of the system one
+    ENV.append "LDFLAGS", "-L#{llvm.opt_lib}/c++ -Wl,-rpath,#{llvm.opt_lib}/c++"
+    ENV.append "CXXFLAGS", "-stdlib=libc++ -Wno-c++11-narrowing"
+    ENV.append "OBJCXXFLAGS", "-stdlib=libc++ -Wno-c++11-narrowing"
+
+
+    # # Force boost to compile with the desired compiler
+    # open("user-config.jam", "a") do |file|
+    #   if OS.mac?
+    #     file.write "using darwin : : #{ENV.cxx} ;\n"
+    #   else
+    #     file.write "using gcc : : #{ENV.cxx} ;\n"
+    #   end
+    # end
+
+    # Create user-config.jam to force LLVM toolset
+    (buildpath/"user-config.jam").write <<~JAM
+    using clang : llvm : #{llvm.opt_bin}/clang++ :
+      <cxxflags>"-stdlib=libc++"
+      <linkflags>"-L#{llvm.opt_lib}/c++ -Wl,-rpath,#{llvm.opt_lib}/c++"
+    ;
+    JAM
 
     # libdir should be set by --prefix but isn't
     icu4c = deps.map(&:to_formula).find { |f| f.name.match?(/^icu4c@\d+$/) }
@@ -63,6 +90,8 @@ class Boost < Formula
     without_libraries << "log" if ENV.compiler == :gcc
 
     bootstrap_args << "--without-libraries=#{without_libraries.join(",")}"
+    # bootstrap_args << "--user-config=#{buildpath}/user-config.jam"
+    # bootstrap_args << "toolset=clang-llvm"
 
     # layout should be synchronized with boost-python and boost-mpi
     args = %W[
@@ -71,11 +100,16 @@ class Boost < Formula
       -d2
       -j#{ENV.make_jobs}
       --layout=system
-      --user-config=user-config.jam
       install
       threading=multi
       link=shared,static
+      --user-config=#{buildpath}/user-config.jam
+      toolset=clang-llvm
+      cxxstd=17
+      linkflags=-stdlib=libc++
+      cxxflags=-stdlib=libc++
     ]
+    # --user-config=user-config.jam
 
     # Boost is using "clang++ -x c" to select C compiler which breaks C++
     # handling in superenv. Using "cxxflags" and "linkflags" still works.
