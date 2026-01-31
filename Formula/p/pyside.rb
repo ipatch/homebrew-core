@@ -116,7 +116,8 @@ class Pyside < Formula
                     "-DBUILD_TESTS=OFF",
                     "-DNO_QT_TOOLS=yes",
                     # Limited API (maybe combined with keg relocation) breaks the Linux bottle
-                    "-DFORCE_LIMITED_API=#{OS.mac? ? "yes" : "no"}",
+                    # "-DFORCE_LIMITED_API=#{OS.mac? ? "yes" : "no"}",
+                    "-DFORCE_LIMITED_API=NO",
                     *std_cmake_args
 
                     # Fix shiboken wrapper to avoid jpeg-turbo/ImageIO conflict on macOS
