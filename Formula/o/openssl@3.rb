@@ -23,6 +23,7 @@ class OpensslAT3 < Formula
   end
 
   depends_on "ca-certificates"
+  depends_on "perl"
 
   on_linux do
     resource "Test::Harness" do
@@ -41,6 +42,11 @@ class OpensslAT3 < Formula
       url "https://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-7.76.tar.gz"
       mirror "http://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-7.76.tar.gz"
       sha256 "30bcfd75fec4d512e9081c792f7cb590009d9de2fe285ffa8eec1be35a5ae7ca"
+    end
+
+   resource "Time::Piece" do
+      url "https://cpan.metacpan.org/authors/id/E/ES/ESAYM/Time-Piece-1.3701.tar.gz"
+      sha256 "857721f77f6180160282c68defbd138ef4091bbe3a1d2532c712890a3d092fdf"
     end
   end
 
@@ -75,7 +81,7 @@ class OpensslAT3 < Formula
       ENV.prepend_create_path "PERL5LIB", buildpath/"lib/perl5"
       ENV.prepend_path "PATH", buildpath/"bin"
 
-      %w[ExtUtils::MakeMaker Test::Harness Test::More].each do |r|
+      %w[ExtUtils::MakeMaker Test::Harness Test::More Time::Piece].each do |r|
         resource(r).stage do
           system "perl", "Makefile.PL", "INSTALL_BASE=#{buildpath}"
           system "make", "PERL5LIB=#{ENV["PERL5LIB"]}", "CC=#{ENV.cc}"
