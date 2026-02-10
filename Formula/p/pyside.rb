@@ -37,7 +37,7 @@ class Pyside < Formula
   depends_on "pkgconf" => :test
 
   depends_on "llvm"
-  depends_on "python@3.14"
+  depends_on "python@3.13"
   depends_on "qt3d"
   depends_on "qtbase"
   depends_on "qtcharts"
@@ -85,7 +85,7 @@ class Pyside < Formula
   end
 
   def python3
-    "python3.14"
+    "python3.13"
   end
 
   def install
