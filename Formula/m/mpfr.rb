@@ -24,7 +24,7 @@ class Mpfr < Formula
     end
   end
 
-  no_autobump! because: :requires_manual_review
+  # no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_tahoe:   "495b04c82ef8638368a5cc62141e7ac195377d292503f5b30e5915b1ff478dda"

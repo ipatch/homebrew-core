@@ -11,7 +11,7 @@ class Libvorbis < Formula
     regex(%r{href=(?:["']?|.*?/)libvorbis[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
-  no_autobump! because: :requires_manual_review
+  # no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1

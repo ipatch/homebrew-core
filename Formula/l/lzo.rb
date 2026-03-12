@@ -10,7 +10,7 @@ class Lzo < Formula
     regex(/href=.*?lzo[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
-  no_autobump! because: :requires_manual_review
+  # no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_tahoe:    "9863be33af38858d028657bdfbceaff00465b23a9857ce6ed93e2ad24f6adbd8"

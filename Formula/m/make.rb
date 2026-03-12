@@ -6,7 +6,7 @@ class Make < Formula
   sha256 "8814ba072182b605d156d7589c19a43b89fc58ea479b9355146160946f8cf6e9"
   license "GPL-3.0-only"
 
-  no_autobump! because: :requires_manual_review
+  # no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1
