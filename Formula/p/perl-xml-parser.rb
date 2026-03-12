@@ -7,7 +7,7 @@ class PerlXmlParser < Formula
   revision 1
   head "https://github.com/cpan-authors/XML-Parser.git", branch: "master"
 
-  no_autobump! because: :requires_manual_review
+  # no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_tahoe:   "fee3b040b53302d6739156e3fe6ec3d20d4a68976db97596fbc69ae67ca6f478"

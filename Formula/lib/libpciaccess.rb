@@ -6,7 +6,7 @@ class Libpciaccess < Formula
   license "MIT"
   revision 1
 
-  no_autobump! because: :requires_manual_review
+  # no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_linux:  "8dbbb641d72ca3d52c3e888e98ce1b4ebca20f5eca28a171b5ddc00b7a52bbf9"

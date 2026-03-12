@@ -11,7 +11,7 @@ class Speexdsp < Formula
     regex(%r{href=(?:["']?|.*?/)speexdsp[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
-  no_autobump! because: :requires_manual_review
+  # no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_tahoe:    "e7647620836f6c58957deb0c5994b29b087c0574b5feca71fbaa9dd67d15a092"
