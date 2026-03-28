@@ -36,6 +36,11 @@ class AtSpi2Core < Formula
     depends_on "gettext"
   end
 
+  # NOTE: ipatch, bld err on asahi without adding systemd as dep
+  on_linux do
+    depends_on "systemd"
+  end
+
   def install
     if OS.linux?
       # Work around brew not adding dependencies of build dependencies to PKG_CONFIG_PATH
@@ -45,16 +50,14 @@ class AtSpi2Core < Formula
         ENV.append_path "PKG_CONFIG_PATH", icu4c_dep.to_formula.opt_lib/"pkgconfig"
       else
         # Fallback: try to find any installed icu4c version
-      begin
-        # Try versioned icu4c formulas first (most common on Linux)
-        icu4c_formula = Formula.installed.find { |f| f.name =~ /^icu4c(@\d+)?$/ }
-        if icu4c_formula
-          ENV.append_path "PKG_CONFIG_PATH", icu4c_formula.opt_lib/"pkgconfig"
+        begin
+          # Try versioned icu4c formulas first (most common on Linux)
+          icu4c_formula = Formula.installed.find { |f| f.name =~ /^icu4c(@\d+)?$/ }
+          ENV.append_path "PKG_CONFIG_PATH", icu4c_formula.opt_lib/"pkgconfig" if icu4c_formula
+        rescue
+          # Last resort: try unversioned icu4c
+          ENV.append_path "PKG_CONFIG_PATH", Formula["icu4c"].opt_lib/"pkgconfig"
         end
-      rescue
-        # Last resort: try unversioned icu4c
-        ENV.append_path "PKG_CONFIG_PATH", Formula["icu4c"].opt_lib/"pkgconfig"
-      end
       end
     end
 
