@@ -27,12 +27,13 @@ class Gettext < Formula
 
   on_linux do
     depends_on "acl"
+    depends_on "json-c"
   end
 
-  patch do
-    url "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-devel/gettext/files/gettext-0.23-libxml2-2.12.0.patch"
-    sha256 ""
-  end
+  # patch do
+  #   url "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-devel/gettext/files/gettext-0.23-libxml2-2.12.0.patch"
+  #   sha256 ""
+  # end
 
   def install
     # Workaround for newer Clang
