@@ -141,6 +141,8 @@ class Mesa < Formula
       ENV.remove "HOMEBREW_DEPENDENCIES", "expat"
     end
 
+    # NOTE: ipatch, bld err, src/nouveau/compiler/meson.build:12:17: ERROR: Dependency 'rustc-hash' is required but not found.
+
     # NOTE: ipatch, bld err, ../src/freedreno/decode/script.c:32:10: fatal error: lauxlib.h: No such file or directory
 
     # NOTE: ipatch, bld err
@@ -186,11 +188,14 @@ class Mesa < Formula
       # Not all supported drivers are being auto-enabled on x86 Linux.
       # TODO: Determine the explicit drivers list for ARM Linux.
       drivers = Hardware::CPU.intel? ? "all" : "auto"
+      # -Dgallium-drivers=#{drivers}
+      # -Dtools=drm-shim,etnaviv,freedreno,glsl,intel,nir,lima,panfrost,asahi,imagination,dlclose-skip
+      # -Dvulkan-drivers=#{drivers}
 
       %W[
         -Degl=enabled
-        -Dgallium-drivers=#{drivers}
         -Dgallium-extra-hud=true
+        -Dgallium-drivers=crocus,iris,i915,r300,r600,radeonsi,nouveau,svga,virgl,zink,d3d12,llvmpipe
         -Dgallium-va=enabled
         -Dgbm=enabled
         -Dgles1=enabled
@@ -200,11 +205,11 @@ class Mesa < Formula
         -Dlmsensors=enabled
         -Dmicrosoft-clc=disabled
         -Dplatforms=x11,wayland
-        -Dtools=drm-shim,etnaviv,freedreno,glsl,intel,nir,nouveau,lima,panfrost,asahi,imagination,dlclose-skip
+        -Dtools=drm-shim,etnaviv,glsl,intel,nir,dlclose-skip
         -Dvalgrind=enabled
-        -Dvulkan-drivers=#{drivers}
+        -Dvulkan-drivers=amd,intel,intel_hasvk,nouveau,swrast,virtio
         -Dvulkan-layers=device-select,intel-nullhw,overlay,screenshot,vram-report-limit
-        --force-fallback-for perfetto,syn,paste,pest,pest_derive,pest_generator,pest_meta,roxmltree,indexmap
+        --force-fallback-for perfetto,syn,paste,pest,pest_derive,pest_generator,pest_meta,roxmltree,indexmap,rustc-hash
         -Dvideo-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc
       ]
     end
