@@ -160,10 +160,16 @@ class Gstreamer < Formula
 
   patch do
     url "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/7679.patch"
-    sha256 "595e17a70f2195204885cbfd7ae5e1ea9f8e63ac6acc37d452675036efaf95d6"
+    sha256 ""
   end
 
   def install
+
+    # gstreamer meson.build runs `pre-commit install -f` which requires a .git/
+    # directory. We're building from a release tarball, so kill the invocation.
+    inreplace "meson.build", /^\s*run_command\(pre[_-]commit.*?\)$/m,
+      "# pre-commit install disabled for tarball builds"
+
     # NOTE: ipatch, bld err may 17 2025
     #     gst-editing-services| Subproject gst-editing-services finished.
 
