@@ -101,6 +101,15 @@ class GccAT13 < Formula
 
       ENV.append_path "CPATH", Formula["zlib-ng-compat"].opt_include
       ENV.append_path "LIBRARY_PATH", Formula["zlib-ng-compat"].opt_lib
+
+      rpaths = [
+        Formula["isl"].opt_lib,
+        Formula["gmp"].opt_lib,
+        Formula["mpfr"].opt_lib,
+        Formula["libmpc"].opt_lib,
+        Formula["zstd"].opt_lib,
+      ].map { |p| "-Wl,-rpath,#{p}" }.join(" ")
+      make_args = ["BOOT_LDFLAGS=#{rpaths}"]
     end
 
     mkdir "build" do
