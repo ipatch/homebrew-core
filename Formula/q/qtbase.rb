@@ -90,6 +90,14 @@ class Qtbase < Formula
     # https://bugreports.qt.io/browse/QTBUG-113391
     ENV.runtime_cpu_detection
 
+    # NOTE: ipatch
+    # Work around pcre2 10.47's default versioned-symbols change: `--no-undefined`
+    # (set by meson's b_lundef) can't verify transitively-NEEDED versioned symbols
+    # in libpcre2-8.so at link time for binaries like gtester that only link
+    # against libglib-2.0.so, not pcre2 directly. Runtime resolution via rpath
+    # is fine; just relax the link-time check.
+    ENV.append "LDFLAGS", "-Wl,--allow-shlib-undefined" if OS.linux?
+
     # Remove bundled libraries
     rm_r(%w[
       src/3rdparty/double-conversion
