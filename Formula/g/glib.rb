@@ -72,6 +72,14 @@ class Glib < Formula
     # in ../gobject-introspection-1.80.1/build/tests/offsets/liboffsets-1.0.1.dylib`
     ENV.append "LDFLAGS", "-Wl,-ld_classic" if OS.mac? && MacOS.version == :ventura
 
+    # NOTE: ipatch
+    # Work around pcre2 10.47's default versioned-symbols change: `--no-undefined`
+    # (set by meson's b_lundef) can't verify transitively-NEEDED versioned symbols
+    # in libpcre2-8.so at link time for binaries like gtester that only link
+    # against libglib-2.0.so, not pcre2 directly. Runtime resolution via rpath
+    # is fine; just relax the link-time check.
+    ENV.append "LDFLAGS", "-Wl,--allow-shlib-undefined" if OS.linux?
+
     # Disable dtrace; see https://trac.macports.org/ticket/30413
     # and https://gitlab.gnome.org/GNOME/glib/-/issues/653
     args = %W[
