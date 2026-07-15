@@ -53,6 +53,16 @@ class Librsvg < Formula
     # https://github.com/Homebrew/homebrew/issues/40833
     ENV["DESTDIR"] = "/"
 
+    ENV.append "RUSTFLAGS", "-L#{Formula["pcre2"].opt_lib} -Clink-arg=-Wl,--allow-shlib-undefined" if OS.linux?
+    ENV.append "LDFLAGS", "-L#{Formula["pcre2"].opt_lib} -Wl,--allow-shlib-undefined" if OS.linux?
+
+    # Work around pcre2 10.47's default versioned-symbols change: `--no-undefined`
+    # (set by meson's b_lundef) can't verify transitively-NEEDED versioned symbols
+    # in libpcre2-8.so at link time for binaries like gtester that only link
+    # against libglib-2.0.so, not pcre2 directly. Runtime resolution via rpath
+    # is fine; just relax the link-time check.
+    # ENV.append "LDFLAGS", "-Wl,--allow-shlib-undefined" if OS.linux?
+
     system "meson", "setup", "build", "-Dintrospection=enabled",
                                       "-Dpixbuf=enabled",
                                       "-Dpixbuf-loader=enabled",
