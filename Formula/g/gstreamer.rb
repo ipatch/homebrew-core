@@ -229,6 +229,9 @@ class Gstreamer < Formula
     rpath_args = rpaths.map { |path| "-rpath,#{path}" }
     ENV.append_to_rustflags "--codegen link-args=-Wl,#{rpath_args.join(",")}"
 
+    ENV.append "RUSTFLAGS", "-L#{Formula["pcre2"].opt_lib} -Clink-arg=-Wl,--allow-shlib-undefined" if OS.linux?
+    ENV.append "LDFLAGS", "-L#{Formula["pcre2"].opt_lib} -Wl,--allow-shlib-undefined" if OS.linux?
+
     # Make sure the `openssl-sys` crate uses our OpenSSL.
     ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
 
