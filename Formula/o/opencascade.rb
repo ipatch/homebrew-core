@@ -38,9 +38,21 @@ class Opencascade < Formula
   on_linux do
     depends_on "libx11"
     depends_on "mesa" # For OpenGL
+    depends_on "gcc" => :build
+  end
+
+  fails_with :gcc do
+    version "13"
+    cause "see below build error"
   end
 
   def install
+    # NOTE: ipatch, build error, it seems the below is caused by building with gcc v13 ie. gcc@13
+#     [  6%] Linking CXX executable ../../lin64/gcc/bini/ExpToCasExe
+# cd /opt/tmp/homebrew/opencascade-20260718-1832231-cbid10/OCCT-7_9_3/build/src/ExpToCasExe && /home/capin/homebrew/opt/cmake/bin/cmake -E cmake_link_script CMakeFiles/ExpToCasExe.dir/link.txt --verbose=1
+# /home/capin/homebrew/Cellar/binutils/2.46.0/bin/ld: /home/capin/homebrew/opt/glibc/lib/libtbb.so.12: undefined reference to `__cxa_call_terminate@CXXABI_1.3.15'
+# collect2: error: ld returned 1 exit status
+
     # FreeImage has multiple CVEs and has been dropped by distros like Arch Linux
     # Ref: https://archlinux.org/todo/drop-freeimage/
     odie "FreeImage should not be a dependency!" if deps.map(&:name).include?("freeimage")
