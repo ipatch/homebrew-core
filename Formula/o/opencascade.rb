@@ -79,7 +79,8 @@ class Opencascade < Formula
                     "-D3RDPARTY_TCL_LIBRARY:FILEPATH=#{libtcl}",
                     "-D3RDPARTY_TK_LIBRARY:FILEPATH=#{libtk}",
                     "-DCMAKE_INSTALL_RPATH=#{rpath}",
-                    *std_cmake_args
+                    *std_cmake_args,
+                    "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
