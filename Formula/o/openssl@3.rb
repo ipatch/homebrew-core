@@ -26,6 +26,7 @@ class OpensslAT3 < Formula
   end
 
   depends_on "ca-certificates" => :no_linkage
+  depends_on "perl"
 
   on_linux do
     resource "Test::Harness" do
@@ -53,22 +54,22 @@ class OpensslAT3 < Formula
   link_overwrite "share/doc/openssl/*", "share/man/man*/*ssl"
 
   # Backport commits to avoid test timing failures
-  patch do
-    file "Patches/openssl/9061e9381306a053908177aca8509c262015cdf3.patch"
-    type :backport
-  end
-  patch do
-    file "Patches/openssl/2e2438b494e7f661be5212e4732f7fab86bf6303.patch"
-    type :backport
-  end
-  patch do
-    file "Patches/openssl/ea598f5dd23f1d64d8952e20fcf95d9f3a21d654.patch"
-    type :backport
-  end
-  patch do
-    file "Patches/openssl/cffb97915813aeeef58ee9a0d33c05d3d45e1fe6.patch"
-    type :backport
-  end
+  # patch do
+  #   file "Patches/openssl/9061e9381306a053908177aca8509c262015cdf3.patch"
+  #   type :backport
+  # end
+  # patch do
+  #   file "Patches/openssl/2e2438b494e7f661be5212e4732f7fab86bf6303.patch"
+  #   type :backport
+  # end
+  # patch do
+  #   file "Patches/openssl/ea598f5dd23f1d64d8952e20fcf95d9f3a21d654.patch"
+  #   type :backport
+  # end
+  # patch do
+  #   file "Patches/openssl/cffb97915813aeeef58ee9a0d33c05d3d45e1fe6.patch"
+  #   type :backport
+  # end
 
   # SSLv2 died with 1.1.0, so no-ssl2 no longer required.
   # SSLv3 & zlib are off by default with 1.1.0 but this may not
@@ -92,23 +93,25 @@ class OpensslAT3 < Formula
   end
 
   def install
+    # This ensures where Homebrew's Perl is needed the Cellar path isn't
+    # hardcoded into OpenSSL's scripts, causing them to break every Perl update.
+    # Whilst our env points to opt_bin, by default OpenSSL resolves the symlink.
+    ENV["PERL"] = formula_opt_bin("perl")/"perl"
+
     if OS.linux?
       ENV.prepend_create_path "PERL5LIB", buildpath/"lib/perl5"
       ENV.prepend_path "PATH", buildpath/"bin"
 
       %w[ExtUtils::MakeMaker Test::Harness Test::More].each do |r|
         resource(r).stage do
-          system "perl", "Makefile.PL", "INSTALL_BASE=#{buildpath}"
+          system Formula["perl"].opt_bin/"perl", "Makefile.PL", "INSTALL_BASE=#{buildpath}"
+          # system "perl", "Makefile.PL", "INSTALL_BASE=#{buildpath}"
           system "make", "PERL5LIB=#{ENV["PERL5LIB"]}", "CC=#{ENV.cc}"
           system "make", "install"
         end
       end
     end
 
-    # This ensures where Homebrew's Perl is needed the Cellar path isn't
-    # hardcoded into OpenSSL's scripts, causing them to break every Perl update.
-    # Whilst our env points to opt_bin, by default OpenSSL resolves the symlink.
-    ENV["PERL"] = formula_opt_bin("perl")/"perl" if which("perl") == formula_opt_bin("perl")/"perl"
 
     arch_args = []
     if OS.mac?
