@@ -56,12 +56,12 @@ class UtilLinux < Formula
   end
 
   # Fix macOS builds
-  patch do
-    url "https://github.com/util-linux/util-linux/commit/d22edc2f100eb8dd83d3515758565cb73b0d2eed.patch?full_index=1"
-    sha256 "2fb01154faa3fd8b0fce27eb88049ed9c8f839e706e412399c19c087f7f3b5e1"
-    type :unofficial
-    resolves "https://github.com/util-linux/util-linux/pull/4173"
-  end
+  # patch do
+  #   url "https://github.com/util-linux/util-linux/commit/d22edc2f100eb8dd83d3515758565cb73b0d2eed.patch?full_index=1"
+  #   sha256 "2fb01154faa3fd8b0fce27eb88049ed9c8f839e706e412399c19c087f7f3b5e1"
+  #   type :unofficial
+  #   resolves "https://github.com/util-linux/util-linux/pull/4173"
+  # end
 
   def install
     args = %W[--disable-silent-rules --disable-asciidoc --with-bashcompletiondir=#{bash_completion}]
