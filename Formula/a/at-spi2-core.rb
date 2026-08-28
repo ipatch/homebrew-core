@@ -30,6 +30,10 @@ class AtSpi2Core < Formula
 
   uses_from_macos "libxml2" => :build
 
+  on_linux do
+    depends_on "systemd"
+  end
+
   on_macos do
     depends_on "gettext"
   end
