@@ -37,10 +37,10 @@ class Ccache < Formula
   end
 
   # Expose base16 source digest in debug input text, upstream PR ref, https://github.com/ccache/ccache/pull/1735
-  patch do
-    url "https://github.com/ccache/ccache/commit/517329f27aeb90195bda57955435cafbe88f38c6.patch?full_index=1"
-    sha256 "4e14cfc43d5654f67f011393501ecba8402acbaf51fffd55cce94f668b3aa35c"
-  end
+  # patch do
+  #   url "https://github.com/ccache/ccache/commit/517329f27aeb90195bda57955435cafbe88f38c6.patch?full_index=1"
+  #   sha256 "4e14cfc43d5654f67f011393501ecba8402acbaf51fffd55cce94f668b3aa35c"
+  # end
 
   def install
     system "cmake", "-S", ".", "-B", "build",
