@@ -244,6 +244,9 @@ class Gstreamer < Formula
     # Make sure the `openssl-sys` crate uses our OpenSSL.
     ENV["OPENSSL_DIR"] = formula_opt_prefix("openssl@3")
 
+    ENV["CARGO_PROFILE_RELEASE_DEBUG"] = "0"
+    ENV["CARGO_PROFILE_RELEASE_CODEGEN_UNITS"] = "16"
+
     system "meson", "setup", "build", *args, *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
