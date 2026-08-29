@@ -34,6 +34,10 @@ class AtSpi2Core < Formula
     depends_on "gettext"
   end
 
+  on_linux do
+    depends_on "systemd"
+  end
+
   def install
     system "meson", "setup", "build", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
