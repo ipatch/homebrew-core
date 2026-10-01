@@ -99,7 +99,6 @@ class Qtbase < Formula
       src/3rdparty/harfbuzz-ng
       src/3rdparty/libjpeg
       src/3rdparty/libpng
-      src/3rdparty/md4c
       src/3rdparty/pcre2
       src/3rdparty/sqlite
       src/3rdparty/xcb
@@ -158,6 +157,10 @@ class Qtbase < Formula
         -DFEATURE_system_xcb_xinput=ON
       ]
     end
+
+    # NOTE: ipatch, build error with newer versions of md4c
+    # qtextmarkdownimporter.cpp:54:57: error: static assertion failed 54 | static_assert(int(QTextMarkdownImporter::DialectGitHub) == ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+    cmake_args << "-DFEATURE_system_textmarkdownreader=OFF"
 
     system "cmake", "-S", ".", "-B", "build", "-G", "Ninja", *cmake_args
     system "cmake", "--build", "build"
